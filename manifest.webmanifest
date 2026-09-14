@@ -1,0 +1,18 @@
+{
+  //TODO: Replace with your project name
+  "name": "DNDHinwil.Website",
+  "short_name": "DNDHinwil.Website",
+  "id": "./",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#f17f32",
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "images/icons/logo.png",
+      "type": "image/png",
+      "sizes": "128x128"
+    }
+  ]
+}

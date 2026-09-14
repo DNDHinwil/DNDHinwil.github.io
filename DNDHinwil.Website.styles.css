@@ -1,0 +1,135 @@
+/* /Layout/MainLayout.razor.rz.scp.css */
+.page[b-fzvffkfgi1] {
+    --sidebar-height: 2.5rem;
+    --sidebar-width: 100%;
+    display: block;
+    height: 100vh;
+    width: 100vw;
+    min-width: calc(var(--min-width) + 20);
+}
+
+main[b-fzvffkfgi1] {
+    position: absolute;
+    top: var(--sidebar-height);
+    right: 0;
+    width: 100%;
+    height: calc(100% - var(--sidebar-height) - 1px);
+    overflow-x: hidden;
+}
+
+.sidebar[b-fzvffkfgi1] {
+    background-color: var(--color-contrast-0);
+    position: sticky;
+    height: var(--sidebar-height);
+    width: var(--sidebar-width);
+    z-index: 1;
+    background-image: var(--texture-paper);
+    border: none;
+    border-bottom: 1px solid var(--color-foreground);
+    border-bottom: 1px solid var(--color-foreground);
+}
+
+@media (min-width: 840px) {
+    .page[b-fzvffkfgi1] {
+        --sidebar-height: 0;
+        --sidebar-width: 10rem;
+    }
+
+    main[b-fzvffkfgi1] {
+        top: 0;
+        height: 100vh;
+        width: calc(100% - var(--sidebar-width));
+    }
+
+    .sidebar[b-fzvffkfgi1] {
+        position: static;
+        height: 100%;
+        border: none;
+        border-right: 1px solid var(--color-foreground);
+    }
+}
+/* /Layout/NavMenu.razor.rz.scp.css */
+.navbar-toggler[b-n07nno9l7k] {
+	position: absolute;
+	z-index: 2;
+	top: 0;
+	right: 0;
+	margin: 0.25rem 0.5rem;
+	height: 2rem;
+	width: 2rem;
+	padding: 0 0.25rem;
+	background-color: var(--color-foreground);
+	border: 2px solid var(--color-background);
+}
+	.navbar-toggler:hover[b-n07nno9l7k] {
+		color: var(--color-primary-shade);
+		border-color: var(--color-primary-shade);
+	}
+
+.line[b-n07nno9l7k] {
+	border-bottom: 2px solid var(--color-background);
+	margin: 0.25rem 0;
+}
+
+.collapse[b-n07nno9l7k] {
+	display: none;
+}
+
+.navbar-brand[b-n07nno9l7k] {
+	padding: calc(0.25rem + 1px) 0.625rem;
+	margin: 0;
+}
+
+nav[b-n07nno9l7k] {
+	position: absolute;
+	min-width: min-content;
+	width: 100%;
+	display: block;
+	font-family: "Lucida Console", "Courier New", monospace;
+	background-color: var(--color-contrast-0);
+	border-bottom: 1px solid var(--color-foreground);
+	border-top: 1px solid var(--color-foreground);
+}
+
+	nav[b-n07nno9l7k]  a {
+		display: block;
+		width: 100%;
+		padding: 0.5rem 0;
+		height: min-content;
+		text-align: center;
+		border-bottom: 1px solid var(--color-foreground);
+	}
+	nav[b-n07nno9l7k]  a:hover {
+		background-color: var(--color-contrast-1);
+	}
+	nav[b-n07nno9l7k]  a.active, .navbar-brand[b-n07nno9l7k]  a.active {
+		text-decoration: underline var(--color-primary);
+	}
+
+
+@media (min-width: 840px) {
+	.navbar-brand[b-n07nno9l7k] {
+		text-align: center;
+	}
+	.navbar-toggler[b-n07nno9l7k] {
+		display: none;
+	}
+
+	.collapse[b-n07nno9l7k] {
+		/* Never collapse the sidebar for wide screens */
+		display: block;
+	}
+
+	nav[b-n07nno9l7k] {
+		position: static;
+		border-bottom: 0;
+	}
+
+	.nav-scrollable[b-n07nno9l7k] {
+		/* Allow sidebar to scroll for tall menus */
+		overflow-y: auto;
+	}
+}
+/* /Pages/Home.razor.rz.scp.css */
+/* /Pages/NotFound.razor.rz.scp.css */
+
