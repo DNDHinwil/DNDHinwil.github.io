@@ -1,6 +1,6 @@
 ﻿using Codespirals.Base.Extensions;
 
-namespace Codespirals.Blazor.WebsiteTemplate;
+namespace DNDHinwil.Website;
 
 public static class UrlHelper
 {

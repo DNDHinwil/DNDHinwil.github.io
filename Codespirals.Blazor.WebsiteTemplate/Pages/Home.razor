@@ -4,15 +4,58 @@
 <PageTitle>@Constants.SiteName - Home</PageTitle>
 
 <div class="content">
-    <h2>Codespirals Website Template</h2>
+    <h2>DnD Hinwil Tracker</h2>
 
-    <p>
-        Welcome to your new app.
-    </p>
-    <p>
-        This is a Blazor Web App built in C# and compiled to WASM.
-    </p>
-    <p>
-        It is licenced under <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</a>, which basically means feel free to copy and use it however you wish. There's no requirement to even credit me, but of course any credit is appreciated.
-    </p>
+    <button @onclick="StartTimer">Start your turn</button>
+    <br />
+    <button @onclick="PauseTimer">Pause</button>
+    <br />
+    <button @onclick="StopTimer">End your turn</button>
+    <br />
+    @if (TimerRunning && !Paused)
+    {
+        <span>🔴</span>
+    }
+    else
+    {
+        <span>⚫</span>
+    }
+    <div>@_deltaTime.ToString(@"mm\:ss")</div>
 </div>
+
+
+@code {
+    private Timer _timer;
+    private TimeSpan _deltaTime;
+
+    public bool TimerRunning { get; set; }
+    public bool Paused { get; set; }
+
+    protected override void OnInitialized()
+    {
+        _timer = new Timer(AddTick, null, 1000, 1000);
+    }
+
+    public void StartTimer()
+    {
+        if (TimerRunning)
+            return;
+        _deltaTime = TimeSpan.Zero;
+        TimerRunning = true;
+        Paused = false;
+    }
+
+    public void PauseTimer()
+        => Paused = !Paused;
+
+    public void StopTimer()
+        => TimerRunning = false;
+
+    private void AddTick(object? state)
+    {
+        if (!TimerRunning || Paused)
+            return;
+        _deltaTime = _deltaTime.Add(TimeSpan.FromSeconds(1));
+        StateHasChanged();
+    }
+}

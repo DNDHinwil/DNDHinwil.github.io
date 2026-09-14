@@ -1,20 +1,23 @@
 ﻿@inject IContentService ContentService
 @inject NavigationManager NavigationManager
 
-<h1 class="navbar-brand"><NavLink href="/" Match="NavLinkMatch.All" tabindex="0" @onclick="CloseNavMenu">Template</NavLink></h1>
+<h1 class="navbar-brand"><NavLink href="/" Match="NavLinkMatch.All" tabindex="0" @onclick="CloseNavMenu">DnD Hinwil</NavLink></h1>
 
-<button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
-    <div class="line"></div>
-    <div class="line"></div>
-    <div class="line"></div>
-</button>
+@if (_links.Count > 0)
+{
+    <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+    </button>
 
-<nav class="@NavMenuCssClass nav-scrollable">
-    @foreach (var item in _links)
-    {
-        <NavLink href="@item.Link" Match="NavLinkMatch.All" tabindex="0" @onclick="CloseNavMenu">@item.Name</NavLink>
-    }
-</nav>
+    <nav class="@NavMenuCssClass nav-scrollable">
+        @foreach (var item in _links)
+        {
+            <NavLink href="@item.Link" Match="NavLinkMatch.All" tabindex="0" @onclick="CloseNavMenu">@item.Name</NavLink>
+        }
+    </nav>
+}
 
 @code {
     public bool CollapseNavMenu { get; set; } = true;
@@ -34,6 +37,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _links = [.. await ContentService.GetNavItems()];
+        
     }
 }

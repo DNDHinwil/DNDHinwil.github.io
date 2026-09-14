@@ -1,6 +1,6 @@
-﻿namespace Codespirals.Blazor.WebsiteTemplate;
+﻿namespace DNDHinwil.Website;
 
 public static class Constants
 {
-    public const string SiteName = "Template";
+    public const string SiteName = "DND Hinwil";
 }

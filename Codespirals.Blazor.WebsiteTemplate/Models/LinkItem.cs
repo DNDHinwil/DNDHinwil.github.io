@@ -1,4 +1,4 @@
-﻿namespace Codespirals.Blazor.WebsiteTemplate;
+﻿namespace DNDHinwil.Website;
 
 public class LinkItem
 {

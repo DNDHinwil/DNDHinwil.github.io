@@ -4,14 +4,13 @@ name: Build and deploy Blazor WebAssembly to GitHub Pages
 on:
   push:
     branches:
-#TODO: replace line below with the branch name you want to use as a release branch
-        - none
+        - main
 
 jobs:
   build-and-deploy:
     env:
       #TODO: replace this variable to point to your .csproj file
-      Project_Location: ./Codespirals.Blazor.WebsiteTemplate/Codespirals.Blazor.WebsiteTemplate.csproj
+      Project_Location: ./DNDHinwil/DNDHinwil.Website.csproj
     runs-on: ubuntu-latest
     permissions:
       contents: write

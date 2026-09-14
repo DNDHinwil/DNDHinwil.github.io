@@ -1,7 +1,7 @@
 {
   //TODO: Replace with your project name
-  "name": "Codespirals.Blazor.WebsiteTemplate",
-  "short_name": "Codespirals.Blazor.WebsiteTemplate",
+  "name": "DNDHinwil.Website",
+  "short_name": "DNDHinwil.Website",
   "id": "./",
   "start_url": "./",
   "display": "standalone",
