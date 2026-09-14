@@ -10,7 +10,7 @@ jobs:
   build-and-deploy:
     env:
       #TODO: replace this variable to point to your .csproj file
-      Project_Location: ./DNDHinwil/DNDHinwil.Website.csproj
+      Project_Location: ./DNDHinwil.Website/DNDHinwil.Website.csproj
     runs-on: ubuntu-latest
     permissions:
       contents: write
