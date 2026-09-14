@@ -1,0 +1,28 @@
+﻿@page "/posts"
+@inject IContentService ContentService
+
+<PageTitle>@Constants.SiteName - Posts</PageTitle>
+
+<div class="content">
+    <h2>Posts</h2>
+    <div class="post-list">
+        @foreach (var post in Metadata)
+        {
+            <a href="@($"posts/{post.Id}")" class="post">
+                <h3>@post.Title</h3>
+                <p>
+                    @((MarkupString)(post.Description ?? "Description missing..."))
+                </p>
+            </a>
+        }
+    </div>
+</div>
+
+@code
+{
+    public IEnumerable<PostMetadata> Metadata { get; set; } = [];
+    protected override async Task OnInitializedAsync()
+    {
+        Metadata = await ContentService.GetMetadata();
+    }
+}

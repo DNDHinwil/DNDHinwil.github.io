@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- TODO: Change to your own base website github pages url -->
+    <base href="/codespirals-website-template.github.io/" />
+    <title>Not found: 404</title>
+    <link rel="preload" id="webassembly" />
+    <link rel="stylesheet" href="css/app.css" />
+    <!-- TODO: Replace with your own icon -->
+    <link rel="icon" type="image/png" href="images/icons/logo.png" />
+    <!-- TODO: Replace with the name of your project -->
+    <link href="Codespirals.Blazor.WebsiteTemplate.styles.css" rel="stylesheet" />
+    <link href="manifest.webmanifest" rel="manifest" />
+    <!-- TODO: Replace with your own icon -->
+    <link rel="apple-touch-icon" sizes="128x128" href="images/icons/logo.png" />
+</head>
+<body>
+    <script>
+        (async function () {
+            try {
+                // Determine base href (fallback to '/')
+                var baseHref = (document.querySelector('base') && document.querySelector('base').getAttribute('href')) || '/';
+                console.log(baseHref);
+                // Build index.html URL relative to site root/base href
+                var indexUrl = new URL(baseHref + 'index.html', window.location.origin).href;
+                var res = await fetch(indexUrl);
+                if (!res.ok) throw new Error('Failed to fetch index.html');
+                var html = await res.text();
+                // Replace current document with the index.html content so the SPA router can run
+                document.open();
+                document.write(html);
+                document.close();
+            } catch (e) {
+                console.error('Fallback: redirecting to site root', e);
+                window.location.replace((document.querySelector('base') && document.querySelector('base').getAttribute('href')) || '/');
+            }
+        })();
+    </script>
+    <noscript>Please enable JavaScript to run this app.</noscript>
+</body>
+</html>

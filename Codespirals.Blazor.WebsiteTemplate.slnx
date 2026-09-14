@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/solutionItems/">
+    <File Path="LICENSE.txt" />
+    <File Path="README.md" />
+  </Folder>
+  <Folder Name="/workflows/">
+    <File Path=".github/workflows/deploy-gh-pages.yml" />
+  </Folder>
+  <Project Path="Codespirals.Blazor.WebsiteTemplate/Codespirals.Blazor.WebsiteTemplate.csproj" />
+</Solution>

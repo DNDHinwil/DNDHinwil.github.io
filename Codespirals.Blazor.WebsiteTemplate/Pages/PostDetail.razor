@@ -1,0 +1,19 @@
+﻿@page "/posts/{id}"
+@inject IContentService ContentService
+
+<PageTitle>@Constants.SiteName - @(Model?.Metadata.Title ?? "Empty page")</PageTitle>
+
+<div class="content">
+    <Post Model="Model"></Post>
+</div>
+
+@code {
+    [Parameter]
+    public string Id { get; set; } = "";
+    private BlogPost? Model { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        Model = await ContentService.GetPost(Id);
+    }
+}

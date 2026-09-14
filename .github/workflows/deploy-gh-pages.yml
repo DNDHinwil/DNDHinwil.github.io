@@ -1,0 +1,58 @@
+name: Build and deploy Blazor WebAssembly to GitHub Pages
+
+
+on:
+  push:
+    branches:
+#TODO: replace line below with the branch name you want to use as a release branch
+        - none
+
+jobs:
+  build-and-deploy:
+    env:
+      #TODO: replace this variable to point to your .csproj file
+      Project_Location: ./Codespirals.Blazor.WebsiteTemplate/Codespirals.Blazor.WebsiteTemplate.csproj
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pages: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.x'
+
+      - name: Restore
+        run: dotnet restore $Project_Location
+        
+      - name: Set base href for GitHub Pages
+        # Adjusts base href to "/<repo>/" so pages work at /repo/
+        run: |
+          REPO_NAME="${{ github.repository }}"
+          PROJECT_DIR=$(find . -maxdepth 3 -name "*.csproj" -print -quit | xargs -n1 dirname)
+          INDEX_PATH="$PROJECT_DIR/wwwroot/index.html"
+          if [ -f "$INDEX_PATH" ]; then 
+            sed -i "s|<base href=\"/\">|<base href=\"/$REPO_NAME/\">|" "$INDEX_PATH" || true
+          fi
+
+      - name: Publish
+        run: dotnet publish $Project_Location -c Release -o publish
+
+      - name: Copy index to 404 for SPA routing
+        run: |
+          # If the published output includes index.html, also copy to 404.html so deep links work
+          if [ -f publish/wwwroot/index.html ]; then
+            cp publish/wwwroot/index.html publish/wwwroot/404.html
+          fi
+
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./publish/wwwroot
+          publish_branch: gh-pages
+          user_name: github-actions
+          user_email: github-actions@github.com

@@ -1,0 +1,81 @@
+.navbar-toggler {
+	position: absolute;
+	z-index: 2;
+	top: 0;
+	right: 0;
+	margin: 0.25rem 0.5rem;
+	height: 2rem;
+	width: 2rem;
+	padding: 0 0.25rem;
+	background-color: var(--color-foreground);
+	border: 2px solid var(--color-background);
+}
+	.navbar-toggler:hover {
+		color: var(--color-primary-shade);
+		border-color: var(--color-primary-shade);
+	}
+
+.line {
+	border-bottom: 2px solid var(--color-background);
+	margin: 0.25rem 0;
+}
+
+.collapse {
+	display: none;
+}
+
+.navbar-brand {
+	padding: calc(0.25rem + 1px) 0.625rem;
+	margin: 0;
+}
+
+nav {
+	position: absolute;
+	min-width: min-content;
+	width: 100%;
+	display: block;
+	font-family: "Lucida Console", "Courier New", monospace;
+	background-color: var(--color-contrast-0);
+	border-bottom: 1px solid var(--color-foreground);
+	border-top: 1px solid var(--color-foreground);
+}
+
+	nav ::deep a {
+		display: block;
+		width: 100%;
+		padding: 0.5rem 0;
+		height: min-content;
+		text-align: center;
+		border-bottom: 1px solid var(--color-foreground);
+	}
+	nav ::deep a:hover {
+		background-color: var(--color-contrast-1);
+	}
+	nav ::deep a.active, .navbar-brand ::deep a.active {
+		text-decoration: underline var(--color-primary);
+	}
+
+
+@media (min-width: 840px) {
+	.navbar-brand {
+		text-align: center;
+	}
+	.navbar-toggler {
+		display: none;
+	}
+
+	.collapse {
+		/* Never collapse the sidebar for wide screens */
+		display: block;
+	}
+
+	nav {
+		position: static;
+		border-bottom: 0;
+	}
+
+	.nav-scrollable {
+		/* Allow sidebar to scroll for tall menus */
+		overflow-y: auto;
+	}
+}

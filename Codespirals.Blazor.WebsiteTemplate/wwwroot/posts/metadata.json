@@ -1,0 +1,13 @@
+﻿[
+	{
+		"Title": "Template Post",
+		"Description": "A template for blog posts.",
+		"Tags": [ "Template", "Testing" ],
+		"Created": "2026-08-08",
+		"Edited": "2026-08-08",
+		"ContentUrl": "posts/HelloWorld.md",
+		"IsActive": true,
+		"ShowInList": true,
+		"EstimatedReadTimeInMinutes": 0
+	}
+]

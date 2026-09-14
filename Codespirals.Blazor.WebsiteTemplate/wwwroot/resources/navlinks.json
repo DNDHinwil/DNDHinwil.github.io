@@ -1,0 +1,10 @@
+[
+	{
+		"Name": "Posts",
+		"Link": "posts"
+	},
+	{
+		"Name": "Latest",
+		"Link": "posts/latest"
+	}
+]
