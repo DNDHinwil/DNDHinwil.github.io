@@ -6,5 +6,5 @@
   <Folder Name="/workflows/">
     <File Path=".github/workflows/deploy-gh-pages.yml" />
   </Folder>
-  <Project Path="Codespirals.Blazor.WebsiteTemplate/DNDHinwil.Website.csproj" />
+  <Project Path="DNDHinwil.Website/DNDHinwil.Website.csproj" />
 </Solution>
