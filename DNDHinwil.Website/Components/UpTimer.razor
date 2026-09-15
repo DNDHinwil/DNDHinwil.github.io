@@ -1,0 +1,72 @@
+﻿<div>
+    @if (!TimerRunning)
+    {
+        <span>⚫</span>
+        <button @onclick="x => StartTimer()">Start</button>
+    }
+    else if (Paused)
+    {
+        <span>🔵</span>
+        <button @onclick="x => UnpauseTimer()">Unpause</button>
+    }
+    else
+    {
+        <span>🔴</span>
+        <button @onclick="x => PauseTimer()">Pause</button>
+    }
+    <div>@_deltaTime.ToString(_timeFormat)</div>
+    <button @onclick="x => StopTimer()">End</button>
+</div>
+
+@code {
+    private Timer _timer;
+    private TimeSpan _deltaTime;
+    private readonly long _timeBetweenTicksInSeconds = 1;
+    private string _timeFormat => ShowHours ? @"hh\:mm\:ss" : @"mm\:ss";
+
+    public bool TimerRunning { get; set; }
+    public bool Paused { get; set; }
+
+    [Parameter]
+    public bool ShowHours { get; set; }
+
+    protected override void OnInitialized()
+    {
+        _timer = new Timer(Tick, null, _timeBetweenTicksInSeconds, _timeBetweenTicksInSeconds);
+    }
+
+    public void StartTimer()
+    {
+        if (TimerRunning)
+            return;
+        _deltaTime = TimeSpan.Zero;
+        TimerRunning = true;
+        UnpauseTimer();
+    }
+
+    public void PauseTimer()
+    {
+        Paused = true;
+    }
+
+    public void UnpauseTimer()
+    {
+        Paused = false;
+    }
+
+    public void StopTimer()
+    {
+        UnpauseTimer();
+        TimerRunning = false;
+    }
+
+    private void Tick(object? state)
+    {
+        if (!TimerRunning || Paused)
+            return;
+        AddTimeToTimeSpan(_deltaTime, _timeBetweenTicksInSeconds);
+        StateHasChanged();
+    }
+    public static void AddTimeToTimeSpan(TimeSpan timeSpan, long timeInSeconds)
+        => timeSpan = timeSpan.Add(TimeSpan.FromSeconds(timeInSeconds));
+}

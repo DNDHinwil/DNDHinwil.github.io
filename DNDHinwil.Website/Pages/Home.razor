@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using DNDHinwil.Website.Components
 @inject IContentService ContentService
 
 <PageTitle>@Constants.SiteName - Home</PageTitle>
@@ -6,56 +7,10 @@
 <div class="content">
     <h2>DnD Hinwil Tracker</h2>
 
-    <button @onclick="StartTimer">Start your turn</button>
-    <br />
-    <button @onclick="PauseTimer">Pause</button>
-    <br />
-    <button @onclick="StopTimer">End your turn</button>
-    <br />
-    @if (TimerRunning && !Paused)
-    {
-        <span>🔴</span>
-    }
-    else
-    {
-        <span>⚫</span>
-    }
-    <div>@_deltaTime.ToString(@"mm\:ss")</div>
+    <UpTimer></UpTimer>
 </div>
 
 
 @code {
-    private Timer _timer;
-    private TimeSpan _deltaTime;
 
-    public bool TimerRunning { get; set; }
-    public bool Paused { get; set; }
-
-    protected override void OnInitialized()
-    {
-        _timer = new Timer(AddTick, null, 1000, 1000);
-    }
-
-    public void StartTimer()
-    {
-        if (TimerRunning)
-            return;
-        _deltaTime = TimeSpan.Zero;
-        TimerRunning = true;
-        Paused = false;
-    }
-
-    public void PauseTimer()
-        => Paused = !Paused;
-
-    public void StopTimer()
-        => TimerRunning = false;
-
-    private void AddTick(object? state)
-    {
-        if (!TimerRunning || Paused)
-            return;
-        _deltaTime = _deltaTime.Add(TimeSpan.FromSeconds(1));
-        StateHasChanged();
-    }
 }
