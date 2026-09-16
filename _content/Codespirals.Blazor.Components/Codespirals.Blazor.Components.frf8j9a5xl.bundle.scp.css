@@ -1,0 +1,596 @@
+/* _content/Codespirals.Blazor.Components/Components/Decorations/RadialText.razor.rz.scp.css */
+.radial-text-container[b-0n86zsipws] {
+	height: calc(var(--radius) * 2);
+	width: calc(var(--radius) * 2);
+	background-color: var(--color);
+	border-radius: 50%;
+	user-select: none;
+}
+
+.radial-text[b-0n86zsipws] {
+	font: var(--font-size) Monaco, MonoSpace;
+	transform-origin: bottom left;
+	rotate: calc(var(--angle) * -0.5);
+	height: var(--radius);
+	width: var(--radius);
+	margin-left: calc(var(--radius));
+	margin-bottom: calc(var(--radius));
+}
+
+.circle[b-0n86zsipws] {
+	rotate: calc(var(--angle) * 0.5);
+	position: absolute;
+	height: calc((var(--radius) - var(--font-size)) * 2);
+	width: calc((var(--radius) - var(--font-size)) * 2);
+	overflow: hidden;
+	border-radius: 50%;
+	bottom: calc((var(--radius) - var(--font-size)) * -1);
+	left: calc((var(--radius) - var(--font-size)) * -1);
+	margin: 0 auto;
+}
+
+.circle-content[b-0n86zsipws] {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+	[b-0n86zsipws] .circle-content > * {
+		height: calc((var(--radius) - var(--font-size)) * 2);
+		object-fit: cover;
+	}
+
+.radial-letter[b-0n86zsipws] {
+	rotate: calc((var(--rotate-per-letter) / 2) + (var(--rotate-per-letter) * var(--letter-number)));
+	position: absolute;
+	bottom: 0;
+	left: calc(var(--font-size) / -4);
+	transform-origin: bottom center;
+	height: var(--radius);
+	color: var(--color);
+	filter: invert(1) grayscale(1);
+}
+/* _content/Codespirals.Blazor.Components/Components/Decorations/Sticker.razor.rz.scp.css */
+.sticker[b-z37cl4meav] {
+	position: absolute;
+	width: max-content;
+	background-color: white;
+	user-select: none;
+}
+
+	.sticker[b-z37cl4meav] >  * {
+		outline: white solid 0.5rem;
+		filter: drop-shadow(1px 0px white) drop-shadow(-1px 0px white) drop-shadow(0px -1px white) drop-shadow(0px 1px white) drop-shadow(1px 1px 1px black);
+	}
+/* _content/Codespirals.Blazor.Components/Components/Decorations/TextSticker.razor.rz.scp.css */
+
+.text-sticker[b-faqg2hmfbm] {
+	position: absolute;
+	user-select: none;
+	color: black;
+	-webkit-text-stroke: max(0.02em, 1px) white;
+	filter: drop-shadow(0.02em 0px white) drop-shadow(-0.02em 0px white) drop-shadow(0px -0.02em white) drop-shadow(0px 0.02em white) drop-shadow(1px 1px 1px black);
+}
+/* _content/Codespirals.Blazor.Components/Components/FormElements/InputRadioOption.razor.rz.scp.css */
+
+.input-radio-option[b-1qt8o042wi] {
+	display: grid;
+	grid-template-columns: auto 1fr;
+}
+/* _content/Codespirals.Blazor.Components/Components/FormElements/InputWithLabel.razor.rz.scp.css */
+.input-with-label[b-583kbjhesk] {
+	display: grid;
+	grid-template-columns: 50% auto;
+	padding: 0;
+	border-top: 1px solid white;
+}
+	.input-with-label > label[b-583kbjhesk] {
+		padding: 0.125rem 0;
+		margin-top: 0.125rem;
+	}
+		.input-with-label > label > span[b-583kbjhesk] {
+			vertical-align: top;
+			margin-top: 0.125rem;
+			margin-left: 0.25rem;
+			display: inline-block;
+			font-size: 0.5rem;
+			width: 0.75rem;
+			aspect-ratio: 1/1;
+			text-align: center;
+			align-content: center;
+			border-radius: 50%;
+			color: var(--color-primary);
+			border: 1px solid var(--color-primary);
+			background-color: color-mix(in srgb, var(--color-background) 85%, #fff);
+		}
+		.input-with-label > label > .open[b-583kbjhesk] {
+			border: 1px solid color-mix(in srgb, var(--color-primary) 75%, #000);
+			background-color: color-mix(in srgb, var(--color-background) 95%, #000);
+		}
+
+	.input-with-label > p[b-583kbjhesk] {
+		color: var(--color-foreground);
+		margin: 0 0.125rem 0.125rem 0.125rem;
+	}
+
+.input-field[b-583kbjhesk] {
+	width: 100%;
+}
+
+	.input-field[b-583kbjhesk] >  input,
+	.input-field[b-583kbjhesk] >  textarea,
+	.input-field[b-583kbjhesk] >  input[type=number],
+	.input-field[b-583kbjhesk] >  input[type=date] {
+		width: calc(100% - 12px);
+		margin: 0.125rem;
+	}
+
+		.input-field[b-583kbjhesk] >  input[type=checkbox] {
+			width: max-content;
+		}
+
+	.input-field[b-583kbjhesk] >  .radio-option {
+		display: grid;
+		grid-template-columns: min-content auto;
+	}
+
+
+.input-field[b-583kbjhesk] >  select {
+	width: max-content;
+	max-width: 100%;
+	margin: 0.125rem;
+}
+
+.input-field[b-583kbjhesk] >  input[type=checkbox] {
+	margin-top: 0.375rem;
+}
+
+[b-583kbjhesk] .input-radio-option > input[type=radio],
+[b-583kbjhesk] .input-radio-option > label {
+	margin: 0 0.125rem;
+}
+
+.input-description[b-583kbjhesk] {
+	border-top: 1px dashed white;
+}
+	.input-description[b-583kbjhesk]:before {
+		color: var(--color-background);
+		background-color: var(--color-foreground);
+		vertical-align: middle;
+		display: inline-block;
+		font-size: 0.875rem;
+		line-height: 0.75rem;
+		height: 0.75rem;
+		aspect-ratio: 1/1;
+		text-align: center;
+		align-content: center;
+		content: 'ℹ';
+		border-radius: 50%;
+		margin: 0 0.125rem;
+	}
+
+.input-description[b-583kbjhesk], .input-warning[b-583kbjhesk] {
+	position: relative;
+	grid-column: 1 / span 2;
+	display: none;
+	transition: 0.3s;
+}
+	.input-description.open[b-583kbjhesk], .input-warning.open[b-583kbjhesk] {
+		display: block;
+	}
+
+.input-warning[b-583kbjhesk] {
+	text-justify: inter-word;
+	border: solid 1px var(--color-primary);
+	border-radius: 0.25rem;
+	padding: 0 0.25rem 0.125rem 0.25rem;
+}
+
+	.input-warning[b-583kbjhesk]:before {
+		color: var(--color-primary);
+		content: '⚠';
+		padding-right: 0.125rem;
+	}
+		.input-warning[b-583kbjhesk]:after {
+			border-color: var(--color-primary);
+		}
+/* _content/Codespirals.Blazor.Components/Components/FormElements/LabelWithTooltip.razor.rz.scp.css */
+
+.label-with-tooltip[b-y82qznsr7q] {
+	position: relative;
+}
+	.label-with-tooltip:hover .tooltip[b-y82qznsr7q] {
+		visibility: visible;
+	}
+	.label-with-tooltip > label[b-y82qznsr7q] {
+		display: block;
+		width: 100%;
+	}
+
+		.label-with-tooltip > label[b-y82qznsr7q]:after {
+			position: absolute;
+			color: var(--color-primary);
+			content: '*';
+			user-select: none;
+		}
+
+.tooltip[b-y82qznsr7q] {
+	position: absolute;
+	visibility: hidden;
+	background-color: white;
+	color: black;
+	border: 1px solid var(--color-primary);
+	border-radius: 0.25rem;
+	padding: 0 0.75rem 0 0.125rem;
+	z-index: 1;
+	top: 100%;
+	left: 0;
+}
+
+	.tooltip:hover[b-y82qznsr7q] {
+		visibility: hidden;
+	}
+/* _content/Codespirals.Blazor.Components/Components/Presentation/HorizontalScroller.razor.rz.scp.css */
+
+.horizontal-scroller[b-k83zerw4zm] {
+	overflow-x: scroll;
+	white-space: nowrap;
+	width: 100%;
+	padding-bottom: 0.5rem;
+	position: relative;
+}
+
+.horizontal-scroller-content[b-k83zerw4zm] { 
+	vertical-align: top;
+	width: max-content;
+}
+/* _content/Codespirals.Blazor.Components/Components/Presentation/Modal.razor.rz.scp.css */
+
+.modal-dialog[b-hfuaoaumay] {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	min-width: calc(var(--min-width) + 20px);
+	background-color: #222c;
+	
+}
+
+.modal-dialog-content[b-hfuaoaumay] {
+	min-width: var(--min-width);
+	width: max-content;
+	max-width: 90%;
+	margin: min(200px, 15%) auto auto auto;
+	background-color: var(--color-background);
+	padding: 0.25rem;
+	border: 2px solid var(--color-primary-tint);
+	border-radius: 0.5rem;
+}
+/* _content/Codespirals.Blazor.Components/Components/Presentation/RotatableDisplay.razor.rz.scp.css */
+
+.rotatable-display[b-29bgwxewgt] {
+	background-color: #333;
+	overflow: hidden;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: move; 
+}
+
+.rotatable-display-content[b-29bgwxewgt] {
+	user-select: none;
+	transform-style: preserve-3d;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	transform-origin: 50% 50%;
+	transform: rotateX(var(--rotate-content-y)) rotateZ(var(--rotate-content-x));
+}
+	.rotatable-display-content[b-29bgwxewgt] >  * {
+		transform-style: preserve-3d;
+		user-select: none;
+	}
+/* _content/Codespirals.Blazor.Components/Components/Presentation/RotatingDisplay.razor.rz.scp.css */
+.rotating-display-container[b-r08vewfo9u] {
+	transform-origin: 50% 50%;
+	background-color: #333;
+	overflow: hidden;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	--rotate-x: 30deg;
+	--rotate-y: 0deg;
+	--rotate-z: 45deg;
+}
+
+.toggle-rotation-button[b-r08vewfo9u] {
+	position: absolute;
+	top: 0.5rem;
+	left: 0.5rem;
+	font-size: 1.5rem;
+	height: 3rem;
+	width: 3rem;
+	text-align: center;
+}
+
+.rotating-display[b-r08vewfo9u] {
+	transform-style: preserve-3d;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	transform-origin: 50% 50%;
+	touch-action: pan-x;
+}
+
+[b-r08vewfo9u] .rotating-display > * {
+	transform-style: preserve-3d;
+	transform: rotateX(var(--rotate-x)) rotateY(var(--rotate-y)) rotateZ(var(--rotate-z));
+	animation: rotateContent-b-r08vewfo9u 5s linear infinite;
+	user-select: none; 
+}
+
+.paused[b-r08vewfo9u] >  * {
+	animation-play-state: paused;
+}
+
+@keyframes rotateContent-b-r08vewfo9u {
+	to {
+		transform: rotateX(var(--rotate-x)) rotateZ(calc(var(--rotate-z) + 1turn));
+	}
+}
+/* _content/Codespirals.Blazor.Components/Components/Shapes/Cuboid.razor.rz.scp.css */
+/* cuboid inspiration from https://miocene.io/post/3d-cube-with-css/ 
+	however with some major changes: 
+	- text aligns on all sides now
+	- bottom before and after now handle "back" sides of cube, top handle front
+*/
+.cuboid[b-kk3tabuc6a],
+.cuboid-bottom[b-kk3tabuc6a], .cuboid-bottom[b-kk3tabuc6a]::before, .cuboid-bottom[b-kk3tabuc6a]::after,
+.cuboid-top[b-kk3tabuc6a], .cuboid-top[b-kk3tabuc6a]::before, .cuboid-top[b-kk3tabuc6a]::after,
+.cuboid-label[b-kk3tabuc6a] {
+	content: '';
+	position: absolute;
+	transform-style: preserve-3d;
+}
+
+.cuboid[b-kk3tabuc6a] {
+	--x: 10px;
+	--y: 10px;
+	--z: 10px;
+	--move-x: 0;
+	--move-y: 0;
+	--move-z: 0;
+	--rotate-x: 10deg;
+	--rotate-y: 10deg;
+	--rotate-z: 10deg;
+	--label: '';
+	--background-image: none;
+	transform-origin: 50% 50%;
+	transform: rotateX(var(--rotate-x)) rotateY(var(--rotate-y)) rotateZ(var(--rotate-z));
+	translate: var(--move-x) var(--move-y) var(--move-z);
+	width: var(--x);
+	height: var(--y);
+}
+
+.cuboid-bottom[b-kk3tabuc6a] {
+	width: var(--x);
+	height: var(--y);
+	background-image: var(--background-image);
+	background-color: color-mix(in srgb, var(--color) 75%, #333333);
+}
+
+	.cuboid-bottom[b-kk3tabuc6a]::before {
+		width: 100%;
+		height: var(--z);
+		background-image: var(--background-image);
+		background-color: color-mix(in srgb, var(--color) 90%, #333333);
+		transform-origin: top right;
+		transform: rotateX(270deg) rotateY(180deg);
+		translate: calc(var(--x) * -1) 0 var(--z);
+	}
+
+	.cuboid-bottom[b-kk3tabuc6a]::after {
+		width: var(--y);
+		height: var(--z);
+		background-image: var(--background-image);
+		background-color: color-mix(in srgb, var(--color) 95%, #333333);
+		transform-origin: top left;
+		transform: rotateZ(90deg) rotateX(-90deg);
+		translate: 0 0 var(--z);
+	}
+
+.cuboid-top[b-kk3tabuc6a] {
+	width: var(--x);
+	height: var(--y);
+	background-image: var(--background-image);
+	background-color: var(--color);
+	translate: 0 0 var(--z);
+}
+
+	.cuboid-top[b-kk3tabuc6a]::before {
+		width: var(--x);
+		height: var(--z);
+		background-image: var(--background-image);
+		background-color: color-mix(in srgb, var(--color) 85%, #333333);
+		transform-origin: top right;
+		transform: rotateX(-90deg);
+		translate: 0 var(--y);
+	}
+
+	.cuboid-top[b-kk3tabuc6a]::after {
+		height: var(--z);
+		width: var(--y);
+		background-image: var(--background-image);
+		background-color: color-mix(in srgb, var(--color) 80%, #333333);
+		transform-origin: top left;
+		transform: rotateZ(-90deg) rotateX(-90deg);
+		translate: var(--x) var(--y);
+	}
+
+/* side label */
+	.cuboid-bottom[b-kk3tabuc6a]::before, .cuboid-bottom[b-kk3tabuc6a]::after,
+	.cuboid-top[b-kk3tabuc6a]::before, .cuboid-top[b-kk3tabuc6a]::after {
+		font-size: calc(var(--z) * 0.4);
+		text-align: center;
+		align-content: center;
+		content: var(--label);
+	}
+
+.cuboid-label[b-kk3tabuc6a] {
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+}
+/* _content/Codespirals.Blazor.Components/Components/Shapes/Wedge.razor.rz.scp.css */
+
+.wedge[b-5rent8osun],
+.wedge-bottom[b-5rent8osun], .wedge-bottom[b-5rent8osun]::before,
+.wedge-slope[b-5rent8osun], .wedge-slope[b-5rent8osun]::before, .wedge-slope[b-5rent8osun]::after,
+.wedge-label[b-5rent8osun] {
+	content: '';
+	position: absolute;
+	transform-style: preserve-3d;
+}
+
+.wedge[b-5rent8osun] {
+	--x: 10px;
+	--y: 10px;
+	--z: 10px;
+	--move-x: 0;
+	--move-y: 0;
+	--move-z: 0;
+	--rotate-x: 10deg;
+	--rotate-y: 10deg;
+	--rotate-z: 10deg;
+	--label: '';
+	transform-origin: 50% 50%;
+	transform: rotateX(var(--rotate-x)) rotateY(var(--rotate-y)) rotateZ(var(--rotate-z));
+	translate: var(--move-x) var(--move-y) var(--move-z);
+	width: var(--x);
+	height: var(--y);
+}
+
+.wedge-bottom[b-5rent8osun] {
+	width: var(--x);
+	height: var(--y);
+	background-color: color-mix(in srgb, var(--color) 75%, #333333);
+}
+
+	.wedge-bottom[b-5rent8osun]::before {
+		width: var(--x);
+		height: var(--z);
+		background-color: color-mix(in srgb, var(--color) 90%, #333333);
+		transform-origin: top left;
+		translate: 0 ;
+		transform: rotateX(90deg);
+	}
+
+.wedge-slope[b-5rent8osun] {
+	--hypotenuse: hypot(var(--y), var(--z));
+	--border: calc(var(--hypotenuse) / 2);
+	width: var(--x);
+	height: var(--hypotenuse);
+	transform-origin: top center;
+	background-color: var(--color);
+	translate: 0 0 var(--z);
+	transform: rotateX(-45deg);
+}
+
+	.wedge-slope[b-5rent8osun]::before {
+		border-right: var(--border) solid color-mix(in srgb, var(--color) 85%, #333333);
+		border-top: var(--border) solid transparent;
+		border-bottom: var(--border) solid transparent;
+		transform-origin: bottom left;
+		translate: var(--x) 0 calc(var(--border) * -1);
+		transform: rotateY(-90deg);
+	}
+
+	.wedge-slope[b-5rent8osun]::after {
+		border-right: var(--border) solid color-mix(in srgb, var(--color) 95%, #333333);
+		border-top: var(--border) solid transparent;
+		border-bottom: var(--border) solid transparent;
+		transform-origin: top left;
+		translate: 0 0 calc(var(--border) * -1);
+		transform: rotateY(-90deg);
+	}
+
+.wedge-label[b-5rent8osun] {
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+}
+/* _content/Codespirals.Blazor.Components/Pages/ComponentShowcase.razor.rz.scp.css */
+h1[b-xicp0fif58] {
+	font-size: 1.25rem;
+	width: max-content;
+	overflow-x: hidden;
+	margin: 0 0.5rem;
+}
+
+h2[b-xicp0fif58] {
+	margin: 0;
+	position: relative;
+	z-index: 1;
+	text-align: center;
+	color: white;
+}
+
+.fill[b-xicp0fif58] {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+}
+
+.center-content[b-xicp0fif58] {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.split[b-xicp0fif58] {
+	background-color: grey;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	display: grid;
+	grid-template-rows: max-content auto;
+}
+
+.component-showcase[b-xicp0fif58] {
+	min-width: 300px;
+	height: calc(100% - 1rem);
+	width: calc(100% - 1rem);
+	border: inset 0.5rem #aaa;
+	position: relative;
+}
+
+[b-xicp0fif58] .component-controls input {
+	margin: 0.125rem 0.125rem 0 0.125rem;
+}
+[b-xicp0fif58] .component-controls label {
+	margin: 0.25rem 0.125rem 0 0.125rem;
+}
