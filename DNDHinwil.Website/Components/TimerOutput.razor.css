@@ -1,0 +1,14 @@
+﻿.timer {
+	min-width: 100px;
+	display: grid;
+	grid-template-columns: auto max-content;
+}
+
+	.timer > button {
+		grid-column: span 2;
+	}
+
+.timer-output {
+	text-align: center;
+	margin: 0.125rem;
+}

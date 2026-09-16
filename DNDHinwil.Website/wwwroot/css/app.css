@@ -86,6 +86,8 @@ a {
 
 button {
     border-color: var(--color-primary);
+    background-color: var(--color-background);
+    color: var(--color-foreground);
 }
 
     button:hover {

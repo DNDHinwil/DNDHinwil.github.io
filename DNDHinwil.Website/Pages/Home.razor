@@ -1,16 +1,90 @@
 ﻿@page "/"
-@using DNDHinwil.Website.Components
 @inject IContentService ContentService
 
 <PageTitle>@Constants.SiteName - Home</PageTitle>
 
 <div class="content">
-    <h2>DnD Hinwil Tracker</h2>
+    <h2>DnD Tracker</h2>
+    <TimerOutput Model="_timer"></TimerOutput>
 
-    <UpTimer></UpTimer>
+    <div class="timer-controls">
+        <button @onclick="x => _timer.StopTimer()" class="timer-end-button">End</button>
+        @if (!_timer!.TimerRunning)
+        {
+            <button class="timer-button" @onclick="x => _timer.StartTimer()">Start</button>
+        }
+        else if (_timer.Paused)
+        {
+            <button class="timer-button" @onclick="x => _timer.UnpauseTimer()">⏯</button>
+        }
+        else
+        {
+            <button class="timer-button" @onclick="x => _timer.PauseTimer()">⏸</button>
+        }
+    </div>
+    <div class="player">
+        <InputWithLabel Label="@Text.Name">
+            <InputText @bind-Value="_player.Name"></InputText>
+        </InputWithLabel>
+        <InputWithLabel Label="@Text.HP">
+            <InputNumber @bind-Value="_player.Health"></InputNumber>
+        </InputWithLabel>
+        <InputWithLabel Label="@Text.MP">
+            <InputNumber @bind-Value="_player.Mana"></InputNumber>
+        </InputWithLabel>
+        @foreach (var effect in _player.ActiveEffects)
+        {
+            <div class="active-effect">
+                <label>@Text.Name</label>
+                <label>@effect.Name</label>
+                <label>@Text.Strength</label>
+                <label>@effect.Strength</label>
+                <label>@Text.Turns</label>
+                <label>@effect</label>
+                <button>⛭</button>
+            </div>
+        }
+    </div>
 </div>
 
+@if (_newEffect is not null)
+{
+    <dialog class="edit-active-effect">
+        <InputWithLabel Label="@Text.Name">
+            <InputText @bind-Value="_newEffect.Name"></InputText>
+        </InputWithLabel>
+        <InputWithLabel Label="@Text.Strength">
+            <InputNumber @bind-Value="_newEffect.Strength"></InputNumber>
+        </InputWithLabel>
+        <InputWithLabel Label="@Text.Turns">
+            <InputNumber @bind-Value="_newEffect.Turns"></InputNumber>
+        </InputWithLabel>
+        <InputWithLabel Label="@Text.Heal">
+            <InputCheckbox @bind-Value="_newEffect.Positive"></InputCheckbox>
+        </InputWithLabel>
+        <InputWithLabel Label="@Text.Target">
+            <InputRadioGroup @bind-value="_newEffect.EffectTarget">
+                <InputRadioOption Value="ActiveEffect.Target.None" Label="@Text.None"></InputRadioOption>
+                <InputRadioOption Value="ActiveEffect.Target.Health" Label="@Text.Health"></InputRadioOption>
+                <InputRadioOption Value="ActiveEffect.Target.Mana" Label="@Text.Mana"></InputRadioOption>
+            </InputRadioGroup>
+        </InputWithLabel>
+    </dialog>
+}
 
 @code {
+    private Player _player = new Player();
+    private ActiveEffect? _newEffect;
+    private UpCountingTimer? _timer;
 
+    protected override void OnInitialized()
+    {
+        _timer = new UpCountingTimer(Update);
+        base.OnInitialized();
+    }
+
+    private void Update(object? state)
+    {
+        StateHasChanged();
+    }
 }
