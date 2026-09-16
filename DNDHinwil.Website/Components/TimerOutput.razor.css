@@ -1,0 +1,13 @@
+﻿.timer {
+	min-width: 100px;
+	display: grid;
+	grid-template-columns: auto min-content;
+	border: 2px inset #666;
+	font-size: inherit;
+}
+
+.timer-output {
+	text-align: center;
+	font-size: inherit;
+	padding-top: 0.125rem;
+}

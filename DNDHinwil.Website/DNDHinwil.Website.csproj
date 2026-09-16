@@ -16,7 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Codespirals.Base.Shared" Version="1.1.1.26110" />
+    <PackageReference Include="Codespirals.Base.Shared" Version="1.2.0.26235" />
+    <PackageReference Include="Codespirals.Blazor.Components" Version="1.1.26.26249" />
     <PackageReference Include="Markdig" Version="1.1.3" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.10" PrivateAssets="all" />
@@ -27,7 +28,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Components\" />
+    <Compile Update="Resources\Text.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Text.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\Text.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Text.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

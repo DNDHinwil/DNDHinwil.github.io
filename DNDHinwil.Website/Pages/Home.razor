@@ -1,61 +1,199 @@
-﻿@page "/"
+﻿@page "/{lang?}"
+@using System.Globalization
 @inject IContentService ContentService
 
 <PageTitle>@Constants.SiteName - Home</PageTitle>
 
 <div class="content">
-    <h2>DnD Hinwil Tracker</h2>
+    <div class="top-row">
+        <h2>DnD Tracker</h2>
+        <TimerOutput Model="_timer"></TimerOutput>
+    </div>
 
-    <button @onclick="StartTimer">Start your turn</button>
-    <br />
-    <button @onclick="PauseTimer">Pause</button>
-    <br />
-    <button @onclick="StopTimer">End your turn</button>
-    <br />
-    @if (TimerRunning && !Paused)
-    {
-        <span>🔴</span>
-    }
-    else
-    {
-        <span>⚫</span>
-    }
-    <div>@_deltaTime.ToString(@"mm\:ss")</div>
+    <div class="timer-controls">
+        <button @onclick="x => _timer!.StopTimer()" class="timer-end-button">@Text.EndTurn</button>
+        @if (!_timer!.TimerRunning)
+        {
+            <button class="timer-button" @onclick="x => StartTurn()">@Text.StartTurn</button>
+        }
+        else if (_timer.Paused)
+        {
+            <button class="timer-button" @onclick="x => _timer.UnpauseTimer()">⏯</button>
+        }
+        else
+        {
+            <button class="timer-button" @onclick="x => _timer.PauseTimer()">⏸</button>
+        }
+    </div>
+    <div class="player">
+        <label>@Text.Name</label>
+        <label>@Text.HP</label>
+        <label>@Text.MP</label>
+        <InputText @bind-Value="_player.Name"></InputText>
+        <InputNumber @bind-Value="_player.Health"></InputNumber>
+        <InputNumber @bind-Value="_player.Mana"></InputNumber>
+
+        @if (_player.ActiveEffects.Any())
+        {
+            <div class="active-effects">
+                <h3>@Text.ActiveEffects</h3>
+                <table>
+                    <tr class="active-effect">
+                        <th></th>
+                        <th>@Text.Name</th>
+                        <th>@Text.Strength</th>
+                        <th>@Text.Turns</th>
+                        <th></th>
+                    </tr>
+                    @foreach (var effect in _player.ActiveEffects)
+                    {
+                        <tr class="active-effect">
+                            <td><button @onclick="x => _player.ActiveEffects.Remove(effect)">-</button></td>
+                            <td>@effect.Name</td>
+                            <td>@effect.Strength</td>
+                            @if (effect.UntilRemoved && effect.Positive)
+                            {
+                                <td>💚</td>
+                            }
+                            else if (effect.UntilRemoved)
+                            {
+                                <td>♾</td>
+                            }
+                            else if (effect.UntilHealed)
+                            {
+                                <td>🩸</td>
+                            }
+                            else
+                            {
+                                <td>@effect.Turns</td>
+                            }
+                            <td>
+                                <button @onclick="x => StartEditingEffect(effect)" command="show-modal" commandfor="edit-active-effect">⛭</button>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        }
+        <button @onclick="x => AddNewEffect()" popovertarget="edit-active-effect">@Text.NewEffect</button>
+    </div>
 </div>
 
+@if (_editEffect is not null)
+{
+    <dialog id="edit-active-effect" class="edit-active-effect" popover>
+        <h3>@Text.Effect</h3>
+        <InputWithLabel Label="@Text.Name">
+            <InputText @bind-Value="_editEffect.Name"></InputText>
+        </InputWithLabel>
+        <InputWithLabel Label="@Text.Strength">
+            <InputNumber @bind-Value="_editEffect.Strength"></InputNumber>
+        </InputWithLabel>
+        <InputWithLabel Label="@Text.Heal">
+            <InputCheckbox @bind-Value="_editEffect.Positive"></InputCheckbox>
+        </InputWithLabel>
+        @if (!_editEffect.Positive)
+        {
+            <InputWithLabel Label="@Text.UntilHealed">
+                <InputCheckbox @bind-Value="_editEffect.UntilHealed"></InputCheckbox>
+            </InputWithLabel>
+        }
+        <InputWithLabel Label="@Text.UntilRemoved">
+            <InputCheckbox @bind-Value="_editEffect.UntilRemoved"></InputCheckbox>
+        </InputWithLabel>
+        @if (!_editEffect.UntilRemoved && !_editEffect.UntilHealed)
+        {
+            <InputWithLabel Label="@Text.Turns">
+                <InputNumber @bind-Value="_editEffect.Turns"></InputNumber>
+            </InputWithLabel>
+        }
+        <InputWithLabel Label="@Text.Target">
+            <InputSelect @bind-value="_editEffect.EffectTarget">
+                <option value="@ActiveEffect.Target.None">@Text.None</option>
+                <option value="@ActiveEffect.Target.Health">@Text.Health</option>
+                <option value="@ActiveEffect.Target.Mana">@Text.Mana</option>
+            </InputSelect>
+        </InputWithLabel>
+        <button @onclick="FinishEditingEffect" popovertarget="edit-active-effect" popovertargetaction="hide">@Text.Back</button>
+    </dialog>
+}
 
 @code {
-    private Timer _timer;
-    private TimeSpan _deltaTime;
+    private Player _player = new Player();
+    private ActiveEffect? _editEffect;
+    private UpCountingTimer? _timer;
 
-    public bool TimerRunning { get; set; }
-    public bool Paused { get; set; }
+    [Parameter]
+    public string Lang { get; set; } = "en";
 
     protected override void OnInitialized()
     {
-        _timer = new Timer(AddTick, null, 1000, 1000);
+        _timer = new UpCountingTimer(Update);
     }
 
-    public void StartTimer()
+    protected override void OnParametersSet()
     {
-        if (TimerRunning)
-            return;
-        _deltaTime = TimeSpan.Zero;
-        TimerRunning = true;
-        Paused = false;
+        Console.WriteLine(Lang);
+        ChangeLanguage(Lang);
     }
 
-    public void PauseTimer()
-        => Paused = !Paused;
-
-    public void StopTimer()
-        => TimerRunning = false;
-
-    private void AddTick(object? state)
+    public void StartTurn()
     {
-        if (!TimerRunning || Paused)
+        if(_timer is not null)
+            _timer.StartTimer();
+
+        foreach(var effect in _player.ActiveEffects)
+        {
+            var power = effect.Positive ? effect.Strength : effect.Strength * -1;
+            switch (effect.EffectTarget)
+            {
+                case ActiveEffect.Target.Health:
+                    _player.Health += power;
+                    break;
+                case ActiveEffect.Target.Mana:
+                    _player.Mana += power;
+                    break;
+                default:
+                    break;
+            }
+
+            if (effect.UntilRemoved)
+                continue;
+            effect.Turns--;
+        }
+        _player.ActiveEffects.RemoveAll(x => !x.UntilRemoved && x.Turns < 1);
+    }
+
+    private void Update(object? state)
+    {
+        StateHasChanged();
+    }
+
+    private void AddNewEffect()
+    {
+        var effect = new ActiveEffect();
+        _player.ActiveEffects.Add(effect);
+        effect.Name = $"{Text.Effect} {_player.ActiveEffects.Count}"; 
+        StartEditingEffect(effect);
+    }
+
+    private void StartEditingEffect(ActiveEffect effect)
+        => _editEffect = effect;
+
+    private void FinishEditingEffect()
+        => _editEffect = null;
+
+    private void ChangeLanguage(string lang)
+    {
+        if (string.IsNullOrWhiteSpace(lang))
             return;
-        _deltaTime = _deltaTime.Add(TimeSpan.FromSeconds(1));
+        lang = lang.ToLowerInvariant();
+        if (!Constants.ImplementedLanguages.Split(';').Contains(lang))
+            return;
+        var newCulture = new CultureInfo(lang);
+        // Thread.CurrentThread.CurrentUICulture = newCulture;
+        // Thread.CurrentThread.CurrentCulture = newCulture;
+        Text.Culture = newCulture;
         StateHasChanged();
     }
 }

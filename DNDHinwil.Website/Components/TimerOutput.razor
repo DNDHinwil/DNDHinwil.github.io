@@ -1,0 +1,30 @@
+﻿<div class="timer">
+    <div class="timer-output">@(Model?.Time ?? "Error")</div>
+    @if (Model is not null && !Model.TimerRunning)
+    {
+        <span>⚫</span>
+    }
+    else if (Model is not null && Model.Paused)
+    {
+        <span>🔵</span>
+    }
+    else
+    {
+        <span>🔴</span>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public ITimer? Model { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Model ??= new UpCountingTimer(Update);
+        base.OnInitialized();
+    }
+    private void Update(object? state)
+    {
+        StateHasChanged();
+    }
+}
