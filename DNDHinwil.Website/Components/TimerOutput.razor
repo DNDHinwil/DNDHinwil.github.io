@@ -1,10 +1,10 @@
 ﻿<div class="timer">
-    <div class="timer-output">@Model!.Time</div>
-    @if (!Model.TimerRunning)
+    <div class="timer-output">@(Model?.Time ?? "Error")</div>
+    @if (Model is not null && !Model.TimerRunning)
     {
         <span>⚫</span>
     }
-    else if (Model.Paused)
+    else if (Model is not null && Model.Paused)
     {
         <span>🔵</span>
     }

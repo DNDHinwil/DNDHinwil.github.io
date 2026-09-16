@@ -3,15 +3,17 @@
 public class ActiveEffect
 {
     public string Name { get; set; } = "Effect";
-    public int Strength { get; set; }
-    public int Turns { get; set; }
-    public bool Positive { get; set; } = true;
+    public int Strength { get; set; } = 3;
+    public bool UntilRemoved { get; set; }
+    public bool UntilHealed { get; set; }
+    public int Turns { get; set; } = 3;
+    public bool Positive { get; set; }
     public Target EffectTarget { get; set; }
 
     public enum Target
     {
-        None,
         Health,
-        Mana
+        Mana,
+        None
     }
 }

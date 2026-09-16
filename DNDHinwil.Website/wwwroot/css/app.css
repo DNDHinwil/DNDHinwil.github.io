@@ -132,6 +132,19 @@ p {
     margin: 0.25rem 0 0 0;
 }
 
+dialog {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+}
+::backdrop {
+    background-color: color-mix(in srgb, var(--color-background) 50%, #0000);
+}
+
 .content {
     padding: 0.5rem;
 }

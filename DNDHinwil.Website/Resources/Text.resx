@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ActiveEffects" xml:space="preserve">
+    <value>Active Effects</value>
+  </data>
   <data name="Character" xml:space="preserve">
     <value>Character</value>
   </data>
@@ -126,11 +129,14 @@
   <data name="Effect" xml:space="preserve">
     <value>Effect</value>
   </data>
-  <data name="End" xml:space="preserve">
-    <value>End</value>
+  <data name="EndTurn" xml:space="preserve">
+    <value>End Turn</value>
   </data>
   <data name="Heal" xml:space="preserve">
     <value>Heal</value>
+  </data>
+  <data name="Heals" xml:space="preserve">
+    <value>Heals</value>
   </data>
   <data name="Health" xml:space="preserve">
     <value>Health</value>
@@ -147,14 +153,17 @@
   <data name="Name" xml:space="preserve">
     <value>Name</value>
   </data>
+  <data name="NewEffect" xml:space="preserve">
+    <value>New Effect</value>
+  </data>
   <data name="None" xml:space="preserve">
     <value>None</value>
   </data>
   <data name="Player" xml:space="preserve">
     <value>Player</value>
   </data>
-  <data name="Start" xml:space="preserve">
-    <value>Start</value>
+  <data name="StartTurn" xml:space="preserve">
+    <value>Start Turn</value>
   </data>
   <data name="Strength" xml:space="preserve">
     <value>Strength</value>
@@ -167,5 +176,14 @@
   </data>
   <data name="Turns" xml:space="preserve">
     <value>Turns</value>
+  </data>
+  <data name="UntilRemoved" xml:space="preserve">
+    <value>Until Removed</value>
+  </data>
+  <data name="UntilHealed" xml:space="preserve">
+    <value>Until Healed</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Back</value>
   </data>
 </root>

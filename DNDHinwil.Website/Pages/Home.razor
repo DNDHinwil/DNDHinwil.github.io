@@ -1,17 +1,20 @@
-﻿@page "/"
+﻿@page "/{lang?}"
+@using System.Globalization
 @inject IContentService ContentService
 
 <PageTitle>@Constants.SiteName - Home</PageTitle>
 
 <div class="content">
-    <h2>DnD Tracker</h2>
-    <TimerOutput Model="_timer"></TimerOutput>
+    <div class="top-row">
+        <h2>DnD Tracker</h2>
+        <TimerOutput Model="_timer"></TimerOutput>
+    </div>
 
     <div class="timer-controls">
-        <button @onclick="x => _timer.StopTimer()" class="timer-end-button">End</button>
+        <button @onclick="x => _timer!.StopTimer()" class="timer-end-button">@Text.EndTurn</button>
         @if (!_timer!.TimerRunning)
         {
-            <button class="timer-button" @onclick="x => _timer.StartTimer()">Start</button>
+            <button class="timer-button" @onclick="x => StartTurn()">@Text.StartTurn</button>
         }
         else if (_timer.Paused)
         {
@@ -23,68 +26,174 @@
         }
     </div>
     <div class="player">
-        <InputWithLabel Label="@Text.Name">
-            <InputText @bind-Value="_player.Name"></InputText>
-        </InputWithLabel>
-        <InputWithLabel Label="@Text.HP">
-            <InputNumber @bind-Value="_player.Health"></InputNumber>
-        </InputWithLabel>
-        <InputWithLabel Label="@Text.MP">
-            <InputNumber @bind-Value="_player.Mana"></InputNumber>
-        </InputWithLabel>
-        @foreach (var effect in _player.ActiveEffects)
+        <label>@Text.Name</label>
+        <label>@Text.HP</label>
+        <label>@Text.MP</label>
+        <InputText @bind-Value="_player.Name"></InputText>
+        <InputNumber @bind-Value="_player.Health"></InputNumber>
+        <InputNumber @bind-Value="_player.Mana"></InputNumber>
+
+        @if (_player.ActiveEffects.Any())
         {
-            <div class="active-effect">
-                <label>@Text.Name</label>
-                <label>@effect.Name</label>
-                <label>@Text.Strength</label>
-                <label>@effect.Strength</label>
-                <label>@Text.Turns</label>
-                <label>@effect</label>
-                <button>⛭</button>
+            <div class="active-effects">
+                <h3>@Text.ActiveEffects</h3>
+                <table>
+                    <tr class="active-effect">
+                        <th></th>
+                        <th>@Text.Name</th>
+                        <th>@Text.Strength</th>
+                        <th>@Text.Turns</th>
+                        <th></th>
+                    </tr>
+                    @foreach (var effect in _player.ActiveEffects)
+                    {
+                        <tr class="active-effect">
+                            <td><button @onclick="x => _player.ActiveEffects.Remove(effect)">-</button></td>
+                            <td>@effect.Name</td>
+                            <td>@effect.Strength</td>
+                            @if (effect.UntilRemoved && effect.Positive)
+                            {
+                                <td>💚</td>
+                            }
+                            else if (effect.UntilRemoved)
+                            {
+                                <td>♾</td>
+                            }
+                            else if (effect.UntilHealed)
+                            {
+                                <td>🩸</td>
+                            }
+                            else
+                            {
+                                <td>@effect.Turns</td>
+                            }
+                            <td>
+                                <button @onclick="x => StartEditingEffect(effect)" command="show-modal" commandfor="edit-active-effect">⛭</button>
+                            </td>
+                        </tr>
+                    }
+                </table>
             </div>
         }
+        <button @onclick="x => AddNewEffect()" popovertarget="edit-active-effect">@Text.NewEffect</button>
     </div>
 </div>
 
-@if (_newEffect is not null)
+@if (_editEffect is not null)
 {
-    <dialog class="edit-active-effect">
+    <dialog id="edit-active-effect" class="edit-active-effect" popover>
+        <h3>@Text.Effect</h3>
         <InputWithLabel Label="@Text.Name">
-            <InputText @bind-Value="_newEffect.Name"></InputText>
+            <InputText @bind-Value="_editEffect.Name"></InputText>
         </InputWithLabel>
         <InputWithLabel Label="@Text.Strength">
-            <InputNumber @bind-Value="_newEffect.Strength"></InputNumber>
-        </InputWithLabel>
-        <InputWithLabel Label="@Text.Turns">
-            <InputNumber @bind-Value="_newEffect.Turns"></InputNumber>
+            <InputNumber @bind-Value="_editEffect.Strength"></InputNumber>
         </InputWithLabel>
         <InputWithLabel Label="@Text.Heal">
-            <InputCheckbox @bind-Value="_newEffect.Positive"></InputCheckbox>
+            <InputCheckbox @bind-Value="_editEffect.Positive"></InputCheckbox>
         </InputWithLabel>
+        @if (!_editEffect.Positive)
+        {
+            <InputWithLabel Label="@Text.UntilHealed">
+                <InputCheckbox @bind-Value="_editEffect.UntilHealed"></InputCheckbox>
+            </InputWithLabel>
+        }
+        <InputWithLabel Label="@Text.UntilRemoved">
+            <InputCheckbox @bind-Value="_editEffect.UntilRemoved"></InputCheckbox>
+        </InputWithLabel>
+        @if (!_editEffect.UntilRemoved && !_editEffect.UntilHealed)
+        {
+            <InputWithLabel Label="@Text.Turns">
+                <InputNumber @bind-Value="_editEffect.Turns"></InputNumber>
+            </InputWithLabel>
+        }
         <InputWithLabel Label="@Text.Target">
-            <InputRadioGroup @bind-value="_newEffect.EffectTarget">
-                <InputRadioOption Value="ActiveEffect.Target.None" Label="@Text.None"></InputRadioOption>
-                <InputRadioOption Value="ActiveEffect.Target.Health" Label="@Text.Health"></InputRadioOption>
-                <InputRadioOption Value="ActiveEffect.Target.Mana" Label="@Text.Mana"></InputRadioOption>
-            </InputRadioGroup>
+            <InputSelect @bind-value="_editEffect.EffectTarget">
+                <option value="@ActiveEffect.Target.None">@Text.None</option>
+                <option value="@ActiveEffect.Target.Health">@Text.Health</option>
+                <option value="@ActiveEffect.Target.Mana">@Text.Mana</option>
+            </InputSelect>
         </InputWithLabel>
+        <button @onclick="FinishEditingEffect" popovertarget="edit-active-effect" popovertargetaction="hide">@Text.Back</button>
     </dialog>
 }
 
 @code {
     private Player _player = new Player();
-    private ActiveEffect? _newEffect;
+    private ActiveEffect? _editEffect;
     private UpCountingTimer? _timer;
+
+    [Parameter]
+    public string Lang { get; set; } = "en";
 
     protected override void OnInitialized()
     {
         _timer = new UpCountingTimer(Update);
-        base.OnInitialized();
+    }
+
+    protected override void OnParametersSet()
+    {
+        Console.WriteLine(Lang);
+        ChangeLanguage(Lang);
+    }
+
+    public void StartTurn()
+    {
+        if(_timer is not null)
+            _timer.StartTimer();
+
+        foreach(var effect in _player.ActiveEffects)
+        {
+            var power = effect.Positive ? effect.Strength : effect.Strength * -1;
+            switch (effect.EffectTarget)
+            {
+                case ActiveEffect.Target.Health:
+                    _player.Health += power;
+                    break;
+                case ActiveEffect.Target.Mana:
+                    _player.Mana += power;
+                    break;
+                default:
+                    break;
+            }
+
+            if (effect.UntilRemoved)
+                continue;
+            effect.Turns--;
+        }
+        _player.ActiveEffects.RemoveAll(x => !x.UntilRemoved && x.Turns < 1);
     }
 
     private void Update(object? state)
     {
+        StateHasChanged();
+    }
+
+    private void AddNewEffect()
+    {
+        var effect = new ActiveEffect();
+        _player.ActiveEffects.Add(effect);
+        effect.Name = $"{Text.Effect} {_player.ActiveEffects.Count}"; 
+        StartEditingEffect(effect);
+    }
+
+    private void StartEditingEffect(ActiveEffect effect)
+        => _editEffect = effect;
+
+    private void FinishEditingEffect()
+        => _editEffect = null;
+
+    private void ChangeLanguage(string lang)
+    {
+        if (string.IsNullOrWhiteSpace(lang))
+            return;
+        lang = lang.ToLowerInvariant();
+        if (!Constants.ImplementedLanguages.Split(';').Contains(lang))
+            return;
+        var newCulture = new CultureInfo(lang);
+        // Thread.CurrentThread.CurrentUICulture = newCulture;
+        // Thread.CurrentThread.CurrentCulture = newCulture;
+        Text.Culture = newCulture;
         StateHasChanged();
     }
 }
