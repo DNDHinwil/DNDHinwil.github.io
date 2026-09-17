@@ -1,0 +1,14 @@
+﻿@page "/settings"
+@inject IContentService ContentService
+
+<div class="content">
+
+</div>
+
+@code {
+    private Settings _settings = new Settings();
+
+    private async Task LoadSettings()
+        => _settings = await ContentService.LoadSettings();
+
+}
