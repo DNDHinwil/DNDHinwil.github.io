@@ -164,29 +164,32 @@ nav[b-n07nno9l7k] {
 
 .timer-controls[b-j6vt776yl3] {
 	display: grid;
-	grid-template-columns: auto auto;
+	grid-template-columns: auto auto min-content;
 }
-.timer-controls > *[b-j6vt776yl3] {
-	margin: 0.5rem auto;
-	border-radius: 1rem;
-	height: 30px;
+	.timer-controls > button[b-j6vt776yl3] {
+		margin: 0.5rem auto;
+		border-radius: 1rem;
+		height: 30px;
+	}
+.timer-button[b-j6vt776yl3] {
 	width: 120px;
 }
 
 .player[b-j6vt776yl3] {
 	display: grid;
-	grid-template-columns: auto min-content min-content;
+	grid-template-columns: auto max-content min-content max-content;
 }
 	.player > label[b-j6vt776yl3] {
 		margin: 0 0.125rem;
 		text-align: center;
 	}
 		.player[b-j6vt776yl3] >  input[type=number] {
-			width: 40px;
+			width: 50px;
 			margin-left: 0.125rem;
 		}
+
 	.player > button[b-j6vt776yl3] {
-		grid-column: span 3;
+		grid-column: span 4;
 		border-radius: 1rem;
 		height: 30px;
 		text-align: center;
@@ -194,7 +197,7 @@ nav[b-n07nno9l7k] {
 	}
 
 .active-effects[b-j6vt776yl3] {
-	grid-column: span 3;
+	grid-column: span 4;
 }
 
 	.active-effects > table[b-j6vt776yl3] {
