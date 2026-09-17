@@ -141,14 +141,8 @@
   <data name="Health" xml:space="preserve">
     <value>Lebenspunkte</value>
   </data>
-  <data name="HP" xml:space="preserve">
-    <value>LP</value>
-  </data>
   <data name="Mana" xml:space="preserve">
     <value>Mana</value>
-  </data>
-  <data name="MP" xml:space="preserve">
-    <value>MP</value>
   </data>
   <data name="Name" xml:space="preserve">
     <value>Name</value>
@@ -191,5 +185,80 @@
   </data>
   <data name="MaxMP" xml:space="preserve">
     <value>Max MP</value>
+  </data>
+  <data name="MagicPower" xml:space="preserve">
+    <value>Magie Power</value>
+  </data>
+  <data name="Dexterity" xml:space="preserve">
+    <value>Geschick</value>
+  </data>
+  <data name="Constitution" xml:space="preserve">
+    <value>Vitalität</value>
+  </data>
+  <data name="Intelligence" xml:space="preserve">
+    <value>Intelligenz</value>
+  </data>
+  <data name="Wisdom" xml:space="preserve">
+    <value>Weisheit</value>
+  </data>
+  <data name="Charisma" xml:space="preserve">
+    <value>Charisma</value>
+  </data>
+  <data name="MagicPower_Short" xml:space="preserve">
+    <value>MP</value>
+  </data>
+  <data name="Strength_Short" xml:space="preserve">
+    <value>St</value>
+  </data>
+  <data name="Dexterity_Short" xml:space="preserve">
+    <value>Ges</value>
+  </data>
+  <data name="Constitution_Short" xml:space="preserve">
+    <value>Vit</value>
+  </data>
+  <data name="Wisdom_Short" xml:space="preserve">
+    <value>Wei</value>
+  </data>
+  <data name="Intelligence_Short" xml:space="preserve">
+    <value>Int</value>
+  </data>
+  <data name="Charisma_Short" xml:space="preserve">
+    <value>Ch</value>
+  </data>
+  <data name="Pause" xml:space="preserve">
+    <value>Pausieren</value>
+  </data>
+  <data name="Unpause" xml:space="preserve">
+    <value>Unpausieren</value>
+  </data>
+  <data name="TriggersAtEndOfTurn" xml:space="preserve">
+    <value>Aktiviert am ende des Zuges</value>
+  </data>
+  <data name="Stats" xml:space="preserve">
+    <value>Eigenschaften</value>
+  </data>
+  <data name="Level" xml:space="preserve">
+    <value>Level</value>
+  </data>
+  <data name="Level_Short" xml:space="preserve">
+    <value>Lv.</value>
+  </data>
+  <data name="Test" xml:space="preserve">
+    <value>Test</value>
+  </data>
+  <data name="TakeDamage" xml:space="preserve">
+    <value>Nimm Schaden</value>
+  </data>
+  <data name="TakeHealing" xml:space="preserve">
+    <value>Heile</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>Hinzufügen</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>OK</value>
   </data>
 </root>

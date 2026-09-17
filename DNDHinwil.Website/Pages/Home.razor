@@ -4,91 +4,113 @@
 
 <PageTitle>@Constants.SiteName - Home</PageTitle>
 
-<div class="content">
-    <div class="top-row">
+<div class="content" style="@($"--primary-color:{_settings.AccentColor};")">
+    <section class="character-select">
+        <InputSelect @bind-Value="_activeCharacter">
+            @foreach (var character in _characters)
+            {
+                <option value="@character">@character.Name</option>
+            }
+        </InputSelect>
+    </section>
+
+    <section class="tracker">
         <h2>Tracker</h2>
         <TimerOutput Model="_timer"></TimerOutput>
-    </div>
+    </section>
 
-    <div class="timer-controls">
-        <button @onclick="x => _timer!.StopTimer()" class="timer-button">@Text.EndTurn</button>
+    <section class="timer-controls">
+        <button @onclick="async x => await EndTurn()" class="timer-button">@Text.EndTurn</button>
         @if (!_timer!.TimerRunning)
         {
-            <button class="timer-button" @onclick="x => StartTurn()">@Text.StartTurn</button>
+            <button class="timer-button" @onclick="async x => await StartTurn()">@Text.StartTurn</button>
         }
         else if (_timer.Paused)
         {
-            <button class="timer-button" @onclick="x => _timer.UnpauseTimer()">⏯</button>
+            <button class="timer-button" @onclick="x => _timer.UnpauseTimer()">@Text.Unpause</button>
         }
         else
         {
-            <button class="timer-button" @onclick="x => _timer.PauseTimer()">⏸</button>
+            <button class="timer-button" @onclick="x => _timer.PauseTimer()">@Text.Pause</button>
         }
-        <button @onclick="async x => await SavePlayer()">💾</button>
-    </div>
-    <div class="player">
-        <label>@Text.Name</label>
-        <label style="grid-column:span 3;">@Text.HP</label>
-        <InputText @bind-Value="_player.Name"></InputText>
-        <InputNumber @bind-Value="_player.Health"></InputNumber>
-        <span>/</span>
-        <InputNumber @bind-Value="_player.MaxHealth"></InputNumber>
-        <label>@Text.Character</label>
-        <label style ="grid-column:span 3;">@Text.MP</label>
-        <InputText @bind-Value="_player.CharacterName"></InputText>
-        <InputNumber @bind-Value="_player.Mana"></InputNumber>
-        <span>/</span>
-        <InputNumber @bind-Value="_player.MaxMana"></InputNumber>
+    </section>
 
-        @if (_player.ActiveEffects.Any())
+    <section>
+        <StatDisplay Stats="_activeCharacter.Stats" Modifiers="_settings.Modifiers"></StatDisplay>
+    </section>
+
+    <section class="player">
+        <InputText @bind-Value="_activeCharacter.Name"></InputText>
+        <label style="text-align:right;">@Text.Level_Short</label>
+        <label style="text-align:left;">@_activeCharacter.Level</label>
+        <label style="text-align:center;">@Text.Health</label>
+        <label style="text-align:right;">@_activeCharacter.Health</label>
+        <span>/</span>
+        <label style="text-align:left;">@_activeCharacter.MaxHealth</label>
+
+        <div style="grid-column: 3;"></div>
+        <label style="text-align:center;">@Text.Mana</label>
+        <label style="text-align:right;">@_activeCharacter.Mana</label>
+        <span>/</span>
+        <label style="text-align:left;">@_activeCharacter.MaxMana</label>
+
+    </section>
+
+    <section class="actions">
+        <button popovertargetaction="show" popovertarget="take-heal">@Text.Heal</button>
+        <button popovertargetaction="show" popovertarget="take-damage">@Text.Damage</button>
+    </section>
+
+    <section class="active-effects">
+        @if (_activeCharacter.ActiveEffects.Any())
         {
-            <div class="active-effects">
-                <h3>@Text.ActiveEffects</h3>
-                <table>
-                    <tr class="active-effect">
-                        <th></th>
-                        <th>@Text.Name</th>
-                        <th>@Text.Strength</th>
-                        <th>@Text.Turns</th>
-                        <th></th>
-                    </tr>
-                    @foreach (var effect in _player.ActiveEffects)
-                    {
-                        <tr class="active-effect">
-                            <td><button @onclick="x => RemoveEffect(effect)">-</button></td>
-                            <td>@effect.Name</td>
-                            <td>@effect.Strength</td>
-                            @if (effect.UntilRemoved && effect.Positive)
-                            {
-                                <td>💚</td>
-                            }
-                            else if (effect.UntilRemoved)
-                            {
-                                <td>♾</td>
-                            }
-                            else if (effect.UntilHealed)
-                            {
-                                <td>🩸</td>
-                            }
-                            else
-                            {
-                                <td>@effect.Turns</td>
-                            }
-                            <td>
-                                <button @onclick="x => StartEditingEffect(effect)" command="show-modal" commandfor="edit-active-effect">⛭</button>
-                            </td>
-                        </tr>
-                    }
-                </table>
+            <h3>@Text.ActiveEffects</h3>
+            <div class="active-effect">
+                <div></div>
+                <div>@Text.Name</div>
+                <div>@Text.Strength</div>
+                <div>@Text.Turns</div>
+                <div></div>
+                <div></div>
             </div>
+            @foreach (var effect in _activeCharacter.ActiveEffects)
+            {
+                <div class="active-effect">
+                    <button class="active-effect-button" @onclick="x => RemoveEffect(effect)">-</button>
+                    <div>@effect.Name</div>
+                    <div style="text-align:center;">@effect.Strength</div>
+                    @if (effect.UntilRemoved)
+                    {
+                        <div style="text-align:center;">♾</div>
+                    }
+                    else if (effect.UntilHealed)
+                    {
+                        <div style="text-align:center;">🩸</div>
+                    }
+                    else
+                    {
+                        <div style="text-align:center;">@effect.Turns</div>
+                    }
+                    @if (effect.IsPositive)
+                    {
+                        <div>💚</div>
+                    }
+                    else
+                    {
+                        <div>🔻</div>
+                    }
+                    <button class="active-effect-button" @onclick="x => StartEditingEffect(effect)" command="show-modal" commandfor="edit-active-effect">⛭</button>
+                </div>
+            }
         }
-        <button @onclick="x => AddNewEffect()" popovertarget="edit-active-effect">@Text.NewEffect</button>
-    </div>
+        <button @onclick="x => AddNewEffect()" command="show-modal" commandfor="edit-active-effect">@Text.NewEffect</button>
+
+    </section>
 </div>
 
 @if (_editEffect is not null)
 {
-    <dialog id="edit-active-effect" class="edit-active-effect" popover>
+    <dialog id="edit-active-effect" class="edit-active-effect">
         <h3>@Text.Effect</h3>
         <InputWithLabel Label="@Text.Name">
             <InputText @bind-Value="_editEffect.Name"></InputText>
@@ -97,9 +119,9 @@
             <InputNumber @bind-Value="_editEffect.Strength"></InputNumber>
         </InputWithLabel>
         <InputWithLabel Label="@Text.Heal">
-            <InputCheckbox @bind-Value="_editEffect.Positive"></InputCheckbox>
+            <InputCheckbox @bind-Value="_editEffect.IsPositive"></InputCheckbox>
         </InputWithLabel>
-        @if (!_editEffect.Positive)
+        @if (!_editEffect.IsPositive)
         {
             <InputWithLabel Label="@Text.UntilHealed">
                 <InputCheckbox @bind-Value="_editEffect.UntilHealed"></InputCheckbox>
@@ -116,19 +138,57 @@
         }
         <InputWithLabel Label="@Text.Target">
             <InputSelect @bind-value="_editEffect.EffectTarget">
-                <option value="@ActiveEffect.Target.None">@Text.None</option>
-                <option value="@ActiveEffect.Target.Health">@Text.Health</option>
-                <option value="@ActiveEffect.Target.Mana">@Text.Mana</option>
+                <option value="@Effect.Target.None">@Text.None</option>
+                <option value="@Effect.Target.Health">@Text.Health</option>
+                <option value="@Effect.Target.Mana">@Text.Mana</option>
             </InputSelect>
         </InputWithLabel>
-        <button @onclick="FinishEditingEffect" popovertarget="edit-active-effect" popovertargetaction="hide">@Text.Back</button>
+        <InputWithLabel Label="@Text.TriggersAtEndOfTurn">
+            <InputCheckbox @bind-Value="_editEffect.TriggersAtEnd"></InputCheckbox>
+        </InputWithLabel>
+        <button @onclick="x => FinishEditingEffect(false)" command="close" commandfor="edit-active-effect">@Text.Cancel</button>
+        <button @onclick="x => FinishEditingEffect(true)" command="close" commandfor="edit-active-effect" style="float:right;">@Text.Add</button>
     </dialog>
 }
 
+<dialog id="take-heal" popover>
+    <InputWithLabel Label="@Text.TakeHealing">
+        <InputNumber @bind-Value="_effectStrenght"></InputNumber>
+    </InputWithLabel>
+    <InputWithLabel Label="@Text.Target">
+        <InputSelect @bind-value="_effectTarget">
+            <option value="@Effect.Target.None">@Text.None</option>
+            <option value="@Effect.Target.Health">@Text.Health</option>
+            <option value="@Effect.Target.Mana">@Text.Mana</option>
+        </InputSelect>
+    </InputWithLabel>
+    <button popovertarget="take-heal" popovertargetaction="hide">@Text.Cancel</button>
+    <button popovertarget="take-heal" popovertargetaction="hide" @onclick="async x => await Heal(_effectStrenght, _effectTarget)">@Text.OK</button>
+</dialog>
+<dialog id="take-damage" popover>
+    <InputWithLabel Label="@Text.TakeDamage">
+        <InputNumber @bind-Value="_effectStrenght"></InputNumber>
+    </InputWithLabel>
+    <InputWithLabel Label="@Text.Target">
+        <InputSelect @bind-value="_effectTarget">
+            <option value="@Effect.Target.None">@Text.None</option>
+            <option value="@Effect.Target.Health">@Text.Health</option>
+            <option value="@Effect.Target.Mana">@Text.Mana</option>
+        </InputSelect>
+    </InputWithLabel>
+    <button popovertarget="take-damage" popovertargetaction="hide">@Text.Cancel</button>
+    <button popovertarget="take-damage" popovertargetaction="hide" @onclick="async x => await TakeDamage(_effectStrenght, _effectTarget)">@Text.OK</button>
+</dialog>
+
 @code {
-    private Player _player = new Player();
-    private ActiveEffect? _editEffect;
+    private List<Character> _characters = [];
+    private Settings _settings = new Settings();
+    private Character _activeCharacter = new Character();
+    private TriggeredEffect? _editEffect;
     private UpCountingTimer? _timer;
+
+    private int _effectStrenght = 3;
+    private Effect.Target _effectTarget = Effect.Target.Health;
 
     [Parameter]
     public string Lang { get; set; } = "en";
@@ -136,6 +196,7 @@
     protected override async Task OnInitializedAsync()
     {
         _timer = new UpCountingTimer(Update);
+        await LoadSettings();
         await LoadPlayer();
     }
 
@@ -150,31 +211,68 @@
         if(_timer is null)
             _timer = new UpCountingTimer(Update);
 
+        await ExecuteEffects(false);
         _timer.StartTimer();
 
-        if(_player.ActiveEffects.Any(a => a.Positive && a.EffectTarget == ActiveEffect.Target.Health && !a.TriggersAtEnd))
-            _player.ActiveEffects.RemoveAll(x => x.UntilHealed);
+        _activeCharacter.ActiveEffects.RemoveAll(x => !x.UntilRemoved && x.Turns < 1);
+        await SavePlayer();
+    }
 
-        foreach(var effect in _player.ActiveEffects.Where(e => !e.TriggersAtEnd))
+    public async Task EndTurn()
+    {
+        await ExecuteEffects(true);
+        _timer!.StopTimer();
+    }
+
+    private async Task ExecuteEffects(bool endOfTurn)
+    {
+        if (_activeCharacter.ActiveEffects.Any(a => a.IsPositive && a.EffectTarget == TriggeredEffect.Target.Health && a.TriggersAtEnd == endOfTurn))
+            _activeCharacter.ActiveEffects.RemoveAll(x => x.UntilHealed);
+
+        foreach (var effect in _activeCharacter.ActiveEffects.Where(e => e.TriggersAtEnd == endOfTurn))
         {
-            var power = effect.Positive ? effect.Strength : effect.Strength * -1;
-            switch (effect.EffectTarget)
-            {
-                case ActiveEffect.Target.Health:
-                    _player.Health += power;
-                    break;
-                case ActiveEffect.Target.Mana:
-                    _player.Mana += power;
-                    break;
-                default:
-                    break;
-            }
+            if (effect.IsPositive)
+                await Heal(effect.Strength, effect.EffectTarget);
+            else
+                await TakeDamage(effect.Strength, effect.EffectTarget);
 
             if (effect.UntilRemoved)
                 continue;
             effect.Turns--;
         }
-        _player.ActiveEffects.RemoveAll(x => !x.UntilRemoved && x.Turns < 1);
+    }
+
+    public async Task Heal(int power, Effect.Target target)
+    {
+        _activeCharacter.ActiveEffects.RemoveAll(x => x.UntilHealed);
+
+        switch (target)
+        {
+            case Effect.Target.Health:
+                _activeCharacter.Health += power;
+                break;
+            case Effect.Target.Mana:
+                _activeCharacter.Mana += power;
+                break;
+            default:
+                break;
+        }
+        await SavePlayer();
+    }
+
+    public async Task TakeDamage(int power, Effect.Target target)
+    {
+        switch (target)
+        {
+            case Effect.Target.Health:
+                _activeCharacter.Health -= power;
+                break;
+            case Effect.Target.Mana:
+                _activeCharacter.Mana -= power;
+                break;
+            default:
+                break;
+        }
         await SavePlayer();
     }
 
@@ -185,23 +283,25 @@
 
     private void AddNewEffect()
     {
-        var effect = new ActiveEffect();
-        _player.ActiveEffects.Add(effect);
-        effect.Name = $"{Text.Effect} {_player.ActiveEffects.Count}"; 
+        var effect = new TriggeredEffect();
+        effect.Name = $"{Text.Effect} {_activeCharacter.ActiveEffects.Count}"; 
         StartEditingEffect(effect);
     }
 
-    private void StartEditingEffect(ActiveEffect effect)
+    private void StartEditingEffect(TriggeredEffect effect)
         => _editEffect = effect;
 
-    private async Task FinishEditingEffect()
+    private async Task FinishEditingEffect(bool save)
     {
+        if(_editEffect is not null && save)
+            _activeCharacter.ActiveEffects.Add(_editEffect);
+
         _editEffect = null;
         await SavePlayer();
     }
-    private async Task RemoveEffect(ActiveEffect effect)
+    private async Task RemoveEffect(TriggeredEffect effect)
     {
-        _player.ActiveEffects.Remove(effect);
+        _activeCharacter.ActiveEffects.Remove(effect);
         await SavePlayer();
     }
 
@@ -217,9 +317,15 @@
         Text.Culture = newCulture;
     }
 
+    private async Task LoadSettings()
+        => _settings = await ContentService.LoadSettings();
+
     private async Task LoadPlayer()
-        => _player = await ContentService.LoadPlayer() ?? new Player();
+    {
+        _characters = await ContentService.LoadPlayer();
+        _activeCharacter = _characters.First();
+    }
 
     private async Task SavePlayer()
-        => await ContentService.SavePlayer(_player);
+        => await ContentService.SavePlayer(_characters);
 }

@@ -1,0 +1,17 @@
+﻿
+<div class="stats" style="@($"--stat-count:{Stats.Count};")">
+    @foreach (var stat in Stats)
+    {
+        <div class="stat" style="@($"--color:hsl({360 / Stats.Count * stat.Id},100%,50%);")">
+            @stat.GetModifier(Modifiers)
+            <label>@stat.Short</label>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public required List<Stat> Stats { get; set; }
+    [Parameter]
+    public required (int, int)[] Modifiers { get; set; }
+}

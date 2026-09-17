@@ -1,6 +1,14 @@
 [
-	//{
-	//	"Name": "Posts",
-	//	"Link": "posts"
-	//}
+	{
+		"Name": "Tracker",
+		"Link": ""
+	},
+	{
+		"Name": "Stats",
+		"Link": "stats"
+	},
+	{
+		"Name": "Settings",
+		"Link": "settings"
+	}
 ]

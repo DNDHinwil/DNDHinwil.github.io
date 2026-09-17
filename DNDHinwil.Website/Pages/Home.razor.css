@@ -1,71 +1,99 @@
-﻿.content {
-	display: grid;
-	grid-template-columns: 1fr;
-	min-width: 300px;
+﻿button {
+	border-radius: 1rem;
+	height: 30px;
+	text-align: center;
+	margin-top: 0.5rem;
 }
 
-.top-row {
+.tracker {
 	display: grid;
 	grid-template-columns: auto min-content;
 }
-.top-row > *{
-	font-size: 1.5rem;
-	margin: 0;
+
+	.tracker > h2 {
+		font-size: 1.5rem;
+		margin: 0;
+	}
+
+.character-select {
 }
 
 .timer-controls {
 	display: grid;
-	grid-template-columns: auto auto min-content;
+	grid-template-columns: auto auto;
 }
+
 	.timer-controls > button {
 		margin: 0.5rem auto;
 		border-radius: 1rem;
 		height: 30px;
+		width: 120px;
 	}
-.timer-button {
-	width: 120px;
-}
 
 .player {
 	display: grid;
-	grid-template-columns: auto max-content min-content max-content;
+	grid-template-columns: min-content min-content auto max-content max-content min-content max-content;
 }
+
 	.player > label {
-		margin: 0 0.125rem;
-		text-align: center;
+		margin: 0 0.25rem;
 	}
+
+	.player > ::deep input {
+		width: 80px;
+	}
+
 		.player > ::deep input[type=number] {
-			width: 50px;
+			width: 40px;
 			margin-left: 0.125rem;
 		}
 
-	.player > button {
-		grid-column: span 4;
+.actions {
+	display: grid;
+	grid-template-columns: auto auto;
+}
+
+	.actions > button {
+		margin: 0.5rem auto;
 		border-radius: 1rem;
 		height: 30px;
-		text-align: center;
-		margin-top: 0.5rem;
+		width: 120px;
 	}
 
 .active-effects {
-	grid-column: span 4;
+}
+.active-effects > button{
+	width: calc(100% - 10px);
+	display: block;
+	margin: 0.5rem auto;
 }
 
-	.active-effects > table {
-		width: 100%;
-	}
-
-.active-effect {
-}
-	.active-effect > th, .active-effect > td {
-		width: min-content;
+	.active-effects > h3 {
 		text-align: center;
 	}
+
+.active-effect-table {
+	width: 100%;
+	display: grid;
+	grid-template-columns: 1fr;
+}
+
+.active-effect {
+	display: grid;
+	grid-template-columns: 35px auto 75px 50px 20px 35px;
+	grid-template-rows: 25px;
+}
+
+.active-effect-button {
+	height: 25px;
+	margin: 0 5px;
+}
+
 .edit-active-effect {
-	border-radius: 0.5rem;
 }
-.edit-active-effect > button {
-	display: block;
-	width: 100px;
-	margin: 0.5rem auto 0.25rem auto;
-}
+
+	.edit-active-effect > button {
+		display: inline-block;
+		width: 100px;
+		margin: 0.5rem auto 0.25rem auto;
+	}
