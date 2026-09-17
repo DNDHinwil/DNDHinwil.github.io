@@ -1,12 +1,13 @@
-﻿using Microsoft.JSInterop;
+﻿using DNDHinwil.Website.Models;
+using Microsoft.JSInterop;
 using System.Text.Json;
 
 namespace DNDHinwil.Website;
 
 public interface IContentService
 {
-    public ValueTask StoreData<TData>(string key, TData data);
-    public ValueTask<TData?> LoadData<TData>(string key);
+    public Task<Player?> LoadPlayer();
+    public Task SavePlayer(Player player);
 }
 
 public class ContentService(HttpClient client, IJSRuntime js) : IContentService
@@ -14,12 +15,23 @@ public class ContentService(HttpClient client, IJSRuntime js) : IContentService
     private readonly HttpClient _client = client;
     private readonly IJSRuntime _js = js;
 
-    public async ValueTask StoreData<TData>(string key, TData data)
+    public async Task<Player?> LoadPlayer()
+        => await LoadData<Player>(Constants.PlayerKey);
+
+    public async Task SavePlayer(Player player)
+        => await StoreData<Player>(Constants.PlayerKey, player);
+
+    private async ValueTask StoreData<TData>(string key, TData data)
         => await _js.InvokeVoidAsync("localStorage.setItem",
         [
             key,
             JsonSerializer.Serialize(data)
         ]);
-    public async ValueTask<TData?> LoadData<TData>(string key)
-        => await _js.InvokeAsync<TData?>("localStorage.getItem", key);
+    private async ValueTask<TData?> LoadData<TData>(string key)
+    {
+        var data = await _js.InvokeAsync<string>("localStorage.getItem", key);
+        if (string.IsNullOrWhiteSpace(data))
+            return default;
+        return JsonSerializer.Deserialize<TData>(data);
+    }
 }

@@ -15,29 +15,32 @@
 
 .timer-controls {
 	display: grid;
-	grid-template-columns: auto auto;
+	grid-template-columns: auto auto min-content;
 }
-.timer-controls > * {
-	margin: 0.5rem auto;
-	border-radius: 1rem;
-	height: 30px;
+	.timer-controls > button {
+		margin: 0.5rem auto;
+		border-radius: 1rem;
+		height: 30px;
+	}
+.timer-button {
 	width: 120px;
 }
 
 .player {
 	display: grid;
-	grid-template-columns: auto min-content min-content;
+	grid-template-columns: auto max-content min-content max-content;
 }
 	.player > label {
 		margin: 0 0.125rem;
 		text-align: center;
 	}
 		.player > ::deep input[type=number] {
-			width: 40px;
+			width: 50px;
 			margin-left: 0.125rem;
 		}
+
 	.player > button {
-		grid-column: span 3;
+		grid-column: span 4;
 		border-radius: 1rem;
 		height: 30px;
 		text-align: center;
@@ -45,7 +48,7 @@
 	}
 
 .active-effects {
-	grid-column: span 3;
+	grid-column: span 4;
 }
 
 	.active-effects > table {

@@ -160,6 +160,24 @@ namespace DNDHinwil.Website.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Max HP.
+        /// </summary>
+        public static string MaxHP {
+            get {
+                return ResourceManager.GetString("MaxHP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Max MP.
+        /// </summary>
+        public static string MaxMP {
+            get {
+                return ResourceManager.GetString("MaxMP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to MP.
         /// </summary>
         public static string MP {
