@@ -6,12 +6,12 @@
 
 <div class="content">
     <div class="top-row">
-        <h2>DnD Tracker</h2>
+        <h2>Tracker</h2>
         <TimerOutput Model="_timer"></TimerOutput>
     </div>
 
     <div class="timer-controls">
-        <button @onclick="x => _timer!.StopTimer()" class="timer-end-button">@Text.EndTurn</button>
+        <button @onclick="x => _timer!.StopTimer()" class="timer-button">@Text.EndTurn</button>
         @if (!_timer!.TimerRunning)
         {
             <button class="timer-button" @onclick="x => StartTurn()">@Text.StartTurn</button>
@@ -24,14 +24,21 @@
         {
             <button class="timer-button" @onclick="x => _timer.PauseTimer()">⏸</button>
         }
+        <button @onclick="async x => await SavePlayer()">💾</button>
     </div>
     <div class="player">
         <label>@Text.Name</label>
-        <label>@Text.HP</label>
-        <label>@Text.MP</label>
+        <label style="grid-column:span 3;">@Text.HP</label>
         <InputText @bind-Value="_player.Name"></InputText>
         <InputNumber @bind-Value="_player.Health"></InputNumber>
+        <span>/</span>
+        <InputNumber @bind-Value="_player.MaxHealth"></InputNumber>
+        <label>@Text.Character</label>
+        <label style ="grid-column:span 3;">@Text.MP</label>
+        <InputText @bind-Value="_player.CharacterName"></InputText>
         <InputNumber @bind-Value="_player.Mana"></InputNumber>
+        <span>/</span>
+        <InputNumber @bind-Value="_player.MaxMana"></InputNumber>
 
         @if (_player.ActiveEffects.Any())
         {
@@ -48,7 +55,7 @@
                     @foreach (var effect in _player.ActiveEffects)
                     {
                         <tr class="active-effect">
-                            <td><button @onclick="x => _player.ActiveEffects.Remove(effect)">-</button></td>
+                            <td><button @onclick="x => RemoveEffect(effect)">-</button></td>
                             <td>@effect.Name</td>
                             <td>@effect.Strength</td>
                             @if (effect.UntilRemoved && effect.Positive)
@@ -126,9 +133,10 @@
     [Parameter]
     public string Lang { get; set; } = "en";
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         _timer = new UpCountingTimer(Update);
+        await LoadPlayer();
     }
 
     protected override void OnParametersSet()
@@ -137,12 +145,17 @@
         ChangeLanguage(Lang);
     }
 
-    public void StartTurn()
+    public async Task StartTurn()
     {
-        if(_timer is not null)
-            _timer.StartTimer();
+        if(_timer is null)
+            _timer = new UpCountingTimer(Update);
 
-        foreach(var effect in _player.ActiveEffects)
+        _timer.StartTimer();
+
+        if(_player.ActiveEffects.Any(a => a.Positive && a.EffectTarget == ActiveEffect.Target.Health && !a.TriggersAtEnd))
+            _player.ActiveEffects.RemoveAll(x => x.UntilHealed);
+
+        foreach(var effect in _player.ActiveEffects.Where(e => !e.TriggersAtEnd))
         {
             var power = effect.Positive ? effect.Strength : effect.Strength * -1;
             switch (effect.EffectTarget)
@@ -162,6 +175,7 @@
             effect.Turns--;
         }
         _player.ActiveEffects.RemoveAll(x => !x.UntilRemoved && x.Turns < 1);
+        await SavePlayer();
     }
 
     private void Update(object? state)
@@ -180,8 +194,16 @@
     private void StartEditingEffect(ActiveEffect effect)
         => _editEffect = effect;
 
-    private void FinishEditingEffect()
-        => _editEffect = null;
+    private async Task FinishEditingEffect()
+    {
+        _editEffect = null;
+        await SavePlayer();
+    }
+    private async Task RemoveEffect(ActiveEffect effect)
+    {
+        _player.ActiveEffects.Remove(effect);
+        await SavePlayer();
+    }
 
     private void ChangeLanguage(string lang)
     {
@@ -191,9 +213,13 @@
         if (!Constants.ImplementedLanguages.Split(';').Contains(lang))
             return;
         var newCulture = new CultureInfo(lang);
-        // Thread.CurrentThread.CurrentUICulture = newCulture;
-        // Thread.CurrentThread.CurrentCulture = newCulture;
+        Thread.CurrentThread.CurrentUICulture = newCulture;
         Text.Culture = newCulture;
-        StateHasChanged();
     }
+
+    private async Task LoadPlayer()
+        => _player = await ContentService.LoadPlayer() ?? new Player();
+
+    private async Task SavePlayer()
+        => await ContentService.SavePlayer(_player);
 }

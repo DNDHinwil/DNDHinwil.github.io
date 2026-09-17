@@ -186,4 +186,10 @@
   <data name="Back" xml:space="preserve">
     <value>Back</value>
   </data>
+  <data name="MaxHP" xml:space="preserve">
+    <value>Max HP</value>
+  </data>
+  <data name="MaxMP" xml:space="preserve">
+    <value>Max MP</value>
+  </data>
 </root>
