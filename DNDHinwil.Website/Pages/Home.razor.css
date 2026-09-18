@@ -32,21 +32,16 @@
 
 .player {
 	display: grid;
-	grid-template-columns: min-content min-content auto max-content max-content min-content max-content;
+	grid-template-columns: min-content min-content auto min-content 32px min-content 32px;
 }
-
+	.player > h3 {
+		padding-top: 0.25rem;
+		text-decoration: underline var(--color-primary);
+	}
 	.player > label {
-		margin: 0 0.25rem;
+		margin: 0;
+		font-size: 1rem;
 	}
-
-	.player > ::deep input {
-		width: 80px;
-	}
-
-		.player > ::deep input[type=number] {
-			width: 40px;
-			margin-left: 0.125rem;
-		}
 
 .actions {
 	display: grid;
@@ -61,7 +56,9 @@
 	}
 
 .active-effects {
+
 }
+
 .active-effects > button{
 	width: calc(100% - 10px);
 	display: block;
@@ -70,6 +67,7 @@
 
 	.active-effects > h3 {
 		text-align: center;
+		text-decoration: underline var(--color-primary);
 	}
 
 .active-effect-table {

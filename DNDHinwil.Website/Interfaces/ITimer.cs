@@ -1,4 +1,4 @@
-﻿namespace DNDHinwil.Website.Models;
+﻿namespace DNDHinwil.Website.Interfaces;
 
 public interface ITimer
 {

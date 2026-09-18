@@ -5,7 +5,7 @@
 
 @if (_links.Count > 0)
 {
-    <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+    <button title="Navigation menu" class="navbar-toggler" style="border-radius:0.25rem;" @onclick="ToggleNavMenu">
         <div class="line"></div>
         <div class="line"></div>
         <div class="line"></div>
@@ -37,6 +37,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        
+        _links = [.. await ContentService.GetNavItems()];
     }
 }

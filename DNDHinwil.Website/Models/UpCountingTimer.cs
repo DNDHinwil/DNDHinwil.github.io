@@ -1,6 +1,6 @@
 ﻿namespace DNDHinwil.Website.Models;
 
-public class UpCountingTimer : ITimer
+public class UpCountingTimer : DNDHinwil.Website.Interfaces.ITimer
 {
     private readonly Timer _timer;
     private TimeSpan _deltaTime;

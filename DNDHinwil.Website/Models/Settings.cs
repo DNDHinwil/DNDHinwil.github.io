@@ -2,9 +2,10 @@
 
 public class Settings
 {
-    public string AccentColor { get; set; } = "#ff3c00";
+    public string? ActiveCharacter { get; set; }
+    public string AccentColor { get; set; } = "#ff8533";
     public string Language { get; set; } = "en";
-    public (int, int)[] Modifiers { get; set; } =
+    public (int Level, int Modifier)[] Modifiers { get; set; } =
         [
             (1, -5),
             (2, -4),

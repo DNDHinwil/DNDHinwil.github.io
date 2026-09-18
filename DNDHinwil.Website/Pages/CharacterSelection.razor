@@ -1,0 +1,32 @@
+﻿@page "/characters"
+@inject IContentService ContentService
+
+<PageTitle>@Constants.SiteName - @Text.Characters</PageTitle>
+
+<div class="content" style="@($"--color-primary:{_settings.AccentColor};")">
+    <section>
+        <section class="character-select">
+            <InputSelect @bind-Value="_settings.ActiveCharacter">
+                @foreach (var character in _characters)
+                {
+                    <option value="@character.Id">@character.Name</option>
+                }
+            </InputSelect>
+        </section>
+    </section>
+</div>
+
+@code {
+    private List<Character> _characters = [];
+    private Settings _settings = new Settings();
+
+    
+    protected override async Task OnInitializedAsync()
+    {
+        _settings = await ContentService.LoadSettings();
+        _characters = await ContentService.LoadPlayer();
+    }
+
+    private async Task SavePlayer()
+        => await ContentService.SavePlayer(_characters);
+}

@@ -1,14 +1,55 @@
 ﻿@page "/settings"
 @inject IContentService ContentService
 
-<div class="content">
+<PageTitle>@Constants.SiteName - @Text.Settings</PageTitle>
 
+<div class="content" style="@($"--color-primary:{_settings.AccentColor};")">
+    <section>
+        <h2>@Text.Settings</h2>
+        <InputWithLabel Label="@Text.Color">
+            <InputSelect @bind-value="_settings.AccentColor">
+                <option value="#ff8533">@Text.Default</option>
+                @foreach (var color in _colors)
+                {
+                    <option value="@color.Color" style="@($"background-color:{@color.Color};")">@color.Name</option>
+                }
+            </InputSelect>
+        </InputWithLabel>
+        <InputWithLabel Label="@Text.Language">
+            <InputSelect @bind-value="_settings.Language">
+                @foreach (var language in Constants.ImplementedLanguages.Split(';'))
+                {
+                    <option value="@language">@language</option>
+                }
+            </InputSelect>
+        </InputWithLabel>
+        <button @onclick="async x => await SaveSettings()" style="width:100%;">@Text.Save</button>
+    </section>
+    <section class="modifiers">
+        <h3 style="grid-column:span 2;">@Text.Modifiers</h3>
+        @foreach (var item in _settings.Modifiers)
+        {
+            <label>@item.Level</label>
+            <label>@item.Modifier</label>
+        }
+    </section>
 </div>
 
 @code {
     private Settings _settings = new Settings();
+    private readonly (string Name, string Color)[] _colors = 
+    [
+        ("#9c1203", "Red"), 
+        ("#e3a000", "Yellow"), 
+        ("#033807", "Green"), 
+        ("#00165e", "Blue")
+    ];
 
-    private async Task LoadSettings()
-        => _settings = await ContentService.LoadSettings();
+    protected override async Task OnInitializedAsync()
+    {
+        _settings = await ContentService.LoadSettings();
+    }
 
+    private async Task SaveSettings()
+        => await ContentService.SaveSettings(_settings);
 }

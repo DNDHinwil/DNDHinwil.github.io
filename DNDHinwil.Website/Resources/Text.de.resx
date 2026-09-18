@@ -147,8 +147,8 @@
   <data name="Name" xml:space="preserve">
     <value>Name</value>
   </data>
-  <data name="NewEffect" xml:space="preserve">
-    <value>Neuer Effekt</value>
+  <data name="NewTriggeredEffect" xml:space="preserve">
+    <value>Neuer Aktivierter Effekt</value>
   </data>
   <data name="None" xml:space="preserve">
     <value>Keines</value>
@@ -250,7 +250,7 @@
     <value>Nimm Schaden</value>
   </data>
   <data name="TakeHealing" xml:space="preserve">
-    <value>Heile</value>
+    <value>Heile Dich</value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>Abbrechen</value>
@@ -260,5 +260,44 @@
   </data>
   <data name="OK" xml:space="preserve">
     <value>OK</value>
+  </data>
+  <data name="Color" xml:space="preserve">
+    <value>Farbe</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Sprache</value>
+  </data>
+  <data name="Default" xml:space="preserve">
+    <value>Standard</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Speichern</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Einstellungen</value>
+  </data>
+  <data name="Modifiers" xml:space="preserve">
+    <value>Bonuses</value>
+  </data>
+  <data name="TriggeredEffect" xml:space="preserve">
+    <value>Aktivierter Effekt</value>
+  </data>
+  <data name="Equipment" xml:space="preserve">
+    <value>Ausrüstung</value>
+  </data>
+  <data name="Spellbook" xml:space="preserve">
+    <value>Zauberbuch</value>
+  </data>
+  <data name="Spell" xml:space="preserve">
+    <value>Zauber</value>
+  </data>
+  <data name="Armor" xml:space="preserve">
+    <value>Rüstung</value>
+  </data>
+  <data name="AffectedByArmor" xml:space="preserve">
+    <value>Reduziert durch Rüstung</value>
+  </data>
+  <data name="Characters" xml:space="preserve">
+    <value>Charakteren</value>
   </data>
 </root>

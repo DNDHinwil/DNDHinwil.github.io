@@ -2,7 +2,7 @@
 .stats {
 	display: grid;
 	grid-template-columns: repeat(var(--stat-count), auto);
-	padding: 0.5rem 0;
+	padding: 0.25rem 0 0.75rem 0;
 }
 
 .stat {

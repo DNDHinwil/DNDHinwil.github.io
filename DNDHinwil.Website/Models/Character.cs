@@ -1,4 +1,5 @@
-﻿using DNDHinwil.Website.Resources;
+﻿using DNDHinwil.Website.Pages;
+using DNDHinwil.Website.Resources;
 namespace DNDHinwil.Website.Models;
 
 public class Character
@@ -6,6 +7,7 @@ public class Character
     private int _currentHealth = 20;
     private int _currentMana = 20;
 
+    public string Id { get; set; } = Guid.NewGuid().ToString();
     public string Name { get; set; } = "Character";
     public int Level { get; set; }
     public int MaxHealth { get; set; } = 20;
@@ -21,7 +23,9 @@ public class Character
         set => _currentMana = Math.Clamp(value, 0, MaxMana);
     }
 
-    public int Armor { get; set; }
+    public int Armor => EquippedItems.Sum(a => a.Armor);
+    public List<EquipmentItem> EquippedItems { get; set; } = [];
+    public List<Spell> EquippedSpells { get; set; } = [];
     public List<Stat> Stats { get; set; } = 
         [
         new(){Id = 0, Name = Text.MagicPower, Short = Text.MagicPower_Short, Score = 10 },
