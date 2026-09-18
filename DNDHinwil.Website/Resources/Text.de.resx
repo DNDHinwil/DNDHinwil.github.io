@@ -300,4 +300,43 @@
   <data name="Characters" xml:space="preserve">
     <value>Charakteren</value>
   </data>
+  <data name="AreYouSure" xml:space="preserve">
+    <value>Bist du sicher?</value>
+  </data>
+  <data name="Select" xml:space="preserve">
+    <value>Auswählen</value>
+  </data>
+  <data name="Activate" xml:space="preserve">
+    <value>Aktivieren</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>Bestätigen</value>
+  </data>
+  <data name="CreateCharacter" xml:space="preserve">
+    <value>Erstelle einen neuen Charakter</value>
+  </data>
+  <data name="Modifier" xml:space="preserve">
+    <value>Bonus</value>
+  </data>
+  <data name="ModifierTable" xml:space="preserve">
+    <value>Bonustabelle</value>
+  </data>
+  <data name="AccentColor" xml:space="preserve">
+    <value>Akzentfarbe</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>Exportieren</value>
+  </data>
+  <data name="DownloadYourCharacters" xml:space="preserve">
+    <value>Lade deine Charakteren herunter</value>
+  </data>
+  <data name="UploadCharacters" xml:space="preserve">
+    <value>Lade Charakteren hoch</value>
+  </data>
+  <data name="Upload" xml:space="preserve">
+    <value>Hochladen</value>
+  </data>
+  <data name="Download" xml:space="preserve">
+    <value>Herunterladen</value>
+  </data>
 </root>

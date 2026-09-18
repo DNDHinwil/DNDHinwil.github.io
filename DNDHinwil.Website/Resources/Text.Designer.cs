@@ -61,6 +61,24 @@ namespace DNDHinwil.Website.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Accent color.
+        /// </summary>
+        public static string AccentColor {
+            get {
+                return ResourceManager.GetString("AccentColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Activate.
+        /// </summary>
+        public static string Activate {
+            get {
+                return ResourceManager.GetString("Activate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Active Effects.
         /// </summary>
         public static string ActiveEffects {
@@ -84,6 +102,15 @@ namespace DNDHinwil.Website.Resources {
         public static string AffectedByArmor {
             get {
                 return ResourceManager.GetString("AffectedByArmor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure?.
+        /// </summary>
+        public static string AreYouSure {
+            get {
+                return ResourceManager.GetString("AreYouSure", resourceCulture);
             }
         }
         
@@ -160,6 +187,15 @@ namespace DNDHinwil.Website.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Confirm.
+        /// </summary>
+        public static string Confirm {
+            get {
+                return ResourceManager.GetString("Confirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Constitution.
         /// </summary>
         public static string Constitution {
@@ -174,6 +210,15 @@ namespace DNDHinwil.Website.Resources {
         public static string Constitution_Short {
             get {
                 return ResourceManager.GetString("Constitution_Short", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new Character.
+        /// </summary>
+        public static string CreateCharacter {
+            get {
+                return ResourceManager.GetString("CreateCharacter", resourceCulture);
             }
         }
         
@@ -214,6 +259,24 @@ namespace DNDHinwil.Website.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Download.
+        /// </summary>
+        public static string Download {
+            get {
+                return ResourceManager.GetString("Download", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download your Characters.
+        /// </summary>
+        public static string DownloadYourCharacters {
+            get {
+                return ResourceManager.GetString("DownloadYourCharacters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Effect.
         /// </summary>
         public static string Effect {
@@ -237,6 +300,15 @@ namespace DNDHinwil.Website.Resources {
         public static string Equipment {
             get {
                 return ResourceManager.GetString("Equipment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export.
+        /// </summary>
+        public static string Export {
+            get {
+                return ResourceManager.GetString("Export", resourceCulture);
             }
         }
         
@@ -358,11 +430,29 @@ namespace DNDHinwil.Website.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Modifier.
+        /// </summary>
+        public static string Modifier {
+            get {
+                return ResourceManager.GetString("Modifier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Modifiers.
         /// </summary>
         public static string Modifiers {
             get {
                 return ResourceManager.GetString("Modifiers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Modifier Table.
+        /// </summary>
+        public static string ModifierTable {
+            get {
+                return ResourceManager.GetString("ModifierTable", resourceCulture);
             }
         }
         
@@ -426,6 +516,15 @@ namespace DNDHinwil.Website.Resources {
         public static string Save {
             get {
                 return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select.
+        /// </summary>
+        public static string Select {
+            get {
+                return ResourceManager.GetString("Select", resourceCulture);
             }
         }
         
@@ -588,6 +687,24 @@ namespace DNDHinwil.Website.Resources {
         public static string UntilRemoved {
             get {
                 return ResourceManager.GetString("UntilRemoved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upload.
+        /// </summary>
+        public static string Upload {
+            get {
+                return ResourceManager.GetString("Upload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upload Characters.
+        /// </summary>
+        public static string UploadCharacters {
+            get {
+                return ResourceManager.GetString("UploadCharacters", resourceCulture);
             }
         }
         

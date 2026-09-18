@@ -1,5 +1,19 @@
 ﻿
+.export {
+	display: grid;
+	grid-template-columns: auto 100px;
+}
+	.export > label {
+		padding: 0.25rem 0;
+	}
+	.export > * {
+		margin: 0.125rem 0;
+	}
+
 .modifiers {
 	display: grid;
-	grid-template-columns: max-content max-content;
+	grid-template-columns: max-content 80px;
 }
+	.modifiers > label {
+		text-align: right;
+	}

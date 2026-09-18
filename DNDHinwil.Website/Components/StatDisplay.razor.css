@@ -7,14 +7,14 @@
 
 .stat {
 	position: relative;
-	display: inline-block;
 	height: max(6vw, 18px);
-	margin: 0 auto;
+	max-height: 72px;
 	aspect-ratio: 1;
+	margin: 0 auto;
 	text-align: center;
-	font-size: max(4vw, 14px);
+	font-size: min(max(4vw, 14px), 50px);
 	border-radius: 50%;
-	border: max(1vw, 3px) solid var(--color);
+	border: min(max(1vw, 3px), 10px) solid var(--color);
 	background: var(--color-background);
 	display: flex;
 	justify-content: center;
@@ -25,7 +25,7 @@
 		bottom: calc(max(1vw, 10px) * -1);
 		left: 0;
 		width: 100%;
-		font-size: max(2vw, 10px);
+		font-size: min(max(2vw, 10px), 24px);
 		font-weight: bold;
 		border-radius: 0.25rem;
 		background: var(--color-background);

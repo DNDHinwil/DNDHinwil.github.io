@@ -13,7 +13,8 @@ public interface IContentService
     public Task SaveCharacter(Character character);
     public Task<Settings> LoadSettings();
     public Task SaveSettings(Settings settings);
-    Task<IEnumerable<LinkItem>> GetNavItems();
+    public Task<IEnumerable<LinkItem>> GetNavItems();
+    public Task MakeAlert(string message);
 }
 
 public class ContentService(HttpClient client, IJSRuntime js) : IContentService
@@ -35,15 +36,16 @@ public class ContentService(HttpClient client, IJSRuntime js) : IContentService
     public async Task<Character> LoadCharacter(string? id)
         => (await LoadData<List<Character>>(Constants.PlayerKey))?.FirstOrDefault(c => c.Id == (id ?? string.Empty)) ?? new Character();
 
-    public async Task SaveCharacter(Character character)
+    public async Task SaveCharacter(Character characterToSave)
     {
         var characters = await LoadPlayer();
-        var savedCharacter = characters.FirstOrDefault(c => c.Id == character.Id);
+        var savedCharacter = characters.FirstOrDefault(c => c.Id == characterToSave.Id);
         // add or overwrite
-        if (savedCharacter is null)
-            characters.Add(character);
-        else
-            savedCharacter = character;
+        if (savedCharacter is not null)
+        {
+            _ = characters.Remove(savedCharacter);
+        }
+        characters.Add(characterToSave);
 
         await SavePlayer(characters);
     }
@@ -86,4 +88,7 @@ public class ContentService(HttpClient client, IJSRuntime js) : IContentService
             return [];
         return navItems;
     }
+
+    public async Task MakeAlert(string message)
+        => await _js.InvokeVoidAsync("alert", message);
 }

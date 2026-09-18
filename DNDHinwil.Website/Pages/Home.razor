@@ -5,7 +5,7 @@
 <PageTitle>@Constants.SiteName - Home</PageTitle>
 
 <div class="content" style="@($"--color-primary:{_settings.AccentColor};")">
-    <section class="tracker">
+    <section class="title">
         <h2>Tracker</h2>
         <TimerOutput Model="_timer"></TimerOutput>
     </section>
@@ -27,7 +27,7 @@
     </section>
 
     <section>
-        <StatDisplay Stats="_activeCharacter.Stats" Modifiers="_settings.Modifiers"></StatDisplay>
+        <StatDisplay Stats="_activeCharacter.Stats" AbilityScores="_settings.ScoreModifiers"></StatDisplay>
     </section>
 
     <section class="player">
@@ -202,6 +202,11 @@
     {
         _settings = await ContentService.LoadSettings();
         _activeCharacter = await ContentService.LoadCharacter(_settings.ActiveCharacter);
+        if (string.IsNullOrWhiteSpace(_settings.ActiveCharacter))
+        {
+            _settings.ActiveCharacter = _activeCharacter.Id;
+            await ContentService.SaveSettings(_settings);
+        }
         _timer = new UpCountingTimer(Update);
     }
 
@@ -221,6 +226,7 @@
     {
         await ExecuteEffects(true);
         _timer!.StopTimer();
+        await SavePlayer();
     }
 
     private async Task ExecuteEffects(bool endOfTurn)

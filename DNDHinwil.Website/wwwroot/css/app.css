@@ -75,20 +75,21 @@ html, body {
 }
 
 a {
-	color: var(--color-primary);
+	color: var(--color-foreground);
 	text-decoration: none;
 }
 
 	a:hover {
 		cursor: pointer;
-		color: var(--color-primary-shade);
+		color: var(--color-primary);
 	}
 
 button {
 	border-color: var(--color-primary);
-	background-color: var(--color-background);
+	background-color: var(--color-contrast-0);
 	color: var(--color-foreground);
 	border-radius: 1rem;
+	padding: 0.25rem 0.5rem;
 }
 
 	button:hover {

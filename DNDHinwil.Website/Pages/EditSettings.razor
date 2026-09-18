@@ -6,7 +6,9 @@
 <div class="content" style="@($"--color-primary:{_settings.AccentColor};")">
     <section>
         <h2>@Text.Settings</h2>
-        <InputWithLabel Label="@Text.Color">
+    </section>
+    <section class="settings">
+        <InputWithLabel Label="@Text.AccentColor">
             <InputSelect @bind-value="_settings.AccentColor">
                 <option value="#ff8533">@Text.Default</option>
                 @foreach (var color in _colors)
@@ -25,11 +27,20 @@
         </InputWithLabel>
         <button @onclick="async x => await SaveSettings()" style="width:100%;">@Text.Save</button>
     </section>
+    <section class="export">
+        <h3 style="grid-column:span 2;">@Text.Export</h3>
+        <label>@Text.DownloadYourCharacters</label>
+        <button>@Text.Download</button>
+        <label>@Text.UploadCharacters</label>
+        <button>@Text.Upload</button>
+    </section>
     <section class="modifiers">
-        <h3 style="grid-column:span 2;">@Text.Modifiers</h3>
-        @foreach (var item in _settings.Modifiers)
+        <h3 style="grid-column:span 2;">@Text.ModifierTable</h3>
+        <label>@Text.Level</label>
+        <label>@Text.Modifier</label>
+        @foreach (var item in _settings.ScoreModifiers)
         {
-            <label>@item.Level</label>
+            <label>@item.Score</label>
             <label>@item.Modifier</label>
         }
     </section>

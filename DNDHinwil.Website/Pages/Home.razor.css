@@ -5,18 +5,15 @@
 	margin-top: 0.5rem;
 }
 
-.tracker {
+.title {
 	display: grid;
 	grid-template-columns: auto min-content;
 }
 
-	.tracker > h2 {
+	.title > h2 {
 		font-size: 1.5rem;
 		margin: 0;
 	}
-
-.character-select {
-}
 
 .timer-controls {
 	display: grid;
@@ -36,6 +33,7 @@
 }
 	.player > h3 {
 		padding-top: 0.25rem;
+		margin-right: 0.25rem;
 		text-decoration: underline var(--color-primary);
 	}
 	.player > label {
@@ -78,12 +76,14 @@
 
 .active-effect {
 	display: grid;
-	grid-template-columns: 35px auto 75px 50px 20px 35px;
-	grid-template-rows: 25px;
+	grid-template-columns: 40px auto 75px 50px 25px 40px;
+	margin-bottom: 0.25rem;
+}
+.active-effect > div{
+	padding-top: 0.25rem;
 }
 
 .active-effect-button {
-	height: 25px;
 	margin: 0 5px;
 }
 
