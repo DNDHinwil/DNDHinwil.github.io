@@ -147,8 +147,8 @@
   <data name="Name" xml:space="preserve">
     <value>Name</value>
   </data>
-  <data name="NewEffect" xml:space="preserve">
-    <value>New Effect</value>
+  <data name="NewTriggeredEffect" xml:space="preserve">
+    <value>New Triggered Effect</value>
   </data>
   <data name="None" xml:space="preserve">
     <value>None</value>
@@ -250,7 +250,7 @@
     <value>Take Damage</value>
   </data>
   <data name="TakeHealing" xml:space="preserve">
-    <value>Heal</value>
+    <value>Heal Up</value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
@@ -260,5 +260,83 @@
   </data>
   <data name="OK" xml:space="preserve">
     <value>OK</value>
+  </data>
+  <data name="Color" xml:space="preserve">
+    <value>Color</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="Default" xml:space="preserve">
+    <value>Default</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="Modifiers" xml:space="preserve">
+    <value>Modifiers</value>
+  </data>
+  <data name="TriggeredEffect" xml:space="preserve">
+    <value>Triggered Effect</value>
+  </data>
+  <data name="Equipment" xml:space="preserve">
+    <value>Equipment</value>
+  </data>
+  <data name="Spellbook" xml:space="preserve">
+    <value>Spellbook</value>
+  </data>
+  <data name="Spell" xml:space="preserve">
+    <value>Spell</value>
+  </data>
+  <data name="Armor" xml:space="preserve">
+    <value>Armor</value>
+  </data>
+  <data name="AffectedByArmor" xml:space="preserve">
+    <value>Reduced by Armor</value>
+  </data>
+  <data name="Characters" xml:space="preserve">
+    <value>Characters</value>
+  </data>
+  <data name="AreYouSure" xml:space="preserve">
+    <value>Are you sure?</value>
+  </data>
+  <data name="Select" xml:space="preserve">
+    <value>Select</value>
+  </data>
+  <data name="Activate" xml:space="preserve">
+    <value>Activate</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="CreateCharacter" xml:space="preserve">
+    <value>Create a new Character</value>
+  </data>
+  <data name="Modifier" xml:space="preserve">
+    <value>Modifier</value>
+  </data>
+  <data name="ModifierTable" xml:space="preserve">
+    <value>Modifier Table</value>
+  </data>
+  <data name="AccentColor" xml:space="preserve">
+    <value>Accent color</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="DownloadYourCharacters" xml:space="preserve">
+    <value>Download your Characters</value>
+  </data>
+  <data name="UploadCharacters" xml:space="preserve">
+    <value>Upload Characters</value>
+  </data>
+  <data name="Upload" xml:space="preserve">
+    <value>Upload</value>
+  </data>
+  <data name="Download" xml:space="preserve">
+    <value>Download</value>
   </data>
 </root>

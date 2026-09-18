@@ -7,6 +7,6 @@ public class Stat
     public string Short { get; set; } = "XX";
     public int Score { get; set; } = 10;
     public int Boost { get; set; }
-    public int GetModifier((int, int)[] table)
-        => table.OrderBy(m => m.Item1).FirstOrDefault(m => m.Item1 >= Score).Item2 + Boost;
+    public int GetModifier(AbilityScore[] table)
+        => (table.OrderBy(m => m.Score).FirstOrDefault(m => m.Score >= Score)?.Modifier ?? 0) + Boost;
 }
