@@ -8,6 +8,18 @@
 		"Link": "stats"
 	},
 	{
+		"Name": "Equipment",
+		"Link": "equipment"
+	},
+	{
+		"Name": "Spellbook",
+		"Link": "spellbook"
+	},
+	{
+		"Name": "Characters",
+		"Link": "characters"
+	},
+	{
 		"Name": "Settings",
 		"Link": "settings"
 	}

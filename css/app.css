@@ -75,26 +75,27 @@ html, body {
 }
 
 a {
-	color: var(--color-primary);
+	color: var(--color-foreground);
 	text-decoration: none;
 }
 
 	a:hover {
 		cursor: pointer;
-		color: var(--color-primary-shade);
+		color: var(--color-primary);
 	}
 
 button {
 	border-color: var(--color-primary);
-	background-color: var(--color-background);
+	background-color: var(--color-contrast-0);
 	color: var(--color-foreground);
 	border-radius: 1rem;
+	padding: 0.25rem 0.5rem;
 }
 
 	button:hover {
 		cursor: pointer;
-		color: var(--color-primary-shade);
-		border-color: var(--color-primary-shade);
+		color: color-mix(in srgb, var(--color-primary), #222);
+		border-color: color-mix(in srgb, var(--color-primary), #222);
 	}
 
 h1 {
@@ -154,7 +155,7 @@ dialog {
 	background-color: var(--color-background);
 	border: 2px solid var(--color-contrast-0);
 	border-top: none;
-	border-radius: 0.5rem;
+	border-radius: 0 0 0.5rem 0.5rem;
 }
 
 #blazor-error-ui {

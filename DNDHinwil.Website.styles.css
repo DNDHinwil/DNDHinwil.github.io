@@ -5,19 +5,19 @@
 .stats[b-u60kk723l3] {
 	display: grid;
 	grid-template-columns: repeat(var(--stat-count), auto);
-	padding: 0.5rem 0;
+	padding: 0.25rem 0 0.75rem 0;
 }
 
 .stat[b-u60kk723l3] {
 	position: relative;
-	display: inline-block;
 	height: max(6vw, 18px);
-	margin: 0 auto;
+	max-height: 72px;
 	aspect-ratio: 1;
+	margin: 0 auto;
 	text-align: center;
-	font-size: max(4vw, 14px);
+	font-size: min(max(4vw, 14px), 50px);
 	border-radius: 50%;
-	border: max(1vw, 3px) solid var(--color);
+	border: min(max(1vw, 3px), 10px) solid var(--color);
 	background: var(--color-background);
 	display: flex;
 	justify-content: center;
@@ -28,7 +28,7 @@
 		bottom: calc(max(1vw, 10px) * -1);
 		left: 0;
 		width: 100%;
-		font-size: max(2vw, 10px);
+		font-size: min(max(2vw, 10px), 24px);
 		font-weight: bold;
 		border-radius: 0.25rem;
 		background: var(--color-background);
@@ -180,11 +180,52 @@ nav[b-n07nno9l7k] {
 		overflow-y: auto;
 	}
 }
-/* /Pages/EditSettings.razor.rz.scp.css */
-body[b-6t63es5wh7] {
+/* /Pages/CharacterSelection.razor.rz.scp.css */
+.character[b-wciicapdkn] {
+	display: grid;
+	grid-template-columns: max-content max-content min-content auto min-content min-content;
+	margin-top: 0.25rem;
 }
+
+	.character :nth-child(2)[b-wciicapdkn] {
+		margin-right: 0.5rem;
+	}
+
+	.character > button[b-wciicapdkn] {
+		margin: 0 0.25rem;
+		text-align: center;
+	}
+
+	.character.active :nth-child(2)[b-wciicapdkn] {
+		text-decoration: underline var(--color-primary);
+	}
+
+.create-new[b-wciicapdkn] {
+	margin-top: 1rem;
+}
+/* /Pages/EditSettings.razor.rz.scp.css */
+
+.export[b-6t63es5wh7] {
+	display: grid;
+	grid-template-columns: auto 100px;
+}
+	.export > label[b-6t63es5wh7] {
+		padding: 0.25rem 0;
+	}
+	.export > *[b-6t63es5wh7] {
+		margin: 0.125rem 0;
+	}
+
+.modifiers[b-6t63es5wh7] {
+	display: grid;
+	grid-template-columns: max-content 80px;
+}
+	.modifiers > label[b-6t63es5wh7] {
+		text-align: right;
+	}
 /* /Pages/EditStats.razor.rz.scp.css */
-body[b-seb96asjuv] {
+/* /Pages/Equipment.razor.rz.scp.css */
+body[b-04u9rnniyg] {
 }
 /* /Pages/Home.razor.rz.scp.css */
 button[b-j6vt776yl3] {
@@ -194,18 +235,15 @@ button[b-j6vt776yl3] {
 	margin-top: 0.5rem;
 }
 
-.tracker[b-j6vt776yl3] {
+.title[b-j6vt776yl3] {
 	display: grid;
 	grid-template-columns: auto min-content;
 }
 
-	.tracker > h2[b-j6vt776yl3] {
+	.title > h2[b-j6vt776yl3] {
 		font-size: 1.5rem;
 		margin: 0;
 	}
-
-.character-select[b-j6vt776yl3] {
-}
 
 .timer-controls[b-j6vt776yl3] {
 	display: grid;
@@ -221,21 +259,17 @@ button[b-j6vt776yl3] {
 
 .player[b-j6vt776yl3] {
 	display: grid;
-	grid-template-columns: min-content min-content auto max-content max-content min-content max-content;
+	grid-template-columns: min-content min-content auto min-content 32px min-content 32px;
 }
-
+	.player > h3[b-j6vt776yl3] {
+		padding-top: 0.25rem;
+		margin-right: 0.25rem;
+		text-decoration: underline var(--color-primary);
+	}
 	.player > label[b-j6vt776yl3] {
-		margin: 0 0.25rem;
+		margin: 0;
+		font-size: 1rem;
 	}
-
-	.player[b-j6vt776yl3] >  input {
-		width: 80px;
-	}
-
-		.player[b-j6vt776yl3] >  input[type=number] {
-			width: 40px;
-			margin-left: 0.125rem;
-		}
 
 .actions[b-j6vt776yl3] {
 	display: grid;
@@ -250,7 +284,9 @@ button[b-j6vt776yl3] {
 	}
 
 .active-effects[b-j6vt776yl3] {
+
 }
+
 .active-effects > button[b-j6vt776yl3]{
 	width: calc(100% - 10px);
 	display: block;
@@ -259,6 +295,7 @@ button[b-j6vt776yl3] {
 
 	.active-effects > h3[b-j6vt776yl3] {
 		text-align: center;
+		text-decoration: underline var(--color-primary);
 	}
 
 .active-effect-table[b-j6vt776yl3] {
@@ -269,12 +306,14 @@ button[b-j6vt776yl3] {
 
 .active-effect[b-j6vt776yl3] {
 	display: grid;
-	grid-template-columns: 35px auto 75px 50px 20px 35px;
-	grid-template-rows: 25px;
+	grid-template-columns: 40px auto 75px 50px 25px 40px;
+	margin-bottom: 0.25rem;
+}
+.active-effect > div[b-j6vt776yl3]{
+	padding-top: 0.25rem;
 }
 
 .active-effect-button[b-j6vt776yl3] {
-	height: 25px;
 	margin: 0 5px;
 }
 
@@ -286,3 +325,6 @@ button[b-j6vt776yl3] {
 		width: 100px;
 		margin: 0.5rem auto 0.25rem auto;
 	}
+/* /Pages/Spellbook.razor.rz.scp.css */
+body[b-rbc5smmlxr] {
+}
