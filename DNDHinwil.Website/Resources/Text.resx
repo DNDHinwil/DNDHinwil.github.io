@@ -339,4 +339,31 @@
   <data name="Download" xml:space="preserve">
     <value>Download</value>
   </data>
+  <data name="Tracker" xml:space="preserve">
+    <value>Tracker</value>
+  </data>
+  <data name="Armory" xml:space="preserve">
+    <value>Armory</value>
+  </data>
+  <data name="SpellLibrary" xml:space="preserve">
+    <value>Spell Library</value>
+  </data>
+  <data name="UploadSpellLibrary" xml:space="preserve">
+    <value>Upload a Spell Library</value>
+  </data>
+  <data name="UploadArmory" xml:space="preserve">
+    <value>Upload an Armory</value>
+  </data>
+  <data name="DownloadYourSpellLibrary" xml:space="preserve">
+    <value>Download your Spell Library</value>
+  </data>
+  <data name="DownloadYourArmory" xml:space="preserve">
+    <value>Download your Armory</value>
+  </data>
+  <data name="ActiveCharacter" xml:space="preserve">
+    <value>Active Character</value>
+  </data>
+  <data name="Fireball" xml:space="preserve">
+    <value>Fireball</value>
+  </data>
 </root>

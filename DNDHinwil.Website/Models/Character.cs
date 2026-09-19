@@ -8,7 +8,7 @@ public class Character
     private int _currentMana = 20;
 
     public string Id { get; set; } = Guid.NewGuid().ToString();
-    public string Name { get; set; } = "Character";
+    public string Name { get; set; } = Text.Character;
     public int Level { get; set; }
     public int MaxHealth { get; set; } = 20;
     public int Health
@@ -23,18 +23,19 @@ public class Character
         set => _currentMana = Math.Clamp(value, 0, MaxMana);
     }
 
-    public int Armor => EquippedItems.Sum(a => a.Armor);
-    public List<EquipmentItem> EquippedItems { get; set; } = [];
-    public List<Spell> EquippedSpells { get; set; } = [];
+    public int ArmorClass => Equipment.Any(e => e.ArmorClass > 0) ? Equipment.Max(a => a.ArmorClass) : 10;
+    public int DamageReduction { get; set; }
+    public List<Equipment> Equipment { get; set; } = [];
+    public List<Spell> Spellbook { get; set; } = [];
     public List<Stat> Stats { get; set; } = 
         [
-        new(){Id = 0, Name = Text.MagicPower, Short = Text.MagicPower_Short, Score = 10 },
-        new(){Id = 1, Name = Text.Intelligence, Short = Text.Intelligence_Short, Score = 10 },
-        new(){Id = 2, Name = Text.Wisdom, Short = Text.Wisdom_Short, Score = 10 },
-        new(){Id = 3, Name = Text.Constitution, Short = Text.Constitution_Short, Score = 10 },
-        new(){Id = 4, Name = Text.Strength, Short = Text.Strength_Short, Score = 10 },
-        new(){Id = 5, Name = Text.Dexterity, Short = Text.Dexterity_Short, Score = 10 },
-        new(){Id = 6, Name = Text.Charisma, Short = Text.Charisma_Short, Score = 10 }
+        new(){Name = Text.MagicPower, Short = Text.MagicPower_Short, Score = 10 },
+        new(){Name = Text.Intelligence, Short = Text.Intelligence_Short, Score = 10 },
+        new(){Name = Text.Wisdom, Short = Text.Wisdom_Short, Score = 10 },
+        new(){Name = Text.Constitution, Short = Text.Constitution_Short, Score = 10 },
+        new(){Name = Text.Strength, Short = Text.Strength_Short, Score = 10 },
+        new(){Name = Text.Dexterity, Short = Text.Dexterity_Short, Score = 10 },
+        new(){Name = Text.Charisma, Short = Text.Charisma_Short, Score = 10 }
         ];
     public List<TriggeredEffect> ActiveEffects { get; set; } = [];
 }

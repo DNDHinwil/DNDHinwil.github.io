@@ -1,13 +1,20 @@
-﻿@page "/spellbook"
+﻿@page "/armory"
 @inject IContentService ContentService
 
-<PageTitle>@Constants.SiteName - @Text.Spellbook</PageTitle>
+<PageTitle>@Constants.SiteName - @Text.Armory</PageTitle>
 
 <div class="content" style="@($"--color-primary:{_settings.AccentColor};")">
     <section>
-        <h2>@Text.Spellbook</h2>
+        <h2>@Text.Armory</h2>
     </section>
-    <section class="spells">
+    <section class="equipment">
+        <h2>@($"{Text.ActiveCharacter}: {_activeCharacter.Name}")</h2>
+        @foreach (var item in _activeCharacter.Equipment)
+        {
+            <EquipmentItem Model="item"></EquipmentItem>
+        }
+    </section>
+    <section class="armory">
     </section>
 </div>
 

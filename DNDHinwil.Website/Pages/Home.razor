@@ -53,7 +53,7 @@
     </section>
 
     <section class="spells">
-        @foreach (var item in _activeCharacter.EquippedSpells)
+        @foreach (var item in _activeCharacter.Spellbook)
         {
             
         }
@@ -120,9 +120,6 @@
             </InputWithLabel>
             @if (!_editEffect.IsPositive)
             {
-                <InputWithLabel Label="@Text.AffectedByArmor">
-                    <InputCheckbox @bind-Value="_editEffect.AffectedByArmor"></InputCheckbox>
-                </InputWithLabel>
                 <InputWithLabel Label="@Text.UntilHealed">
                     <InputCheckbox @bind-Value="_editEffect.UntilHealed"></InputCheckbox>
                 </InputWithLabel>
@@ -176,9 +173,6 @@
                 <option value="@Effect.Target.Health">@Text.Health</option>
                 <option value="@Effect.Target.Mana">@Text.Mana</option>
             </InputSelect>
-        </InputWithLabel>
-        <InputWithLabel Label="@Text.AffectedByArmor">
-            <InputCheckbox @bind-Value="_quickEffect.AffectedByArmor"></InputCheckbox>
         </InputWithLabel>
         <button popovertarget="take-damage" popovertargetaction="hide">@Text.Cancel</button>
         <button popovertarget="take-damage" popovertargetaction="hide" @onclick="async x => await TakeDamage(_quickEffect)">@Text.OK</button>
@@ -267,12 +261,10 @@
 
     public async Task TakeDamage(Effect effect)
     {
-        if (effect.AffectedByArmor)
-            effect.Strength = Math.Clamp(effect.Strength - _activeCharacter.Armor, 0, effect.Strength);
         switch (effect.EffectTarget)
         {
             case Effect.Target.Health:
-                _activeCharacter.Health -= effect.Strength;
+                _activeCharacter.Health -= Math.Clamp(effect.Strength - _activeCharacter.DamageReduction, 0, effect.Strength);
                 break;
             case Effect.Target.Mana:
                 _activeCharacter.Mana -= effect.Strength;

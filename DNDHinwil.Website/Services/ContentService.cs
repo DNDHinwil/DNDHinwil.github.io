@@ -11,9 +11,12 @@ public interface IContentService
     public Task SavePlayer(List<Character> player);
     public Task<Character> LoadCharacter(string? id);
     public Task SaveCharacter(Character character);
+    public Task<List<Equipment>> LoadArmory();
+    public Task SaveArmory(List<Equipment> equipment);
+    public Task<List<Spell>> LoadSpellLibrary();
+    public Task SaveSpellLibrary(List<Spell> spells);
     public Task<Settings> LoadSettings();
     public Task SaveSettings(Settings settings);
-    public Task<IEnumerable<LinkItem>> GetNavItems();
     public Task MakeAlert(string message);
 }
 
@@ -26,7 +29,7 @@ public class ContentService(HttpClient client, IJSRuntime js) : IContentService
     {
         var characters = await LoadData<List<Character>>(Constants.PlayerKey);
         if (characters is null)
-            return [new Character()];
+            return [new Character() { Name = "Brad Default"}];
         return characters;
     }
 
@@ -49,6 +52,25 @@ public class ContentService(HttpClient client, IJSRuntime js) : IContentService
 
         await SavePlayer(characters);
     }
+
+    public async Task<List<Equipment>> LoadArmory()
+    {
+        var armory = await LoadData<List<Equipment>>(Constants.EquipmentKey);
+        if (armory is null)
+            return [];
+        return armory;
+    }
+    public async Task SaveArmory(List<Equipment> equipment)
+        => await StoreData(Constants.EquipmentKey, equipment);
+    public async Task<List<Spell>> LoadSpellLibrary()
+    {
+        var spells = await LoadData<List<Spell>>(Constants.EquipmentKey);
+        if (spells is null)
+            return [];
+        return spells;
+    }
+    public async Task SaveSpellLibrary(List<Spell> spells)
+        => await StoreData(Constants.SpellbookKey, spells);
 
     public async Task<Settings> LoadSettings()
     {
@@ -80,13 +102,6 @@ public class ContentService(HttpClient client, IJSRuntime js) : IContentService
         {
             return default; 
         }
-    }
-    public async Task<IEnumerable<LinkItem>> GetNavItems()
-    {
-        var navItems = await _client.GetFromJsonAsync<IEnumerable<LinkItem>>($"resources/navlinks.json");
-        if (navItems is null)
-            return [];
-        return navItems;
     }
 
     public async Task MakeAlert(string message)

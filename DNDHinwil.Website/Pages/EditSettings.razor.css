@@ -1,4 +1,7 @@
-﻿
+﻿.settings > button {
+	margin-top: 0.5rem;
+}
+
 .export {
 	display: grid;
 	grid-template-columns: auto 100px;

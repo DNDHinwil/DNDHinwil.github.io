@@ -79,6 +79,15 @@ namespace DNDHinwil.Website.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Active Character.
+        /// </summary>
+        public static string ActiveCharacter {
+            get {
+                return ResourceManager.GetString("ActiveCharacter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Active Effects.
         /// </summary>
         public static string ActiveEffects {
@@ -120,6 +129,15 @@ namespace DNDHinwil.Website.Resources {
         public static string Armor {
             get {
                 return ResourceManager.GetString("Armor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Armory.
+        /// </summary>
+        public static string Armory {
+            get {
+                return ResourceManager.GetString("Armory", resourceCulture);
             }
         }
         
@@ -268,11 +286,29 @@ namespace DNDHinwil.Website.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Download your Armory.
+        /// </summary>
+        public static string DownloadYourArmory {
+            get {
+                return ResourceManager.GetString("DownloadYourArmory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Download your Characters.
         /// </summary>
         public static string DownloadYourCharacters {
             get {
                 return ResourceManager.GetString("DownloadYourCharacters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download your Spell Library.
+        /// </summary>
+        public static string DownloadYourSpellLibrary {
+            get {
+                return ResourceManager.GetString("DownloadYourSpellLibrary", resourceCulture);
             }
         }
         
@@ -309,6 +345,15 @@ namespace DNDHinwil.Website.Resources {
         public static string Export {
             get {
                 return ResourceManager.GetString("Export", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fireball.
+        /// </summary>
+        public static string Fireball {
+            get {
+                return ResourceManager.GetString("Fireball", resourceCulture);
             }
         }
         
@@ -556,6 +601,15 @@ namespace DNDHinwil.Website.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Spell Library.
+        /// </summary>
+        public static string SpellLibrary {
+            get {
+                return ResourceManager.GetString("SpellLibrary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Start Turn.
         /// </summary>
         public static string StartTurn {
@@ -624,6 +678,15 @@ namespace DNDHinwil.Website.Resources {
         public static string Test {
             get {
                 return ResourceManager.GetString("Test", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tracker.
+        /// </summary>
+        public static string Tracker {
+            get {
+                return ResourceManager.GetString("Tracker", resourceCulture);
             }
         }
         
@@ -700,11 +763,29 @@ namespace DNDHinwil.Website.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Upload an Armory.
+        /// </summary>
+        public static string UploadArmory {
+            get {
+                return ResourceManager.GetString("UploadArmory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Upload Characters.
         /// </summary>
         public static string UploadCharacters {
             get {
                 return ResourceManager.GetString("UploadCharacters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upload a Spell Library.
+        /// </summary>
+        public static string UploadSpellLibrary {
+            get {
+                return ResourceManager.GetString("UploadSpellLibrary", resourceCulture);
             }
         }
         
