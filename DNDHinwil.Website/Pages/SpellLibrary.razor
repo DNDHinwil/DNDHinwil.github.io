@@ -4,7 +4,7 @@
 <PageTitle>@Constants.SiteName - @Text.SpellLibrary</PageTitle>
 
 <div class="content" style="@($"--color-primary:{_settings.AccentColor};")">
-    <section>
+    <section class="title">
         <h2>@Text.SpellLibrary</h2>
     </section>
     <section class="spells">
@@ -19,6 +19,9 @@
     {
         _settings = await ContentService.LoadSettings();
         _activeCharacter = await ContentService.LoadCharacter(_settings.ActiveCharacter);
+        var newCulture = new CultureInfo(_settings.Language);
+        Thread.CurrentThread.CurrentUICulture = newCulture;
+        Text.Culture = newCulture;
     }
 
     private async Task SavePlayer()

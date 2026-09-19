@@ -1,31 +1,42 @@
 ﻿@page "/armory"
+@using System.Globalization
 @inject IContentService ContentService
 
 <PageTitle>@Constants.SiteName - @Text.Armory</PageTitle>
 
 <div class="content" style="@($"--color-primary:{_settings.AccentColor};")">
-    <section>
+    <section class="title">
         <h2>@Text.Armory</h2>
     </section>
     <section class="equipment">
-        <h2>@($"{Text.ActiveCharacter}: {_activeCharacter.Name}")</h2>
+        <h3>@($"{Text.ActiveCharacter}: {_activeCharacter.Name}")</h3>
         @foreach (var item in _activeCharacter.Equipment)
         {
             <EquipmentItem Model="item"></EquipmentItem>
         }
     </section>
     <section class="armory">
+        <h3>@($"{Text.AvailableEquipment}")</h3>
+        @foreach (var item in _armory)
+        {
+            <EquipmentItem Model="item"></EquipmentItem>
+        }
     </section>
 </div>
-
+ 
 @code {
     private Settings _settings = new Settings();
     private Character _activeCharacter = new Character();
+    private List<Equipment> _armory = [];
 
     protected override async Task OnInitializedAsync()
     {
         _settings = await ContentService.LoadSettings();
         _activeCharacter = await ContentService.LoadCharacter(_settings.ActiveCharacter);
+        _armory = await ContentService.LoadArmory();
+        var newCulture = new CultureInfo(_settings.Language);
+        Thread.CurrentThread.CurrentUICulture = newCulture;
+        Text.Culture = newCulture;
     }
 
     private async Task SavePlayer()

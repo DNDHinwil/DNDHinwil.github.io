@@ -4,22 +4,103 @@
 <PageTitle>@Constants.SiteName - @Text.Stats</PageTitle>
 
 <div class="content" style="@($"--color-primary:{_settings.AccentColor};")">
-    <section>
+    <section class="title">
         <h2>@Text.Stats</h2>
     </section>
     <section class="stats">
-
+        <h3 style="grid-column:span 4;">@($"{Text.ActiveCharacter}: {_activeCharacter.Name}")</h3>
+        <label>@Text.Level</label>
+        <label>@_activeCharacter.Level</label>
+        <div></div>
+        <button command="show-modal" commandfor="edit-level">⛭</button>
+        @foreach (var stat in _activeCharacter.Stats)
+        {
+            <button @onclick="x => SelectStatForEditing(stat)" command="show-modal" commandfor="delete-stat">-</button>
+            <label>@stat.Name</label>
+            <label>@stat.Score</label>
+            <button @onclick="x => SelectStatForEditing(stat)" command="show-modal" commandfor="edit-stat">⛭</button>
+        }
+        <button @onclick="x => AddNewStat()" command="show-modal" commandfor="edit-stat" style="grid-column:span 4;">@Text.NewStat</button>
     </section>
+    @if (_editStat is not null)
+    {
+        <dialog id="edit-stat">
+            <h4>@Text.Stat</h4>
+            <InputWithLabel Label="@Text.Name">
+                <InputText @bind-Value="_editStat.Name"></InputText>
+            </InputWithLabel>
+            <InputWithLabel Label="@Text.Short">
+                <InputText @bind-Value="_editStat.Name"></InputText>
+            </InputWithLabel>
+            <InputWithLabel Label="@Text.Score">
+                <InputNumber @bind-Value="_editStat.Score"></InputNumber>
+            </InputWithLabel>
+            <InputWithLabel Label="@Text.Boost">
+                <InputNumber @bind-Value="_editStat.Boost"></InputNumber>
+            </InputWithLabel>
+            <button @onclick="x => FinishEditingStat(false)" command="close" commandfor="edit-stat">@Text.Cancel</button>
+            <button @onclick="x => FinishEditingStat(true)" command="close" commandfor="edit-stat" style="float:right;">@Text.Save</button>
+        </dialog>
+    }
+    <dialog id="edit-level">
+        <h4>@Text.Level</h4>
+        <InputWithLabel Label="@Text.Level_Short">
+            <InputNumber @bind-Value="_activeCharacter.Level"></InputNumber>
+        </InputWithLabel>
+    </dialog>
+    <dialog id="delete-stat">
+        <label>@Text.AreYouSure</label>
+        <button @onclick="x => FinishEditingStat(false)" command="close" commandfor="delete-stat">@Text.Cancel</button>
+        <button @onclick="async x => await DeleteStat(_editStat)" command="close" commandfor="delete-stat">@Text.Confirm</button>
+    </dialog>
 </div>
 
 @code {
     private Settings _settings = new Settings();
     private Character _activeCharacter = new Character();
 
+    private Stat? _editStat;
+
     protected override async Task OnInitializedAsync()
     {
         _settings = await ContentService.LoadSettings();
         _activeCharacter = await ContentService.LoadCharacter(_settings.ActiveCharacter);
+        var newCulture = new CultureInfo(_settings.Language);
+        Thread.CurrentThread.CurrentUICulture = newCulture;
+        Text.Culture = newCulture;
+    }
+
+    public void AddNewStat()
+    {
+        var stat = new Stat();
+        stat.Name = $"{Text.Effect} {_activeCharacter.ActiveEffects.Count}";
+        SelectStatForEditing(stat);
+    }
+    public void SelectStatForEditing(Stat stat)
+        => _editStat = stat;
+
+    public async Task FinishEditingStat(bool save)
+    {
+        if (_editStat is null)
+            return;
+        if (!save)
+        {
+            _editStat = null;
+            return;
+        }
+        if (_activeCharacter.Stats.Any(e => e.Id != _editStat.Id))
+            _activeCharacter.Stats.Add(_editStat);
+
+        await ContentService.SaveCharacter(_activeCharacter);
+        _editStat = null;
+    }
+
+    public async Task DeleteStat(Stat? stat)
+    {
+        if (stat is null)
+            return;
+        _activeCharacter.Stats.Remove(stat);
+        await ContentService.SaveCharacter(_activeCharacter);
     }
 
     private async Task SavePlayer()

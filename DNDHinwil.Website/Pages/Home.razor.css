@@ -1,7 +1,4 @@
 ﻿button {
-	border-radius: 1rem;
-	height: 30px;
-	text-align: center;
 	margin-top: 0.5rem;
 }
 
@@ -29,7 +26,7 @@
 
 .player {
 	display: grid;
-	grid-template-columns: min-content min-content auto min-content 32px min-content 32px;
+	grid-template-columns: max-content min-content auto min-content 32px min-content 32px;
 }
 	.player > h3 {
 		padding-top: 0.25rem;
@@ -89,6 +86,8 @@
 
 .edit-active-effect {
 }
+	.edit-active-effect > h3 {
+	}
 
 	.edit-active-effect > button {
 		display: inline-block;

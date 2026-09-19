@@ -4,7 +4,7 @@
 <PageTitle>@Constants.SiteName - @Text.Settings</PageTitle>
 
 <div class="content" style="@($"--color-primary:{_settings.AccentColor};")">
-    <section>
+    <section class="title">
         <h2>@Text.Settings</h2>
     </section>
     <section class="settings">
@@ -67,6 +67,9 @@
     protected override async Task OnInitializedAsync()
     {
         _settings = await ContentService.LoadSettings();
+        var newCulture = new CultureInfo(_settings.Language);
+        Thread.CurrentThread.CurrentUICulture = newCulture;
+        Text.Culture = newCulture;
     }
 
     private async Task SaveSettings()

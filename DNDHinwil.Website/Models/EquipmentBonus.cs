@@ -4,10 +4,14 @@ public class EquipmentBonus
 {
     public string? StatId { get; set; }
     public string Text { get; set; } = "";
-    public enum Target
+    public int Bonus { get; set; }
+    public enum EffectType
     {
         None,
         Stat,
+        Health,
+        Mana,
+        DamageReduction,
         Special
     }
 }

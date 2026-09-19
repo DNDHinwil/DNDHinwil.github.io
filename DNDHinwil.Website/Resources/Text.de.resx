@@ -366,4 +366,28 @@
   <data name="Fireball" xml:space="preserve">
     <value>Feuerball</value>
   </data>
+  <data name="AvailableEquipment" xml:space="preserve">
+    <value>Verfügbare Ausrüstung</value>
+  </data>
+  <data name="AvailableSpells" xml:space="preserve">
+    <value>Verfügbare Zaubersprüche</value>
+  </data>
+  <data name="NewStat" xml:space="preserve">
+    <value>Neue Eigenschaft</value>
+  </data>
+  <data name="Stat" xml:space="preserve">
+    <value>Eigenschaft</value>
+  </data>
+  <data name="Score" xml:space="preserve">
+    <value>Punkte</value>
+  </data>
+  <data name="Short" xml:space="preserve">
+    <value>Abkürzung</value>
+  </data>
+  <data name="Boost" xml:space="preserve">
+    <value>Bonus</value>
+  </data>
+  <data name="DefaultCharacterName" xml:space="preserve">
+    <value>Max Mustermann</value>
+  </data>
 </root>

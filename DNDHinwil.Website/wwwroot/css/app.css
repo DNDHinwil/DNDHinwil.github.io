@@ -79,11 +79,14 @@ a {
 	}
 
 button {
+	text-align: center;
+	border: solid 3px;
 	border-color: var(--color-primary);
 	background-color: var(--color-contrast-0);
 	color: var(--color-foreground);
 	border-radius: 1rem;
 	padding: 0.25rem 0.5rem;
+	box-shadow: 2px 2px 1px var(--color-shadow);
 }
 
 	button:hover {
@@ -215,7 +218,8 @@ dialog {
 	.loading-progress-text:after {
 		content: var(--blazor-load-percentage-text, "Loading");
 	}
+
 /* globally applied */
 *:focus-visible {
-	outline: solid 2px var(--color-primary);
+	outline: solid 2px var(--color-foreground);
 }

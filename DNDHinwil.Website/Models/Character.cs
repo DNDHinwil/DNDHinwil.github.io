@@ -8,7 +8,7 @@ public class Character
     private int _currentMana = 20;
 
     public string Id { get; set; } = Guid.NewGuid().ToString();
-    public string Name { get; set; } = Text.Character;
+    public string Name { get; set; } = Text.DefaultCharacterName;
     public int Level { get; set; }
     public int MaxHealth { get; set; } = 20;
     public int Health
@@ -23,7 +23,7 @@ public class Character
         set => _currentMana = Math.Clamp(value, 0, MaxMana);
     }
 
-    public int ArmorClass => Equipment.Any(e => e.ArmorClass > 0) ? Equipment.Max(a => a.ArmorClass) : 10;
+    public int ArmorClass => Equipment.Any(e => e is Armor) ? Equipment.Max(a => ((Armor)a).ArmorClass) : 10;
     public int DamageReduction { get; set; }
     public List<Equipment> Equipment { get; set; } = [];
     public List<Spell> Spellbook { get; set; } = [];

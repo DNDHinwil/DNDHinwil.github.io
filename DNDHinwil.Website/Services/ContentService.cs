@@ -29,7 +29,7 @@ public class ContentService(HttpClient client, IJSRuntime js) : IContentService
     {
         var characters = await LoadData<List<Character>>(Constants.PlayerKey);
         if (characters is null)
-            return [new Character() { Name = "Brad Default"}];
+            return [new Character()];
         return characters;
     }
 

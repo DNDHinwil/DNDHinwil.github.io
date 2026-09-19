@@ -366,4 +366,28 @@
   <data name="Fireball" xml:space="preserve">
     <value>Fireball</value>
   </data>
+  <data name="AvailableEquipment" xml:space="preserve">
+    <value>Available Equipment</value>
+  </data>
+  <data name="AvailableSpells" xml:space="preserve">
+    <value>Available Spells</value>
+  </data>
+  <data name="NewStat" xml:space="preserve">
+    <value>New Stat</value>
+  </data>
+  <data name="Stat" xml:space="preserve">
+    <value>Stat</value>
+  </data>
+  <data name="Score" xml:space="preserve">
+    <value>Score</value>
+  </data>
+  <data name="Short" xml:space="preserve">
+    <value>Short</value>
+  </data>
+  <data name="Boost" xml:space="preserve">
+    <value>Boost</value>
+  </data>
+  <data name="DefaultCharacterName" xml:space="preserve">
+    <value>Brad Default</value>
+  </data>
 </root>

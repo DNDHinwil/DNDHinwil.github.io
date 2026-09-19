@@ -144,7 +144,7 @@
                 <InputCheckbox @bind-Value="_editEffect.TriggersAtEnd"></InputCheckbox>
             </InputWithLabel>
             <button @onclick="x => FinishEditingEffect(false)" command="close" commandfor="edit-active-effect">@Text.Cancel</button>
-            <button @onclick="x => FinishEditingEffect(true)" command="close" commandfor="edit-active-effect" style="float:right;">@Text.Add</button>
+            <button @onclick="x => FinishEditingEffect(true)" command="close" commandfor="edit-active-effect" style="float:right;">@Text.Save</button>
         </dialog>
     }
 
@@ -189,7 +189,7 @@
 
     protected override void OnInitialized()
     {
-        _timer = new UpCountingTimer(Update);
+        _timer = new UpCountingTimer(UpdateUi);
     }
 
     protected override async Task OnInitializedAsync()
@@ -201,26 +201,29 @@
             _settings.ActiveCharacter = _activeCharacter.Id;
             await ContentService.SaveSettings(_settings);
         }
-        _timer = new UpCountingTimer(Update);
+        _timer = new UpCountingTimer(UpdateUi);
+        var newCulture = new CultureInfo(_settings.Language);
+        Thread.CurrentThread.CurrentUICulture = newCulture;
+        Text.Culture = newCulture;
     }
 
     public async Task StartTurn()
     {
         if(_timer is null)
-            _timer = new UpCountingTimer(Update);
+            _timer = new UpCountingTimer(UpdateUi);
 
         await ExecuteEffects(false);
         _timer.StartTimer();
 
         _activeCharacter.ActiveEffects.RemoveAll(x => !x.UntilRemoved && x.Turns < 1);
-        await SavePlayer();
+        await ContentService.SaveCharacter(_activeCharacter);
     }
 
     public async Task EndTurn()
     {
         await ExecuteEffects(true);
         _timer!.StopTimer();
-        await SavePlayer();
+        await ContentService.SaveCharacter(_activeCharacter);
     }
 
     private async Task ExecuteEffects(bool endOfTurn)
@@ -256,7 +259,7 @@
             default:
                 break;
         }
-        await SavePlayer();
+        await ContentService.SaveCharacter(_activeCharacter);
     }
 
     public async Task TakeDamage(Effect effect)
@@ -272,10 +275,10 @@
             default:
                 break;
         }
-        await SavePlayer();
+        await ContentService.SaveCharacter(_activeCharacter);
     }
 
-    private void Update(object? state)
+    private void UpdateUi(object? state)
     {
         StateHasChanged();
     }
@@ -292,30 +295,22 @@
 
     private async Task FinishEditingEffect(bool save)
     {
-        if(_editEffect is not null && save)
+        if (_editEffect is null)
+            return;
+        if(!save)
+        {
+            _editEffect = null;
+            return;
+        }
+        if (_activeCharacter.ActiveEffects.Any(e => e.Id != _editEffect.Id))
             _activeCharacter.ActiveEffects.Add(_editEffect);
 
+        await ContentService.SaveCharacter(_activeCharacter);
         _editEffect = null;
-        await SavePlayer();
     }
     private async Task RemoveEffect(TriggeredEffect effect)
     {
         _activeCharacter.ActiveEffects.Remove(effect);
-        await SavePlayer();
+        await ContentService.SaveCharacter(_activeCharacter);
     }
-
-    private void ChangeLanguage(string lang)
-    {
-        if (string.IsNullOrWhiteSpace(lang))
-            return;
-        lang = lang.ToLowerInvariant();
-        if (!Constants.ImplementedLanguages.Split(';').Contains(lang))
-            return;
-        var newCulture = new CultureInfo(lang);
-        Thread.CurrentThread.CurrentUICulture = newCulture;
-        Text.Culture = newCulture;
-    }
-
-    private async Task SavePlayer()
-        => await ContentService.SaveCharacter(_activeCharacter);
 }
