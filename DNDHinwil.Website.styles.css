@@ -180,6 +180,9 @@ nav[b-n07nno9l7k] {
 		overflow-y: auto;
 	}
 }
+/* /Pages/Armory.razor.rz.scp.css */
+body[b-p08nch7hwf] {
+}
 /* /Pages/CharacterSelection.razor.rz.scp.css */
 .character[b-wciicapdkn] {
 	display: grid;
@@ -197,13 +200,22 @@ nav[b-n07nno9l7k] {
 	}
 
 	.character.active :nth-child(2)[b-wciicapdkn] {
-		text-decoration: underline var(--color-primary);
+		text-decoration: underline 3px var(--color-primary);
 	}
+		.character.active :nth-child(2)[b-wciicapdkn]:after {
+			color: var(--color-foreground);
+			font-size: 1rem;
+			content: "✔";
+			margin-left: 0.5rem;
+		}
 
 .create-new[b-wciicapdkn] {
 	margin-top: 1rem;
 }
 /* /Pages/EditSettings.razor.rz.scp.css */
+.settings > button[b-6t63es5wh7] {
+	margin-top: 0.5rem;
+}
 
 .export[b-6t63es5wh7] {
 	display: grid;
@@ -224,14 +236,20 @@ nav[b-n07nno9l7k] {
 		text-align: right;
 	}
 /* /Pages/EditStats.razor.rz.scp.css */
-/* /Pages/Equipment.razor.rz.scp.css */
-body[b-04u9rnniyg] {
+.stats[b-seb96asjuv] {
+	display: grid;
+	grid-template-columns: min-content max-content 50px auto min-content;
+}
+.stats > button[b-seb96asjuv] {
+	margin-top: 0.5rem;
+}
+
+.stats > label[b-seb96asjuv] {
+	padding-top: 0.875rem;
+	margin-left: 0.5rem;
 }
 /* /Pages/Home.razor.rz.scp.css */
 button[b-j6vt776yl3] {
-	border-radius: 1rem;
-	height: 30px;
-	text-align: center;
 	margin-top: 0.5rem;
 }
 
@@ -259,7 +277,7 @@ button[b-j6vt776yl3] {
 
 .player[b-j6vt776yl3] {
 	display: grid;
-	grid-template-columns: min-content min-content auto min-content 32px min-content 32px;
+	grid-template-columns: max-content min-content auto min-content 32px min-content 32px;
 }
 	.player > h3[b-j6vt776yl3] {
 		padding-top: 0.25rem;
@@ -319,12 +337,14 @@ button[b-j6vt776yl3] {
 
 .edit-active-effect[b-j6vt776yl3] {
 }
+	.edit-active-effect > h3[b-j6vt776yl3] {
+	}
 
 	.edit-active-effect > button[b-j6vt776yl3] {
 		display: inline-block;
 		width: 100px;
 		margin: 0.5rem auto 0.25rem auto;
 	}
-/* /Pages/Spellbook.razor.rz.scp.css */
-body[b-rbc5smmlxr] {
+/* /Pages/SpellLibrary.razor.rz.scp.css */
+body[b-7o5kvrkihh] {
 }
