@@ -89,13 +89,17 @@
                     {
                         <div style="text-align:center;">@effect.Turns</div>
                     }
-                    @if (effect.IsPositive)
+                    @if (effect.Outcome is IEffect.EffectOutcome.Heals)
                     {
-                        <div>💚</div>
+                        <div>🟢</div>
+                    }
+                    else if (effect.Outcome is IEffect.EffectOutcome.DealsDamage)
+                    {
+                        <div>🔴</div>
                     }
                     else
                     {
-                        <div>🔻</div>
+                        <div>⚪</div>
                     }
                     <button class="active-effect-button" @onclick="x => StartEditingEffect(effect)" command="show-modal" commandfor="edit-active-effect">⛭</button>
                 </div>
@@ -115,10 +119,14 @@
             <InputWithLabel Label="@Text.Strength">
                 <InputNumber @bind-Value="_editEffect.Strength"></InputNumber>
             </InputWithLabel>
-            <InputWithLabel Label="@Text.Heal">
-                <InputCheckbox @bind-Value="_editEffect.IsPositive"></InputCheckbox>
+            <InputWithLabel Label="@Text.Outcome">
+                <InputSelect @bind-value="_editEffect.Outcome">
+                    <option value="@IEffect.EffectOutcome.DealsDamage">@Text.Damage</option>
+                    <option value="@IEffect.EffectOutcome.Heals">@Text.Heal</option>
+                    <option value="@IEffect.EffectOutcome.Other">@Text.Other</option>
+                </InputSelect>
             </InputWithLabel>
-            @if (!_editEffect.IsPositive)
+            @if (_editEffect.Outcome is IEffect.EffectOutcome.DealsDamage)
             {
                 <InputWithLabel Label="@Text.UntilHealed">
                     <InputCheckbox @bind-Value="_editEffect.UntilHealed"></InputCheckbox>
@@ -133,13 +141,16 @@
                     <InputNumber @bind-Value="_editEffect.Turns"></InputNumber>
                 </InputWithLabel>
             }
-            <InputWithLabel Label="@Text.Target">
-                <InputSelect @bind-value="_editEffect.EffectTarget">
-                    <option value="@Effect.Target.None">@Text.None</option>
-                    <option value="@Effect.Target.Health">@Text.Health</option>
-                    <option value="@Effect.Target.Mana">@Text.Mana</option>
-                </InputSelect>
-            </InputWithLabel>
+            @if (_editEffect.Outcome is IEffect.EffectOutcome.DealsDamage or IEffect.EffectOutcome.Heals)
+            {
+                <InputWithLabel Label="@Text.Target">
+                    <InputSelect @bind-value="_editEffect.Target">
+                        <option value="@IEffect.EffectTarget.Health">@Text.Health</option>
+                        <option value="@IEffect.EffectTarget.Mana">@Text.Mana</option>
+                        <option value="@IEffect.EffectTarget.Special">@Text.Special</option>
+                    </InputSelect>
+                </InputWithLabel>
+            }
             <InputWithLabel Label="@Text.TriggersAtEndOfTurn">
                 <InputCheckbox @bind-Value="_editEffect.TriggersAtEnd"></InputCheckbox>
             </InputWithLabel>
@@ -153,10 +164,10 @@
             <InputNumber @bind-Value="_quickEffect.Strength"></InputNumber>
         </InputWithLabel>
         <InputWithLabel Label="@Text.Target">
-            <InputSelect @bind-value="_quickEffect.EffectTarget">
-                <option value="@Effect.Target.None">@Text.None</option>
-                <option value="@Effect.Target.Health">@Text.Health</option>
-                <option value="@Effect.Target.Mana">@Text.Mana</option>
+            <InputSelect @bind-value="_quickEffect.Target">
+                <option value="@IEffect.EffectTarget.Special">@Text.None</option>
+                <option value="@IEffect.EffectTarget.Health">@Text.Health</option>
+                <option value="@IEffect.EffectTarget.Mana">@Text.Mana</option>
             </InputSelect>
         </InputWithLabel>
         <button popovertarget="take-heal" popovertargetaction="hide">@Text.Cancel</button>
@@ -168,10 +179,10 @@
             <InputNumber @bind-Value="_quickEffect.Strength"></InputNumber>
         </InputWithLabel>
         <InputWithLabel Label="@Text.Target">
-            <InputSelect @bind-value="_quickEffect.EffectTarget">
-                <option value="@Effect.Target.None">@Text.None</option>
-                <option value="@Effect.Target.Health">@Text.Health</option>
-                <option value="@Effect.Target.Mana">@Text.Mana</option>
+            <InputSelect @bind-value="_quickEffect.Target">
+                <option value="@IEffect.EffectTarget.Special">@Text.None</option>
+                <option value="@IEffect.EffectTarget.Health">@Text.Health</option>
+                <option value="@IEffect.EffectTarget.Mana">@Text.Mana</option>
             </InputSelect>
         </InputWithLabel>
         <button popovertarget="take-damage" popovertargetaction="hide">@Text.Cancel</button>
@@ -212,7 +223,7 @@
         if(_timer is null)
             _timer = new UpCountingTimer(UpdateUi);
 
-        await ExecuteEffects(false);
+        await ExecuteActiveEffects(false);
         _timer.StartTimer();
 
         _activeCharacter.ActiveEffects.RemoveAll(x => !x.UntilRemoved && x.Turns < 1);
@@ -221,22 +232,31 @@
 
     public async Task EndTurn()
     {
-        await ExecuteEffects(true);
+        await ExecuteActiveEffects(true);
         _timer!.StopTimer();
         await ContentService.SaveCharacter(_activeCharacter);
     }
 
-    private async Task ExecuteEffects(bool endOfTurn)
+    private async Task ExecuteActiveEffects(bool isEndOfTurn)
     {
-        if (_activeCharacter.ActiveEffects.Any(a => a.IsPositive && a.EffectTarget == TriggeredEffect.Target.Health && a.TriggersAtEnd == endOfTurn))
+        if (_activeCharacter.ActiveEffects.Any(a => a.Outcome is IEffect.EffectOutcome.Heals 
+            && a.Target is IEffect.EffectTarget.Health 
+            && a.TriggersAtEnd == isEndOfTurn))
             _activeCharacter.ActiveEffects.RemoveAll(x => x.UntilHealed);
 
-        foreach (var effect in _activeCharacter.ActiveEffects.Where(e => e.TriggersAtEnd == endOfTurn))
+        foreach (var effect in _activeCharacter.ActiveEffects.Where(e => e.TriggersAtEnd == isEndOfTurn))
         {
-            if (effect.IsPositive)
-                await HealUp(effect);
-            else
-                await TakeDamage(effect);
+            switch (effect.Outcome)
+            {
+                case IEffect.EffectOutcome.DealsDamage:
+                    await TakeDamage(effect);
+                    break;
+                case IEffect.EffectOutcome.Heals:
+                    await HealUp(effect);
+                    break;
+                default:
+                    break;
+            }
 
             if (effect.UntilRemoved)
                 continue;
@@ -248,12 +268,12 @@
     {
         _activeCharacter.ActiveEffects.RemoveAll(x => x.UntilHealed);
 
-        switch (effect.EffectTarget)
+        switch (effect.Target)
         {
-            case Effect.Target.Health:
+            case IEffect.EffectTarget.Health:
                 _activeCharacter.Health += effect.Strength;
                 break;
-            case Effect.Target.Mana:
+            case IEffect.EffectTarget.Mana:
                 _activeCharacter.Mana += effect.Strength;
                 break;
             default:
@@ -264,12 +284,12 @@
 
     public async Task TakeDamage(Effect effect)
     {
-        switch (effect.EffectTarget)
+        switch (effect.Target)
         {
-            case Effect.Target.Health:
+            case IEffect.EffectTarget.Health:
                 _activeCharacter.Health -= Math.Clamp(effect.Strength - _activeCharacter.DamageReduction, 0, effect.Strength);
                 break;
-            case Effect.Target.Mana:
+            case IEffect.EffectTarget.Mana:
                 _activeCharacter.Mana -= effect.Strength;
                 break;
             default:

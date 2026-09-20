@@ -7,20 +7,31 @@
     <section class="title">
         <h2>@Text.Stats</h2>
     </section>
+    <section class="general">
+        <h3>@($"{Text.ActiveCharacter}: {_activeCharacter.Name}")</h3>
+
+        <InputWithLabel Label="@Text.Level">
+            <InputNumber @bind-Value="_activeCharacter.Level"></InputNumber>
+        </InputWithLabel>
+        <InputWithLabel Label="@Text.MaxHP">
+            <InputNumber @bind-Value="_activeCharacter.MaxHealth"></InputNumber>
+        </InputWithLabel>
+        <InputWithLabel Label="@Text.MaxMP">
+            <InputNumber @bind-Value="_activeCharacter.MaxMana"></InputNumber>
+        </InputWithLabel>
+        
+        <button @onclick="async x => await SavePlayer()" style="width:100%;">@Text.Save</button>
+    </section>
     <section class="stats">
-        <h3 style="grid-column:span 4;">@($"{Text.ActiveCharacter}: {_activeCharacter.Name}")</h3>
-        <label>@Text.Level</label>
-        <label>@_activeCharacter.Level</label>
-        <div></div>
-        <button command="show-modal" commandfor="edit-level">⛭</button>
         @foreach (var stat in _activeCharacter.Stats)
         {
             <button @onclick="x => SelectStatForEditing(stat)" command="show-modal" commandfor="delete-stat">-</button>
             <label>@stat.Name</label>
             <label>@stat.Score</label>
+            <label>@(stat.Boost > 0 ? $"(Boost:{stat.Boost})" : "")</label>
             <button @onclick="x => SelectStatForEditing(stat)" command="show-modal" commandfor="edit-stat">⛭</button>
         }
-        <button @onclick="x => AddNewStat()" command="show-modal" commandfor="edit-stat" style="grid-column:span 4;">@Text.NewStat</button>
+        <button @onclick="x => AddNewStat()" command="show-modal" commandfor="edit-stat" style="grid-column:span 5;">@Text.NewStat</button>
     </section>
     @if (_editStat is not null)
     {
@@ -30,7 +41,7 @@
                 <InputText @bind-Value="_editStat.Name"></InputText>
             </InputWithLabel>
             <InputWithLabel Label="@Text.Short">
-                <InputText @bind-Value="_editStat.Name"></InputText>
+                <InputText @bind-Value="_editStat.Short"></InputText>
             </InputWithLabel>
             <InputWithLabel Label="@Text.Score">
                 <InputNumber @bind-Value="_editStat.Score"></InputNumber>
@@ -46,7 +57,9 @@
         <h4>@Text.Level</h4>
         <InputWithLabel Label="@Text.Level_Short">
             <InputNumber @bind-Value="_activeCharacter.Level"></InputNumber>
-        </InputWithLabel>
+        </InputWithLabel>        
+        <button command="close" commandfor="edit-level">@Text.Cancel</button>
+        <button @onclick="async x => await SavePlayer()" command="close" commandfor="edit-level">@Text.Confirm</button>
     </dialog>
     <dialog id="delete-stat">
         <label>@Text.AreYouSure</label>
@@ -88,7 +101,7 @@
             _editStat = null;
             return;
         }
-        if (_activeCharacter.Stats.Any(e => e.Id != _editStat.Id))
+        if (!_activeCharacter.Stats.Any(e => e.Id == _editStat.Id))
             _activeCharacter.Stats.Add(_editStat);
 
         await ContentService.SaveCharacter(_activeCharacter);

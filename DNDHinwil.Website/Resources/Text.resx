@@ -232,7 +232,7 @@
     <value>Unpause</value>
   </data>
   <data name="TriggersAtEndOfTurn" xml:space="preserve">
-    <value>Triggers At End Of Turn</value>
+    <value>End of Turn</value>
   </data>
   <data name="Stats" xml:space="preserve">
     <value>Stats</value>
@@ -389,5 +389,14 @@
   </data>
   <data name="DefaultCharacterName" xml:space="preserve">
     <value>Brad Default</value>
+  </data>
+  <data name="Outcome" xml:space="preserve">
+    <value>Outcome</value>
+  </data>
+  <data name="Other" xml:space="preserve">
+    <value>Other</value>
+  </data>
+  <data name="Special" xml:space="preserve">
+    <value>Special</value>
   </data>
 </root>

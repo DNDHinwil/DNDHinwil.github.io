@@ -2,6 +2,7 @@
 using Microsoft.JSInterop;
 using System.Net.Http.Json;
 using System.Text.Json;
+using IndexedDB.Blazor;
 
 namespace DNDHinwil.Website;
 
@@ -20,7 +21,7 @@ public interface IContentService
     public Task MakeAlert(string message);
 }
 
-public class ContentService(HttpClient client, IJSRuntime js) : IContentService
+public class ContentService(HttpClient client, IJSRuntime js, IIndexedDbFactory dbFactory) : IContentService
 {
     private readonly HttpClient _client = client;
     private readonly IJSRuntime _js = js;
@@ -29,7 +30,13 @@ public class ContentService(HttpClient client, IJSRuntime js) : IContentService
     {
         var characters = await LoadData<List<Character>>(Constants.PlayerKey);
         if (characters is null)
-            return [new Character()];
+        {
+            characters = [new Character()];
+            var settings = await LoadSettings();
+            settings.ActiveCharacter ??= characters.First().Id;
+            await SavePlayer(characters);
+            await SaveSettings(settings);
+        }
         return characters;
     }
 
@@ -37,7 +44,13 @@ public class ContentService(HttpClient client, IJSRuntime js) : IContentService
         => await StoreData(Constants.PlayerKey, player);
 
     public async Task<Character> LoadCharacter(string? id)
-        => (await LoadData<List<Character>>(Constants.PlayerKey))?.FirstOrDefault(c => c.Id == (id ?? string.Empty)) ?? new Character();
+    {        
+        var characters = await LoadPlayer();
+        var savedCharacter = characters?.FirstOrDefault(c => c.Id == id) ?? characters?.FirstOrDefault();
+        if (savedCharacter is null)
+            return new Character();
+        return savedCharacter;
+    }
 
     public async Task SaveCharacter(Character characterToSave)
     {

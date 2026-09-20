@@ -232,7 +232,7 @@
     <value>Unpausieren</value>
   </data>
   <data name="TriggersAtEndOfTurn" xml:space="preserve">
-    <value>Aktiviert am ende des Zuges</value>
+    <value>Ende des Zuges</value>
   </data>
   <data name="Stats" xml:space="preserve">
     <value>Eigenschaften</value>
@@ -389,5 +389,14 @@
   </data>
   <data name="DefaultCharacterName" xml:space="preserve">
     <value>Max Mustermann</value>
+  </data>
+  <data name="Outcome" xml:space="preserve">
+    <value>Resultat</value>
+  </data>
+  <data name="Other" xml:space="preserve">
+    <value>Anderes</value>
+  </data>
+  <data name="Special" xml:space="preserve">
+    <value>Speziell</value>
   </data>
 </root>

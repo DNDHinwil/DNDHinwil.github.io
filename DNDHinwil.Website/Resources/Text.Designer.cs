@@ -583,6 +583,24 @@ namespace DNDHinwil.Website.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Other.
+        /// </summary>
+        public static string Other {
+            get {
+                return ResourceManager.GetString("Other", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Outcome.
+        /// </summary>
+        public static string Outcome {
+            get {
+                return ResourceManager.GetString("Outcome", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pause.
         /// </summary>
         public static string Pause {
@@ -642,6 +660,15 @@ namespace DNDHinwil.Website.Resources {
         public static string Short {
             get {
                 return ResourceManager.GetString("Short", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Special.
+        /// </summary>
+        public static string Special {
+            get {
+                return ResourceManager.GetString("Special", resourceCulture);
             }
         }
         
@@ -772,7 +799,7 @@ namespace DNDHinwil.Website.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Triggers At End Of Turn.
+        ///   Looks up a localized string similar to End of Turn.
         /// </summary>
         public static string TriggersAtEndOfTurn {
             get {

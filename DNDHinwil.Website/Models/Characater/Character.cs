@@ -7,6 +7,7 @@ public class Character
     private int _currentHealth = 20;
     private int _currentMana = 20;
 
+    [Key]
     public string Id { get; set; } = Guid.NewGuid().ToString();
     public string Name { get; set; } = Text.DefaultCharacterName;
     public int Level { get; set; }
