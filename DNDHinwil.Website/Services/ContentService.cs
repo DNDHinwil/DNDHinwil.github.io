@@ -2,6 +2,7 @@
 using Microsoft.JSInterop;
 using System.Net.Http.Json;
 using System.Text.Json;
+using IndexedDB.Blazor;
 
 namespace DNDHinwil.Website;
 
@@ -11,13 +12,16 @@ public interface IContentService
     public Task SavePlayer(List<Character> player);
     public Task<Character> LoadCharacter(string? id);
     public Task SaveCharacter(Character character);
+    public Task<List<Equipment>> LoadArmory();
+    public Task SaveArmory(List<Equipment> equipment);
+    public Task<List<Spell>> LoadSpellLibrary();
+    public Task SaveSpellLibrary(List<Spell> spells);
     public Task<Settings> LoadSettings();
     public Task SaveSettings(Settings settings);
-    public Task<IEnumerable<LinkItem>> GetNavItems();
     public Task MakeAlert(string message);
 }
 
-public class ContentService(HttpClient client, IJSRuntime js) : IContentService
+public class ContentService(HttpClient client, IJSRuntime js, IIndexedDbFactory dbFactory) : IContentService
 {
     private readonly HttpClient _client = client;
     private readonly IJSRuntime _js = js;
@@ -26,7 +30,13 @@ public class ContentService(HttpClient client, IJSRuntime js) : IContentService
     {
         var characters = await LoadData<List<Character>>(Constants.PlayerKey);
         if (characters is null)
-            return [new Character()];
+        {
+            characters = [new Character()];
+            var settings = await LoadSettings();
+            settings.ActiveCharacter ??= characters.First().Id;
+            await SavePlayer(characters);
+            await SaveSettings(settings);
+        }
         return characters;
     }
 
@@ -34,7 +44,13 @@ public class ContentService(HttpClient client, IJSRuntime js) : IContentService
         => await StoreData(Constants.PlayerKey, player);
 
     public async Task<Character> LoadCharacter(string? id)
-        => (await LoadData<List<Character>>(Constants.PlayerKey))?.FirstOrDefault(c => c.Id == (id ?? string.Empty)) ?? new Character();
+    {        
+        var characters = await LoadPlayer();
+        var savedCharacter = characters?.FirstOrDefault(c => c.Id == id) ?? characters?.FirstOrDefault();
+        if (savedCharacter is null)
+            return new Character();
+        return savedCharacter;
+    }
 
     public async Task SaveCharacter(Character characterToSave)
     {
@@ -49,6 +65,25 @@ public class ContentService(HttpClient client, IJSRuntime js) : IContentService
 
         await SavePlayer(characters);
     }
+
+    public async Task<List<Equipment>> LoadArmory()
+    {
+        var armory = await LoadData<List<Equipment>>(Constants.EquipmentKey);
+        if (armory is null)
+            return [];
+        return armory;
+    }
+    public async Task SaveArmory(List<Equipment> equipment)
+        => await StoreData(Constants.EquipmentKey, equipment);
+    public async Task<List<Spell>> LoadSpellLibrary()
+    {
+        var spells = await LoadData<List<Spell>>(Constants.EquipmentKey);
+        if (spells is null)
+            return [];
+        return spells;
+    }
+    public async Task SaveSpellLibrary(List<Spell> spells)
+        => await StoreData(Constants.SpellbookKey, spells);
 
     public async Task<Settings> LoadSettings()
     {
@@ -80,13 +115,6 @@ public class ContentService(HttpClient client, IJSRuntime js) : IContentService
         {
             return default; 
         }
-    }
-    public async Task<IEnumerable<LinkItem>> GetNavItems()
-    {
-        var navItems = await _client.GetFromJsonAsync<IEnumerable<LinkItem>>($"resources/navlinks.json");
-        if (navItems is null)
-            return [];
-        return navItems;
     }
 
     public async Task MakeAlert(string message)

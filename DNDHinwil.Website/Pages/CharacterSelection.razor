@@ -4,14 +4,14 @@
 <PageTitle>@Constants.SiteName - @Text.Characters</PageTitle>
 
 <div class="content" style="@($"--color-primary:{_settings.AccentColor};")">
-    <section>
+    <section class="title">
         <h2>@Text.Characters</h2>
     </section>
     <section class="character-select">
         @foreach (var character in _characters)
         {
             <div class="character @(character.Id == _settings.ActiveCharacter ? "active" : "")">
-                <button @onclick="async x => await SelectCharacterForEditing(character)" popovertargetaction="show" popovertarget="delete-character" style="font-size:0.5rem;">X</button>
+                <button @onclick="async x => await SelectCharacterForEditing(character)" command="show-modal" commandfor="delete-character" style="font-size:0.5rem;">X</button>
                 <label style="font-size:1.25rem;padding-top:0.25rem;">@character.Name</label>
                 <label style="text-align:right;padding-top:0.5rem;">@Text.Level_Short</label>
                 <label style="text-align:left;padding-top:0.5rem;">@character.Level</label>
@@ -31,14 +31,14 @@
             <InputWithLabel Label="@Text.Name">
                 <InputText @bind-Value="_characterToEdit.Name"></InputText>
             </InputWithLabel>
-            <button command="close" commandfor="edit-character">@Text.Cancel</button>
-            <button @onclick="async x => await SaveEditingCharacter()" command="close" commandfor="edit-character" style="float:right;">@Text.OK</button>
+            <button @onclick="async x => await FinishEditingCharacter(false)" command="close" commandfor="edit-character">@Text.Cancel</button>
+            <button @onclick="async x => await FinishEditingCharacter(true)" command="close" commandfor="edit-character" style="float:right;">@Text.OK</button>
         </dialog>
     }
-    <dialog id="delete-character" popover>
+    <dialog id="delete-character">
         <label>@Text.AreYouSure</label>
-        <button popovertarget="delete-character" popovertargetaction="hide">@Text.Cancel</button>
-        <button popovertarget="delete-character" popovertargetaction="hide" @onclick="async x => await DeleteCharacter(_characterToEdit)">@Text.Confirm</button>
+        <button @onclick="async x => await FinishEditingCharacter(false)" command="close" commandfor="delete-character">@Text.Cancel</button>
+        <button @onclick="async x => await DeleteCharacter(_characterToEdit)" command="close" commandfor="delete-character">@Text.Confirm</button>
     </dialog>
 </div>
 
@@ -54,6 +54,9 @@
         _settings = await ContentService.LoadSettings();
         _characters = await ContentService.LoadPlayer();
         _activeCharacter = _characters.FirstOrDefault(c => c.Id == _settings.ActiveCharacter) ?? new Character();
+        var newCulture = new CultureInfo(_settings.Language);
+        Thread.CurrentThread.CurrentUICulture = newCulture;
+        Text.Culture = newCulture;
     }
 
     private async Task ChangeActiveCharacter(Character character)
@@ -66,10 +69,15 @@
     private async Task SelectCharacterForEditing(Character character)
         => _characterToEdit = character;
 
-    private async Task SaveEditingCharacter()
+    private async Task FinishEditingCharacter(bool save)
     {
         if (_characterToEdit is null)
             return;
+        if (!save)
+        {
+            _characterToEdit = null;
+            return;
+        }
         await ContentService.SaveCharacter(_characterToEdit);
         _characterToEdit = null;
     }

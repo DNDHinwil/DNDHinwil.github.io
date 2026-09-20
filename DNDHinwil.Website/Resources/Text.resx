@@ -232,7 +232,7 @@
     <value>Unpause</value>
   </data>
   <data name="TriggersAtEndOfTurn" xml:space="preserve">
-    <value>Triggers At End Of Turn</value>
+    <value>End of Turn</value>
   </data>
   <data name="Stats" xml:space="preserve">
     <value>Stats</value>
@@ -338,5 +338,65 @@
   </data>
   <data name="Download" xml:space="preserve">
     <value>Download</value>
+  </data>
+  <data name="Tracker" xml:space="preserve">
+    <value>Tracker</value>
+  </data>
+  <data name="Armory" xml:space="preserve">
+    <value>Armory</value>
+  </data>
+  <data name="SpellLibrary" xml:space="preserve">
+    <value>Spell Library</value>
+  </data>
+  <data name="UploadSpellLibrary" xml:space="preserve">
+    <value>Upload a Spell Library</value>
+  </data>
+  <data name="UploadArmory" xml:space="preserve">
+    <value>Upload an Armory</value>
+  </data>
+  <data name="DownloadYourSpellLibrary" xml:space="preserve">
+    <value>Download your Spell Library</value>
+  </data>
+  <data name="DownloadYourArmory" xml:space="preserve">
+    <value>Download your Armory</value>
+  </data>
+  <data name="ActiveCharacter" xml:space="preserve">
+    <value>Active Character</value>
+  </data>
+  <data name="Fireball" xml:space="preserve">
+    <value>Fireball</value>
+  </data>
+  <data name="AvailableEquipment" xml:space="preserve">
+    <value>Available Equipment</value>
+  </data>
+  <data name="AvailableSpells" xml:space="preserve">
+    <value>Available Spells</value>
+  </data>
+  <data name="NewStat" xml:space="preserve">
+    <value>New Stat</value>
+  </data>
+  <data name="Stat" xml:space="preserve">
+    <value>Stat</value>
+  </data>
+  <data name="Score" xml:space="preserve">
+    <value>Score</value>
+  </data>
+  <data name="Short" xml:space="preserve">
+    <value>Short</value>
+  </data>
+  <data name="Boost" xml:space="preserve">
+    <value>Boost</value>
+  </data>
+  <data name="DefaultCharacterName" xml:space="preserve">
+    <value>Brad Default</value>
+  </data>
+  <data name="Outcome" xml:space="preserve">
+    <value>Outcome</value>
+  </data>
+  <data name="Other" xml:space="preserve">
+    <value>Other</value>
+  </data>
+  <data name="Special" xml:space="preserve">
+    <value>Special</value>
   </data>
 </root>

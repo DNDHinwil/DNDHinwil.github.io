@@ -7,16 +7,12 @@
 	--color-primary-h: 24;
 	--color-primary-s: 100%;
 	--color-primary-l: 50%;
-	--color-lighten-percentage: 20%;
-	--color-darken-percentage: 10%;
 	--color-primary: hsl(var(--color-primary-h), var(--color-primary-s), var(--color-primary-l));
-	--color-primary-shade: hsl(var(--color-primary-h), var(--color-primary-s), calc(var(--color-primary-l) - var(--color-darken-percentage)));
-	--color-primary-tint: hsl(var(--color-primary-h), var(--color-primary-s), calc(var(--color-primary-l) + var(--color-lighten-percentage)));
 	--color-contrast-0: #ddd;
 	--color-contrast-1: #ccc;
 	--color-contrast-2: #bbb;
 	--color-contrast-3: #aaa;
-	--color-shadow: #050505;
+	--color-shadow: #05050505;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -25,13 +21,11 @@
 		--color-foreground-muted: #aaa;
 		--color-background: #111;
 		--color-primary-l: 60%;
-		--color-lighten-percentage: 10%;
-		--color-darken-percentage: 20%;
 		--color-contrast-0: #000;
 		--color-contrast-1: #222;
 		--color-contrast-2: #333;
 		--color-contrast-3: #444;
-		--color-shadow: #111;
+		--color-shadow: #1111;
 	}
 }
 
@@ -85,17 +79,20 @@ a {
 	}
 
 button {
+	text-align: center;
+	border: solid 3px;
 	border-color: var(--color-primary);
 	background-color: var(--color-contrast-0);
 	color: var(--color-foreground);
 	border-radius: 1rem;
 	padding: 0.25rem 0.5rem;
+	box-shadow: 2px 2px 1px var(--color-shadow);
 }
 
 	button:hover {
 		cursor: pointer;
-		color: color-mix(in srgb, var(--color-primary), #222);
-		border-color: color-mix(in srgb, var(--color-primary), #222);
+		color: var(--color-foreground-muted);
+		border-color: color-mix(in srgb, var(--color-primary), var(--color-shadow));
 	}
 
 h1 {
@@ -109,11 +106,11 @@ h2 {
 }
 
 h3 {
-	font-size: 1.5rem;
+	font-size: 1.125rem;
 }
 
 h4 {
-	font-size: 1.25rem;
+	font-size: 1.125rem;
 }
 
 h5 {
@@ -142,7 +139,7 @@ dialog {
 }
 
 ::backdrop {
-	background-color: color-mix(in srgb, var(--color-background) 50%, #0000);
+	background-color: color-mix(in srgb, var(--color-background), var(--color-shadow) 30%);
 }
 
 .content {
@@ -221,7 +218,8 @@ dialog {
 	.loading-progress-text:after {
 		content: var(--blazor-load-percentage-text, "Loading");
 	}
+
 /* globally applied */
 *:focus-visible {
-	outline: solid 2px var(--color-primary);
+	outline: solid 2px var(--color-foreground);
 }

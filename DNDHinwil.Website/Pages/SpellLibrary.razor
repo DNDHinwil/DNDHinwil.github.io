@@ -1,11 +1,11 @@
-﻿@page "/spellbook"
+﻿@page "/library"
 @inject IContentService ContentService
 
-<PageTitle>@Constants.SiteName - @Text.Spellbook</PageTitle>
+<PageTitle>@Constants.SiteName - @Text.SpellLibrary</PageTitle>
 
 <div class="content" style="@($"--color-primary:{_settings.AccentColor};")">
-    <section>
-        <h2>@Text.Spellbook</h2>
+    <section class="title">
+        <h2>@Text.SpellLibrary</h2>
     </section>
     <section class="spells">
     </section>
@@ -19,6 +19,9 @@
     {
         _settings = await ContentService.LoadSettings();
         _activeCharacter = await ContentService.LoadCharacter(_settings.ActiveCharacter);
+        var newCulture = new CultureInfo(_settings.Language);
+        Thread.CurrentThread.CurrentUICulture = newCulture;
+        Text.Culture = newCulture;
     }
 
     private async Task SavePlayer()

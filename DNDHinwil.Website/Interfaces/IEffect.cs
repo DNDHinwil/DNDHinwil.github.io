@@ -1,11 +1,22 @@
-﻿using DNDHinwil.Website.Models;
-
+﻿
 namespace DNDHinwil.Website.Interfaces;
 
 public interface IEffect
 {
-    bool AffectedByArmor { get; set; }
-    Effect.Target EffectTarget { get; set; }
-    bool IsPositive { get; set; }
     int Strength { get; set; }
+    public EffectTarget Target { get; set; }
+    public EffectOutcome Outcome { get; set; }
+
+    public enum EffectOutcome
+    {
+        DealsDamage,
+        Heals,
+        Other
+    }
+    public enum EffectTarget
+    {
+        Health,
+        Mana,
+        Special
+    }
 }

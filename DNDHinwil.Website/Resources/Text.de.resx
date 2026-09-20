@@ -232,7 +232,7 @@
     <value>Unpausieren</value>
   </data>
   <data name="TriggersAtEndOfTurn" xml:space="preserve">
-    <value>Aktiviert am ende des Zuges</value>
+    <value>Ende des Zuges</value>
   </data>
   <data name="Stats" xml:space="preserve">
     <value>Eigenschaften</value>
@@ -338,5 +338,65 @@
   </data>
   <data name="Download" xml:space="preserve">
     <value>Herunterladen</value>
+  </data>
+  <data name="Tracker" xml:space="preserve">
+    <value>Tracker</value>
+  </data>
+  <data name="Armory" xml:space="preserve">
+    <value>Arsenal</value>
+  </data>
+  <data name="SpellLibrary" xml:space="preserve">
+    <value>Bibliothek</value>
+  </data>
+  <data name="UploadSpellLibrary" xml:space="preserve">
+    <value>Lade eine Bibliothek hoch</value>
+  </data>
+  <data name="UploadArmory" xml:space="preserve">
+    <value>Lade eine Waffenkammer hoch</value>
+  </data>
+  <data name="DownloadYourSpellLibrary" xml:space="preserve">
+    <value>Lade deine Zauber Bibliothek herunter</value>
+  </data>
+  <data name="DownloadYourArmory" xml:space="preserve">
+    <value>Lade deine Waffenkammer herunter</value>
+  </data>
+  <data name="ActiveCharacter" xml:space="preserve">
+    <value>Aktiver Charakter</value>
+  </data>
+  <data name="Fireball" xml:space="preserve">
+    <value>Feuerball</value>
+  </data>
+  <data name="AvailableEquipment" xml:space="preserve">
+    <value>Verfügbare Ausrüstung</value>
+  </data>
+  <data name="AvailableSpells" xml:space="preserve">
+    <value>Verfügbare Zaubersprüche</value>
+  </data>
+  <data name="NewStat" xml:space="preserve">
+    <value>Neue Eigenschaft</value>
+  </data>
+  <data name="Stat" xml:space="preserve">
+    <value>Eigenschaft</value>
+  </data>
+  <data name="Score" xml:space="preserve">
+    <value>Punkte</value>
+  </data>
+  <data name="Short" xml:space="preserve">
+    <value>Abkürzung</value>
+  </data>
+  <data name="Boost" xml:space="preserve">
+    <value>Bonus</value>
+  </data>
+  <data name="DefaultCharacterName" xml:space="preserve">
+    <value>Max Mustermann</value>
+  </data>
+  <data name="Outcome" xml:space="preserve">
+    <value>Resultat</value>
+  </data>
+  <data name="Other" xml:space="preserve">
+    <value>Anderes</value>
+  </data>
+  <data name="Special" xml:space="preserve">
+    <value>Speziell</value>
   </data>
 </root>

@@ -14,8 +14,14 @@
 	}
 
 	.character.active :nth-child(2) {
-		text-decoration: underline var(--color-primary);
+		text-decoration: underline 3px var(--color-primary);
 	}
+		.character.active :nth-child(2):after {
+			color: var(--color-foreground);
+			font-size: 1rem;
+			content: "✔";
+			margin-left: 0.5rem;
+		}
 
 .create-new {
 	margin-top: 1rem;

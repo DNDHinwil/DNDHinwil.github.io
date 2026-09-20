@@ -2,7 +2,7 @@
 <div class="stats" style="@($"--stat-count:{Stats.Count};")">
     @foreach (var stat in Stats)
     {
-        <div class="stat" style="@($"--color:hsl({360 / Stats.Count * stat.Id},100%,50%);")">
+        <div class="stat" style="@($"--color:hsl({360 / Stats.Count * Stats.IndexOf(stat)},100%,50%);")">
             @stat.GetModifier(AbilityScores)
             <label>@stat.Short</label>
         </div>

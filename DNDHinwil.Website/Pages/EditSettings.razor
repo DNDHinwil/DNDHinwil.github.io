@@ -4,7 +4,7 @@
 <PageTitle>@Constants.SiteName - @Text.Settings</PageTitle>
 
 <div class="content" style="@($"--color-primary:{_settings.AccentColor};")">
-    <section>
+    <section class="title">
         <h2>@Text.Settings</h2>
     </section>
     <section class="settings">
@@ -33,6 +33,14 @@
         <button>@Text.Download</button>
         <label>@Text.UploadCharacters</label>
         <button>@Text.Upload</button>
+        <label>@Text.DownloadYourArmory</label>
+        <button>@Text.Download</button>
+        <label>@Text.UploadArmory</label>
+        <button>@Text.Upload</button>
+        <label>@Text.DownloadYourSpellLibrary</label>
+        <button>@Text.Download</button>
+        <label>@Text.UploadSpellLibrary</label>
+        <button>@Text.Upload</button>
     </section>
     <section class="modifiers">
         <h3 style="grid-column:span 2;">@Text.ModifierTable</h3>
@@ -48,7 +56,7 @@
 
 @code {
     private Settings _settings = new Settings();
-    private readonly (string Name, string Color)[] _colors = 
+    private readonly (string Color, string Name)[] _colors = 
     [
         ("#9c1203", "Red"), 
         ("#e3a000", "Yellow"), 
@@ -59,6 +67,9 @@
     protected override async Task OnInitializedAsync()
     {
         _settings = await ContentService.LoadSettings();
+        var newCulture = new CultureInfo(_settings.Language);
+        Thread.CurrentThread.CurrentUICulture = newCulture;
+        Text.Culture = newCulture;
     }
 
     private async Task SaveSettings()
