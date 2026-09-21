@@ -5,11 +5,11 @@
 <PageTitle>@Constants.SiteName - @Text.Armory</PageTitle>
 
 <div class="content" style="@($"--color-primary:{_settings.AccentColor};")">
-    <section class="title">
+    <header class="title">
         <h2>@Text.Armory</h2>
-    </section>
+    </header>
     <section class="equipment">
-        <h3>@($"{Text.ActiveCharacter}: {_activeCharacter.Name}")</h3>
+        <h3>@($"{@Text.EquipmentOf} {_activeCharacter.Name}")</h3>
         @foreach (var item in _activeCharacter.Equipment)
         {
             <EquipmentItem Model="item"></EquipmentItem>

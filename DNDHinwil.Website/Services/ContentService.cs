@@ -8,8 +8,8 @@ namespace DNDHinwil.Website;
 
 public interface IContentService
 {
-    public Task<List<Character>> LoadPlayer();
-    public Task SavePlayer(List<Character> player);
+    public Task<List<Character>> LoadCharacters();
+    public Task SaveCharacters(List<Character> player);
     public Task<Character> LoadCharacter(string? id);
     public Task SaveCharacter(Character character);
     public Task<List<Equipment>> LoadArmory();
@@ -26,7 +26,7 @@ public class ContentService(HttpClient client, IJSRuntime js, IIndexedDbFactory 
     private readonly HttpClient _client = client;
     private readonly IJSRuntime _js = js;
 
-    public async Task<List<Character>> LoadPlayer()
+    public async Task<List<Character>> LoadCharacters()
     {
         var characters = await LoadData<List<Character>>(Constants.PlayerKey);
         if (characters is null)
@@ -34,18 +34,17 @@ public class ContentService(HttpClient client, IJSRuntime js, IIndexedDbFactory 
             characters = [new Character()];
             var settings = await LoadSettings();
             settings.ActiveCharacter ??= characters.First().Id;
-            await SavePlayer(characters);
+            await SaveCharacters(characters);
             await SaveSettings(settings);
         }
         return characters;
     }
-
-    public async Task SavePlayer(List<Character> player)
+    public async Task SaveCharacters(List<Character> player)
         => await StoreData(Constants.PlayerKey, player);
 
     public async Task<Character> LoadCharacter(string? id)
     {        
-        var characters = await LoadPlayer();
+        var characters = await LoadCharacters();
         var savedCharacter = characters?.FirstOrDefault(c => c.Id == id) ?? characters?.FirstOrDefault();
         if (savedCharacter is null)
             return new Character();
@@ -54,7 +53,7 @@ public class ContentService(HttpClient client, IJSRuntime js, IIndexedDbFactory 
 
     public async Task SaveCharacter(Character characterToSave)
     {
-        var characters = await LoadPlayer();
+        var characters = await LoadCharacters();
         var savedCharacter = characters.FirstOrDefault(c => c.Id == characterToSave.Id);
         // add or overwrite
         if (savedCharacter is not null)
@@ -63,7 +62,7 @@ public class ContentService(HttpClient client, IJSRuntime js, IIndexedDbFactory 
         }
         characters.Add(characterToSave);
 
-        await SavePlayer(characters);
+        await SaveCharacters(characters);
     }
 
     public async Task<List<Equipment>> LoadArmory()
@@ -75,9 +74,10 @@ public class ContentService(HttpClient client, IJSRuntime js, IIndexedDbFactory 
     }
     public async Task SaveArmory(List<Equipment> equipment)
         => await StoreData(Constants.EquipmentKey, equipment);
+
     public async Task<List<Spell>> LoadSpellLibrary()
     {
-        var spells = await LoadData<List<Spell>>(Constants.EquipmentKey);
+        var spells = await LoadData<List<Spell>>(Constants.SpellbookKey);
         if (spells is null)
             return [];
         return spells;

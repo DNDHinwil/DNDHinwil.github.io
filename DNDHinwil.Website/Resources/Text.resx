@@ -148,7 +148,7 @@
     <value>Name</value>
   </data>
   <data name="NewTriggeredEffect" xml:space="preserve">
-    <value>New Triggered Effect</value>
+    <value>New triggered Effect</value>
   </data>
   <data name="None" xml:space="preserve">
     <value>None</value>
@@ -398,5 +398,26 @@
   </data>
   <data name="Special" xml:space="preserve">
     <value>Special</value>
+  </data>
+  <data name="To" xml:space="preserve">
+    <value>to</value>
+  </data>
+  <data name="Cast" xml:space="preserve">
+    <value>Cast</value>
+  </data>
+  <data name="NoTriggeredEffects" xml:space="preserve">
+    <value>No triggered effects</value>
+  </data>
+  <data name="NoSpellsInSpellbook" xml:space="preserve">
+    <value>No spells in Spellbook</value>
+  </data>
+  <data name="General" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="SpellbookOf" xml:space="preserve">
+    <value>Spellbook of</value>
+  </data>
+  <data name="EquipmentOf" xml:space="preserve">
+    <value>Equipment of</value>
   </data>
 </root>

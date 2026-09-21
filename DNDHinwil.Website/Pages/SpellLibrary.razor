@@ -4,25 +4,52 @@
 <PageTitle>@Constants.SiteName - @Text.SpellLibrary</PageTitle>
 
 <div class="content" style="@($"--color-primary:{_settings.AccentColor};")">
-    <section class="title">
+    <header class="title">
         <h2>@Text.SpellLibrary</h2>
+    </header>
+    <section class="spellbook">
+        <h3>@($"{@Text.SpellbookOf} {_activeCharacter.Name}")</h3>
+        @foreach (var spell in _activeCharacter.Spellbook)
+        {
+            <button @onclick="x => RemoveSpellFromSpellbook(spell)">-</button>
+            <CastableSpell Model="spell" CharacterStats="_activeCharacter.Stats" AbilityScoreTable="_settings.ScoreModifiers"></CastableSpell>
+        }
     </section>
-    <section class="spells">
+    <section class="spell-library">
+        <h3>@($"{@Text.AvailableSpells}")</h3>
+        @foreach (var spell in _activeCharacter.Spellbook)
+        {
+            <button @onclick="x => AddSpellToSpellbook(spell)">+</button>
+            <CastableSpell Model="spell" CharacterStats="_activeCharacter.Stats" AbilityScoreTable="_settings.ScoreModifiers"></CastableSpell>
+        }
     </section>
 </div>
 
 @code {
     private Settings _settings = new Settings();
     private Character _activeCharacter = new Character();
+    private List<Spell> _spellLibrary = [];
 
     protected override async Task OnInitializedAsync()
     {
         _settings = await ContentService.LoadSettings();
         _activeCharacter = await ContentService.LoadCharacter(_settings.ActiveCharacter);
+        _spellLibrary = await ContentService.LoadSpellLibrary();
+
         var newCulture = new CultureInfo(_settings.Language);
         Thread.CurrentThread.CurrentUICulture = newCulture;
         Text.Culture = newCulture;
     }
+    private void AddSpellToSpellbook(Spell spell)
+    {
+        var spellAlreadyInBook = _activeCharacter.Spellbook.FirstOrDefault(s => s.Id == spell.Id);
+        if (spellAlreadyInBook is not null)
+            return;
+        _activeCharacter.Spellbook.Add(spell);
+    }
+
+    private void RemoveSpellFromSpellbook(Spell spell)
+        => _activeCharacter.Spellbook.Remove(spell);
 
     private async Task SavePlayer()
         => await ContentService.SaveCharacter(_activeCharacter);

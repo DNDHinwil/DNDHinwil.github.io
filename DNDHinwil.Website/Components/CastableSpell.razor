@@ -1,0 +1,25 @@
+﻿<div class="spell">
+    <div style="grid-column:span 2;">@Model.Name</div>
+    @foreach (var effect in Model.Effects)
+    {
+        <div>@effect.Description</div>
+        <div>@BonusStatDamage(effect.BonusStatId)</div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public required Spell Model { get; set; }
+    [Parameter]
+    public IEnumerable<Stat> CharacterStats { get; set; } = [];
+    [Parameter]
+    public AbilityScore[] AbilityScoreTable { get; set; } = [];
+
+    public string BonusStatDamage(string? statId)
+    {
+        var stat = CharacterStats.FirstOrDefault(s => s.Id == (statId ?? ""));
+        if (stat is null)
+            return "";
+        return $"+{stat.GetModifier(AbilityScoreTable)} ({stat.Short})";
+    }
+}

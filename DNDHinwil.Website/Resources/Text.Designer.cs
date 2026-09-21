@@ -187,6 +187,15 @@ namespace DNDHinwil.Website.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cast.
+        /// </summary>
+        public static string Cast {
+            get {
+                return ResourceManager.GetString("Cast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Character.
         /// </summary>
         public static string Character {
@@ -376,6 +385,15 @@ namespace DNDHinwil.Website.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Equipment of.
+        /// </summary>
+        public static string EquipmentOf {
+            get {
+                return ResourceManager.GetString("EquipmentOf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Export.
         /// </summary>
         public static string Export {
@@ -390,6 +408,15 @@ namespace DNDHinwil.Website.Resources {
         public static string Fireball {
             get {
                 return ResourceManager.GetString("Fireball", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to General.
+        /// </summary>
+        public static string General {
+            get {
+                return ResourceManager.GetString("General", resourceCulture);
             }
         }
         
@@ -556,7 +583,7 @@ namespace DNDHinwil.Website.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New Triggered Effect.
+        ///   Looks up a localized string similar to New triggered Effect.
         /// </summary>
         public static string NewTriggeredEffect {
             get {
@@ -570,6 +597,24 @@ namespace DNDHinwil.Website.Resources {
         public static string None {
             get {
                 return ResourceManager.GetString("None", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No spells in Spellbook.
+        /// </summary>
+        public static string NoSpellsInSpellbook {
+            get {
+                return ResourceManager.GetString("NoSpellsInSpellbook", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No triggered effects.
+        /// </summary>
+        public static string NoTriggeredEffects {
+            get {
+                return ResourceManager.GetString("NoTriggeredEffects", resourceCulture);
             }
         }
         
@@ -691,6 +736,15 @@ namespace DNDHinwil.Website.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Spellbook of.
+        /// </summary>
+        public static string SpellbookOf {
+            get {
+                return ResourceManager.GetString("SpellbookOf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Spell Library.
         /// </summary>
         public static string SpellLibrary {
@@ -777,6 +831,15 @@ namespace DNDHinwil.Website.Resources {
         public static string Test {
             get {
                 return ResourceManager.GetString("Test", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to to.
+        /// </summary>
+        public static string To {
+            get {
+                return ResourceManager.GetString("To", resourceCulture);
             }
         }
         

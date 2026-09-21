@@ -4,9 +4,9 @@
 <PageTitle>@Constants.SiteName - @Text.Stats</PageTitle>
 
 <div class="content" style="@($"--color-primary:{_settings.AccentColor};")">
-    <section class="title">
+    <header class="title">
         <h2>@Text.Stats</h2>
-    </section>
+    </header>
     <section class="general">
         <h3>@($"{Text.ActiveCharacter}: {_activeCharacter.Name}")</h3>
 
@@ -23,15 +23,22 @@
         <button @onclick="async x => await SavePlayer()" style="width:100%;">@Text.Save</button>
     </section>
     <section class="stats">
+        <div></div>
+        <div>@Text.Name</div>
+        <div>@Text.Score</div>
+        <div>@Text.Modifier</div>
+        <div></div>
+        <div></div>
         @foreach (var stat in _activeCharacter.Stats)
         {
             <button @onclick="x => SelectStatForEditing(stat)" command="show-modal" commandfor="delete-stat">-</button>
-            <label>@stat.Name</label>
-            <label>@stat.Score</label>
-            <label>@(stat.Boost > 0 ? $"(Boost:{stat.Boost})" : "")</label>
+            <div>@stat.Name</div>
+            <div style="text-align:right;">@stat.Score</div>
+            <div style="text-align:center;">@($"+{stat.GetModifier(_settings.ScoreModifiers)}")</div>
+            <div>@(stat.Boost > 0 ? $"(+{stat.Boost} {Text.Boost})" : "")</div>
             <button @onclick="x => SelectStatForEditing(stat)" command="show-modal" commandfor="edit-stat">⛭</button>
         }
-        <button @onclick="x => AddNewStat()" command="show-modal" commandfor="edit-stat" style="grid-column:span 5;">@Text.NewStat</button>
+        <button @onclick="x => AddNewStat()" command="show-modal" commandfor="edit-stat" style="grid-column:span 6;">@Text.NewStat</button>
     </section>
     @if (_editStat is not null)
     {

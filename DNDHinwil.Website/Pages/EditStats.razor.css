@@ -1,12 +1,16 @@
-﻿.stats {
+﻿.general > button {
+	margin: 0.5rem 0;
+}
+
+.stats {
 	display: grid;
-	grid-template-columns: min-content max-content 50px auto min-content;
+	grid-template-columns: min-content max-content 50px 50px auto min-content;
 }
 .stats > button {
 	margin-top: 0.5rem;
 }
 
-.stats > label {
+.stats > div {
 	padding-top: 0.875rem;
 	margin-left: 0.5rem;
 }

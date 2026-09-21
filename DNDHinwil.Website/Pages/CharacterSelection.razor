@@ -4,17 +4,17 @@
 <PageTitle>@Constants.SiteName - @Text.Characters</PageTitle>
 
 <div class="content" style="@($"--color-primary:{_settings.AccentColor};")">
-    <section class="title">
+    <header class="title">
         <h2>@Text.Characters</h2>
-    </section>
+    </header>
     <section class="character-select">
         @foreach (var character in _characters)
         {
             <div class="character @(character.Id == _settings.ActiveCharacter ? "active" : "")">
                 <button @onclick="async x => await SelectCharacterForEditing(character)" command="show-modal" commandfor="delete-character" style="font-size:0.5rem;">X</button>
-                <label style="font-size:1.25rem;padding-top:0.25rem;">@character.Name</label>
-                <label style="text-align:right;padding-top:0.5rem;">@Text.Level_Short</label>
-                <label style="text-align:left;padding-top:0.5rem;">@character.Level</label>
+                <div style="font-size:1.25rem;">@character.Name</div>
+                <div style="text-align:right;">@Text.Level_Short</div>
+                <div style="text-align:left;">@character.Level</div>
                 <button @onclick="async x => await SelectCharacterForEditing(character)" command="show-modal" commandfor="edit-character">⛭</button>
                 <button @onclick="async x => await ChangeActiveCharacter(character)">@Text.Activate</button>
             </div>
@@ -52,7 +52,7 @@
     protected override async Task OnInitializedAsync()
     {
         _settings = await ContentService.LoadSettings();
-        _characters = await ContentService.LoadPlayer();
+        _characters = await ContentService.LoadCharacters();
         _activeCharacter = _characters.FirstOrDefault(c => c.Id == _settings.ActiveCharacter) ?? new Character();
         var newCulture = new CultureInfo(_settings.Language);
         Thread.CurrentThread.CurrentUICulture = newCulture;
@@ -86,7 +86,7 @@
     {
         _activeCharacter = new Character();
         _characters.Add(_activeCharacter);
-        await ContentService.SavePlayer(_characters);
+        await ContentService.SaveCharacters(_characters);
         _settings.ActiveCharacter = _activeCharacter.Id;
         await ContentService.SaveSettings(_settings);
     }
@@ -108,6 +108,6 @@
             return;
         }
         _characters.Remove(character);
-        await ContentService.SavePlayer(_characters);
+        await ContentService.SaveCharacters(_characters);
     }
 }

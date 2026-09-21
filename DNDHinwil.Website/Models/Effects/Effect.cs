@@ -1,4 +1,5 @@
 ﻿using DNDHinwil.Website.Interfaces;
+using DNDHinwil.Website.Resources;
 
 namespace DNDHinwil.Website.Models;
 
@@ -8,4 +9,5 @@ public class Effect : IEffect
     public int Strength { get; set; } = 3;
     public IEffect.EffectTarget Target { get; set; } = IEffect.EffectTarget.Health;
     public IEffect.EffectOutcome Outcome { get; set; } = IEffect.EffectOutcome.DealsDamage;
+
 }

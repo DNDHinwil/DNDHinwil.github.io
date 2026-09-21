@@ -1,16 +1,23 @@
 ﻿.character {
 	display: grid;
 	grid-template-columns: max-content max-content min-content auto min-content min-content;
-	margin-top: 0.25rem;
 }
 
 	.character :nth-child(2) {
 		margin-right: 0.5rem;
 	}
+	.character :nth-child(3), .character :nth-child(4) {
+		padding-top: 1rem;
+	}
 
 	.character > button {
-		margin: 0 0.25rem;
+		margin-left: 0.25rem;
+		margin-right: 0.25rem;
 		text-align: center;
+	}
+
+	.character > div {
+		padding-top: 0.75rem;
 	}
 
 	.character.active :nth-child(2) {
@@ -19,10 +26,6 @@
 		.character.active :nth-child(2):after {
 			color: var(--color-foreground);
 			font-size: 1rem;
-			content: "✔";
-			margin-left: 0.5rem;
+			content: " ✔";
 		}
 
-.create-new {
-	margin-top: 1rem;
-}

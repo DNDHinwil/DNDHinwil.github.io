@@ -5,10 +5,10 @@
 <PageTitle>@Constants.SiteName - Home</PageTitle>
 
 <div class="content" style="@($"--color-primary:{_settings.AccentColor};")">
-    <section class="title">
+    <header class="title">
         <h2>Tracker</h2>
         <TimerOutput Model="_timer"></TimerOutput>
-    </section>
+    </header>
 
     <section class="timer-controls">
         <button @onclick="async x => await EndTurn()" class="timer-button">@Text.EndTurn</button>
@@ -33,17 +33,17 @@
     <section class="player">
         <h3 style="grid-row:span 2;">@_activeCharacter.Name</h3>
         <div style="grid-column:span 2;"></div>
-        <label style="text-align:right;">@Text.Health</label>
-        <label style="text-align:right;">@_activeCharacter.Health</label>
+        <div style="text-align:right;">@Text.Health</div>
+        <div style="text-align:right;">@_activeCharacter.Health</div>
         <span>/</span>
-        <label style="text-align:left;">@_activeCharacter.MaxHealth</label>
+        <div style="text-align:left;">@_activeCharacter.MaxHealth</div>
 
-        <label style="text-align:right;">@Text.Level_Short</label>
-        <label style="text-align:left;">@_activeCharacter.Level</label>
-        <label style="text-align:right;">@Text.Mana</label>
-        <label style="text-align:right;">@_activeCharacter.Mana</label>
+        <div style="text-align:right;">@Text.Level_Short</div>
+        <div style="text-align:left;">@_activeCharacter.Level</div>
+        <div style="text-align:right;">@Text.Mana</div>
+        <div style="text-align:right;">@_activeCharacter.Mana</div>
         <span>/</span>
-        <label style="text-align:left;">@_activeCharacter.MaxMana</label>
+        <div style="text-align:left;">@_activeCharacter.MaxMana</div>
 
     </section>
 
@@ -52,17 +52,26 @@
         <button popovertargetaction="show" popovertarget="take-damage">@Text.TakeDamage</button>
     </section>
 
-    <section class="spells">
-        @foreach (var item in _activeCharacter.Spellbook)
+    <section class="spellbook">
+        <h3 style="grid-row:span 2;">@Text.Spellbook</h3>
+        @if (_activeCharacter.Spellbook.Any())
         {
-            
+            @foreach (var spell in _activeCharacter.Spellbook)
+            {
+                <CastableSpell Model="spell" CharacterStats="_activeCharacter.Stats" AbilityScoreTable="_settings.ScoreModifiers"></CastableSpell>
+                <button>@Text.Cast</button>
+            }
+        }
+        else
+        {
+            <div>@Text.NoSpellsInSpellbook</div>
         }
     </section>
 
     <section class="active-effects">
+        <h3>@Text.ActiveEffects</h3>
         @if (_activeCharacter.ActiveEffects.Any())
         {
-            <h3>@Text.ActiveEffects</h3>
             <div class="active-effect">
                 <div></div>
                 <div>@Text.Name</div>
@@ -101,9 +110,13 @@
                     {
                         <div>⚪</div>
                     }
-                    <button class="active-effect-button" @onclick="x => StartEditingEffect(effect)" command="show-modal" commandfor="edit-active-effect">⛭</button>
+                    <button @onclick="x => StartEditingEffect(effect)" command="show-modal" commandfor="edit-active-effect">⛭</button>
                 </div>
             }
+        }
+        else
+        {
+            <div>@Text.NoTriggeredEffects</div>
         }
         <button @onclick="x => AddNewEffect()" command="show-modal" commandfor="edit-active-effect">@Text.NewTriggeredEffect</button>
 
@@ -317,13 +330,12 @@
     {
         if (_editEffect is null)
             return;
-        if(!save)
+        if (!save || _activeCharacter.ActiveEffects.Any(e => e.Id == _editEffect.Id))
         {
             _editEffect = null;
             return;
         }
-        if (_activeCharacter.ActiveEffects.Any(e => e.Id != _editEffect.Id))
-            _activeCharacter.ActiveEffects.Add(_editEffect);
+        _activeCharacter.ActiveEffects.Add(_editEffect);
 
         await ContentService.SaveCharacter(_activeCharacter);
         _editEffect = null;

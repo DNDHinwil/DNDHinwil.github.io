@@ -11,6 +11,7 @@ public class Character
     public string Id { get; set; } = Guid.NewGuid().ToString();
     public string Name { get; set; } = Text.DefaultCharacterName;
     public int Level { get; set; }
+    public int ExperiencePoints { get; set; }
     public int MaxHealth { get; set; } = 20;
     public int Health
     {
