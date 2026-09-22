@@ -2,7 +2,8 @@
 
 public interface ITimer
 {
-    string Time { get; }
+    public TimeSpan Time { get; }
+    string TimeString { get; }
     bool TimerRunning { get; set; }
     bool Paused { get; set; }
     bool ShowHours { get; set; }

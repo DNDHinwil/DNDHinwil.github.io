@@ -1,6 +1,6 @@
 ﻿namespace DNDHinwil.Website.Models;
 
-public class EquipmentBonus
+public class GearBonus
 {
     public string? StatId { get; set; }
     public string Text { get; set; } = "";

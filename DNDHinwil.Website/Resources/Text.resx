@@ -420,4 +420,46 @@
   <data name="EquipmentOf" xml:space="preserve">
     <value>Equipment of</value>
   </data>
+  <data name="Duration" xml:space="preserve">
+    <value>Duration</value>
+  </data>
+  <data name="Experience" xml:space="preserve">
+    <value>Experience</value>
+  </data>
+  <data name="ExperienceTable" xml:space="preserve">
+    <value>ExperienceTable</value>
+  </data>
+  <data name="BasicHealingPotion" xml:space="preserve">
+    <value>Basic healing Potion</value>
+  </data>
+  <data name="D4" xml:space="preserve">
+    <value>D4</value>
+  </data>
+  <data name="D6" xml:space="preserve">
+    <value>D6</value>
+  </data>
+  <data name="D8" xml:space="preserve">
+    <value>D8</value>
+  </data>
+  <data name="D10" xml:space="preserve">
+    <value>D10</value>
+  </data>
+  <data name="D12" xml:space="preserve">
+    <value>D12</value>
+  </data>
+  <data name="D20" xml:space="preserve">
+    <value>D20</value>
+  </data>
+  <data name="D100" xml:space="preserve">
+    <value>D100</value>
+  </data>
+  <data name="Coin" xml:space="preserve">
+    <value>Coin</value>
+  </data>
+  <data name="Healing" xml:space="preserve">
+    <value>Healing</value>
+  </data>
+  <data name="D" xml:space="preserve">
+    <value>D</value>
+  </data>
 </root>

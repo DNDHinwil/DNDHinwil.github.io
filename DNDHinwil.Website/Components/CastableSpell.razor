@@ -2,24 +2,23 @@
     <div style="grid-column:span 2;">@Model.Name</div>
     @foreach (var effect in Model.Effects)
     {
-        <div>@effect.Description</div>
-        <div>@BonusStatDamage(effect.BonusStatId)</div>
+        <div>@GetText(effect)</div>
     }
 </div>
 
 @code {
-    [Parameter]
-    public required Spell Model { get; set; }
-    [Parameter]
-    public IEnumerable<Stat> CharacterStats { get; set; } = [];
-    [Parameter]
-    public AbilityScore[] AbilityScoreTable { get; set; } = [];
+        [Parameter]
+        public required Spell Model { get; set; }
+        [Parameter]
+        public IEnumerable<Stat> CharacterStats { get; set; } = [];
+        [Parameter]
+        public AbilityScore[] AbilityScoreTable { get; set; } = [];
 
-    public string BonusStatDamage(string? statId)
+    public string GetText(SpellEffect effect)
     {
-        var stat = CharacterStats.FirstOrDefault(s => s.Id == (statId ?? ""));
+        var stat = CharacterStats.FirstOrDefault(s => s.Id == (effect.BonusStatId ?? ""));
         if (stat is null)
-            return "";
-        return $"+{stat.GetModifier(AbilityScoreTable)} ({stat.Short})";
+            return effect.ToString();
+        return effect.ToString(stat.GetModifier(AbilityScoreTable), stat.Short);
     }
 }

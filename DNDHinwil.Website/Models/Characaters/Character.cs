@@ -11,6 +11,7 @@ public class Character
     public string Id { get; set; } = Guid.NewGuid().ToString();
     public string Name { get; set; } = Text.DefaultCharacterName;
     public int Level { get; set; }
+    public int LevelModifier { get; set; }
     public int ExperiencePoints { get; set; }
     public int MaxHealth { get; set; } = 20;
     public int Health
@@ -25,9 +26,10 @@ public class Character
         set => _currentMana = Math.Clamp(value, 0, MaxMana);
     }
 
-    public int ArmorClass => Equipment.Any(e => e is Armor) ? Equipment.Max(a => ((Armor)a).ArmorClass) : 10;
+    public int ArmorClass => Gear.Any(e => e is Armor) ? Gear.Max(a => ((Armor)a).ArmorClass) : 10;
     public int DamageReduction { get; set; }
     public List<Equipment> Equipment { get; set; } = [];
+    public List<Gear> Gear { get; set; } = [];
     public List<Spell> Spellbook { get; set; } = [];
     public List<Stat> Stats { get; set; } = 
         [
@@ -40,4 +42,6 @@ public class Character
         new(){Name = Text.Charisma, Short = Text.Charisma_Short, Score = 10 }
         ];
     public List<TriggeredEffect> ActiveEffects { get; set; } = [];
+
+    public List<Turn> Turns { get; set; } = [];
 }

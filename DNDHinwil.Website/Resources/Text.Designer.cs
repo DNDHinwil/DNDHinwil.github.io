@@ -169,6 +169,15 @@ namespace DNDHinwil.Website.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Basic healing Potion.
+        /// </summary>
+        public static string BasicHealingPotion {
+            get {
+                return ResourceManager.GetString("BasicHealingPotion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Boost.
         /// </summary>
         public static string Boost {
@@ -232,6 +241,15 @@ namespace DNDHinwil.Website.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Coin.
+        /// </summary>
+        public static string Coin {
+            get {
+                return ResourceManager.GetString("Coin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Color.
         /// </summary>
         public static string Color {
@@ -273,6 +291,78 @@ namespace DNDHinwil.Website.Resources {
         public static string CreateCharacter {
             get {
                 return ResourceManager.GetString("CreateCharacter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to D.
+        /// </summary>
+        public static string D {
+            get {
+                return ResourceManager.GetString("D", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to D10.
+        /// </summary>
+        public static string D10 {
+            get {
+                return ResourceManager.GetString("D10", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to D100.
+        /// </summary>
+        public static string D100 {
+            get {
+                return ResourceManager.GetString("D100", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to D12.
+        /// </summary>
+        public static string D12 {
+            get {
+                return ResourceManager.GetString("D12", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to D20.
+        /// </summary>
+        public static string D20 {
+            get {
+                return ResourceManager.GetString("D20", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to D4.
+        /// </summary>
+        public static string D4 {
+            get {
+                return ResourceManager.GetString("D4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to D6.
+        /// </summary>
+        public static string D6 {
+            get {
+                return ResourceManager.GetString("D6", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to D8.
+        /// </summary>
+        public static string D8 {
+            get {
+                return ResourceManager.GetString("D8", resourceCulture);
             }
         }
         
@@ -358,6 +448,15 @@ namespace DNDHinwil.Website.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Duration.
+        /// </summary>
+        public static string Duration {
+            get {
+                return ResourceManager.GetString("Duration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Effect.
         /// </summary>
         public static string Effect {
@@ -394,6 +493,24 @@ namespace DNDHinwil.Website.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Experience.
+        /// </summary>
+        public static string Experience {
+            get {
+                return ResourceManager.GetString("Experience", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ExperienceTable.
+        /// </summary>
+        public static string ExperienceTable {
+            get {
+                return ResourceManager.GetString("ExperienceTable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Export.
         /// </summary>
         public static string Export {
@@ -426,6 +543,15 @@ namespace DNDHinwil.Website.Resources {
         public static string Heal {
             get {
                 return ResourceManager.GetString("Heal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Healing.
+        /// </summary>
+        public static string Healing {
+            get {
+                return ResourceManager.GetString("Healing", resourceCulture);
             }
         }
         

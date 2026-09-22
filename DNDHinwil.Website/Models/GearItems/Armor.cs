@@ -1,6 +1,6 @@
 ﻿namespace DNDHinwil.Website.Models;
 
-public class Armor : Equipment
+public class Armor : Gear
 {
     [Key]
     public int ArmorClass { get; set; } = 11;

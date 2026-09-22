@@ -1,5 +1,5 @@
 ﻿@page "/settings"
-@inject IContentService ContentService
+@inject IDataService ContentService
 
 <PageTitle>@Constants.SiteName - @Text.Settings</PageTitle>
 
@@ -43,15 +43,29 @@
         <label>@Text.UploadSpellLibrary</label>
         <button>@Text.Upload</button>
     </section>
-    <section class="modifiers">
-        <h3 style="grid-column:span 2;">@Text.ModifierTable</h3>
-        <div>@Text.Level</div>
-        <div>@Text.Modifier</div>
-        @foreach (var item in _settings.ScoreModifiers)
-        {
-            <div>@item.Score</div>
-            <div>@item.Modifier</div>
-        }
+    <section class="tables">
+        <div style="grid-column:span 3;">Tables</div>
+        <div class="modifiers">
+            <h3 style="grid-column:span 2;">@Text.ModifierTable</h3>
+            <div>@Text.Score</div>
+            <div>@Text.Modifier</div>
+            @foreach (var item in _settings.ScoreModifiers)
+            {
+                <div>@item.Score</div>
+                <div>@item.Modifier</div>
+            }
+        </div>
+        <div></div>
+        <div class="levels">
+            <h3 style="grid-column:span 2;">@Text.ExperienceTable</h3>
+            <div>@Text.Experience</div>
+            <div>@Text.Level</div>
+            @foreach (var item in _settings.LevelThresholds)
+            {
+                <div>@item.Experience</div>
+                <div>@item.Level</div>
+            }
+        </div>
     </section>
 </div>
 

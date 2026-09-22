@@ -19,4 +19,27 @@ public class Settings
             new(){ Score = 18, Modifier = 4 },
             new(){ Score = 20, Modifier = 5 },
         ];
+    public LevelThreshold[] LevelThresholds { get; set; } =
+        [
+            new(){ Experience = 0, Level = 1 },
+            new(){ Experience = 300, Level = 2 },
+            new(){ Experience = 900, Level = 3 },
+            new(){ Experience = 2700, Level = 4 },
+            new(){ Experience = 6500, Level = 5 },
+            new(){ Experience = 14000, Level = 6 },
+            new(){ Experience = 23000, Level = 7 },
+            new(){ Experience = 34000, Level = 8 },
+            new(){ Experience = 48000, Level = 9 },
+            new(){ Experience = 64000, Level = 10 },
+            new(){ Experience = 85000, Level = 11 },
+            new(){ Experience = 100000, Level = 12 },
+            new(){ Experience = 120000, Level = 13 },
+            new(){ Experience = 140000, Level = 14 },
+            new(){ Experience = 165000, Level = 15 },
+            new(){ Experience = 195000, Level = 16 },
+            new(){ Experience = 225000, Level = 17 },
+            new(){ Experience = 265000, Level = 18 },
+            new(){ Experience = 305000, Level = 19 },
+            new(){ Experience = 355000, Level = 20 },
+        ];
 }

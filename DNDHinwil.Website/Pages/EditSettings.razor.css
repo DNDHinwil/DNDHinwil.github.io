@@ -13,10 +13,28 @@
 		margin: 0.125rem 0;
 	}
 
+.tables {
+	display: grid;
+	grid-template-columns: max-content 20px max-content;
+}
+
 .modifiers {
 	display: grid;
 	grid-template-columns: max-content 80px;
 }
-	.modifiers > label {
+	.modifiers > div {
 		text-align: right;
+		border-top: 1px solid var(--color-foreground);
+	}
+
+.levels {
+	grid-row: span 2;
+	float: right;
+	display: grid;
+	grid-template-columns: max-content 60px;
+}
+
+	.levels > div {
+		text-align: right;
+		border-top: 1px solid var(--color-foreground);
 	}

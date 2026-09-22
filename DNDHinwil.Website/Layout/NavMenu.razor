@@ -1,4 +1,4 @@
-﻿@inject IContentService ContentService
+﻿@inject IDataService ContentService
 @inject NavigationManager NavigationManager
 
 <h1 class="navbar-brand"><NavLink href="/" Match="NavLinkMatch.All" tabindex="0" @onclick="CloseNavMenu">DnD Hinwil</NavLink></h1>
@@ -10,7 +10,7 @@
 </button>
 
 <nav class="@NavMenuCssClass nav-scrollable">
-    <NavLink href="" Match="NavLinkMatch.All" tabindex="0" @onclick="CloseNavMenu">@Text.Tracker</NavLink>
+    <NavLink href="tracker" Match="NavLinkMatch.All" tabindex="0" @onclick="CloseNavMenu">@Text.Tracker</NavLink>
     <NavLink href="stats" Match="NavLinkMatch.All" tabindex="0" @onclick="CloseNavMenu">@Text.Stats</NavLink>
     <NavLink href="library" Match="NavLinkMatch.All" tabindex="0" @onclick="CloseNavMenu">@Text.SpellLibrary</NavLink>
     <NavLink href="armory" Match="NavLinkMatch.All" tabindex="0" @onclick="CloseNavMenu">@Text.Armory</NavLink>

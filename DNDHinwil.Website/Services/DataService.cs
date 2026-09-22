@@ -6,14 +6,19 @@ using IndexedDB.Blazor;
 
 namespace DNDHinwil.Website;
 
-public interface IContentService
+public interface IDataService
 {
+    public Task<List<Session>> LoadSessions();
+    public Task SaveSessions(List<Session> sessions);
     public Task<List<Character>> LoadCharacters();
-    public Task SaveCharacters(List<Character> player);
+    public Task SaveCharacters(List<Character> characters);
     public Task<Character> LoadCharacter(string? id);
     public Task SaveCharacter(Character character);
-    public Task<List<Equipment>> LoadArmory();
-    public Task SaveArmory(List<Equipment> equipment);
+
+    public Task<List<Equipment>> LoadEquipmentChest();
+    public Task SaveEquipmentChest(List<Equipment> equipment);
+    public Task<List<Gear>> LoadArmory();
+    public Task SaveArmory(List<Gear> equipment);
     public Task<List<Spell>> LoadSpellLibrary();
     public Task SaveSpellLibrary(List<Spell> spells);
     public Task<Settings> LoadSettings();
@@ -21,10 +26,16 @@ public interface IContentService
     public Task MakeAlert(string message);
 }
 
-public class ContentService(HttpClient client, IJSRuntime js, IIndexedDbFactory dbFactory) : IContentService
+public class DataService(HttpClient client, IJSRuntime js, IIndexedDbFactory dbFactory) : IDataService
 {
     private readonly HttpClient _client = client;
     private readonly IJSRuntime _js = js;
+
+    public async Task<List<Session>> LoadSessions()
+         => (await LoadData<List<Session>>(Constants.SessionKey)) ?? [new Session()];
+
+    public async Task SaveSessions(List<Session> sessions)
+        => await StoreData(Constants.SessionKey, sessions);
 
     public async Task<List<Character>> LoadCharacters()
     {
@@ -65,15 +76,26 @@ public class ContentService(HttpClient client, IJSRuntime js, IIndexedDbFactory 
         await SaveCharacters(characters);
     }
 
-    public async Task<List<Equipment>> LoadArmory()
+    public async Task<List<Equipment>> LoadEquipmentChest()
     {
         var armory = await LoadData<List<Equipment>>(Constants.EquipmentKey);
         if (armory is null)
             return [];
         return armory;
     }
-    public async Task SaveArmory(List<Equipment> equipment)
+    public async Task SaveEquipmentChest(List<Equipment> equipment)
         => await StoreData(Constants.EquipmentKey, equipment);
+
+
+    public async Task<List<Gear>> LoadArmory()
+    {
+        var armory = await LoadData<List<Gear>>(Constants.EquipmentKey);
+        if (armory is null)
+            return [];
+        return armory;
+    }
+    public async Task SaveArmory(List<Gear> armory)
+        => await StoreData(Constants.EquipmentKey, armory);
 
     public async Task<List<Spell>> LoadSpellLibrary()
     {

@@ -3,9 +3,9 @@ using DNDHinwil.Website.Resources;
 
 namespace DNDHinwil.Website.Models;
 
-public class Equipment : IEquipment
+public class Gear : IEquipment
 {
     public string Name { get; set; } = Text.Equipment;
     public int Weight { get; set; }
-
+    public List<GearBonus> Bonuses { get; set; } = [];
 }

@@ -1,5 +1,5 @@
 ﻿<div class="timer">
-    <div class="timer-output">@(Model?.Time ?? "Error")</div>
+    <div class="timer-output">@(Model?.TimeString ?? "Error")</div>
     @if (Model is not null && !Model.TimerRunning)
     {
         <span>⚫</span>

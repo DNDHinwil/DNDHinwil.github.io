@@ -1,6 +1,6 @@
 ﻿namespace DNDHinwil.Website.Models;
 
-public class PassiveEffect
+public class PassiveEffect : Effect
 {
 
 }
