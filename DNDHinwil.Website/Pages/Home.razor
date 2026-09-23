@@ -1,5 +1,6 @@
 ﻿@page "/"
 @using System.Globalization
+@using MudBlazor.Charts
 @inject IDataService ContentService
 
 <PageTitle>@Constants.SiteName - Home</PageTitle>
@@ -8,15 +9,33 @@
     <header class="title">
         <h2>Home</h2>
     </header>
-    <section>
-        
-    </section>
+    @if (_sessions.Count > 0 && _sessions.FirstOrDefault() != _activeSession)
+    {
+        <section>
+            <h3>@Text.Sessions</h3>
+            <InputSelect @bind-Value="_activeSession">
+            @foreach (var session in _sessions)
+            {
+                <option value="@session">@session.StartTime.ToShortDateString()</option>
+            }
+            </InputSelect>
+        </section>
+    }
+    @if (_activeSession is not null)
+    {
+        <section>
+            <h3>@Text.Session</h3>
+            <Line ChartSeries=""></Line>
+        </section>
+    }
 </div>
 
 @code {
     private Settings _settings = new Settings();
     private Character _activeCharacter = new Character();
+    private List<Session> _sessions = [];
     private Session? _activeSession;
+    private List<MudBlazor.ChartSeries<
 
     protected override void OnInitialized()
     {
@@ -36,7 +55,9 @@
         Thread.CurrentThread.CurrentUICulture = newCulture;
         Text.Culture = newCulture;
 
-        var sessions = await ContentService.LoadSessions();
-        _activeSession = 
+        _sessions = await ContentService.LoadSessions();
+        _activeSession = _sessions.FirstOrDefault(x => x.EndTime is null);
+
+
     }
 }

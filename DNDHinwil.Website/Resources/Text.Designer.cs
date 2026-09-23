@@ -817,6 +817,24 @@ namespace DNDHinwil.Website.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Session.
+        /// </summary>
+        public static string Session {
+            get {
+                return ResourceManager.GetString("Session", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sessions.
+        /// </summary>
+        public static string Sessions {
+            get {
+                return ResourceManager.GetString("Sessions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Settings.
         /// </summary>
         public static string Settings {

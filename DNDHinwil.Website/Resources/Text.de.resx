@@ -462,4 +462,10 @@
   <data name="D" xml:space="preserve">
     <value>W</value>
   </data>
+  <data name="Session" xml:space="preserve">
+    <value>Session</value>
+  </data>
+  <data name="Sessions" xml:space="preserve">
+    <value>Sessions</value>
+  </data>
 </root>
