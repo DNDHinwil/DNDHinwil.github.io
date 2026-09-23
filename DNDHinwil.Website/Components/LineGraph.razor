@@ -1,0 +1,45 @@
+﻿@using System.Numerics
+@typeparam TValue where TValue : INumber<TValue>
+
+<table class="line-graph" aria-label="@Title" style="@_limits @_labelHeight">
+    @if (Title is not null)
+    {
+        <caption class="line-graph-title">@Title</caption>
+    }
+    <tbody>
+        @foreach (var point in Points)
+        {
+            <tr>
+                @if (!string.IsNullOrWhiteSpace(point.Label))
+                {
+                    <th scope="row">@point.Label</th>
+                }
+                <td data-value="@point.Value" style="@($"--value:{point.Value};")">@point.Value</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    private string _limits => $"--min:{Min};--max:{Max};";
+    private string _labelHeight => Points.Any(p => string.IsNullOrWhiteSpace(p.Label)) ? $"--chart-label-height:{1}rem;" : "";
+
+    [Parameter]
+    public string? Title { get; set; }
+    [Parameter]
+    public TValue Max { get; set; } = TValue.Zero;
+    [Parameter]
+    public TValue Min { get; set; } = TValue.Zero;
+    [Parameter]
+    public IEnumerable<LineGraphPoint<TValue>> Points { get; set; } = [];
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        if(Max <= Min)
+        {
+            Min = Points.Min(p => p.Value) ?? TValue.Zero;
+            Max = Points.Max(p => p.Value) ?? TValue.One;
+        }
+    }
+}

@@ -1,6 +1,5 @@
 ﻿@page "/"
 @using System.Globalization
-@using MudBlazor.Charts
 @inject IDataService ContentService
 
 <PageTitle>@Constants.SiteName - Home</PageTitle>
@@ -21,11 +20,11 @@
             </InputSelect>
         </section>
     }
-    @if (_activeSession is not null)
+    @if (_activeSession is not null && _activeSession.Turns.Count > 2)
     {
         <section>
             <h3>@Text.Session</h3>
-            <Line ChartSeries=""></Line>
+            <LineGraph Title="@Text.Turns" Min="(_activeSession.Turns.Min(t => t.Time!.Value.TotalMinutes) * 0.9d)" Max="(_activeSession.Turns.Min(t => t.Time!.Value.TotalMinutes) * 1.1d)" Points="TurnsToLineGraphPoints(_activeSession.Turns)"></LineGraph>
         </section>
     }
 </div>
@@ -35,7 +34,8 @@
     private Character _activeCharacter = new Character();
     private List<Session> _sessions = [];
     private Session? _activeSession;
-    private List<MudBlazor.ChartSeries<
+
+    private string _timeFormat => @"mm\:ss";
 
     protected override void OnInitialized()
     {
@@ -60,4 +60,6 @@
 
 
     }
+    private static IEnumerable<LineGraphPoint<double>> TurnsToLineGraphPoints(List<Turn> turns)
+        => turns.Where(t => t.Time.HasValue).Select(t => new LineGraphPoint<double>() { Label = $"{Text.Turn} {turns.IndexOf(t)}", Value = t.Time!.Value.TotalMinutes });
 }
