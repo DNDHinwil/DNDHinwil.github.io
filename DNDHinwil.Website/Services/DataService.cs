@@ -9,7 +9,7 @@ namespace DNDHinwil.Website;
 public interface IDataService
 {
     public Task<List<Session>> LoadSessions();
-    public Task SaveSessions(List<Session> sessions);
+    public Task SaveSession(Session sessions);
     public Task<List<Character>> LoadCharacters();
     public Task SaveCharacters(List<Character> characters);
     public Task<Character> LoadCharacter(string? id);
@@ -29,13 +29,25 @@ public interface IDataService
 public class DataService(HttpClient client, IJSRuntime js, IIndexedDbFactory dbFactory) : IDataService
 {
     private readonly HttpClient _client = client;
+    private readonly IIndexedDbFactory _indexedDbFactory = dbFactory;
     private readonly IJSRuntime _js = js;
 
     public async Task<List<Session>> LoadSessions()
          => (await LoadData<List<Session>>(Constants.SessionKey)) ?? [new Session()];
 
-    public async Task SaveSessions(List<Session> sessions)
-        => await StoreData(Constants.SessionKey, sessions);
+    public async Task SaveSession(Session session)
+    {
+        var sessions = await LoadSessions();
+        var savedSession = sessions.FirstOrDefault(c => c.Id == session.Id);
+        // add or overwrite
+        if (savedSession is not null)
+        {
+            _ = sessions.Remove(savedSession);
+        }
+        sessions.Add(session);
+
+        await StoreData(Constants.SessionKey, sessions);
+    }
 
     public async Task<List<Character>> LoadCharacters()
     {

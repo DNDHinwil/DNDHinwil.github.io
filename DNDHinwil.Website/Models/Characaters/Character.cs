@@ -29,6 +29,7 @@ public class Character
     public int ArmorClass => Gear.Any(e => e is Armor) ? Gear.Max(a => ((Armor)a).ArmorClass) : 10;
     public int DamageReduction { get; set; }
     public List<Equipment> Equipment { get; set; } = [];
+    public List<Money> Money { get; set; } = [];
     public List<Gear> Gear { get; set; } = [];
     public List<Spell> Spellbook { get; set; } = [];
     public List<Stat> Stats { get; set; } = 

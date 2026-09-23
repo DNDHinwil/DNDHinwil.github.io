@@ -16,14 +16,11 @@
 @code {
     private Settings _settings = new Settings();
     private Character _activeCharacter = new Character();
-    private TriggeredEffect? _editEffect;
-    private UpCountingTimer? _timer;
-
-    private Effect _quickEffect = new Effect();
+    private Session? _activeSession;
 
     protected override void OnInitialized()
     {
-        
+
     }
 
     protected override async Task OnInitializedAsync()
@@ -38,5 +35,8 @@
         var newCulture = new CultureInfo(_settings.Language);
         Thread.CurrentThread.CurrentUICulture = newCulture;
         Text.Culture = newCulture;
+
+        var sessions = await ContentService.LoadSessions();
+        _activeSession = 
     }
 }

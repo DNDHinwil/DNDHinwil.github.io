@@ -194,6 +194,7 @@
 
 @code {
     private Settings _settings = new Settings();
+    private Session? _activeSession;
     private Character _activeCharacter = new Character();
     private TriggeredEffect? _editEffect;
     private UpCountingTimer? _timer;
@@ -215,6 +216,9 @@
             await ContentService.SaveSettings(_settings);
         }
         _timer = new UpCountingTimer(UpdateUi);
+        var sessions = await ContentService.LoadSessions();
+        _activeSession = sessions.FirstOrDefault(s => s.EndTime is null);
+
         var newCulture = new CultureInfo(_settings.Language);
         Thread.CurrentThread.CurrentUICulture = newCulture;
         Text.Culture = newCulture;
