@@ -8,11 +8,23 @@
     <header class="title">
         <h2>Home</h2>
     </header>
-    @if (_sessions.Count > 0 && _sessions.FirstOrDefault() != _activeSession)
+    <section>
+        @if (_activeSession is null)
+        {
+            <h3>@Text.StartSession</h3>
+            <button @onclick="async x => await StartSession()" style="width:100%;height:80px;">@Text.Start</button>
+        }
+        else
+        {
+            <h3>@Text.EndSession</h3>
+            <button @onclick="async x => await EndSession()" style="width:100%;height:80px;">@Text.End</button>
+        }
+    </section>
+    @if (_sessions.Count > 1)
     {
         <section>
-            <h3>@Text.Sessions</h3>
-            <InputSelect @bind-Value="_activeSession">
+            <h3>@Text.PastSessions</h3>
+            <InputSelect @bind-Value="_selectedSession">
             @foreach (var session in _sessions)
             {
                 <option value="@session">@session.StartTime.ToShortDateString()</option>
@@ -20,20 +32,23 @@
             </InputSelect>
         </section>
     }
-    @if (_activeSession is not null && _activeSession.Turns.Count > 2)
+    @if (_selectedSession is not null && _selectedSession.Turns.Count > 2)
     {
         <section>
             <h3>@Text.Session</h3>
-            <LineGraph Title="@Text.Turns" Min="(_activeSession.Turns.Min(t => t.Time!.Value.TotalMinutes) * 0.9d)" Max="(_activeSession.Turns.Min(t => t.Time!.Value.TotalMinutes) * 1.1d)" Points="TurnsToLineGraphPoints(_activeSession.Turns)"></LineGraph>
+            <LineGraph Title="@Text.Turns" 
+                Min="(_selectedSession.Turns.Min(t => t.Time!.Value.TotalMinutes) * 0.9d)" 
+                Max="(_selectedSession.Turns.Min(t => t.Time!.Value.TotalMinutes) * 1.1d)" 
+                Points="TurnsToLineGraphPoints(_selectedSession.Turns)"></LineGraph>
         </section>
     }
 </div>
 
 @code {
     private Settings _settings = new Settings();
-    private Character _activeCharacter = new Character();
     private List<Session> _sessions = [];
     private Session? _activeSession;
+    private Session? _selectedSession;
 
     private string _timeFormat => @"mm\:ss";
 
@@ -45,21 +60,31 @@
     protected override async Task OnInitializedAsync()
     {
         _settings = await ContentService.LoadSettings();
-        _activeCharacter = await ContentService.LoadCharacter(_settings.ActiveCharacter);
-        if (string.IsNullOrWhiteSpace(_settings.ActiveCharacter))
-        {
-            _settings.ActiveCharacter = _activeCharacter.Id;
-            await ContentService.SaveSettings(_settings);
-        }
+
         var newCulture = new CultureInfo(_settings.Language);
         Thread.CurrentThread.CurrentUICulture = newCulture;
         Text.Culture = newCulture;
 
         _sessions = await ContentService.LoadSessions();
-        _activeSession = _sessions.FirstOrDefault(x => x.EndTime is null);
-
-
+        _selectedSession = _activeSession = _sessions.FirstOrDefault(x => x.EndTime is null);
     }
+
+    public async Task StartSession()
+    {
+        if (_activeSession is not null)
+            return;
+        _activeSession = new Session();
+        await ContentService.SaveSession(_activeSession);
+    }
+    public async Task EndSession()
+    {
+        if (_activeSession is null)
+            return;
+        _activeSession.EndTime = DateTime.UtcNow;
+        await ContentService.SaveSession(_activeSession);
+        _activeSession = null;
+    }
+
     private static IEnumerable<LineGraphPoint<double>> TurnsToLineGraphPoints(List<Turn> turns)
-        => turns.Where(t => t.Time.HasValue).Select(t => new LineGraphPoint<double>() { Label = $"{Text.Turn} {turns.IndexOf(t)}", Value = t.Time!.Value.TotalMinutes });
+        => turns.Where(t => t.Time.HasValue).Select(t => new LineGraphPoint<double>() { Label = $"{Text.Turn} {turns.IndexOf(t) + 1}", Value = t.Time!.Value.TotalMinutes });
 }

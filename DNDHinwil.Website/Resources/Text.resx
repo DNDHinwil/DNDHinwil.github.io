@@ -468,4 +468,19 @@
   <data name="Sessions" xml:space="preserve">
     <value>Sessions</value>
   </data>
+  <data name="PastSessions" xml:space="preserve">
+    <value>Past Sessions</value>
+  </data>
+  <data name="StartSession" xml:space="preserve">
+    <value>Start a new Session</value>
+  </data>
+  <data name="EndSession" xml:space="preserve">
+    <value>End this Session</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="End" xml:space="preserve">
+    <value>End</value>
+  </data>
 </root>

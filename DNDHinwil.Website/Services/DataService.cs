@@ -33,7 +33,18 @@ public class DataService(HttpClient client, IJSRuntime js, IIndexedDbFactory dbF
     private readonly IJSRuntime _js = js;
 
     public async Task<List<Session>> LoadSessions()
-         => (await LoadData<List<Session>>(Constants.SessionKey)) ?? [new Session()];
+    {
+        var sessions = await LoadData<List<Session>>(Constants.SessionKey) ?? [];
+        var activeSession = sessions.FirstOrDefault(s => s.EndTime is null);
+        if (activeSession is not null && activeSession.StartTime.Date > DateTime.UtcNow.Date)
+        {
+            activeSession.EndTime = DateTime.UtcNow.Date.AddMinutes(-1);
+            await SaveSession(activeSession);
+            activeSession = null;
+        }
+
+        return sessions;
+    }
 
     public async Task SaveSession(Session session)
     {

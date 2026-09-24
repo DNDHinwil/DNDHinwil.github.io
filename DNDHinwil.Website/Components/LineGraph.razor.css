@@ -1,10 +1,41 @@
 ﻿table {
 	--chart-label-height: 0;
 	--line-stroke: 1px;
+	width: 100%;
+	display: grid;
+	grid-template-columns: 1fr;
+}
+
+caption {
+}
+
+thead, tbody {
+	display: grid;
+	grid-template-columns: repeat(var(--total-points), auto);
+	overflow-inline: clip;
+}
+
+th {
+	text-align: center;
+	order: 1;
+}
+tr {
+	display: grid;
+	grid-template-columns: 1fr;
+	overflow-inline: clip;
+	align-content: end;
+	align-items: end;
 }
 
 td {
-	height: calc( ((var(--value) - var(--min)) / (var(--max) - var(--min))) * 100cqb - var(--chart-label-height));
+	height: calc(((var(--value) - var(--min)) / (var(--max) - var(--min))) * 100cqb - var(--chart-label-height));
 	clip-path: polygon(-1% calc(var(--_py) * 100% + var(--line-stroke) / 2), -1% calc(var(--_py) * 100% - var(--line-stroke) / 2), 101% calc(var(--_y) * 100% - var(--line-stroke) / 2), 101% calc(var(--_y) * 100% + var(--line-stroke) / 2));
+	background: var(--data-chart-bar-bg, var(--_bg, light-dark(hsla(210, 100%, 70%, .8), hsla(210, 60%, 60%, .8))));
+	
+	font-size: var(--data-chart-bar-fs, clamp(0.5625rem, 0.45rem + .5cqi, 0.75rem));
+	font-weight: var(--data-chart-bar-fw, 400);
+	height: calc(((var(--_v) - var(--_min)) / (var(--_max) - var(--_min))) * 100cqb);
+	padding: var(--data-chart-bar-p, .75ch 0 0 0);
+	text-align: center;
 }
 

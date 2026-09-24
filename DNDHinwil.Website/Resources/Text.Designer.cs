@@ -466,6 +466,24 @@ namespace DNDHinwil.Website.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to End.
+        /// </summary>
+        public static string End {
+            get {
+                return ResourceManager.GetString("End", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to End this Session.
+        /// </summary>
+        public static string EndSession {
+            get {
+                return ResourceManager.GetString("EndSession", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to End Turn.
         /// </summary>
         public static string EndTurn {
@@ -772,6 +790,15 @@ namespace DNDHinwil.Website.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Past Sessions.
+        /// </summary>
+        public static string PastSessions {
+            get {
+                return ResourceManager.GetString("PastSessions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pause.
         /// </summary>
         public static string Pause {
@@ -894,6 +921,24 @@ namespace DNDHinwil.Website.Resources {
         public static string SpellLibrary {
             get {
                 return ResourceManager.GetString("SpellLibrary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start.
+        /// </summary>
+        public static string Start {
+            get {
+                return ResourceManager.GetString("Start", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start a new Session.
+        /// </summary>
+        public static string StartSession {
+            get {
+                return ResourceManager.GetString("StartSession", resourceCulture);
             }
         }
         

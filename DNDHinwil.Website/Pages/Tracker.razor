@@ -107,7 +107,7 @@
         }
         else
         {
-            <div>@Text.NoTriggeredEffects</div>
+            <div style="grid-column:span 5;">@Text.NoTriggeredEffects</div>
         }
         <button @onclick="x => AddNewEffect()" style="grid-column:span 5;" command="show-modal" commandfor="edit-active-effect">@Text.NewTriggeredEffect</button>
 
@@ -167,9 +167,9 @@
         </InputWithLabel>
         <InputWithLabel Label="@Text.Target">
             <InputSelect @bind-value="_quickEffect.Target">
-                <option value="@IEffect.EffectTarget.Special">@Text.None</option>
                 <option value="@IEffect.EffectTarget.Health">@Text.Health</option>
                 <option value="@IEffect.EffectTarget.Mana">@Text.Mana</option>
+                <option value="@IEffect.EffectTarget.Special">@Text.None</option>
             </InputSelect>
         </InputWithLabel>
         <button popovertarget="take-heal" popovertargetaction="hide">@Text.Cancel</button>
@@ -182,9 +182,9 @@
         </InputWithLabel>
         <InputWithLabel Label="@Text.Target">
             <InputSelect @bind-value="_quickEffect.Target">
-                <option value="@IEffect.EffectTarget.Special">@Text.None</option>
                 <option value="@IEffect.EffectTarget.Health">@Text.Health</option>
                 <option value="@IEffect.EffectTarget.Mana">@Text.Mana</option>
+                <option value="@IEffect.EffectTarget.Special">@Text.None</option>
             </InputSelect>
         </InputWithLabel>
         <button popovertarget="take-damage" popovertargetaction="hide">@Text.Cancel</button>
@@ -198,6 +198,7 @@
     private Character _activeCharacter = new Character();
     private TriggeredEffect? _editEffect;
     private UpCountingTimer? _timer;
+    private Turn? _activeTurn;
 
     private Effect _quickEffect = new Effect();
 
@@ -226,8 +227,17 @@
 
     public async Task StartTurn()
     {
+        if (_activeSession is null)
+        {  
+            _activeSession = new();
+            await ContentService.SaveSession(_activeSession);
+        }
         if (_timer is null)
             _timer = new UpCountingTimer(UpdateUi);
+
+        _activeTurn = new Turn();
+        _activeSession.Turns.Add(_activeTurn);
+        await ContentService.SaveSession(_activeSession);
 
         await ExecuteActiveEffects(false);
         _timer.StartTimer();
@@ -237,8 +247,16 @@
 
     public async Task EndTurn()
     {
+        if (_activeSession is null || _timer is null || _activeTurn is null)
+            return;
+
         await ExecuteActiveEffects(true);
         _timer!.StopTimer();
+
+        _activeTurn.Time = _timer.Time;
+        _activeTurn = null;
+        await ContentService.SaveSession(_activeSession);
+
         await ContentService.SaveCharacter(_activeCharacter);
         _activeCharacter.ActiveEffects.RemoveAll(x => x.Duration is TriggeredEffect.EffectDuration.Turns && x.Turns < 1);
     }

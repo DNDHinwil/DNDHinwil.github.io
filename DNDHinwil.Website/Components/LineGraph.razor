@@ -1,7 +1,7 @@
 ﻿@using System.Numerics
 @typeparam TValue where TValue : INumber<TValue>
 
-<table class="line-graph" aria-label="@Title" style="@_limits @_labelHeight">
+<table class="line-graph" aria-label="@Title" style="@_limits @_labelHeight @_totalPoints">
     @if (Title is not null)
     {
         <caption class="line-graph-title">@Title</caption>
@@ -14,7 +14,7 @@
                 {
                     <th scope="row">@point.Label</th>
                 }
-                <td data-value="@point.Value" style="@($"--value:{point.Value};")">@point.Value</td>
+                <td data-value="@point.Value" style="@($"--value:{point.Value};--height:{point.Value }")">@point.Value.ToString("0.00", null)</td>
             </tr>
         }
     </tbody>
@@ -22,10 +22,13 @@
 
 @code {
     private string _limits => $"--min:{Min};--max:{Max};";
-    private string _labelHeight => Points.Any(p => string.IsNullOrWhiteSpace(p.Label)) ? $"--chart-label-height:{1}rem;" : "";
+    private string _labelHeight => Points.Any(p => string.IsNullOrWhiteSpace(p.Label)) ? $"--chart-label-height:1rem;" : "";
+    private string _totalPoints => $"--total-points:{Points.Count()}";
 
     [Parameter]
     public string? Title { get; set; }
+    [Parameter]
+    public int Height { get; set; }
     [Parameter]
     public TValue Max { get; set; } = TValue.Zero;
     [Parameter]
