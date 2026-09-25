@@ -1,11 +1,24 @@
 ﻿@using System.Numerics
 @typeparam TValue where TValue : INumber<TValue>
 
-<table class="line-graph" aria-label="@Title" style="@_limits @_labelHeight @_totalPoints">
+<table class="line-graph" aria-label="@Title" style="@($"height:{Height}px;") @_limits @_labelHeight @_titleHeight @_totalPoints">
     @if (Title is not null)
     {
         <caption class="line-graph-title">@Title</caption>
     }
+    <thead>
+        <tr>
+            @if (Marked is null || Marked != Max)
+            {
+                <th class="max" style="@($"--value:{Max};")">@Max.ToString("0.00", null)</th>
+            }
+            @if (Marked is not null)
+            {
+                <th class="marked" style="@($"--value:{Marked};")">@Marked.ToString("0.00", null)</th>
+            }
+            <th class="min">@Min.ToString("0.00", null)</th>
+        </tr>
+    </thead>
     <tbody>
         @foreach (var point in Points)
         {
@@ -14,7 +27,9 @@
                 {
                     <th scope="row">@point.Label</th>
                 }
-                <td data-value="@point.Value" style="@($"--value:{point.Value};--height:{point.Value }")">@point.Value.ToString("0.00", null)</td>
+                <td class="chart-value" data-value="@point.Value" style="@($"--value:{point.Value};")">
+                    <div class="chart-value-label">@point.Value.ToString("0.00", null)</div>
+                </td>
             </tr>
         }
     </tbody>
@@ -22,7 +37,8 @@
 
 @code {
     private string _limits => $"--min:{Min};--max:{Max};";
-    private string _labelHeight => Points.Any(p => string.IsNullOrWhiteSpace(p.Label)) ? $"--chart-label-height:1rem;" : "";
+    private string _titleHeight => !string.IsNullOrWhiteSpace(Title) ? $"--chart-title-height:1.5rem;" : $"--chart-title-height:0.5rem;";
+    private string _labelHeight => Points.Any(p => !string.IsNullOrWhiteSpace(p.Label)) ? $"--chart-label-height:1.25rem;" : "--chart-label-height:0px;";
     private string _totalPoints => $"--total-points:{Points.Count()}";
 
     [Parameter]
@@ -34,6 +50,8 @@
     [Parameter]
     public TValue Min { get; set; } = TValue.Zero;
     [Parameter]
+    public TValue? Marked { get; set; }
+    [Parameter]
     public IEnumerable<LineGraphPoint<TValue>> Points { get; set; } = [];
 
     protected override void OnParametersSet()
@@ -44,5 +62,7 @@
             Min = Points.Min(p => p.Value) ?? TValue.Zero;
             Max = Points.Max(p => p.Value) ?? TValue.One;
         }
+        if (Marked is not null && Marked > Max)
+            Max = Marked;
     }
 }

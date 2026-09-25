@@ -1,41 +1,97 @@
 ﻿table {
-	--chart-label-height: 0;
+	--chart-label-height: 0px;
+	--chart-title-height: 0px;
 	--line-stroke: 1px;
+	position: relative;
 	width: 100%;
+	min-height: 100px;
 	display: grid;
 	grid-template-columns: 1fr;
 }
 
 caption {
+	height: 1rem;
 }
 
-thead, tbody {
+thead {
+	position: absolute;
+	width: 100%;
+	height: calc(100% - var(--chart-title-height) - var(--chart-label-height));
+	margin-top: var(--chart-title-height);
+}
+	thead > tr {
+		height: 100%;
+		width: 100%;
+		display: grid;
+		grid-template-rows: 1fr auto;
+	}
+th.min {
+	position: absolute;
+	width: 100%;
+	bottom: 0;
+	border-bottom: 1px dotted var(--color-foreground);
+	text-align: left;
+	font-size: 0.75rem;
+}
+th.max {
+	position: absolute;
+	width: 100%;
+	height: calc(100% * var(--value) / var(--max));
+	border-top: 1px dotted var(--color-foreground);
+	bottom: 0;
+	text-align: left;
+	font-size: 0.75rem;
+}
+th.marked {
+	position: absolute;
+	width: 100%;
+	height: calc(100% * var(--value) / var(--max));
+	border-top: 1px dotted red;
+	bottom: 0;
+	text-align: left;
+	font-size: 0.75rem;
+}
+
+tbody {
+	position: absolute;
+	width: calc(100% - 3rem);
+	height: calc(100% - var(--chart-title-height));
+	bottom: 0;
 	display: grid;
+	margin-left: 3rem;
 	grid-template-columns: repeat(var(--total-points), auto);
 	overflow-inline: clip;
 }
 
-th {
-	text-align: center;
-	order: 1;
-}
-tr {
+tbody > tr {
+	width: 100%;
+	height: 100%;
 	display: grid;
 	grid-template-columns: 1fr;
+	grid-template-rows: 1fr auto;
 	overflow-inline: clip;
 	align-content: end;
 	align-items: end;
 }
 
-td {
-	height: calc(((var(--value) - var(--min)) / (var(--max) - var(--min))) * 100cqb - var(--chart-label-height));
-	clip-path: polygon(-1% calc(var(--_py) * 100% + var(--line-stroke) / 2), -1% calc(var(--_py) * 100% - var(--line-stroke) / 2), 101% calc(var(--_y) * 100% - var(--line-stroke) / 2), 101% calc(var(--_y) * 100% + var(--line-stroke) / 2));
-	background: var(--data-chart-bar-bg, var(--_bg, light-dark(hsla(210, 100%, 70%, .8), hsla(210, 60%, 60%, .8))));
-	
-	font-size: var(--data-chart-bar-fs, clamp(0.5625rem, 0.45rem + .5cqi, 0.75rem));
-	font-weight: var(--data-chart-bar-fw, 400);
-	height: calc(((var(--_v) - var(--_min)) / (var(--_max) - var(--_min))) * 100cqb);
-	padding: var(--data-chart-bar-p, .75ch 0 0 0);
+tbody > tr > th {
 	text-align: center;
+	order: 1;
+}
+
+	.chart-value {
+		height: calc(100% * var(--value) / var(--max));
+		background-color: var(--color-primary);
+		text-align: center;
+		
+	}
+		.chart-value:hover > .chart-value-label {
+			display: block;
+		}
+
+.chart-value-label {
+	text-align: center;
+	display: none;
+	margin-top: calc(var(--chart-title-height) * -1);
 }
 

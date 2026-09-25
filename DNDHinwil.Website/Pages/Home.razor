@@ -8,38 +8,38 @@
     <header class="title">
         <h2>Home</h2>
     </header>
-    <section>
+    <section class="active-session">
+        <h3>@Text.Session</h3>
         @if (_activeSession is null)
         {
-            <h3>@Text.StartSession</h3>
-            <button @onclick="async x => await StartSession()" style="width:100%;height:80px;">@Text.Start</button>
+            <button @onclick="async x => await StartSession()" style="width:100%;">@Text.StartSession</button>
         }
         else
         {
-            <h3>@Text.EndSession</h3>
-            <button @onclick="async x => await EndSession()" style="width:100%;height:80px;">@Text.End</button>
+            <button @onclick="async x => await EndSession()" style="width:100%;">@Text.EndSession</button>
         }
     </section>
-    @if (_sessions.Count > 1)
-    {
-        <section>
-            <h3>@Text.PastSessions</h3>
-            <InputSelect @bind-Value="_selectedSession">
-            @foreach (var session in _sessions)
-            {
-                <option value="@session">@session.StartTime.ToShortDateString()</option>
-            }
-            </InputSelect>
-        </section>
-    }
     @if (_selectedSession is not null && _selectedSession.Turns.Count > 2)
     {
         <section>
             <h3>@Text.Session</h3>
-            <LineGraph Title="@Text.Turns" 
-                Min="(_selectedSession.Turns.Min(t => t.Time!.Value.TotalMinutes) * 0.9d)" 
-                Max="(_selectedSession.Turns.Min(t => t.Time!.Value.TotalMinutes) * 1.1d)" 
-                Points="TurnsToLineGraphPoints(_selectedSession.Turns)"></LineGraph>
+            <LineGraph Title="@Text.Turns"  
+                Max="(_selectedSession.Turns.Max(t => t.Time!.Value.TotalMinutes) * 1.1d)" 
+                Points="TurnsToLineGraphPoints(_selectedSession.Turns)"
+                Marked="(_selectedSession.Turns.Max(t => t.Time!.Value.TotalMinutes) * 0.95d)"
+                Height="200"></LineGraph>
+        </section>
+    }
+    @if (_sessions.Count > 1)
+    {
+        <section>
+            <h3>@Text.PastSessions</h3>
+            <InputSelect @bind-Value="_selectedSessionId" @onselect="async x => await SelectSession(_selectedSessionId)">
+                @foreach (var session in _sessions)
+                {
+                    <option value="@session.Id">@session.StartTime.ToShortDateString()</option>
+                }
+            </InputSelect>
         </section>
     }
 </div>
@@ -49,6 +49,7 @@
     private List<Session> _sessions = [];
     private Session? _activeSession;
     private Session? _selectedSession;
+    private string? _selectedSessionId;
 
     private string _timeFormat => @"mm\:ss";
 
@@ -69,11 +70,17 @@
         _selectedSession = _activeSession = _sessions.FirstOrDefault(x => x.EndTime is null);
     }
 
+    public async Task SelectSession(string? sessionId)
+    {
+        _selectedSession = _sessions.FirstOrDefault(s => s.Id == sessionId);
+        StateHasChanged();
+    }
+
     public async Task StartSession()
     {
         if (_activeSession is not null)
             return;
-        _activeSession = new Session();
+        _selectedSession = _activeSession = new Session();
         await ContentService.SaveSession(_activeSession);
     }
     public async Task EndSession()
