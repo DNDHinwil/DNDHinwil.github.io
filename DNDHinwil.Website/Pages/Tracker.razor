@@ -31,19 +31,32 @@
     </section>
 
     <section class="player">
-        <h3 style="grid-row:span 2;">@_activeCharacter.Name</h3>
-        <div style="grid-column:span 2;"></div>
-        <div style="text-align:right;">@Text.Health</div>
-        <div style="text-align:right;">@_activeCharacter.Health</div>
-        <span>/</span>
-        <div style="text-align:left;">@_activeCharacter.MaxHealth</div>
+        <div class="portrait">
+            <img src="@_activeCharacter.ImageUrl" style="grid-column:span 3;" />
+            <h3>@_activeCharacter.Name</h3>
+            <div class="level" style="text-align:right;">@Text.Level_Short</div>
+            <div class="level" style="text-align:left;">@_activeCharacter.Level</div>
+            <div style="grid-column:span 3;">
+                <PercentageBar Max="@(_settings.LevelThresholds.FirstOrDefault(t => t.Experience > _activeCharacter.ExperiencePoints)?.Experience ?? 300)"
+                               Current="_activeCharacter.ExperiencePoints"
+                               Color="#00d3d3"></PercentageBar>
+            </div>
+        </div>
+        <div class="health">
+            <div style="text-align:right;">@Text.Health</div>
+            <div style="text-align:right;">@_activeCharacter.Health</div>
+            <span>/</span>
+            <div style="text-align:left;">@_activeCharacter.MaxHealth</div>
+            <PercentageBar Max="@_activeCharacter.MaxHealth" Current="@_activeCharacter.Health" Color="red"></PercentageBar>
+        </div>
+        <div class="mana">
+            <div style="text-align:right;">@Text.Mana</div>
+            <div style="text-align:right;">@_activeCharacter.Mana</div>
+            <span>/</span>
+            <div style="text-align:left;">@_activeCharacter.MaxMana</div>
+            <PercentageBar Max="@_activeCharacter.MaxMana" Current="@_activeCharacter.Mana" Color="blue"></PercentageBar>
+        </div>
 
-        <div style="text-align:right;">@Text.Level_Short</div>
-        <div style="text-align:left;">@_activeCharacter.Level</div>
-        <div style="text-align:right;">@Text.Mana</div>
-        <div style="text-align:right;">@_activeCharacter.Mana</div>
-        <span>/</span>
-        <div style="text-align:left;">@_activeCharacter.MaxMana</div>
 
     </section>
 

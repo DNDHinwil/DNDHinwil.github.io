@@ -97,6 +97,15 @@ namespace DNDHinwil.Website.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Active Session.
+        /// </summary>
+        public static string ActiveSession {
+            get {
+                return ResourceManager.GetString("ActiveSession", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add.
         /// </summary>
         public static string Add {
@@ -1074,6 +1083,15 @@ namespace DNDHinwil.Website.Resources {
         public static string Turns {
             get {
                 return ResourceManager.GetString("Turns", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to T.
+        /// </summary>
+        public static string TurnShort {
+            get {
+                return ResourceManager.GetString("TurnShort", resourceCulture);
             }
         }
         

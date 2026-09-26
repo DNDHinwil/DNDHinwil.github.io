@@ -24,19 +24,22 @@
 
 .player {
 	display: grid;
-	grid-template-columns: max-content min-content auto min-content 32px min-content 32px;
+	grid-template-columns: max-content auto;
+	grid-template-rows: 20px;
 }
-
-	.player > h3 {
-		padding-top: 0.25rem;
-		margin-right: 0.25rem;
-		text-decoration: underline var(--color-primary);
+.portrait {
+	grid-row: span 2;
+	display: grid;
+	grid-template-columns: max-content 30px 30px;
+}
+	.portrait img {
+		height: 100px;
 	}
 
-	.player > label {
-		margin: 0;
-		font-size: 1rem;
-	}
+.health, .mana {
+	display: grid;
+	grid-template-columns: 70px 25px min-content 30px auto;
+}
 
 .actions {
 	display: grid;

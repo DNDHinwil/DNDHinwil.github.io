@@ -1,0 +1,30 @@
+﻿<div class="bar" style="@_height @_percentage">
+    <div class="percentage" style="@_color @_rightToLeft">
+        @if (ShowPercentageLabel)
+        {
+            <label>@((Percentage).ToString("0"))%</label>
+        }
+    </div>
+</div>
+
+@code {
+    private string _percentage => $"--percentage:{Percentage}%;";
+    private string _height => $"height:{Height}px;";
+    private string _color => $"background-color:{Color};";
+    private string _rightToLeft => RightToLeft ? $"float:right;" : "";
+
+    [Parameter]
+    public int Max { get; set; }
+    [Parameter]
+    public int Current { get; set; }
+
+    public int Percentage => (Current * 100 / Max);
+    [Parameter]
+    public int Height { get; set; } = 20;
+    [Parameter]
+    public string Color { get; set; } = "#900";
+    [Parameter]
+    public bool RightToLeft { get; set; }
+    [Parameter]
+    public bool ShowPercentageLabel { get; set; }
+}

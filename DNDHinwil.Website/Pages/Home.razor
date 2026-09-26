@@ -16,14 +16,15 @@
         }
         else
         {
+            <div style="text-align:center;">@Text.ActiveSession @_activeSession.StartTime.ToString("dd/MM hh:mm")</div>
             <button @onclick="async x => await EndSession()" style="width:100%;">@Text.EndSession</button>
         }
     </section>
     @if (_selectedSession is not null && _selectedSession.Turns.Count > 2)
     {
         <section>
-            <h3>@Text.Session</h3>
-            <LineGraph Title="@Text.Turns"  
+            <h3>@Text.Turns</h3>
+            <LineGraph
                 Max="(_selectedSession.Turns.Max(t => t.Time!.Value.TotalMinutes) * 1.1d)" 
                 Points="TurnsToLineGraphPoints(_selectedSession.Turns)"
                 Marked="(_selectedSession.Turns.Max(t => t.Time!.Value.TotalMinutes) * 0.95d)"
@@ -93,5 +94,8 @@
     }
 
     private static IEnumerable<LineGraphPoint<double>> TurnsToLineGraphPoints(List<Turn> turns)
-        => turns.Where(t => t.Time.HasValue).Select(t => new LineGraphPoint<double>() { Label = $"{Text.Turn} {turns.IndexOf(t) + 1}", Value = t.Time!.Value.TotalMinutes });
+    {
+        var turnText = turns.Count < 5 ? Text.Turn : turns.Count < 9 ? Text.TurnShort : null;
+        return turns.Where(t => t.Time.HasValue).Select(t => new LineGraphPoint<double>() { Label = turnText is not null ? $"{turnText} {turns.IndexOf(t) + 1}" : null, Value = t.Time!.Value.TotalMinutes });
+    }
 }

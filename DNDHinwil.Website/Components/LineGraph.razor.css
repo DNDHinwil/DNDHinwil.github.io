@@ -10,7 +10,8 @@
 }
 
 caption {
-	height: 1rem;
+	font-size: 1rem;
+	font-weight: bold;
 }
 
 thead {
@@ -83,15 +84,17 @@ tbody > tr > th {
 		height: calc(100% * var(--value) / var(--max));
 		background-color: var(--color-primary);
 		text-align: center;
-		
+		position: relative;
 	}
 		.chart-value:hover > .chart-value-label {
 			display: block;
 		}
 
 .chart-value-label {
+	position: absolute;
+	width: 100%;
 	text-align: center;
 	display: none;
-	margin-top: calc(var(--chart-title-height) * -1);
+	margin-top: -1.25rem;
 }
 

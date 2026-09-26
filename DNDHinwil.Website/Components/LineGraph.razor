@@ -37,7 +37,7 @@
 
 @code {
     private string _limits => $"--min:{Min};--max:{Max};";
-    private string _titleHeight => !string.IsNullOrWhiteSpace(Title) ? $"--chart-title-height:1.5rem;" : $"--chart-title-height:0.5rem;";
+    private string _titleHeight => !string.IsNullOrWhiteSpace(Title) ? $"--chart-title-height:1.5rem;" : $"--chart-title-height:0px;";
     private string _labelHeight => Points.Any(p => !string.IsNullOrWhiteSpace(p.Label)) ? $"--chart-label-height:1.25rem;" : "--chart-label-height:0px;";
     private string _totalPoints => $"--total-points:{Points.Count()}";
 

@@ -10,6 +10,7 @@ public class Character
     [Key]
     public string Id { get; set; } = Guid.NewGuid().ToString();
     public string Name { get; set; } = Text.DefaultCharacterName;
+    public string ImageUrl { get; set; } = "https://i.imgur.com/k6W1HJn.png";
     public int Level { get; set; }
     public int LevelModifier { get; set; }
     public int ExperiencePoints { get; set; }

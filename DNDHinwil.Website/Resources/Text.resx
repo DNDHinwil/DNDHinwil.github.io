@@ -483,4 +483,10 @@
   <data name="End" xml:space="preserve">
     <value>End</value>
   </data>
+  <data name="TurnShort" xml:space="preserve">
+    <value>T</value>
+  </data>
+  <data name="ActiveSession" xml:space="preserve">
+    <value>Active Session</value>
+  </data>
 </root>
