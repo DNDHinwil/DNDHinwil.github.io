@@ -181,7 +181,7 @@
     <dialog id="take-rest" popover>
         <h4>@Text.Rest</h4>
         <button popovertarget="take-rest" popovertargetaction="hide">@Text.Cancel</button>
-        <button popovertarget="take-rest" popovertargetaction="hide" @onclick="async x => await HealUp(_quickEffect)">@Text.OK</button>
+        <button popovertarget="take-rest" popovertargetaction="hide" @onclick="async x => await Rest()">@Text.OK</button>
     </dialog>
 
     <dialog id="take-heal" popover>
