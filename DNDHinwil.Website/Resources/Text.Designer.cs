@@ -601,6 +601,15 @@ namespace DNDHinwil.Website.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to HP.
+        /// </summary>
+        public static string HealthShort {
+            get {
+                return ResourceManager.GetString("HealthShort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Intelligence.
         /// </summary>
         public static string Intelligence {
@@ -646,6 +655,15 @@ namespace DNDHinwil.Website.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Level Modifier.
+        /// </summary>
+        public static string LevelModifier {
+            get {
+                return ResourceManager.GetString("LevelModifier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Magic Power.
         /// </summary>
         public static string MagicPower {
@@ -669,6 +687,15 @@ namespace DNDHinwil.Website.Resources {
         public static string Mana {
             get {
                 return ResourceManager.GetString("Mana", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MP.
+        /// </summary>
+        public static string ManaShort {
+            get {
+                return ResourceManager.GetString("ManaShort", resourceCulture);
             }
         }
         
@@ -822,6 +849,15 @@ namespace DNDHinwil.Website.Resources {
         public static string Player {
             get {
                 return ResourceManager.GetString("Player", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rest.
+        /// </summary>
+        public static string Rest {
+            get {
+                return ResourceManager.GetString("Rest", resourceCulture);
             }
         }
         

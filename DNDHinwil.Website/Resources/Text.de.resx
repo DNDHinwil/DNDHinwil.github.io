@@ -489,4 +489,16 @@
   <data name="ActiveSession" xml:space="preserve">
     <value>Aktive Session</value>
   </data>
+  <data name="LevelModifier" xml:space="preserve">
+    <value>Level Bonus</value>
+  </data>
+  <data name="HealthShort" xml:space="preserve">
+    <value>LP</value>
+  </data>
+  <data name="ManaShort" xml:space="preserve">
+    <value>MP</value>
+  </data>
+  <data name="Rest" xml:space="preserve">
+    <value>Raste</value>
+  </data>
 </root>

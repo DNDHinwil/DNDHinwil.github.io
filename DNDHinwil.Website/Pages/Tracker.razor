@@ -1,5 +1,6 @@
 ﻿@page "/tracker"
 @using System.Globalization
+@using DNDHinwil.Website.Extensions
 @inject IDataService ContentService
 
 <PageTitle>@Constants.SiteName - Tracker</PageTitle>
@@ -32,37 +33,38 @@
 
     <section class="player">
         <div class="portrait">
-            <img src="@_activeCharacter.ImageUrl" style="grid-column:span 3;" />
+            <div class="profile-image" style="grid-column:span 3;">
+                <img src="@_activeCharacter.ImageUrl" />
+            </div>
             <h3>@_activeCharacter.Name</h3>
             <div class="level" style="text-align:right;">@Text.Level_Short</div>
-            <div class="level" style="text-align:left;">@_activeCharacter.Level</div>
-            <div style="grid-column:span 3;">
-                <PercentageBar Max="@(_settings.LevelThresholds.FirstOrDefault(t => t.Experience > _activeCharacter.ExperiencePoints)?.Experience ?? 300)"
-                               Current="_activeCharacter.ExperiencePoints"
-                               Color="#00d3d3"></PercentageBar>
+            <div class="level" style="text-align:left;">@_activeCharacter.GetLevel(_settings.LevelThresholds)</div>
+            <div style="grid-column:span 3;margin-bottom:0.125rem;">
+                <PercentageBar Max="_experienceToNextLevel.Required"
+                               Current="_experienceToNextLevel.Current"
+                               Color="#f4d855"
+                               Height="5"></PercentageBar>
+            </div>
+            <div class="health" style="grid-column:span 3;">
+                <div style="text-align:right;">@Text.HealthShort</div>
+                <div style="text-align:right;">@_activeCharacter.Health</div>
+                <span>/</span>
+                <div style="text-align:left;">@_activeCharacter.MaxHealth</div>
+                <PercentageBar Max="@_activeCharacter.MaxHealth" Current="@_activeCharacter.Health" Color="red"></PercentageBar>
+            </div>
+            <div class="mana" style="grid-column:span 3;">
+                <div style="text-align:right;">@Text.ManaShort</div>
+                <div style="text-align:right;">@_activeCharacter.Mana</div>
+                <span>/</span>
+                <div style="text-align:left;">@_activeCharacter.MaxMana</div>
+                <PercentageBar Max="@_activeCharacter.MaxMana" Current="@_activeCharacter.Mana" Color="blue"></PercentageBar>
             </div>
         </div>
-        <div class="health">
-            <div style="text-align:right;">@Text.Health</div>
-            <div style="text-align:right;">@_activeCharacter.Health</div>
-            <span>/</span>
-            <div style="text-align:left;">@_activeCharacter.MaxHealth</div>
-            <PercentageBar Max="@_activeCharacter.MaxHealth" Current="@_activeCharacter.Health" Color="red"></PercentageBar>
+        <div class="turn-buttons">
+            <button popovertargetaction="show" popovertarget="take-rest">@Text.Rest</button>
+            <button popovertargetaction="show" popovertarget="take-heal">@Text.TakeHealing</button>
+            <button popovertargetaction="show" popovertarget="take-damage">@Text.TakeDamage</button>
         </div>
-        <div class="mana">
-            <div style="text-align:right;">@Text.Mana</div>
-            <div style="text-align:right;">@_activeCharacter.Mana</div>
-            <span>/</span>
-            <div style="text-align:left;">@_activeCharacter.MaxMana</div>
-            <PercentageBar Max="@_activeCharacter.MaxMana" Current="@_activeCharacter.Mana" Color="blue"></PercentageBar>
-        </div>
-
-
-    </section>
-
-    <section class="actions">
-        <button popovertargetaction="show" popovertarget="take-heal">@Text.TakeHealing</button>
-        <button popovertargetaction="show" popovertarget="take-damage">@Text.TakeDamage</button>
     </section>
 
     <section class="spellbook">
@@ -82,47 +84,49 @@
     </section>
 
     <section class="active-effects">
-        <h3 style="grid-column:span 5;">@Text.ActiveEffects</h3>
+        <h3>@Text.ActiveEffects</h3>
         @if (_activeCharacter.ActiveEffects.Any())
         {
             @foreach (var effect in _activeCharacter.ActiveEffects)
             {
-                <button class="active-effect-button" @onclick="x => RemoveEffect(effect)">-</button>
-                <div>@effect.Name</div>
-                @switch (effect.Outcome)
-                {
-                    case IEffect.EffectOutcome.DealsDamage:
-                        <div>@effect.Strength @Text.Damage</div>
-                        break;
-                    case IEffect.EffectOutcome.Heals:
-                        <div>@effect.Strength @Text.Heal</div>
-                        break;
-                    case IEffect.EffectOutcome.Other:
-                        <div></div>
-                        break;
-                    default:
-                        break;
-                }
-                @switch (effect.Duration)
-                {
-                    case TriggeredEffect.EffectDuration.Turns:
-                        <div style="text-align:center;">@effect.Turns @Text.Turns</div>
-                        break;
-                    case TriggeredEffect.EffectDuration.UntilHealed:
-                        <div style="text-align:center;">🩸</div>
-                        break;
-                    case TriggeredEffect.EffectDuration.UntilRemoved:
-                        <div style="text-align:center;">∞</div>
-                        break;
-                }
-                <button @onclick="x => StartEditingEffect(effect)" command="show-modal" commandfor="edit-active-effect">⛭</button>
+                <div class="active-effect">
+                    <button class="active-effect-button" @onclick="x => RemoveEffect(effect)">-</button>
+                    <div>@effect.Name</div>
+                    @switch (effect.Outcome)
+                    {
+                        case IEffect.EffectOutcome.DealsDamage:
+                            <div>@effect.Strength @Text.Damage</div>
+                            break;
+                        case IEffect.EffectOutcome.Heals:
+                            <div>@effect.Strength @Text.Heal</div>
+                            break;
+                        case IEffect.EffectOutcome.Other:
+                            <div></div>
+                            break;
+                        default:
+                            break;
+                    }
+                    @switch (effect.Duration)
+                    {
+                        case TriggeredEffect.EffectDuration.Turns:
+                            <div style="text-align:center;">@effect.Turns @Text.Turns</div>
+                            break;
+                        case TriggeredEffect.EffectDuration.UntilHealed:
+                            <div style="text-align:center;">🩸</div>
+                            break;
+                        case TriggeredEffect.EffectDuration.UntilRemoved:
+                            <div style="text-align:center;">∞</div>
+                            break;
+                    }
+                    <button @onclick="x => StartEditingEffect(effect)" command="show-modal" commandfor="edit-active-effect">⛭</button>
+                </div>
             }
         }
         else
         {
-            <div style="grid-column:span 5;">@Text.NoTriggeredEffects</div>
+            <div>@Text.NoTriggeredEffects</div>
         }
-        <button @onclick="x => AddNewEffect()" style="grid-column:span 5;" command="show-modal" commandfor="edit-active-effect">@Text.NewTriggeredEffect</button>
+        <button @onclick="x => AddNewEffect()" command="show-modal" commandfor="edit-active-effect">@Text.NewTriggeredEffect</button>
 
     </section>
 
@@ -174,7 +178,14 @@
         </dialog>
     }
 
+    <dialog id="take-rest" popover>
+        <h4>@Text.Rest</h4>
+        <button popovertarget="take-rest" popovertargetaction="hide">@Text.Cancel</button>
+        <button popovertarget="take-rest" popovertargetaction="hide" @onclick="async x => await HealUp(_quickEffect)">@Text.OK</button>
+    </dialog>
+
     <dialog id="take-heal" popover>
+        <h4>@Text.Heal</h4>
         <InputWithLabel Label="@Text.TakeHealing">
             <InputNumber @bind-Value="_quickEffect.Strength"></InputNumber>
         </InputWithLabel>
@@ -190,6 +201,7 @@
     </dialog>
 
     <dialog id="take-damage" popover>
+        <h4>@Text.Damage</h4>
         <InputWithLabel Label="@Text.TakeDamage">
             <InputNumber @bind-Value="_quickEffect.Strength"></InputNumber>
         </InputWithLabel>
@@ -212,6 +224,7 @@
     private TriggeredEffect? _editEffect;
     private UpCountingTimer? _timer;
     private Turn? _activeTurn;
+    private (int Current, int Required) _experienceToNextLevel = (0, 300);
 
     private Effect _quickEffect = new Effect();
 
@@ -229,6 +242,8 @@
             _settings.ActiveCharacter = _activeCharacter.Id;
             await ContentService.SaveSettings(_settings);
         }
+        _experienceToNextLevel = _settings.LevelThresholds.ExperienceToNextLevel(_activeCharacter.ExperiencePoints);
+
         _timer = new UpCountingTimer(UpdateUi);
         var sessions = await ContentService.LoadSessions();
         _activeSession = sessions.FirstOrDefault(s => s.EndTime is null);
@@ -299,6 +314,15 @@
                 effect.Turns--;
         }
 
+    }
+
+    public async Task Rest()
+    {
+        _activeCharacter.ActiveEffects.RemoveAll(x => x.Turns > 0);
+        _activeCharacter.Health = _activeCharacter.MaxHealth;
+        _activeCharacter.Mana = _activeCharacter.MaxMana;
+
+        await ContentService.SaveCharacter(_activeCharacter);
     }
 
     public async Task HealUp(IEffect effect)

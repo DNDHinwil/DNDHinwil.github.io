@@ -2,6 +2,6 @@
 
 public class LevelThreshold
 {
-    public int Experience { get; set; }
+    public int TotalExperience { get; set; }
     public int Level { get; set; }
 }

@@ -1,4 +1,5 @@
-﻿using DNDHinwil.Website.Pages;
+﻿using DNDHinwil.Website.Extensions;
+using DNDHinwil.Website.Pages;
 using DNDHinwil.Website.Resources;
 namespace DNDHinwil.Website.Models;
 
@@ -11,7 +12,6 @@ public class Character
     public string Id { get; set; } = Guid.NewGuid().ToString();
     public string Name { get; set; } = Text.DefaultCharacterName;
     public string ImageUrl { get; set; } = "https://i.imgur.com/k6W1HJn.png";
-    public int Level { get; set; }
     public int LevelModifier { get; set; }
     public int ExperiencePoints { get; set; }
     public int MaxHealth { get; set; } = 20;
@@ -46,4 +46,7 @@ public class Character
     public List<TriggeredEffect> ActiveEffects { get; set; } = [];
 
     public List<Turn> Turns { get; set; } = [];
+
+    public int GetLevel(IEnumerable<LevelThreshold> thresholds)
+        => (thresholds.GetLastThreshold(ExperiencePoints)?.Level ?? 0) + LevelModifier;
 }

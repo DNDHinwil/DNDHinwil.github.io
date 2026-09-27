@@ -10,11 +10,11 @@
     <section class="general">
         <h3>@($"{Text.ActiveCharacter}: {_activeCharacter.Name}")</h3>
 
-        <InputWithLabel Label="@Text.Level">
-            <InputNumber @bind-Value="_activeCharacter.Level"></InputNumber>
-        </InputWithLabel>
         <InputWithLabel Label="@Text.Experience">
             <InputNumber @bind-Value="_activeCharacter.ExperiencePoints"></InputNumber>
+        </InputWithLabel>
+        <InputWithLabel Label="@Text.LevelModifier">
+            <InputNumber @bind-Value="_activeCharacter.LevelModifier"></InputNumber>
         </InputWithLabel>
         <InputWithLabel Label="@Text.MaxHP">
             <InputNumber @bind-Value="_activeCharacter.MaxHealth"></InputNumber>
@@ -63,14 +63,6 @@
             <button @onclick="x => FinishEditingStat(true)" command="close" commandfor="edit-stat" style="float:right;">@Text.Save</button>
         </dialog>
     }
-    <dialog id="edit-level">
-        <h4>@Text.Level</h4>
-        <InputWithLabel Label="@Text.Level_Short">
-            <InputNumber @bind-Value="_activeCharacter.Level"></InputNumber>
-        </InputWithLabel>        
-        <button command="close" commandfor="edit-level">@Text.Cancel</button>
-        <button @onclick="async x => await SavePlayer()" command="close" commandfor="edit-level">@Text.Confirm</button>
-    </dialog>
     <dialog id="delete-stat">
         <label>@Text.AreYouSure</label>
         <button @onclick="x => FinishEditingStat(false)" command="close" commandfor="delete-stat">@Text.Cancel</button>

@@ -18,9 +18,9 @@
     [Parameter]
     public int Current { get; set; }
 
-    public int Percentage => (Current * 100 / Max);
+    public int Percentage => (Current * 100 / Math.Clamp(Max, 1, int.MaxValue));
     [Parameter]
-    public int Height { get; set; } = 20;
+    public int Height { get; set; } = 16;
     [Parameter]
     public string Color { get; set; } = "#900";
     [Parameter]

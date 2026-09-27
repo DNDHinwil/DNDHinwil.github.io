@@ -14,7 +14,7 @@
                 <button @onclick="async x => await SelectCharacterForEditing(character)" command="show-modal" commandfor="delete-character" style="font-size:0.5rem;">X</button>
                 <div style="font-size:1.25rem;">@character.Name</div>
                 <div style="text-align:right;">@Text.Level_Short</div>
-                <div style="text-align:left;">@character.Level</div>
+                <div style="text-align:left;">@character.GetLevel(_settings.LevelThresholds)</div>
                 <button @onclick="async x => await SelectCharacterForEditing(character)" command="show-modal" commandfor="edit-character">⛭</button>
                 <button @onclick="async x => await ChangeActiveCharacter(character)">@Text.Activate</button>
             </div>
