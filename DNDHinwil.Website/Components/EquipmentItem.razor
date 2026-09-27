@@ -1,8 +1,8 @@
 ﻿<div class="equipment-item">
-    <label>@Model.Name</label>
+    <div>@Model.Name</div>
 </div>
 
 @code {
     [Parameter]
-    public required Equipment Model { get; set; }
+    public required IEquipment Model { get; set; }
 }

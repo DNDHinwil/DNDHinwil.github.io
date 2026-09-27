@@ -148,7 +148,7 @@
     <value>Name</value>
   </data>
   <data name="NewTriggeredEffect" xml:space="preserve">
-    <value>New Triggered Effect</value>
+    <value>New triggered Effect</value>
   </data>
   <data name="None" xml:space="preserve">
     <value>None</value>
@@ -398,5 +398,107 @@
   </data>
   <data name="Special" xml:space="preserve">
     <value>Special</value>
+  </data>
+  <data name="To" xml:space="preserve">
+    <value>to</value>
+  </data>
+  <data name="Cast" xml:space="preserve">
+    <value>Cast</value>
+  </data>
+  <data name="NoTriggeredEffects" xml:space="preserve">
+    <value>No triggered effects</value>
+  </data>
+  <data name="NoSpellsInSpellbook" xml:space="preserve">
+    <value>No spells in Spellbook</value>
+  </data>
+  <data name="General" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="SpellbookOf" xml:space="preserve">
+    <value>Spellbook of</value>
+  </data>
+  <data name="EquipmentOf" xml:space="preserve">
+    <value>Equipment of</value>
+  </data>
+  <data name="Duration" xml:space="preserve">
+    <value>Duration</value>
+  </data>
+  <data name="Experience" xml:space="preserve">
+    <value>Experience</value>
+  </data>
+  <data name="ExperienceTable" xml:space="preserve">
+    <value>ExperienceTable</value>
+  </data>
+  <data name="BasicHealingPotion" xml:space="preserve">
+    <value>Basic healing Potion</value>
+  </data>
+  <data name="D4" xml:space="preserve">
+    <value>D4</value>
+  </data>
+  <data name="D6" xml:space="preserve">
+    <value>D6</value>
+  </data>
+  <data name="D8" xml:space="preserve">
+    <value>D8</value>
+  </data>
+  <data name="D10" xml:space="preserve">
+    <value>D10</value>
+  </data>
+  <data name="D12" xml:space="preserve">
+    <value>D12</value>
+  </data>
+  <data name="D20" xml:space="preserve">
+    <value>D20</value>
+  </data>
+  <data name="D100" xml:space="preserve">
+    <value>D100</value>
+  </data>
+  <data name="Coin" xml:space="preserve">
+    <value>Coin</value>
+  </data>
+  <data name="Healing" xml:space="preserve">
+    <value>Healing</value>
+  </data>
+  <data name="D" xml:space="preserve">
+    <value>D</value>
+  </data>
+  <data name="Session" xml:space="preserve">
+    <value>Session</value>
+  </data>
+  <data name="Sessions" xml:space="preserve">
+    <value>Sessions</value>
+  </data>
+  <data name="PastSessions" xml:space="preserve">
+    <value>Past Sessions</value>
+  </data>
+  <data name="StartSession" xml:space="preserve">
+    <value>Start a new Session</value>
+  </data>
+  <data name="EndSession" xml:space="preserve">
+    <value>End this Session</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="End" xml:space="preserve">
+    <value>End</value>
+  </data>
+  <data name="TurnShort" xml:space="preserve">
+    <value>T</value>
+  </data>
+  <data name="ActiveSession" xml:space="preserve">
+    <value>Active Session</value>
+  </data>
+  <data name="LevelModifier" xml:space="preserve">
+    <value>Level Modifier</value>
+  </data>
+  <data name="HealthShort" xml:space="preserve">
+    <value>HP</value>
+  </data>
+  <data name="ManaShort" xml:space="preserve">
+    <value>MP</value>
+  </data>
+  <data name="Rest" xml:space="preserve">
+    <value>Rest</value>
   </data>
 </root>

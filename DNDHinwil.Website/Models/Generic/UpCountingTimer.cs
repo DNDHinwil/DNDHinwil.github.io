@@ -3,7 +3,7 @@
 public class UpCountingTimer : DNDHinwil.Website.Interfaces.ITimer
 {
     private readonly Timer _timer;
-    private TimeSpan _deltaTime;
+    private TimeSpan _runTime;
     private readonly long _timeBetweenTicksInMilliseconds = 1000;
     private string _timeFormat => ShowHours ? @"hh\:mm\:ss" : @"mm\:ss";
     private TimerCallback? _callback;
@@ -11,7 +11,8 @@ public class UpCountingTimer : DNDHinwil.Website.Interfaces.ITimer
     public bool TimerRunning { get; set; }
     public bool Paused { get; set; }
     public bool ShowHours { get; set; }
-    public string Time => _deltaTime.ToString(_timeFormat);
+    public string TimeString => _runTime.ToString(_timeFormat);
+    public TimeSpan Time => _runTime;
 
     public UpCountingTimer(TimerCallback? callback)
     {
@@ -23,7 +24,7 @@ public class UpCountingTimer : DNDHinwil.Website.Interfaces.ITimer
     {
         if (TimerRunning)
             return;
-        _deltaTime = TimeSpan.Zero;
+        _runTime = TimeSpan.Zero;
         TimerRunning = true;
         UnpauseTimer();
     }
@@ -42,7 +43,7 @@ public class UpCountingTimer : DNDHinwil.Website.Interfaces.ITimer
     {
         if (!TimerRunning || Paused)
             return;
-        _deltaTime = _deltaTime.Add(TimeSpan.FromMilliseconds(_timeBetweenTicksInMilliseconds));
+        _runTime = _runTime.Add(TimeSpan.FromMilliseconds(_timeBetweenTicksInMilliseconds));
         _callback?.Invoke(null);
     }
 }

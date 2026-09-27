@@ -1,13 +1,14 @@
 ﻿@page "/settings"
-@inject IContentService ContentService
+@inject IDataService ContentService
 
 <PageTitle>@Constants.SiteName - @Text.Settings</PageTitle>
 
 <div class="content" style="@($"--color-primary:{_settings.AccentColor};")">
-    <section class="title">
+    <header class="title">
         <h2>@Text.Settings</h2>
-    </section>
+    </header>
     <section class="settings">
+        <h3>@Text.General</h3>
         <InputWithLabel Label="@Text.AccentColor">
             <InputSelect @bind-value="_settings.AccentColor">
                 <option value="#ff8533">@Text.Default</option>
@@ -42,15 +43,29 @@
         <label>@Text.UploadSpellLibrary</label>
         <button>@Text.Upload</button>
     </section>
-    <section class="modifiers">
-        <h3 style="grid-column:span 2;">@Text.ModifierTable</h3>
-        <label>@Text.Level</label>
-        <label>@Text.Modifier</label>
-        @foreach (var item in _settings.ScoreModifiers)
-        {
-            <label>@item.Score</label>
-            <label>@item.Modifier</label>
-        }
+    <section class="tables">
+        <h3 style="grid-column:span 3;">Tables</h3>
+        <div class="modifiers">
+            <h4 style="grid-column:span 2;">@Text.ModifierTable</h4>
+            <div>@Text.Score</div>
+            <div>@Text.Modifier</div>
+            @foreach (var item in _settings.ScoreModifiers)
+            {
+                <div>@item.Score</div>
+                <div>@item.Modifier</div>
+            }
+        </div>
+        <div></div>
+        <div class="levels">
+            <h4 style="grid-column:span 2;">@Text.ExperienceTable</h4>
+            <div>@Text.Experience</div>
+            <div>@Text.Level</div>
+            @foreach (var item in _settings.LevelThresholds)
+            {
+                <div>@item.TotalExperience</div>
+                <div>@item.Level</div>
+            }
+        </div>
     </section>
 </div>
 
@@ -74,4 +89,11 @@
 
     private async Task SaveSettings()
         => await ContentService.SaveSettings(_settings);
+
+    private async Task DownloadFile<TItem>(string fileName, List<TItem> items)
+    {
+        if (string.IsNullOrWhiteSpace(fileName) || items is null || !items.Any())
+            return;
+        
+    }
 }

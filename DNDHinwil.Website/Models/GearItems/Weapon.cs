@@ -1,5 +1,5 @@
 ﻿namespace DNDHinwil.Website.Models;
 
-public class Accessory : Equipment
+public class Weapon : Gear
 {
 }

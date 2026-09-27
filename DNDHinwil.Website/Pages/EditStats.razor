@@ -1,17 +1,20 @@
 ﻿@page "/stats"
-@inject IContentService ContentService
+@inject IDataService ContentService
 
 <PageTitle>@Constants.SiteName - @Text.Stats</PageTitle>
 
 <div class="content" style="@($"--color-primary:{_settings.AccentColor};")">
-    <section class="title">
+    <header class="title">
         <h2>@Text.Stats</h2>
-    </section>
+    </header>
     <section class="general">
         <h3>@($"{Text.ActiveCharacter}: {_activeCharacter.Name}")</h3>
 
-        <InputWithLabel Label="@Text.Level">
-            <InputNumber @bind-Value="_activeCharacter.Level"></InputNumber>
+        <InputWithLabel Label="@Text.Experience">
+            <InputNumber @bind-Value="_activeCharacter.ExperiencePoints"></InputNumber>
+        </InputWithLabel>
+        <InputWithLabel Label="@Text.LevelModifier">
+            <InputNumber @bind-Value="_activeCharacter.LevelModifier"></InputNumber>
         </InputWithLabel>
         <InputWithLabel Label="@Text.MaxHP">
             <InputNumber @bind-Value="_activeCharacter.MaxHealth"></InputNumber>
@@ -23,15 +26,22 @@
         <button @onclick="async x => await SavePlayer()" style="width:100%;">@Text.Save</button>
     </section>
     <section class="stats">
+        <div></div>
+        <div>@Text.Name</div>
+        <div>@Text.Score</div>
+        <div>@Text.Modifier</div>
+        <div></div>
+        <div></div>
         @foreach (var stat in _activeCharacter.Stats)
         {
             <button @onclick="x => SelectStatForEditing(stat)" command="show-modal" commandfor="delete-stat">-</button>
-            <label>@stat.Name</label>
-            <label>@stat.Score</label>
-            <label>@(stat.Boost > 0 ? $"(Boost:{stat.Boost})" : "")</label>
+            <div>@stat.Name</div>
+            <div style="text-align:right;">@stat.Score</div>
+            <div style="text-align:center;">@($"+{stat.GetModifier(_settings.ScoreModifiers)}")</div>
+            <div>@(stat.Boost > 0 ? $"(+{stat.Boost} {Text.Boost})" : "")</div>
             <button @onclick="x => SelectStatForEditing(stat)" command="show-modal" commandfor="edit-stat">⛭</button>
         }
-        <button @onclick="x => AddNewStat()" command="show-modal" commandfor="edit-stat" style="grid-column:span 5;">@Text.NewStat</button>
+        <button @onclick="x => AddNewStat()" command="show-modal" commandfor="edit-stat" style="grid-column:span 6;">@Text.NewStat</button>
     </section>
     @if (_editStat is not null)
     {
@@ -53,14 +63,6 @@
             <button @onclick="x => FinishEditingStat(true)" command="close" commandfor="edit-stat" style="float:right;">@Text.Save</button>
         </dialog>
     }
-    <dialog id="edit-level">
-        <h4>@Text.Level</h4>
-        <InputWithLabel Label="@Text.Level_Short">
-            <InputNumber @bind-Value="_activeCharacter.Level"></InputNumber>
-        </InputWithLabel>        
-        <button command="close" commandfor="edit-level">@Text.Cancel</button>
-        <button @onclick="async x => await SavePlayer()" command="close" commandfor="edit-level">@Text.Confirm</button>
-    </dialog>
     <dialog id="delete-stat">
         <label>@Text.AreYouSure</label>
         <button @onclick="x => FinishEditingStat(false)" command="close" commandfor="delete-stat">@Text.Cancel</button>
