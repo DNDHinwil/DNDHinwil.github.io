@@ -1,7 +1,4 @@
-﻿using DNDHinwil.Website.Interfaces;
-using DNDHinwil.Website.Resources;
-
-namespace DNDHinwil.Website;
+﻿namespace DNDHinwil.Website;
 
 public static class EnumToStringExtensions
 {
@@ -10,7 +7,7 @@ public static class EnumToStringExtensions
         {
             IEffect.EffectOutcome.DealsDamage => Text.Damage,
             IEffect.EffectOutcome.Heals => Text.Heal,
-            IEffect.EffectOutcome.Other => Text.Other,
+            IEffect.EffectOutcome.Special => Text.Other,
             _ => Text.Other
         };
     public static string ToLocalizedString(this IEffect.EffectTarget outcome)

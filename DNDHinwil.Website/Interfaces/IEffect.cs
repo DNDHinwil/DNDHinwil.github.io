@@ -11,12 +11,14 @@ public interface IEffect
     {
         DealsDamage,
         Heals,
-        Other
+        ReducesDamage,
+        Special
     }
     public enum EffectTarget
     {
         Health,
         Mana,
+        HealthAndMana,
         Special
     }
 }

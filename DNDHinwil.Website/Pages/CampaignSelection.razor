@@ -1,13 +1,14 @@
-﻿@page "/"
+﻿@page "/campaigns"
 @using System.Globalization
 @inject IDataService ContentService
 
-<PageTitle>@Constants.SiteName - Home</PageTitle>
+<PageTitle>@Constants.SiteName - @Text.Campaigns</PageTitle>
 
 <div class="content" style="@($"--color-primary:{_settings.AccentColor};")">
     <header class="title">
-        <h2>Home</h2>
+        <h2>@Text.Campaigns</h2>
     </header>
+
     <section class="active-session">
         <h3>@Text.Session</h3>
         @if (_activeSession is null)
@@ -24,11 +25,10 @@
     {
         <section>
             <h3>@Text.Turns</h3>
-            <LineGraph
-                Max="(_selectedSession.Turns.Max(t => t.Time!.Value.TotalMinutes) * 1.1d)" 
-                Points="TurnsToLineGraphPoints(_selectedSession.Turns)"
-                Marked="(_selectedSession.Turns.Max(t => t.Time!.Value.TotalMinutes) * 0.95d)"
-                Height="200"></LineGraph>
+            <LineGraph Max="(_selectedSession.Turns.Max(t => t.Time!.Value.TotalMinutes) * 1.1d)"
+                       Points="TurnsToLineGraphPoints(_selectedSession.Turns)"
+                       Marked="(_selectedSession.Turns.Max(t => t.Time!.Value.TotalMinutes) * 0.95d)"
+                       Height="200"></LineGraph>
         </section>
     }
     @if (_sessions.Count > 1)
@@ -46,9 +46,12 @@
 </div>
 
 @code {
+    private Campaign? _activeCampaign;
     private Settings _settings = new Settings();
+
     private List<Session> _sessions = [];
     private Session? _activeSession;
+
     private Session? _selectedSession;
     private string? _selectedSessionId;
 

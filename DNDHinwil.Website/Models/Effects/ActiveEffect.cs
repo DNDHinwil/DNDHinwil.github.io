@@ -1,14 +1,17 @@
 ﻿namespace DNDHinwil.Website.Models;
 
-public class Effect : IEffect
+public class ActiveEffect : Effect
 {
-    public string Id { get; set; } = Guid.NewGuid().ToString();
-    public int Strength { get; set; } = 3;
-    public IEffect.EffectTarget Target { get; set; } = IEffect.EffectTarget.Health;
-    public IEffect.EffectOutcome Outcome { get; set; } = IEffect.EffectOutcome.DealsDamage;
-    public string? SpecialText { get; set; }
-
-
+    public string Name { get; set; } = "Effect";
+    public EffectDuration Duration { get; set; } = EffectDuration.Turns;
+    public int Turns { get; set; } = 3;
+    public bool TriggersAtEnd { get; set; }
+    public enum EffectDuration
+    {
+        Turns,
+        UntilRemoved,
+        UntilHealed
+    }
     public override string ToString()
     {
         var outcome = "";
@@ -24,7 +27,8 @@ public class Effect : IEffect
                 outcome = $"{Strength} {Text.ReducedDamage}";
                 break;
             case IEffect.EffectOutcome.Special:
-                return SpecialText ?? "";
+                outcome = SpecialText;
+                break;
             default:
                 break;
         }
@@ -38,15 +42,27 @@ public class Effect : IEffect
             case IEffect.EffectTarget.Mana:
                 target = $" {Text.To} {Text.ManaShort}";
                 break;
-            case IEffect.EffectTarget.HealthAndMana:
-                target = $" {Text.To} {Text.HealthShort} & {Text.ManaShort}";
-                break;
             case IEffect.EffectTarget.Special:
-                return SpecialText ?? "";
             default:
                 break;
         }
 
-        return $"{outcome}{target}";
+        var duration = "";
+        switch (Duration)
+        {
+            case EffectDuration.Turns:
+                duration = $"{Text.For} {Turns} {Text.Turns}";
+                break;
+            case EffectDuration.UntilRemoved:
+                duration = Text.UntilRemoved;
+                break;
+            case EffectDuration.UntilHealed:
+                duration = Text.UntilHealed;
+                break;
+            default:
+                break;
+        }
+
+        return $"{outcome}{target} {duration}";
     }
 }

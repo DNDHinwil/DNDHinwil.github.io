@@ -53,7 +53,7 @@
 
 .health, .mana {
 	display: grid;
-	grid-template-columns: 30px 25px min-content 30px auto;
+	grid-template-columns: 20px 30px min-content 30px auto;
 }
 
 .turn-buttons {

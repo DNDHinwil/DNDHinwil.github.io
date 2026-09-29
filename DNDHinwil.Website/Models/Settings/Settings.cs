@@ -5,7 +5,7 @@ public class Settings
     public string? ActiveCharacter { get; set; }
     public string AccentColor { get; set; } = "#ff8533";
     public string Language { get; set; } = "en";
-    public double PreferredTurnLengthInMinutes { get; set; }
+    public double PreferredTurnLengthInMinutes { get; set; } = 2;
     public TimeSpan PreferredTurnLength => TimeSpan.FromMinutes(PreferredTurnLengthInMinutes);
     public AbilityScore[] ScoreModifiers { get; set; } =
         [

@@ -504,4 +504,31 @@
   <data name="NewSpell" xml:space="preserve">
     <value>Neuer Zauber</value>
   </data>
+  <data name="Wand" xml:space="preserve">
+    <value>Zauberstab</value>
+  </data>
+  <data name="Item" xml:space="preserve">
+    <value>Gegenstand</value>
+  </data>
+  <data name="For" xml:space="preserve">
+    <value>Für</value>
+  </data>
+  <data name="ReducedDamage" xml:space="preserve">
+    <value>Reduzierter Schaden</value>
+  </data>
+  <data name="Luck" xml:space="preserve">
+    <value>Glück</value>
+  </data>
+  <data name="Luck_Short" xml:space="preserve">
+    <value>Glk</value>
+  </data>
+  <data name="Templates" xml:space="preserve">
+    <value>Vorlagen</value>
+  </data>
+  <data name="Campaign" xml:space="preserve">
+    <value>Kampagne</value>
+  </data>
+  <data name="Campaigns" xml:space="preserve">
+    <value>Kampagnen</value>
+  </data>
 </root>

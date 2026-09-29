@@ -24,10 +24,11 @@
         <button @onclick="async x => await CreateCharacter()" style="width:100%;">@Text.CreateCharacter</button>
     </section>
 
+
     @if (_characterToEdit is not null)
     {
         <dialog id="edit-character" class="edit-character">
-            <h3>@Text.Effect</h3>
+            <h3>@Text.Character</h3>
             <InputWithLabel Label="@Text.Name">
                 <InputText @bind-Value="_characterToEdit.Name"></InputText>
             </InputWithLabel>
@@ -35,6 +36,14 @@
             <button @onclick="async x => await FinishEditingCharacter(true)" command="close" commandfor="edit-character" style="float:right;">@Text.OK</button>
         </dialog>
     }
+    <dialog id="character-templates">
+        <InputWithLabel>
+            <InputSelect Value="_selectedTemplate">
+                <option value="@CharacterTemplate.Default">@Text.Default</option>
+                <option value="@CharacterTemplate.HinwilDnd">hinwil</option>
+            </InputSelect>
+        </InputWithLabel>
+    </dialog>
     <dialog id="delete-character">
         <label>@Text.AreYouSure</label>
         <button @onclick="async x => await FinishEditingCharacter(false)" command="close" commandfor="delete-character">@Text.Cancel</button>
@@ -48,6 +57,8 @@
     private Settings _settings = new Settings();
 
     private Character? _characterToEdit;
+
+    private CharacterTemplate _selectedTemplate = CharacterTemplate.Default;
 
     protected override async Task OnInitializedAsync()
     {
@@ -82,7 +93,7 @@
         _characterToEdit = null;
     }
 
-    private async Task CreateCharacter()
+    private async Task CreateCharacterFromTemplate()
     {
         _activeCharacter = new Character();
         _characters.Add(_activeCharacter);
@@ -109,5 +120,10 @@
         }
         _characters.Remove(character);
         await ContentService.SaveCharacters(_characters);
+    }
+    private enum CharacterTemplate
+    {
+        Default,
+        HinwilDnd
     }
 }

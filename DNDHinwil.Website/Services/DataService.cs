@@ -1,8 +1,8 @@
-﻿using DNDHinwil.Website.Models;
-using Microsoft.JSInterop;
-using System.Net.Http.Json;
-using System.Text.Json;
+﻿using DNDHinwil.Website.DB;
+using DNDHinwil.Website.Models;
 using IndexedDB.Blazor;
+using Microsoft.JSInterop;
+using System.Text.Json;
 
 namespace DNDHinwil.Website;
 
@@ -26,10 +26,9 @@ public interface IDataService
     public Task MakeAlert(string message);
 }
 
-public class DataService(HttpClient client, IJSRuntime js, IIndexedDbFactory dbFactory) : IDataService
+public class DataService(HttpClient client, IJSRuntime js) : IDataService
 {
     private readonly HttpClient _client = client;
-    private readonly IIndexedDbFactory _indexedDbFactory = dbFactory;
     private readonly IJSRuntime _js = js;
 
     public async Task<List<Session>> LoadSessions()
@@ -77,7 +76,7 @@ public class DataService(HttpClient client, IJSRuntime js, IIndexedDbFactory dbF
         => await StoreData(Constants.PlayerKey, player);
 
     public async Task<Character> LoadCharacter(string? id)
-    {        
+    {
         var characters = await LoadCharacters();
         var savedCharacter = characters?.FirstOrDefault(c => c.Id == id) ?? characters?.FirstOrDefault();
         if (savedCharacter is null)
@@ -158,7 +157,7 @@ public class DataService(HttpClient client, IJSRuntime js, IIndexedDbFactory dbF
         }
         catch (JsonException)
         {
-            return default; 
+            return default;
         }
     }
 

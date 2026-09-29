@@ -9,7 +9,7 @@
     </header>
     <section class="spellbook">
         <h3 style="grid-column:span 3;">@($"{@Text.SpellbookOf} {_activeCharacter.Name}")</h3>
-        @foreach (var spell in _activeCharacter.Spellbook.Select(sc => sc.Spell))
+        @foreach (var spell in _activeCharacter.Spellbook)
         {
             <CastableSpell Model="spell" CharacterStats="_activeCharacter.Stats" AbilityScoreTable="_settings.ScoreModifiers"></CastableSpell>
             <button @onclick="x => RemoveSpellFromSpellbook(spell)">-</button>
@@ -90,14 +90,14 @@
 
     private void AddSpellToSpellbook(Spell spell)
     {
-        var spellAlreadyInBook = _activeCharacter.Spellbook.FirstOrDefault(s => s.Spell.Id == spell.Id);
+        var spellAlreadyInBook = _activeCharacter.Spellbook.FirstOrDefault(s => s.Id == spell.Id);
         if (spellAlreadyInBook is not null)
             return;
-        _activeCharacter.Spellbook.Add(new() { Spell = spell });
+        _activeCharacter.Spellbook.Add(spell);
     }
 
     private void RemoveSpellFromSpellbook(Spell spell)
-        => _activeCharacter.Spellbook.RemoveAt(_activeCharacter.Spellbook.FindIndex(sc => sc.Spell.Id == spell.Id));
+        => _activeCharacter.Spellbook.RemoveAt(_activeCharacter.Spellbook.FindIndex(sc => sc.Id == spell.Id));
 
     private async Task SavePlayer()
         => await ContentService.SaveCharacter(_activeCharacter);

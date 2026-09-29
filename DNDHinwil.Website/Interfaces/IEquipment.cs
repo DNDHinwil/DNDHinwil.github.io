@@ -6,3 +6,9 @@ public interface IEquipment
     string Description { get; set; }
     int Weight { get; set; }
 }
+
+public interface IEquipment<TEffect> : IEquipment, IHasEffects<TEffect>
+    where TEffect : IEffect
+{
+
+}

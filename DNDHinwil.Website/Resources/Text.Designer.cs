@@ -196,6 +196,24 @@ namespace DNDHinwil.Website.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Campaign.
+        /// </summary>
+        public static string Campaign {
+            get {
+                return ResourceManager.GetString("Campaign", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Campaigns.
+        /// </summary>
+        public static string Campaigns {
+            get {
+                return ResourceManager.GetString("Campaigns", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         public static string Cancel {
@@ -556,6 +574,15 @@ namespace DNDHinwil.Website.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to For.
+        /// </summary>
+        public static string For {
+            get {
+                return ResourceManager.GetString("For", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to General.
         /// </summary>
         public static string General {
@@ -628,6 +655,15 @@ namespace DNDHinwil.Website.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Item.
+        /// </summary>
+        public static string Item {
+            get {
+                return ResourceManager.GetString("Item", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Language.
         /// </summary>
         public static string Language {
@@ -660,6 +696,24 @@ namespace DNDHinwil.Website.Resources {
         public static string LevelModifier {
             get {
                 return ResourceManager.GetString("LevelModifier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Luck.
+        /// </summary>
+        public static string Luck {
+            get {
+                return ResourceManager.GetString("Luck", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lck.
+        /// </summary>
+        public static string Luck_Short {
+            get {
+                return ResourceManager.GetString("Luck_Short", resourceCulture);
             }
         }
         
@@ -858,6 +912,15 @@ namespace DNDHinwil.Website.Resources {
         public static string Player {
             get {
                 return ResourceManager.GetString("Player", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reduced Damage.
+        /// </summary>
+        public static string ReducedDamage {
+            get {
+                return ResourceManager.GetString("ReducedDamage", resourceCulture);
             }
         }
         
@@ -1069,6 +1132,15 @@ namespace DNDHinwil.Website.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Templates.
+        /// </summary>
+        public static string Templates {
+            get {
+                return ResourceManager.GetString("Templates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Test.
         /// </summary>
         public static string Test {
@@ -1200,6 +1272,15 @@ namespace DNDHinwil.Website.Resources {
         public static string UploadSpellLibrary {
             get {
                 return ResourceManager.GetString("UploadSpellLibrary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wand.
+        /// </summary>
+        public static string Wand {
+            get {
+                return ResourceManager.GetString("Wand", resourceCulture);
             }
         }
         
