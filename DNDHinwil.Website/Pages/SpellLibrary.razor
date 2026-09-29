@@ -8,27 +8,43 @@
         <h2>@Text.SpellLibrary</h2>
     </header>
     <section class="spellbook">
-        <h3>@($"{@Text.SpellbookOf} {_activeCharacter.Name}")</h3>
-        @foreach (var spell in _activeCharacter.Spellbook)
+        <h3 style="grid-column:span 3;">@($"{@Text.SpellbookOf} {_activeCharacter.Name}")</h3>
+        @foreach (var spell in _activeCharacter.Spellbook.Select(sc => sc.Spell))
         {
-            <button @onclick="x => RemoveSpellFromSpellbook(spell)">-</button>
             <CastableSpell Model="spell" CharacterStats="_activeCharacter.Stats" AbilityScoreTable="_settings.ScoreModifiers"></CastableSpell>
+            <button @onclick="x => RemoveSpellFromSpellbook(spell)">-</button>
         }
     </section>
     <section class="spell-library">
-        <h3>@($"{@Text.AvailableSpells}")</h3>
-        @foreach (var spell in _activeCharacter.Spellbook)
+        <h3 style="grid-column:span 3;">@Text.AvailableSpells</h3>
+        @foreach (var spell in _spellLibrary)
         {
-            <button @onclick="x => AddSpellToSpellbook(spell)">+</button>
+            <button @onclick="async x => await RemoveSpell(spell)">-</button>
             <CastableSpell Model="spell" CharacterStats="_activeCharacter.Stats" AbilityScoreTable="_settings.ScoreModifiers"></CastableSpell>
+            <button @onclick="x => AddSpellToSpellbook(spell)">+</button>
         }
+        <button @onclick="x => AddNewSpell()" style="grid-column:span 3;">@Text.NewSpell</button>
     </section>
+
+    @if (_editSpell is not null)
+    {
+        <dialog id="edit-spell" class="edit-spellt">
+            <h3>@Text.Effect</h3>
+            <InputWithLabel Label="@Text.Name">
+                <InputText @bind-Value="_editSpell.Name"></InputText>
+            </InputWithLabel>
+            <button @onclick="x => FinishEditingSpell(false)" command="close" commandfor="edit-spell">@Text.Cancel</button>
+            <button @onclick="x => FinishEditingSpell(true)" command="close" commandfor="edit-spell" style="float:right;">@Text.Save</button>
+        </dialog>
+    }
 </div>
 
 @code {
     private Settings _settings = new Settings();
     private Character _activeCharacter = new Character();
     private List<Spell> _spellLibrary = [];
+
+    private Spell? _editSpell;
 
     protected override async Task OnInitializedAsync()
     {
@@ -40,16 +56,48 @@
         Thread.CurrentThread.CurrentUICulture = newCulture;
         Text.Culture = newCulture;
     }
+
+    private void AddNewSpell()
+    {
+        var spell = new Spell();
+        spell.Name = $"{Text.Spell} {_spellLibrary.Count + 1}";
+        StartEditingSpell(spell);
+    }
+
+    private async Task RemoveSpell(Spell spell)
+    {
+        _spellLibrary.Remove(spell);
+        await ContentService.SaveSpellLibrary(_spellLibrary);
+    }
+
+    private void StartEditingSpell(Spell spell)
+        => _editSpell = spell;
+
+    private async Task FinishEditingSpell(bool save)
+    {
+        if (_editSpell is null)
+            return;
+        if (!save || _spellLibrary.Any(e => e.Id == _editSpell.Id))
+        {
+            _editSpell = null;
+            return;
+        }
+
+        _spellLibrary.Add(_editSpell);
+        await ContentService.SaveSpellLibrary(_spellLibrary);
+        _editSpell = null;
+    }
+
     private void AddSpellToSpellbook(Spell spell)
     {
-        var spellAlreadyInBook = _activeCharacter.Spellbook.FirstOrDefault(s => s.Id == spell.Id);
+        var spellAlreadyInBook = _activeCharacter.Spellbook.FirstOrDefault(s => s.Spell.Id == spell.Id);
         if (spellAlreadyInBook is not null)
             return;
-        _activeCharacter.Spellbook.Add(spell);
+        _activeCharacter.Spellbook.Add(new() { Spell = spell });
     }
 
     private void RemoveSpellFromSpellbook(Spell spell)
-        => _activeCharacter.Spellbook.Remove(spell);
+        => _activeCharacter.Spellbook.RemoveAt(_activeCharacter.Spellbook.FindIndex(sc => sc.Spell.Id == spell.Id));
 
     private async Task SavePlayer()
         => await ContentService.SaveCharacter(_activeCharacter);

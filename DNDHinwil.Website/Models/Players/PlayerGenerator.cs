@@ -4,21 +4,29 @@ using System.Globalization;
 
 namespace DNDHinwil.Website.Models;
 
-public static class PlayerGenerator
+public class PlayerGenerator(IDataService dataService)
 {
-    public static Player GenerateHinwilPlayer()
+    private readonly IDataService _dataService = dataService;
+    public Player GenerateHarryPotterCampaignPlayer()
     {
         var newCulture = new CultureInfo("de");
         Thread.CurrentThread.CurrentUICulture = newCulture;
         Text.Culture = newCulture;
 
         var player = new Player();
+        var defaultCharacter = new Character();
+        player.Characters.Add(defaultCharacter);
 
         var defaultStats = GenerateDefaultStats();
+        defaultCharacter.Stats = defaultStats;
 
         var defaultEquipment = GenerateDefaultEquipment();
+        _dataService.SaveEquipmentChest(defaultEquipment);
         player.EquipmentChest = defaultEquipment;
-        var defaultSpells = GenerateDefaultSpells(defaultStats);
+
+        var defaultSpells = GenerateDefaultSpells();
+        _dataService.SaveSpellLibrary(defaultSpells);
+
         player.SpellLibrary = defaultSpells;
 
         return new()
@@ -34,7 +42,7 @@ public static class PlayerGenerator
                ]
         };
     }
-    public static List<Stat> GenerateDefaultStats()
+    private static List<Stat> GenerateDefaultStats()
         => [
             new(){Name = Text.MagicPower, Short = Text.MagicPower_Short, Score = 10 },
             new(){Name = Text.Intelligence, Short = Text.Intelligence_Short, Score = 10 },
@@ -44,7 +52,7 @@ public static class PlayerGenerator
             new(){Name = Text.Dexterity, Short = Text.Dexterity_Short, Score = 10 },
             new(){Name = Text.Charisma, Short = Text.Charisma_Short, Score = 10 }
             ];
-    public static List<Equipment> GenerateDefaultEquipment()
+    private static List<Equipment> GenerateDefaultEquipment()
         => [
             new Money(){ Name = "Furzis", Quantity = 50},
             new Potion()
@@ -57,7 +65,7 @@ public static class PlayerGenerator
                 ]
             }
         ];
-    public static List<Spell> GenerateDefaultSpells(List<Stat> bonusStats)
+    private static List<Spell> GenerateDefaultSpells()
         => [
             new()
             {

@@ -71,7 +71,7 @@
         <h3 style="grid-row:span 2;">@Text.Spellbook</h3>
         @if (_activeCharacter.Spellbook.Any())
         {
-            @foreach (var spell in _activeCharacter.Spellbook)
+            @foreach (var spell in _activeCharacter.Spellbook.Select(sc => sc.Spell))
             {
                 <CastableSpell Model="spell" CharacterStats="_activeCharacter.Stats" AbilityScoreTable="_settings.ScoreModifiers"></CastableSpell>
                 <button>@Text.Cast</button>
@@ -263,7 +263,7 @@
         if (_timer is null)
             _timer = new UpCountingTimer(UpdateUi);
 
-        _activeTurn = new Turn();
+        _activeTurn = new Turn() { Character = _activeCharacter };
         _activeSession.Turns.Add(_activeTurn);
         await ContentService.SaveSession(_activeSession);
 

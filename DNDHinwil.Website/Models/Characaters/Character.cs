@@ -45,8 +45,6 @@ public class Character
         ];
     public List<TriggeredEffect> ActiveEffects { get; set; } = [];
 
-    public List<Turn> Turns { get; set; } = [];
-
     public int GetLevel(IEnumerable<LevelThreshold> thresholds)
         => (thresholds.GetLastThreshold(ExperiencePoints)?.Level ?? 0) + LevelModifier;
 }

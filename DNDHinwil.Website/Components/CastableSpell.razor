@@ -7,12 +7,12 @@
 </div>
 
 @code {
-        [Parameter]
-        public required Spell Model { get; set; }
-        [Parameter]
-        public IEnumerable<Stat> CharacterStats { get; set; } = [];
-        [Parameter]
-        public AbilityScore[] AbilityScoreTable { get; set; } = [];
+    [Parameter]
+    public required Spell Model { get; set; }
+    [Parameter]
+    public IEnumerable<Stat> CharacterStats { get; set; } = [];
+    [Parameter]
+    public AbilityScore[] AbilityScoreTable { get; set; } = [];
 
     public string GetText(SpellEffect effect)
     {

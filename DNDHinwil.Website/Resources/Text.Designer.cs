@@ -754,6 +754,15 @@ namespace DNDHinwil.Website.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New Spell.
+        /// </summary>
+        public static string NewSpell {
+            get {
+                return ResourceManager.GetString("NewSpell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New Stat.
         /// </summary>
         public static string NewStat {

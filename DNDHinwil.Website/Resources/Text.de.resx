@@ -187,7 +187,7 @@
     <value>Max MP</value>
   </data>
   <data name="MagicPower" xml:space="preserve">
-    <value>Magie Power</value>
+    <value>Magisches Gespür</value>
   </data>
   <data name="Dexterity" xml:space="preserve">
     <value>Geschick</value>
@@ -205,7 +205,7 @@
     <value>Charisma</value>
   </data>
   <data name="MagicPower_Short" xml:space="preserve">
-    <value>MP</value>
+    <value>MG</value>
   </data>
   <data name="Strength_Short" xml:space="preserve">
     <value>St</value>
@@ -500,5 +500,8 @@
   </data>
   <data name="Rest" xml:space="preserve">
     <value>Raste</value>
+  </data>
+  <data name="NewSpell" xml:space="preserve">
+    <value>Neuer Zauber</value>
   </data>
 </root>

@@ -501,4 +501,7 @@
   <data name="Rest" xml:space="preserve">
     <value>Rest</value>
   </data>
+  <data name="NewSpell" xml:space="preserve">
+    <value>New Spell</value>
+  </data>
 </root>

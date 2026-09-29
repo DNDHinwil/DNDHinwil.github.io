@@ -30,7 +30,7 @@
         <div>@Text.Name</div>
         <div>@Text.Score</div>
         <div>@Text.Modifier</div>
-        <div></div>
+        <div>@(_activeCharacter.Stats.Any(s => s.Boost > 0) ? Text.Boost : "")</div>
         <div></div>
         @foreach (var stat in _activeCharacter.Stats)
         {
@@ -38,7 +38,7 @@
             <div>@stat.Name</div>
             <div style="text-align:right;">@stat.Score</div>
             <div style="text-align:center;">@($"+{stat.GetModifier(_settings.ScoreModifiers)}")</div>
-            <div>@(stat.Boost > 0 ? $"(+{stat.Boost} {Text.Boost})" : "")</div>
+            <div>@(stat.Boost > 0 ? $"(+{stat.Boost})" : "")</div>
             <button @onclick="x => SelectStatForEditing(stat)" command="show-modal" commandfor="edit-stat">⛭</button>
         }
         <button @onclick="x => AddNewStat()" command="show-modal" commandfor="edit-stat" style="grid-column:span 6;">@Text.NewStat</button>
