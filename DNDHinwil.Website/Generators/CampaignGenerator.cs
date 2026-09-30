@@ -11,21 +11,20 @@ public static class CampaignGenerator
         Thread.CurrentThread.CurrentUICulture = newCulture;
         Text.Culture = newCulture;
 
-        var defaultStats = GenerateDefaultStats();
-        var defaultEquipment = GenerateDefaultEquipment();
-        var defaultGear = GenerateDefaultGear();
-        var defaultSpells = GenerateDefaultSpells();
+        var defaultStats = GenerateHinwilDefaultStats();
+        var defaultEquipment = GenerateHinwilDefaultEquipment();
+        var defaultGear = GenerateHinwilDefaultGear();
+        var defaultSpells = GenerateHinwilDefaultSpells();
 
         var defaultCharacter = new Character()
         {
             Stats = defaultStats,
             Spellbook = defaultSpells,
-            Equipment = defaultEquipment,
+            Inventory = defaultEquipment,
             Money = [new() { Name = "Furzis", Quantity = 50 }],
             Gear = defaultGear
         };
-
-        var defaultSettings = new Settings() { ActiveCharacter = defaultCharacter.Id };
+        var defaultSettings = new Settings() { ActiveCharacter = defaultCharacter.Id, Language = "de" };
 
         return new()
         {
@@ -39,7 +38,7 @@ public static class CampaignGenerator
             Settings = defaultSettings
         };
     }
-    private static List<Stat> GenerateDefaultStats()
+    private static List<Stat> GenerateHinwilDefaultStats()
         => [
             new(){Name = Text.Intelligence, Short = Text.Intelligence_Short, Score = 10 },
             new(){Name = Text.MagicPower, Short = Text.MagicPower_Short, Score = 10 },
@@ -49,7 +48,7 @@ public static class CampaignGenerator
             new(){Name = Text.Constitution, Short = Text.Constitution_Short, Score = 10 },
             new(){Name = Text.Luck, Short = Text.Wisdom_Short, Score = 10 }
             ];
-    private static List<Equipment> GenerateDefaultEquipment()
+    private static List<Equipment> GenerateHinwilDefaultEquipment()
         => [
             new Equipment()
             {
@@ -58,18 +57,19 @@ public static class CampaignGenerator
                 [
                     new() { Outcome = IEffect.EffectOutcome.Heals, Strength = 5, Target = IEffect.EffectTarget.Health},
                     new() { Outcome = IEffect.EffectOutcome.Heals, Strength = 3, Target = IEffect.EffectTarget.Mana}
-                ]
+                ],
+                Usable = true
             }
-        ];
-    private static List<Gear> GenerateDefaultGear()
+        ]; 
+    private static List<Gear> GenerateHinwilDefaultGear()
         => [
             new Gear()
             {
                 Name = Text.Wand,
-                EquippsTo = Gear.Slot.MainHand
+                Slot = Gear.Slot.MainHand
             }
         ];
-    private static List<Spell> GenerateDefaultSpells()
+    private static List<Spell> GenerateHinwilDefaultSpells()
         => [
             new()
             {

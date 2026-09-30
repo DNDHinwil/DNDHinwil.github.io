@@ -1,20 +1,18 @@
 ﻿
 .stats {
 	display: grid;
-	grid-template-columns: repeat(var(--stat-count), auto);
-	padding: 0.25rem 0 0.75rem 0;
+	grid-template-columns: max-content;
 }
 
 .stat {
 	position: relative;
-	height: max(6vw, 18px);
-	max-height: 72px;
+	height: 40px;
 	aspect-ratio: 1;
-	margin: 0 auto;
+	margin-bottom: 0.75rem;
 	text-align: center;
-	font-size: min(max(4vw, 14px), 50px);
+	font-size: 24px;
 	border-radius: 50%;
-	border: min(max(1vw, 3px), 10px) solid var(--color);
+	border: 5px solid var(--color);
 	background: var(--color-background);
 	display: flex;
 	justify-content: center;
@@ -22,10 +20,10 @@
 }
 	.stat > label {
 		position: absolute;
-		bottom: calc(max(1vw, 10px) * -1);
+		bottom: -10px;
 		left: 0;
 		width: 100%;
-		font-size: min(max(2vw, 10px), 24px);
+		font-size: 12px;
 		font-weight: bold;
 		border-radius: 0.25rem;
 		background: var(--color-background);

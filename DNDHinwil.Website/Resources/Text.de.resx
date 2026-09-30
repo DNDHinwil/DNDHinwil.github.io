@@ -417,8 +417,8 @@
   <data name="SpellbookOf" xml:space="preserve">
     <value>Zauberbuch von</value>
   </data>
-  <data name="EquipmentOf" xml:space="preserve">
-    <value>Ausrüstung von</value>
+  <data name="InventoryOf" xml:space="preserve">
+    <value>{{CHARACTER}}'s Inventar</value>
   </data>
   <data name="Duration" xml:space="preserve">
     <value>Dauer</value>
@@ -530,5 +530,62 @@
   </data>
   <data name="Campaigns" xml:space="preserve">
     <value>Kampagnen</value>
+  </data>
+  <data name="ManaCost" xml:space="preserve">
+    <value>Manakosten</value>
+  </data>
+  <data name="StartCampaign" xml:space="preserve">
+    <value>Starte eine neue Kampagne</value>
+  </data>
+  <data name="StartCampaignWarning" xml:space="preserve">
+    <value>Deine Daten werden gelöscht</value>
+  </data>
+  <data name="NoEquipmentInInventory" xml:space="preserve">
+    <value>Keine Ausrüstung im Inventar</value>
+  </data>
+  <data name="Inventory" xml:space="preserve">
+    <value>Inventar</value>
+  </data>
+  <data name="Use" xml:space="preserve">
+    <value>Benutzen</value>
+  </data>
+  <data name="Gear_MainHand" xml:space="preserve">
+    <value>Dominante Hand</value>
+  </data>
+  <data name="Gear_OffHand" xml:space="preserve">
+    <value>Schwache Hand</value>
+  </data>
+  <data name="Gear_Head" xml:space="preserve">
+    <value>Kopf</value>
+  </data>
+  <data name="Gear_Chest" xml:space="preserve">
+    <value>Brust</value>
+  </data>
+  <data name="Gear_Cloak" xml:space="preserve">
+    <value>Umhang</value>
+  </data>
+  <data name="Gear_Gloves" xml:space="preserve">
+    <value>Handschuhe</value>
+  </data>
+  <data name="Gear_Bracers" xml:space="preserve">
+    <value>Arme</value>
+  </data>
+  <data name="Gear_Legs" xml:space="preserve">
+    <value>Beine</value>
+  </data>
+  <data name="Gear_Boots" xml:space="preserve">
+    <value>Schuhe</value>
+  </data>
+  <data name="Gear_Ears" xml:space="preserve">
+    <value>Ohren</value>
+  </data>
+  <data name="Gear_Neck" xml:space="preserve">
+    <value>Hals</value>
+  </data>
+  <data name="Gear_Finger" xml:space="preserve">
+    <value>Finger</value>
+  </data>
+  <data name="Gear_Twohanded" xml:space="preserve">
+    <value>Zweihändig</value>
   </data>
 </root>

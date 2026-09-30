@@ -1,9 +1,10 @@
 ﻿<div class="spell">
-    <div>@Model.Name</div>
-    <div>@Model.ManaCost</div>
+    <h4>@Model.Name</h4>
+    <div style="text-align:right;">@Text.ManaCost</div>
+    <div style="text-align:right;">@Model.ManaCost</div>
     @foreach (var effect in Model.Effects)
     {
-        <div>@effect.ToString(CharacterStats.FirstOrDefault(s => s.Id == effect.BonusStatId), AbilityScoreTable)</div>
+        <div style="grid-column:span 2;">@effect.ToString(CharacterStats.FirstOrDefault(s => s.Id == effect.BonusStatId), AbilityScoreTable)</div>
     }
 </div>
 
@@ -14,5 +15,4 @@
     public IEnumerable<Stat> CharacterStats { get; set; } = [];
     [Parameter]
     public AbilityScore[] AbilityScoreTable { get; set; } = [];
-
 }

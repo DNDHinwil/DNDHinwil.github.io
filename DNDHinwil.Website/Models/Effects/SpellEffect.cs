@@ -31,17 +31,20 @@ public class SpellEffect : Effect
         switch (Target)
         {
             case IEffect.EffectTarget.Health:
-                target = $" {Text.To} {Text.HealthShort}";
+                target = $" {Text.To} {Text.Health}";
                 break;
             case IEffect.EffectTarget.Mana:
-                target = $" {Text.To} {Text.ManaShort}";
+                target = $" {Text.To} {Text.Mana}";
+                break;
+            case IEffect.EffectTarget.HealthAndMana:
+                target = $" {Text.To} {Text.HealthShort} & {Text.ManaShort}";
                 break;
             case IEffect.EffectTarget.Special:
                 return SpecialText ?? "";
             default:
                 break;
         }
-        return NumberOfDice < 1 ? $"{outcome}{target}"
+        return NumberOfDice < 1 ? $"{Strength} {outcome}{target}"
             : UseStrengthAsBonusPower ? $"{NumberOfDice}{Text.D}{DiceType} +{Strength} {outcome}{target}"
             : $"{NumberOfDice}{Text.D}{DiceType} {outcome}{target}";
     }

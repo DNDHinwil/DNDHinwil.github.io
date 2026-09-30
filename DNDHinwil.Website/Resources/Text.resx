@@ -417,8 +417,8 @@
   <data name="SpellbookOf" xml:space="preserve">
     <value>Spellbook of</value>
   </data>
-  <data name="EquipmentOf" xml:space="preserve">
-    <value>Equipment of</value>
+  <data name="InventoryOf" xml:space="preserve">
+    <value>{{CHARACTER}}'s Inventory</value>
   </data>
   <data name="Duration" xml:space="preserve">
     <value>Duration</value>
@@ -530,5 +530,62 @@
   </data>
   <data name="Campaigns" xml:space="preserve">
     <value>Campaigns</value>
+  </data>
+  <data name="ManaCost" xml:space="preserve">
+    <value>Mana Cost</value>
+  </data>
+  <data name="StartCampaign" xml:space="preserve">
+    <value>Start a new campaign</value>
+  </data>
+  <data name="StartCampaignWarning" xml:space="preserve">
+    <value>This will reset all your data</value>
+  </data>
+  <data name="NoEquipmentInInventory" xml:space="preserve">
+    <value>No Equipment in Inventory</value>
+  </data>
+  <data name="Inventory" xml:space="preserve">
+    <value>Inventory</value>
+  </data>
+  <data name="Use" xml:space="preserve">
+    <value>Use</value>
+  </data>
+  <data name="Gear_MainHand" xml:space="preserve">
+    <value>Main Hand</value>
+  </data>
+  <data name="Gear_OffHand" xml:space="preserve">
+    <value>Off Hand</value>
+  </data>
+  <data name="Gear_Head" xml:space="preserve">
+    <value>Head</value>
+  </data>
+  <data name="Gear_Chest" xml:space="preserve">
+    <value>Chest</value>
+  </data>
+  <data name="Gear_Cloak" xml:space="preserve">
+    <value>Cloak</value>
+  </data>
+  <data name="Gear_Gloves" xml:space="preserve">
+    <value>Gloves</value>
+  </data>
+  <data name="Gear_Bracers" xml:space="preserve">
+    <value>Bracers</value>
+  </data>
+  <data name="Gear_Legs" xml:space="preserve">
+    <value>Legs</value>
+  </data>
+  <data name="Gear_Boots" xml:space="preserve">
+    <value>Boots</value>
+  </data>
+  <data name="Gear_Ears" xml:space="preserve">
+    <value>Ears</value>
+  </data>
+  <data name="Gear_Neck" xml:space="preserve">
+    <value>Neck</value>
+  </data>
+  <data name="Gear_Finger" xml:space="preserve">
+    <value>Finger</value>
+  </data>
+  <data name="Gear_Twohanded" xml:space="preserve">
+    <value>Twohanded</value>
   </data>
 </root>

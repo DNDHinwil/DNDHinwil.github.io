@@ -9,8 +9,8 @@
         <h2>@Text.Armory</h2>
     </header>
     <section class="equipment">
-        <h3>@($"{@Text.EquipmentOf} {_activeCharacter.Name}")</h3>
-        @foreach (var item in _activeCharacter.Equipment)
+        <h3>@($"{@Text.InventoryOf.Replace("{{CHARACTER}}", _activeCharacter.Name)}")</h3>
+        @foreach (var item in _activeCharacter.Inventory)
         {
             <EquipmentItem Model="item"></EquipmentItem>
         }

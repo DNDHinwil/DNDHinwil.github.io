@@ -1,14 +1,13 @@
-﻿@page "/campaigns"
+﻿@page "/sessions"
 @using System.Globalization
 @inject IDataService ContentService
 
-<PageTitle>@Constants.SiteName - @Text.Campaigns</PageTitle>
+<PageTitle>@Constants.SiteName - @Text.Sessions</PageTitle>
 
 <div class="content" style="@($"--color-primary:{_settings.AccentColor};")">
     <header class="title">
-        <h2>@Text.Campaigns</h2>
+        <h2>@Text.Sessions</h2>
     </header>
-
     <section class="active-session">
         <h3>@Text.Session</h3>
         @if (_activeSession is null)
@@ -43,10 +42,16 @@
             </InputSelect>
         </section>
     }
+    <section>
+        <h3>@Text.Campaign</h3>
+        <button>@Text.StartCampaign</button>
+    </section>
+    <dialog id="start-campaign">
+
+    </dialog>
 </div>
 
 @code {
-    private Campaign? _activeCampaign;
     private Settings _settings = new Settings();
 
     private List<Session> _sessions = [];

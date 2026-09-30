@@ -1,4 +1,4 @@
 ﻿.spell {
 	display: grid;
-	grid-template-columns: min-content auto;
+	grid-template-columns: auto max-content 28px;
 }

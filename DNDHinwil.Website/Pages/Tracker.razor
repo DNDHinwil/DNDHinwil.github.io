@@ -27,11 +27,10 @@
         }
     </section>
 
-    <section>
-        <StatDisplay Stats="_activeCharacter.Stats" AbilityScores="_settings.ScoreModifiers"></StatDisplay>
-    </section>
-
     <section class="player">
+        <div class="stats">
+            <StatDisplay Stats="_activeCharacter.Stats" AbilityScores="_settings.ScoreModifiers"></StatDisplay>
+        </div>
         <div class="portrait">
             <div class="profile-image" style="grid-column:span 3;">
                 <img src="@_activeCharacter.ImageUrl" />
@@ -68,18 +67,45 @@
     </section>
 
     <section class="spellbook">
-        <h3 style="grid-row:span 2;">@Text.Spellbook</h3>
+        <h3>@Text.Spellbook</h3>
         @if (_activeCharacter.Spellbook.Any())
         {
             @foreach (var spell in _activeCharacter.Spellbook)
             {
-                <CastableSpell Model="spell" CharacterStats="_activeCharacter.Stats" AbilityScoreTable="_settings.ScoreModifiers"></CastableSpell>
-                <button>@Text.Cast</button>
+                <div class="spell">
+                    <CastableSpell Model="spell" CharacterStats="_activeCharacter.Stats" AbilityScoreTable="_settings.ScoreModifiers"></CastableSpell>
+                    <button>@Text.Cast</button>
+                </div>
             }
         }
         else
         {
             <div>@Text.NoSpellsInSpellbook</div>
+        }
+    </section>
+
+    <section class="equipment">
+        <h3>@Text.Inventory</h3>
+        @if (_activeCharacter.Inventory.Any())
+        {
+            @foreach (var item in _activeCharacter.Inventory)
+            {
+                <div class="item">
+                    <EquipmentItem></EquipmentItem>
+                    @if (item.Usable)
+                    {
+                        <button>@Text.Use</button>
+                    }
+                    else
+                    {
+                        <div></div>
+                    }
+                </div>
+            }
+        }
+        else
+        {
+            <div>@Text.NoEquipmentInInventory</div>
         }
     </section>
 

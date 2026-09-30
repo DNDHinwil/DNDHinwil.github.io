@@ -1,4 +1,5 @@
 ﻿@page "/characters"
+@using DNDHinwil.Website.Generators
 @inject IDataService ContentService
 
 <PageTitle>@Constants.SiteName - @Text.Characters</PageTitle>
@@ -21,7 +22,7 @@
         }
     </section>
     <section class="create-new">
-        <button @onclick="async x => await CreateCharacter()" style="width:100%;">@Text.CreateCharacter</button>
+        <button @onclick="async x => await CreateCharacterFromTemplate()" style="width:100%;">@Text.CreateCharacter</button>
     </section>
 
 
@@ -38,7 +39,7 @@
     }
     <dialog id="character-templates">
         <InputWithLabel>
-            <InputSelect Value="_selectedTemplate">
+            <InputSelect @bind-Value="_selectedTemplate">
                 <option value="@CharacterTemplate.Default">@Text.Default</option>
                 <option value="@CharacterTemplate.HinwilDnd">hinwil</option>
             </InputSelect>
@@ -95,7 +96,8 @@
 
     private async Task CreateCharacterFromTemplate()
     {
-        _activeCharacter = new Character();
+        var campaign = CampaignGenerator.StartHinwilCampaign();
+        _activeCharacter = campaign.Characters.First();
         _characters.Add(_activeCharacter);
         await ContentService.SaveCharacters(_characters);
         _settings.ActiveCharacter = _activeCharacter.Id;

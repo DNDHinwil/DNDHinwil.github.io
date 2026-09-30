@@ -1,11 +1,11 @@
-﻿<div class="equipment-item">
-    <div>@(Model.Quantity > 0 ? Model.Quantity : "")</div>
+﻿<div class="gear-item">
     <h4>@Model.Name</h4>
+    <div>@Model.Slot</div>
     @if (!string.IsNullOrWhiteSpace(Model.Description))
     {
         <div style="grid-column:span 2;">@Model.Description</div>
     }
-    @foreach (var effect in Model.Effects)
+    @foreach (var effect in Model.Bonuses)
     {
         <div style="grid-column:span 2;">@effect.ToString()</div>
     }
@@ -13,5 +13,6 @@
 
 @code {
     [Parameter]
-    public required Equipment Model { get; set; }
+    public required Gear Model { get; set; }
+
 }

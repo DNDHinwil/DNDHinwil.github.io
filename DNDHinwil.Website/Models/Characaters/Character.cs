@@ -3,8 +3,8 @@ namespace DNDHinwil.Website.Models;
 
 public class Character
 {
-    private int _currentHealth = 1;
-    private int _currentMana = 1;
+    private int _currentHealth = 2;
+    private int _currentMana = 2;
 
     [Key]
     public string Id { get; set; } = Guid.NewGuid().ToString();
@@ -12,13 +12,13 @@ public class Character
     public string ImageUrl { get; set; } = "https://i.imgur.com/k6W1HJn.png";
     public int LevelModifier { get; set; }
     public int ExperiencePoints { get; set; }
-    public int MaxHealth { get; set; } = 1;
+    public int MaxHealth { get; set; } = 2;
     public int Health
     {
         get => _currentHealth;
         set => _currentHealth = Math.Clamp(value, 0, MaxHealth);
     }
-    public int MaxMana { get; set; } = 1;
+    public int MaxMana { get; set; } = 2;
     public int Mana
     {
         get => _currentMana;
@@ -26,7 +26,7 @@ public class Character
     }
     public int Armor => Gear.Count != 0 ? Gear.Max(g => g.Armor) : 0;
     public int DamageReduction => GetDamageReduction();
-    public List<Equipment> Equipment { get; set; } = [];
+    public List<Equipment> Inventory { get; set; } = [];
     public List<Money> Money { get; set; } = [];
     public List<Gear> Gear { get; set; } = [];
     public List<Spell> Spellbook { get; set; } = [];
