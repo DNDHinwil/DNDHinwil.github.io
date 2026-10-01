@@ -186,7 +186,7 @@
   <data name="MaxMP" xml:space="preserve">
     <value>Max MP</value>
   </data>
-  <data name="MagicPower" xml:space="preserve">
+  <data name="MagicSense" xml:space="preserve">
     <value>Magisches Gespür</value>
   </data>
   <data name="Dexterity" xml:space="preserve">
@@ -204,7 +204,7 @@
   <data name="Charisma" xml:space="preserve">
     <value>Charisma</value>
   </data>
-  <data name="MagicPower_Short" xml:space="preserve">
+  <data name="MagicSense_Short" xml:space="preserve">
     <value>MG</value>
   </data>
   <data name="Strength_Short" xml:space="preserve">
@@ -418,7 +418,7 @@
     <value>Zauberbuch von</value>
   </data>
   <data name="InventoryOf" xml:space="preserve">
-    <value>{{CHARACTER}}'s Inventar</value>
+    <value>{{CHARACTER}}s Inventar</value>
   </data>
   <data name="Duration" xml:space="preserve">
     <value>Dauer</value>
@@ -587,5 +587,20 @@
   </data>
   <data name="Gear_Twohanded" xml:space="preserve">
     <value>Zweihändig</value>
+  </data>
+  <data name="NotEnoughMana" xml:space="preserve">
+    <value>Nicht genug Mana</value>
+  </data>
+  <data name="EquipmentChest" xml:space="preserve">
+    <value>Austrüstungskoffer</value>
+  </data>
+  <data name="GearOf" xml:space="preserve">
+    <value>{{CHARACTER}}s Ausstattung</value>
+  </data>
+  <data name="NewEquipment" xml:space="preserve">
+    <value>Neuer Ausrüstungsgegenstand</value>
+  </data>
+  <data name="NewGear" xml:space="preserve">
+    <value>Neuer Ausstattungsgegenstand</value>
   </data>
 </root>

@@ -529,6 +529,15 @@ namespace DNDHinwil.Website.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Equipment Chest.
+        /// </summary>
+        public static string EquipmentChest {
+            get {
+                return ResourceManager.GetString("EquipmentChest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Experience.
         /// </summary>
         public static string Experience {
@@ -691,6 +700,15 @@ namespace DNDHinwil.Website.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {{CHARACTER}}&apos;s Gear.
+        /// </summary>
+        public static string GearOf {
+            get {
+                return ResourceManager.GetString("GearOf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to General.
         /// </summary>
         public static string General {
@@ -844,20 +862,20 @@ namespace DNDHinwil.Website.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Magic Power.
+        ///   Looks up a localized string similar to Magic Sense.
         /// </summary>
-        public static string MagicPower {
+        public static string MagicSense {
             get {
-                return ResourceManager.GetString("MagicPower", resourceCulture);
+                return ResourceManager.GetString("MagicSense", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MP.
+        ///   Looks up a localized string similar to MS.
         /// </summary>
-        public static string MagicPower_Short {
+        public static string MagicSense_Short {
             get {
-                return ResourceManager.GetString("MagicPower_Short", resourceCulture);
+                return ResourceManager.GetString("MagicSense_Short", resourceCulture);
             }
         }
         
@@ -943,6 +961,24 @@ namespace DNDHinwil.Website.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New Equipment.
+        /// </summary>
+        public static string NewEquipment {
+            get {
+                return ResourceManager.GetString("NewEquipment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Gear Item.
+        /// </summary>
+        public static string NewGear {
+            get {
+                return ResourceManager.GetString("NewGear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New Spell.
         /// </summary>
         public static string NewSpell {
@@ -993,6 +1029,15 @@ namespace DNDHinwil.Website.Resources {
         public static string NoSpellsInSpellbook {
             get {
                 return ResourceManager.GetString("NoSpellsInSpellbook", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not enough Mana.
+        /// </summary>
+        public static string NotEnoughMana {
+            get {
+                return ResourceManager.GetString("NotEnoughMana", resourceCulture);
             }
         }
         

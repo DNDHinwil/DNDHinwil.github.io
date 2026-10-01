@@ -8,7 +8,7 @@
         <h2>@Text.SpellLibrary</h2>
     </header>
     <section class="spellbook">
-        <h3 style="grid-column:span 3;">@($"{@Text.SpellbookOf} {_activeCharacter.Name}")</h3>
+        <h3 style="grid-column:span 2;">@($"{@Text.SpellbookOf} {_activeCharacter.Name}")</h3>
         @foreach (var spell in _activeCharacter.Spellbook)
         {
             <CastableSpell Model="spell" CharacterStats="_activeCharacter.Stats" AbilityScoreTable="_settings.ScoreModifiers"></CastableSpell>
@@ -23,7 +23,7 @@
             <CastableSpell Model="spell" CharacterStats="_activeCharacter.Stats" AbilityScoreTable="_settings.ScoreModifiers"></CastableSpell>
             <button @onclick="x => AddSpellToSpellbook(spell)">+</button>
         }
-        <button @onclick="x => AddNewSpell()" style="grid-column:span 3;">@Text.NewSpell</button>
+        <button @onclick="x => AddNewSpell()" style="width:100%;grid-column:span 3;">@Text.NewSpell</button>
     </section>
 
     @if (_editSpell is not null)

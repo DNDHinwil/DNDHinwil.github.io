@@ -2,8 +2,8 @@
 
 public class GearSlot
 {
-    public Slot Target { get; set; }
-    public string Name => Target switch
+    public Slot Target { get; set; } = Slot.None;
+    public override string ToString() => Target switch
     {
         Slot.None => "",
         Slot.MainHand => Text.Gear_MainHand,
@@ -21,7 +21,7 @@ public class GearSlot
         Slot.Finger => Text.Gear_Finger,
         _ => ""
     };
-    
+
     public enum Slot
     {
         None,

@@ -84,17 +84,17 @@
         }
     </section>
 
-    <section class="equipment">
+    <section class="inventory">
         <h3>@Text.Inventory</h3>
         @if (_activeCharacter.Inventory.Any())
         {
             @foreach (var item in _activeCharacter.Inventory)
             {
-                <div class="item">
-                    <EquipmentItem></EquipmentItem>
+                <div class="equipment-item">
+                    <EquipmentItem Model="item"></EquipmentItem>
                     @if (item.Usable)
                     {
-                        <button>@Text.Use</button>
+                        <button @onclick="async x => await UseEquipment(item)">@Text.Use</button>
                     }
                     else
                     {
@@ -152,7 +152,7 @@
         {
             <div>@Text.NoTriggeredEffects</div>
         }
-        <button @onclick="x => AddNewEffect()" command="show-modal" commandfor="edit-active-effect">@Text.NewTriggeredEffect</button>
+        <button @onclick="x => AddNewEffect()" style="width:100%;" command="show-modal" commandfor="edit-active-effect">@Text.NewTriggeredEffect</button>
 
     </section>
 
@@ -317,87 +317,45 @@
         _activeCharacter.ActiveEffects.RemoveAll(x => x.Duration is ActiveEffect.EffectDuration.Turns && x.Turns < 1);
     }
 
+    private async Task UseSpell(Spell spell)
+    {
+        if (spell.ManaCost > _activeCharacter.Mana)
+        {
+            await ContentService.MakeAlert(Text.NotEnoughMana);
+            return;
+        }
+        await _activeCharacter.UseSpell(spell);
+        await ContentService.SaveCharacter(_activeCharacter);
+    }
+
+    private async Task UseEquipment(Equipment equipment)
+    {
+        await _activeCharacter.UseEquipment(equipment);
+        await ContentService.SaveCharacter(_activeCharacter);
+    }
+
     private async Task ExecuteActiveEffects(bool isEndOfTurn)
     {
-        if (_activeCharacter.ActiveEffects.Any(a => a.Outcome is IEffect.EffectOutcome.Heals
-            && a.Target is IEffect.EffectTarget.Health
-            && a.TriggersAtEnd == isEndOfTurn))
-            _activeCharacter.ActiveEffects.RemoveAll(x => x.Duration is ActiveEffect.EffectDuration.UntilHealed);
-
-        foreach (var effect in _activeCharacter.ActiveEffects.Where(e => e.TriggersAtEnd == isEndOfTurn))
-        {
-            switch (effect.Outcome)
-            {
-                case IEffect.EffectOutcome.DealsDamage:
-                    await TakeDamage(effect);
-                    break;
-                case IEffect.EffectOutcome.Heals:
-                    await HealUp(effect);
-                    break;
-                default:
-                    break;
-            }
-
-            if (effect.Duration is ActiveEffect.EffectDuration.Turns)
-                effect.Turns--;
-        }
-
+        await _activeCharacter.ExecuteActiveEffects(isEndOfTurn);
+        await ContentService.SaveCharacter(_activeCharacter);
     }
 
     public async Task Rest()
     {
-        _activeCharacter.ActiveEffects.RemoveAll(x => x.Turns > 0);
-        _activeCharacter.Health = _activeCharacter.MaxHealth;
-        _activeCharacter.Mana = _activeCharacter.MaxMana;
-
+        await _activeCharacter.Rest();
         await ContentService.SaveCharacter(_activeCharacter);
     }
 
     public async Task HealUp(IEffect effect)
     {
-        _activeCharacter.ActiveEffects.RemoveAll(x => x.Duration is ActiveEffect.EffectDuration.UntilHealed);
-
-        switch (effect.Target)
-        {
-            case IEffect.EffectTarget.Health:
-                _activeCharacter.Health += effect.Strength;
-                break;
-            case IEffect.EffectTarget.Mana:
-                _activeCharacter.Mana += effect.Strength;
-                break;
-            case IEffect.EffectTarget.HealthAndMana:
-                _activeCharacter.Health += effect.Strength;
-                _activeCharacter.Mana += effect.Strength;
-                break;
-            default:
-                break;
-        }
+        await _activeCharacter.Heal(effect);
         await ContentService.SaveCharacter(_activeCharacter);
     }
 
     public async Task TakeDamage(Effect effect)
     {
-        switch (effect.Target)
-        {
-            case IEffect.EffectTarget.Health:
-                _activeCharacter.Health -= Math.Clamp(effect.Strength - _activeCharacter.DamageReduction, 0, effect.Strength);
-                break;
-            case IEffect.EffectTarget.Mana:
-                _activeCharacter.Mana -= effect.Strength;
-                break;
-            case IEffect.EffectTarget.HealthAndMana:
-                _activeCharacter.Health -= Math.Clamp(effect.Strength - _activeCharacter.DamageReduction, 0, effect.Strength);
-                _activeCharacter.Mana -= effect.Strength;
-                break;
-            default:
-                break;
-        }
+        await _activeCharacter.TakeDamage(effect);
         await ContentService.SaveCharacter(_activeCharacter);
-    }
-
-    private void UpdateUi(object? state)
-    {
-        StateHasChanged();
     }
 
     private void AddNewEffect()
@@ -424,9 +382,15 @@
         await ContentService.SaveCharacter(_activeCharacter);
         _editEffect = null;
     }
+
     private async Task RemoveEffect(ActiveEffect effect)
     {
         _activeCharacter.ActiveEffects.Remove(effect);
         await ContentService.SaveCharacter(_activeCharacter);
+    }
+
+    private void UpdateUi(object? state)
+    {
+        StateHasChanged();
     }
 }

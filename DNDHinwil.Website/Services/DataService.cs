@@ -1,4 +1,5 @@
 ﻿using DNDHinwil.Website.DB;
+using DNDHinwil.Website.Generators;
 using DNDHinwil.Website.Models;
 using IndexedDB.Blazor;
 using Microsoft.JSInterop;
@@ -23,6 +24,7 @@ public interface IDataService
     public Task SaveSpellLibrary(List<Spell> spells);
     public Task<Settings> LoadSettings();
     public Task SaveSettings(Settings settings);
+    public Task SaveCampaign(Campaign campaign);
     public Task MakeAlert(string message);
 }
 
@@ -62,15 +64,11 @@ public class DataService(HttpClient client, IJSRuntime js) : IDataService
     public async Task<List<Character>> LoadCharacters()
     {
         var characters = await LoadData<List<Character>>(Constants.PlayerKey);
-        if (characters is null)
-        {
-            characters = [new Character()];
-            var settings = await LoadSettings();
-            settings.ActiveCharacter ??= characters.First().Id;
-            await SaveCharacters(characters);
-            await SaveSettings(settings);
-        }
-        return characters;
+        if (characters is not null)
+            return characters;
+        var campaign = CampaignGenerator.StartHinwilCampaign();
+        await SaveCampaign(campaign);
+        return campaign.Characters;
     }
     public async Task SaveCharacters(List<Character> player)
         => await StoreData(Constants.PlayerKey, player);
@@ -139,6 +137,9 @@ public class DataService(HttpClient client, IJSRuntime js) : IDataService
     public async Task SaveSettings(Settings settings)
         => await StoreData(Constants.SettingsKey, settings);
 
+    public async Task MakeAlert(string message)
+        => await _js.InvokeVoidAsync("alert", message);
+
     private async ValueTask StoreData<TData>(string key, TData data)
         => await _js.InvokeVoidAsync("localStorage.setItem",
         [
@@ -160,7 +161,14 @@ public class DataService(HttpClient client, IJSRuntime js) : IDataService
             return default;
         }
     }
+    public async Task SaveCampaign(Campaign campaign)
+    {
+        await SaveCharacters(campaign.Characters);
+        await SaveSettings(campaign.Settings);
+        await SaveArmory(campaign.Armory);
+        await SaveEquipmentChest(campaign.EquipmentChest);
+        await SaveSpellLibrary(campaign.SpellLibrary);
 
-    public async Task MakeAlert(string message)
-        => await _js.InvokeVoidAsync("alert", message);
+        await StoreData(Constants.SessionKey, new List<Session>());
+    }
 }

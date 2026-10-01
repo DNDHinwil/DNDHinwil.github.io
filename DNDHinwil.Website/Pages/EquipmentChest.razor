@@ -1,0 +1,104 @@
+﻿@page "/equipment"
+@inject IDataService ContentService
+
+<PageTitle>@Constants.SiteName - @Text.EquipmentChest</PageTitle>
+
+<div class="content" style="@($"--color-primary:{_settings.AccentColor};")">
+    <header class="title">
+        <h2>@Text.Equipment</h2>
+    </header>
+    <section class="inventory">
+        <h3 style="grid-column:span 2;">@Text.InventoryOf.Replace("{{CHARACTER}}", _activeCharacter.Name)</h3>
+        @foreach (var equipment in _activeCharacter.Inventory)
+        {
+            <EquipmentItem Model="equipment"></EquipmentItem>
+            <button @onclick="x => RemoveItemFromInventory(equipment)">-</button>
+        }
+    </section>
+    <section class="equipment-chest">
+        <h3 style="grid-column:span 3;">@Text.EquipmentChest</h3>
+        @foreach (var equipment in _equipmentChest)
+        {
+            <button @onclick="async x => await DeleteItem(equipment)">-</button>
+            <EquipmentItem Model="equipment"></EquipmentItem>
+            <button @onclick="x => AddItemToInventory(equipment)">+</button>
+        }
+        <button @onclick="x => AddNewSpell()" style="width:100%;grid-column:span 3;">@Text.NewEquipment</button>
+    </section>
+
+    @if (_editEquipment is not null)
+    {
+        <dialog id="edit-equipment">
+            <h3>@Text.Effect</h3>
+            <InputWithLabel Label="@Text.Name">
+                <InputText @bind-Value="_editEquipment.Name"></InputText>
+            </InputWithLabel>
+            <button @onclick="x => FinishEditingItem(false)" command="close" commandfor="edit-equipment">@Text.Cancel</button>
+            <button @onclick="x => FinishEditingItem(true)" command="close" commandfor="edit-equipment" style="float:right;">@Text.Save</button>
+        </dialog>
+    }
+</div>
+
+@code {
+    private Settings _settings = new Settings();
+    private Character _activeCharacter = new Character();
+    private List<Equipment> _equipmentChest = [];
+
+    private Equipment? _editEquipment;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _settings = await ContentService.LoadSettings();
+        _activeCharacter = await ContentService.LoadCharacter(_settings.ActiveCharacter);
+        _equipmentChest = await ContentService.LoadEquipmentChest();
+
+        var newCulture = new CultureInfo(_settings.Language);
+        Thread.CurrentThread.CurrentUICulture = newCulture;
+        Text.Culture = newCulture;
+    }
+
+    private void AddNewSpell()
+    {
+        var equipment = new Equipment();
+        equipment.Name = $"{Text.Spell} {_equipmentChest.Count + 1}";
+        StartEditingEquipment(equipment);
+    }
+
+    private async Task DeleteItem(Equipment spell)
+    {
+        _equipmentChest.Remove(spell);
+        await ContentService.SaveEquipmentChest(_equipmentChest);
+    }
+
+    private void StartEditingEquipment(Equipment equipment)
+        => _editEquipment = equipment;
+
+    private async Task FinishEditingItem(bool save)
+    {
+        if (_editEquipment is null)
+            return;
+        if (!save || _equipmentChest.Any(e => e.Id == _editEquipment.Id))
+        {
+            _editEquipment = null;
+            return;
+        }
+
+        _equipmentChest.Add(_editEquipment);
+        await ContentService.SaveEquipmentChest(_equipmentChest);
+        _editEquipment = null;
+    }
+
+    private void AddItemToInventory(Equipment equipment)
+    {
+        var itemAlreadyInInventory = _activeCharacter.Inventory.FirstOrDefault(s => s.Id == equipment.Id);
+        if (itemAlreadyInInventory is not null)
+            return;
+        _activeCharacter.Inventory.Add(equipment);
+    }
+
+    private void RemoveItemFromInventory(Equipment equipment)
+        => _activeCharacter.Inventory.Remove(equipment);
+
+    private async Task SavePlayer()
+        => await ContentService.SaveCharacter(_activeCharacter);
+}

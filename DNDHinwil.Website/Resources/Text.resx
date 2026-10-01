@@ -186,8 +186,8 @@
   <data name="MaxMP" xml:space="preserve">
     <value>Max MP</value>
   </data>
-  <data name="MagicPower" xml:space="preserve">
-    <value>Magic Power</value>
+  <data name="MagicSense" xml:space="preserve">
+    <value>Magic Sense</value>
   </data>
   <data name="Dexterity" xml:space="preserve">
     <value>Dexterity</value>
@@ -204,8 +204,8 @@
   <data name="Charisma" xml:space="preserve">
     <value>Charisma</value>
   </data>
-  <data name="MagicPower_Short" xml:space="preserve">
-    <value>MP</value>
+  <data name="MagicSense_Short" xml:space="preserve">
+    <value>MS</value>
   </data>
   <data name="Strength_Short" xml:space="preserve">
     <value>Str</value>
@@ -587,5 +587,20 @@
   </data>
   <data name="Gear_Twohanded" xml:space="preserve">
     <value>Twohanded</value>
+  </data>
+  <data name="NotEnoughMana" xml:space="preserve">
+    <value>Not enough Mana</value>
+  </data>
+  <data name="EquipmentChest" xml:space="preserve">
+    <value>Equipment Chest</value>
+  </data>
+  <data name="GearOf" xml:space="preserve">
+    <value>{{CHARACTER}}'s Gear</value>
+  </data>
+  <data name="NewEquipment" xml:space="preserve">
+    <value>New Equipment</value>
+  </data>
+  <data name="NewGear" xml:space="preserve">
+    <value>New Gear Item</value>
   </data>
 </root>

@@ -1,13 +1,15 @@
 ﻿<div class="equipment-item">
-    <div>@(Model.Quantity > 0 ? Model.Quantity : "")</div>
     <h4>@Model.Name</h4>
+    <div class="quantity">@(Model.Quantity > 0 ? $"x{Model.Quantity}" : "")</div>
     @if (!string.IsNullOrWhiteSpace(Model.Description))
     {
-        <div style="grid-column:span 2;">@Model.Description</div>
+        <div class="equipment-effect">@Model.Description</div>
+        <div class="equipment-effect"></div>
     }
     @foreach (var effect in Model.Effects)
     {
-        <div style="grid-column:span 2;">@effect.ToString()</div>
+        <div class="equipment-effect">@effect.ToString()</div>
+        <div class="equipment-effect"></div>
     }
 </div>
 

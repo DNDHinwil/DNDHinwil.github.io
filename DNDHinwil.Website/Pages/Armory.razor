@@ -9,17 +9,17 @@
         <h2>@Text.Armory</h2>
     </header>
     <section class="equipment">
-        <h3>@($"{@Text.InventoryOf.Replace("{{CHARACTER}}", _activeCharacter.Name)}")</h3>
-        @foreach (var item in _activeCharacter.Inventory)
+        <h3>@($"{@Text.GearOf.Replace("{{CHARACTER}}", _activeCharacter.Name)}")</h3>
+        @foreach (var item in _activeCharacter.Gear)
         {
-            <EquipmentItem Model="item"></EquipmentItem>
+            <GearItem Model="item"></GearItem>
         }
     </section>
     <section class="armory">
         <h3>@($"{Text.AvailableEquipment}")</h3>
         @foreach (var item in _armory)
         {
-            <EquipmentItem Model="item"></EquipmentItem>
+            <GearItem Model="item"></GearItem>
         }
     </section>
 </div>

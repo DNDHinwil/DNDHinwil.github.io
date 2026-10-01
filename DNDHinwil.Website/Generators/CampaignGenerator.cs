@@ -41,7 +41,7 @@ public static class CampaignGenerator
     private static List<Stat> GenerateHinwilDefaultStats()
         => [
             new(){Name = Text.Intelligence, Short = Text.Intelligence_Short, Score = 10 },
-            new(){Name = Text.MagicPower, Short = Text.MagicPower_Short, Score = 10 },
+            new(){Name = Text.MagicSense, Short = Text.MagicSense_Short, Score = 10 },
             new(){Name = Text.Dexterity, Short = Text.Dexterity_Short, Score = 10 },
             new(){Name = Text.Strength, Short = Text.Strength_Short, Score = 10 },
             new(){Name = Text.Charisma, Short = Text.Charisma_Short, Score = 10 },
@@ -58,7 +58,9 @@ public static class CampaignGenerator
                     new() { Outcome = IEffect.EffectOutcome.Heals, Strength = 5, Target = IEffect.EffectTarget.Health},
                     new() { Outcome = IEffect.EffectOutcome.Heals, Strength = 3, Target = IEffect.EffectTarget.Mana}
                 ],
-                Usable = true
+                Usable = true,
+                DecreasesWithUse = true,
+                DropWhenEmpty = true
             }
         ]; 
     private static List<Gear> GenerateHinwilDefaultGear()
@@ -66,7 +68,7 @@ public static class CampaignGenerator
             new Gear()
             {
                 Name = Text.Wand,
-                Slot = Gear.Slot.MainHand
+                Slot = new() {Target = GearSlot.Slot.MainHand}
             }
         ];
     private static List<Spell> GenerateHinwilDefaultSpells()

@@ -2,7 +2,6 @@
 
 public class Campaign
 {
-    public string Name { get; set; } = Text.Campaign;
     public List<Session> Sessions { get; set; } = [];
     public List<Character> Characters { get; set; } = [];
     public List<Spell> SpellLibrary { get; set; } = [];

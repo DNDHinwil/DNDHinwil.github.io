@@ -43,20 +43,19 @@ public class GearBonus
         switch (Target)
         {
             case BonusTarget.Stat:
-                target = $"  ";
+                target = $"{Strength} {Text.Stat}";
                 break;
             case BonusTarget.Health:
-                target = $"";
+                target = $"{Strength} {Text.Health}";
                 break;
             case BonusTarget.Mana:
-                target = $"";
+                target = $"{Strength} {Text.Mana}";
                 break;
             case BonusTarget.DamageReduction:
-                target = $"";
+                target = $"{Strength} {Text.ReducedDamage}";
                 break;
             case BonusTarget.Special:
-                target = $"";
-                break;
+                return SpecialText ?? "";
             default:
                 break;
         }
@@ -64,7 +63,7 @@ public class GearBonus
         return $"{outcome}{target}";
     }
 
-    public string ToString(Stat? bonusStat, AbilityScore[] table)
+    public string ToString(Stat? bonusStat)
     {
         if (bonusStat is null || BonusStatId is null)
             return ToString();

@@ -17,6 +17,7 @@ public class IndexDbService(IIndexedDbFactory dbFactory) : IDataService
     public Task<List<Spell>> LoadSpellLibrary() => throw new NotImplementedException();
     public Task MakeAlert(string message) => throw new NotImplementedException();
     public Task SaveArmory(List<Gear> equipment) => throw new NotImplementedException();
+    public Task SaveCampaign(Campaign campaign) => throw new NotImplementedException();
     public Task SaveCharacter(Character character) => throw new NotImplementedException();
     public Task SaveCharacters(List<Character> characters) => throw new NotImplementedException();
     public Task SaveEquipmentChest(List<Equipment> equipment) => throw new NotImplementedException();

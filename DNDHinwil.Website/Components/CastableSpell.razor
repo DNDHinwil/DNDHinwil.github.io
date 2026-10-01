@@ -4,7 +4,7 @@
     <div style="text-align:right;">@Model.ManaCost</div>
     @foreach (var effect in Model.Effects)
     {
-        <div style="grid-column:span 2;">@effect.ToString(CharacterStats.FirstOrDefault(s => s.Id == effect.BonusStatId), AbilityScoreTable)</div>
+        <div class="spell-effect" style="grid-column:span 3;">@effect.ToString(CharacterStats.FirstOrDefault(s => s.Id == effect.BonusStatId), AbilityScoreTable)</div>
     }
 </div>
 
