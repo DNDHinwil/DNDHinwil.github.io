@@ -603,4 +603,37 @@
   <data name="NewGear" xml:space="preserve">
     <value>Neuer Ausstattungsgegenstand</value>
   </data>
+  <data name="Gear" xml:space="preserve">
+    <value>Ausstattung</value>
+  </data>
+  <data name="NoGearEquipped" xml:space="preserve">
+    <value>Keine Ausstattung Ausgerüstet</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Beschreibung</value>
+  </data>
+  <data name="Range" xml:space="preserve">
+    <value>Reichweite</value>
+  </data>
+  <data name="Effects" xml:space="preserve">
+    <value>Effekte</value>
+  </data>
+  <data name="NoEffects" xml:space="preserve">
+    <value>Keine Effekte</value>
+  </data>
+  <data name="Dice" xml:space="preserve">
+    <value>Würfel</value>
+  </data>
+  <data name="UseStrengthAsBonusDamage" xml:space="preserve">
+    <value>Nutze Stärke als bonus schaden</value>
+  </data>
+  <data name="DiceType" xml:space="preserve">
+    <value>Würfeltyp</value>
+  </data>
+  <data name="NewSpellEffect" xml:space="preserve">
+    <value>Neuer Zeubereffekt</value>
+  </data>
+  <data name="BonusStat" xml:space="preserve">
+    <value>Eingenschaftsbonus</value>
+  </data>
 </root>

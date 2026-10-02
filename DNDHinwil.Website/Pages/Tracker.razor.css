@@ -73,18 +73,16 @@
 	grid-template-columns: 1fr;
 }
 
-	.spellbook > h3, .inventory > h3, .active-effects > h3 {
-		border-bottom: 1px dotted var(--color-foreground);
-	}
-
 .spell {
 	display: grid;
 	grid-template-columns: auto 60px;
+	border-top: 1px dotted var(--color-foreground);
 }
 
 .equipment-item {
 	display: grid;
 	grid-template-columns: auto 60px;
+	border-top: 1px dotted var(--color-foreground);
 }
 	.spell > button,
 	.equipment-item > button {

@@ -3,13 +3,13 @@
     <div>@Model.Slot.ToString()</div>
     @if (!string.IsNullOrWhiteSpace(Model.Description))
     {
-        <div></div>
-        <div>@Model.Description</div>
+        <div class="gear-bonus">@Model.Description</div>
+        <div class="gear-bonus"></div>
     }
     @foreach (var effect in Model.Bonuses)
     {
-        <div></div>
-        <div>@effect.ToString()</div>
+        <div class="gear-bonus">@effect.ToString()</div>
+        <div class="gear-bonus"></div>
     }
 </div>
 

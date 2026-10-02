@@ -68,7 +68,8 @@ public static class CampaignGenerator
             new Gear()
             {
                 Name = Text.Wand,
-                Slot = new() {Target = GearSlot.Slot.MainHand}
+                Slot = new() {Target = GearSlot.Slot.MainHand},
+                IsEquipped = true
             }
         ];
     private static List<Spell> GenerateHinwilDefaultSpells()

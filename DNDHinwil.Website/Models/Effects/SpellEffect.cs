@@ -6,6 +6,7 @@ public class SpellEffect : Effect
     public int NumberOfDice { get; set; }
     public int DiceType { get; set; }
     public string? BonusStatId { get; set; }
+    public string? BonusStatShort { get; set; }
 
     public override string ToString()
     {
@@ -44,9 +45,9 @@ public class SpellEffect : Effect
             default:
                 break;
         }
-        return NumberOfDice < 1 ? $"{Strength} {outcome}{target}"
-            : UseStrengthAsBonusPower ? $"{NumberOfDice}{Text.D}{DiceType} +{Strength} {outcome}{target}"
-            : $"{NumberOfDice}{Text.D}{DiceType} {outcome}{target}";
+        return NumberOfDice < 1 ? $"{Strength} +{BonusStatShort} {outcome}{target}"
+            : UseStrengthAsBonusPower ? $"{NumberOfDice}{Text.D}{DiceType} +{Strength} +{BonusStatShort} {outcome}{target}"
+            : $"{NumberOfDice}{Text.D}{DiceType} +{BonusStatShort} {outcome}{target}";
     }
     public string ToString(Stat? bonusStat, AbilityScore[] table)
     {

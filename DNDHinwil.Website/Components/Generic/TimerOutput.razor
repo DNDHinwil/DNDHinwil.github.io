@@ -1,4 +1,6 @@
-﻿<div class="timer">
+﻿@namespace DNDHinwil.Website.Components
+
+<div class="timer">
     <div class="timer-output">@(Model?.TimeString ?? "Error")</div>
     @if (Model is not null && !Model.TimerRunning)
     {

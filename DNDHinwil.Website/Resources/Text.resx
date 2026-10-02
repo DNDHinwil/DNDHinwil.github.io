@@ -603,4 +603,37 @@
   <data name="NewGear" xml:space="preserve">
     <value>New Gear Item</value>
   </data>
+  <data name="Gear" xml:space="preserve">
+    <value>Gear</value>
+  </data>
+  <data name="NoGearEquipped" xml:space="preserve">
+    <value>No Gear Equipped</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="Range" xml:space="preserve">
+    <value>Range</value>
+  </data>
+  <data name="Effects" xml:space="preserve">
+    <value>Effects</value>
+  </data>
+  <data name="NoEffects" xml:space="preserve">
+    <value>No Effects</value>
+  </data>
+  <data name="Dice" xml:space="preserve">
+    <value>Dice</value>
+  </data>
+  <data name="UseStrengthAsBonusDamage" xml:space="preserve">
+    <value>Use Strength as bonus damage</value>
+  </data>
+  <data name="DiceType" xml:space="preserve">
+    <value>Dice type</value>
+  </data>
+  <data name="NewSpellEffect" xml:space="preserve">
+    <value>New Spell Effect</value>
+  </data>
+  <data name="BonusStat" xml:space="preserve">
+    <value>Bonus Stat</value>
+  </data>
 </root>

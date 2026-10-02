@@ -6,7 +6,6 @@
 .equipment-item {
 	display: grid;
 	grid-template-columns: max-content auto;
-	border-top: 1px dotted var(--color-foreground);
 }
 
 .equipment-effect {

@@ -7,6 +7,17 @@ public class Settings
     public string Language { get; set; } = "en";
     public double PreferredTurnLengthInMinutes { get; set; } = 2;
     public TimeSpan PreferredTurnLength => TimeSpan.FromMinutes(PreferredTurnLengthInMinutes);
+
+    public (int Value, string Name)[] Dice { get; set; } =
+        [
+            (4, Text.D4),
+            (6, Text.D6),
+            (8, Text.D8),
+            (10, Text.D10),
+            (12, Text.D12),
+            (20, Text.D20),
+            (100, Text.D100),
+        ];
     public AbilityScore[] ScoreModifiers { get; set; } =
         [
             new(){ Score = 1, Modifier = -5 },

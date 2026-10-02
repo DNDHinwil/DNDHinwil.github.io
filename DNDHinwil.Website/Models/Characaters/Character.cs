@@ -5,6 +5,7 @@ public class Character
 {
     private int _currentHealth = 2;
     private int _currentMana = 2;
+    private IEnumerable<Gear> _equippedGear => Gear.Where(g => g.IsEquipped);
 
     [Key]
     public string Id { get; set; } = Guid.NewGuid().ToString();
@@ -24,7 +25,7 @@ public class Character
         get => _currentMana;
         set => _currentMana = Math.Clamp(value, 0, MaxMana);
     }
-    public int Armor => Gear.Count != 0 ? Gear.Max(g => g.Armor) : 0;
+    public int Armor => _equippedGear.Count() != 0 ? _equippedGear.Max(g => g.Armor) : 0;
     public int DamageReduction => GetDamageReduction();
     public List<Equipment> Inventory { get; set; } = [];
     public List<Money> Money { get; set; } = [];
@@ -38,7 +39,7 @@ public class Character
 
     private int GetDamageReduction()
     {
-        var gearDamageReduction = Gear.Sum(g =>
+        var gearDamageReduction = _equippedGear.Sum(g =>
         {
             static int affectsDamageReduction(GearBonus b) => b.Target == GearBonus.BonusTarget.DamageReduction ? b.Strength : 0;
             return g.Bonuses.Sum(affectsDamageReduction);

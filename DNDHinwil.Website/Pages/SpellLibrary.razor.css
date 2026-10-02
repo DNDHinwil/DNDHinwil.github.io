@@ -1,2 +1,17 @@
-﻿body {
+﻿
+.right-button {
+	margin-left: 0.5rem;
+}
+.left-button {
+	margin-right: 0.5rem;
+}
+
+.spellbook {
+	display: grid;
+	grid-template-columns: 1fr 50px;
+}
+
+.spell-library {
+	display: grid;
+	grid-template-columns: 50px auto 50px 50px;
 }

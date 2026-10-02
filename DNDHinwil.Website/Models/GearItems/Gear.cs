@@ -9,5 +9,6 @@ public class Gear : IEquipment
     public int Weight { get; set; }
     public int Armor { get; set; }
     public bool IsEquipped { get; set; }
+    public bool Usable { get; set; }
     public List<GearBonus> Bonuses { get; set; } = [];
 }

@@ -1,7 +1,6 @@
 ﻿.spell {
 	display: grid;
 	grid-template-columns: auto max-content 28px;
-	border-top: 1px dotted var(--color-foreground);
 }
 .spell-effect {
 	padding-left: 0.5rem;

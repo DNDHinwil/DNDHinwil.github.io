@@ -109,6 +109,24 @@
         }
     </section>
 
+    <section class="gear">
+        <h3>@Text.Gear</h3>
+        @if (_activeCharacter.Gear.Where(g => g.IsEquipped).Any())
+        {
+            @foreach (var item in _activeCharacter.Gear.Where(g => g.IsEquipped))
+            {
+                <div class="equipment-item">
+                    <GearItem Model="item"></GearItem>
+                    <div></div>
+                </div>
+            }
+        }
+        else
+        {
+            <div>@Text.NoGearEquipped</div>
+        }
+    </section>
+
     <section class="active-effects">
         <h3>@Text.ActiveEffects</h3>
         @if (_activeCharacter.ActiveEffects.Any())
@@ -153,7 +171,6 @@
             <div>@Text.NoTriggeredEffects</div>
         }
         <button @onclick="x => AddNewEffect()" style="width:100%;" command="show-modal" commandfor="edit-active-effect">@Text.NewTriggeredEffect</button>
-
     </section>
 
     @if (_editEffect is not null)

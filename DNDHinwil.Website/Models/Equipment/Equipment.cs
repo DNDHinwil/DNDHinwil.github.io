@@ -11,5 +11,4 @@ public class Equipment : IEquipment<Effect>
     public bool DecreasesWithUse { get; set; }
     public bool DropWhenEmpty { get; set; }
     public List<Effect> Effects { get; set; } = [];
-
 }
