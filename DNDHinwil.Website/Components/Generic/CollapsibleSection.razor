@@ -1,0 +1,20 @@
+﻿@namespace DNDHinwil.Website.Components
+
+<section>
+    <h3>@Title</h3>
+    <button @onclick="x => IsCollapsed = !IsCollapsed" type="button" class="collapsible">@(IsCollapsed ? "☰" : "^")</button>
+    <div class="collapsible-section-content @_isCollapsed">
+        @ChildContent
+    </div>
+</section>
+
+@code {
+    private string _isCollapsed => IsCollapsed ? "collapsed" : "";
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+    [Parameter]
+    public required string Title { get; set; }
+    [Parameter]
+    public bool IsCollapsed { get; set; }
+}

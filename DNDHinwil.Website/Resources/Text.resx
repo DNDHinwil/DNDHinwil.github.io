@@ -636,4 +636,34 @@
   <data name="BonusStat" xml:space="preserve">
     <value>Bonus Stat</value>
   </data>
+  <data name="RemoveSpellFromLibrary" xml:space="preserve">
+    <value>Remove Spell from Library</value>
+  </data>
+  <data name="MeleeRange" xml:space="preserve">
+    <value>Melee Range</value>
+  </data>
+  <data name="GameSettings" xml:space="preserve">
+    <value>Game Settings</value>
+  </data>
+  <data name="Modifier_Short" xml:space="preserve">
+    <value>Mod</value>
+  </data>
+  <data name="NewGearBonus" xml:space="preserve">
+    <value>New Gear Bonus</value>
+  </data>
+  <data name="RemoveGearFromInventory" xml:space="preserve">
+    <value>Remove Gear from Inventory</value>
+  </data>
+  <data name="AvailableGear" xml:space="preserve">
+    <value>Abailable Gear</value>
+  </data>
+  <data name="Bonus" xml:space="preserve">
+    <value>Bonus</value>
+  </data>
+  <data name="Bonuses" xml:space="preserve">
+    <value>Bonuses</value>
+  </data>
+  <data name="NoBonuses" xml:space="preserve">
+    <value>No Bonuses</value>
+  </data>
 </root>

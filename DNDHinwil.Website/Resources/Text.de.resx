@@ -636,4 +636,34 @@
   <data name="BonusStat" xml:space="preserve">
     <value>Eingenschaftsbonus</value>
   </data>
+  <data name="RemoveSpellFromLibrary" xml:space="preserve">
+    <value>Zauber von Bibliothek entfernen</value>
+  </data>
+  <data name="MeleeRange" xml:space="preserve">
+    <value>Nahkampfdistanz</value>
+  </data>
+  <data name="GameSettings" xml:space="preserve">
+    <value>Spieleinstellungen</value>
+  </data>
+  <data name="Modifier_Short" xml:space="preserve">
+    <value>Bns</value>
+  </data>
+  <data name="NewGearBonus" xml:space="preserve">
+    <value>Neuer Ausstattungsbonus</value>
+  </data>
+  <data name="RemoveGearFromInventory" xml:space="preserve">
+    <value>Austattung vom Inventar entfernen</value>
+  </data>
+  <data name="AvailableGear" xml:space="preserve">
+    <value>Verfügbare Ausstattung</value>
+  </data>
+  <data name="Bonus" xml:space="preserve">
+    <value>Bonus</value>
+  </data>
+  <data name="Bonuses" xml:space="preserve">
+    <value>Boni</value>
+  </data>
+  <data name="NoBonuses" xml:space="preserve">
+    <value>No Boni</value>
+  </data>
 </root>

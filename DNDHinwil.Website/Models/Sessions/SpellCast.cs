@@ -2,7 +2,6 @@
 
 public class SpellCast
 {
-    public required Character Character { get; set; }
-    public required Spell Spell { get; set; }
-    public int CastCounter { get; set; }
+    public required string CharacterId { get; set; }
+    public required string SpellId { get; set; }
 }

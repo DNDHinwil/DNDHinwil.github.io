@@ -1,12 +1,11 @@
-﻿.gear-item {
+﻿.spell {
 	display: grid;
-	grid-template-columns: auto max-content 24px 16px;
+	grid-template-columns: auto 24px 16px 24px 16px;
 }
-
-.gear-label {
+.spell-label {
 	padding-top: 0.125rem;
 }
-.gear-bonus {
+.spell-effect {
 	margin-left: 0.5rem;
 	background-color: var(--color-contrast-1);
 }

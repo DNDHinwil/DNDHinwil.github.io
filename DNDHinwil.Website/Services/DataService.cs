@@ -109,13 +109,13 @@ public class DataService(HttpClient client, IJSRuntime js) : IDataService
 
     public async Task<List<Gear>> LoadArmory()
     {
-        var armory = await LoadData<List<Gear>>(Constants.EquipmentKey);
+        var armory = await LoadData<List<Gear>>(Constants.ArmoryKey);
         if (armory is null)
             return [];
         return armory;
     }
     public async Task SaveArmory(List<Gear> armory)
-        => await StoreData(Constants.EquipmentKey, armory);
+        => await StoreData(Constants.ArmoryKey, armory);
 
     public async Task<List<Spell>> LoadSpellLibrary()
     {

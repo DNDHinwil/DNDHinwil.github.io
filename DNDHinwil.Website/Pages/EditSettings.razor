@@ -28,6 +28,12 @@
         </InputWithLabel>
         <button @onclick="async x => await SaveSettings()" style="width:100%;">@Text.Save</button>
     </section>
+    <section>
+        <h3>@Text.GameSettings</h3>
+        <InputWithLabel Label="@Text.MeleeRange">
+            <InputNumber @bind-value="_settings.MeleeRange"></InputNumber>
+        </InputWithLabel>
+    </section>
     <section class="export">
         <h3 style="grid-column:span 2;">@Text.Export</h3>
         <label>@Text.DownloadYourCharacters</label>

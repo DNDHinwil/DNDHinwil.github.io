@@ -1,15 +1,15 @@
 ﻿<div class="gear-item">
     <h4>@Model.Name</h4>
-    <div>@Model.Slot.ToString()</div>
+    <div class="gear-label" style="text-align:left;">@Model.Slot.Name</div>
+    <div class="gear-label" style="text-align:right;">@Model.Weight</div>
+    <div style="text-align:left;">⚖</div>
     @if (!string.IsNullOrWhiteSpace(Model.Description))
     {
-        <div class="gear-bonus">@Model.Description</div>
-        <div class="gear-bonus"></div>
+        <div class="gear-bonus" style="grid-column:span 4;">@Model.Description</div>
     }
     @foreach (var effect in Model.Bonuses)
     {
-        <div class="gear-bonus">@effect.ToString()</div>
-        <div class="gear-bonus"></div>
+        <div class="gear-bonus" style="grid-column:span 4;">@effect.ToString()</div>
     }
 </div>
 

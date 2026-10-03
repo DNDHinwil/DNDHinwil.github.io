@@ -1,4 +1,5 @@
-﻿using DNDHinwil.Website.Models;
+﻿using DNDHinwil.Website.Enums;
+using DNDHinwil.Website.Models;
 using System.Globalization;
 
 namespace DNDHinwil.Website.Generators;
@@ -55,8 +56,8 @@ public static class CampaignGenerator
                 Name = "Einfacher Heiltrank",
                 Effects =
                 [
-                    new() { Outcome = IEffect.EffectOutcome.Heals, Strength = 5, Target = IEffect.EffectTarget.Health},
-                    new() { Outcome = IEffect.EffectOutcome.Heals, Strength = 3, Target = IEffect.EffectTarget.Mana}
+                    new() { Outcome = EffectOutcome.Heals, Strength = 5, Target = EffectTarget.Health},
+                    new() { Outcome = EffectOutcome.Heals, Strength = 3, Target = EffectTarget.Mana}
                 ],
                 Usable = true,
                 DecreasesWithUse = true,
@@ -67,8 +68,14 @@ public static class CampaignGenerator
         => [
             new Gear()
             {
-                Name = Text.Wand,
-                Slot = new() {Target = GearSlot.Slot.MainHand},
+                Name = "Zauberstab",
+                Slot = new() {Target = GearSlot.MainHand},
+                IsEquipped = true
+            },
+            new Gear()
+            {
+                Name = "Schulumhang",
+                Slot = new() {Target = GearSlot.Cloak},
                 IsEquipped = true
             }
         ];
@@ -77,25 +84,31 @@ public static class CampaignGenerator
             new()
             {
                 Name = "Acceto B",
+                ManaCost = 1,
+                Range = 10,
                 Effects =
                 [
-                    new() { Outcome = IEffect.EffectOutcome.DealsDamage, Strength = 5, Target = IEffect.EffectTarget.Health, }
+                    new() { Outcome = EffectOutcome.DealsDamage, Strength = 5, Target = EffectTarget.Health, }
                 ],
             },
             new() 
             { 
                 Name = "Accio",
+                ManaCost = 1,
+                Range = 10,
                 Effects =
                 [
-                    new() { Outcome = IEffect.EffectOutcome.Special, SpecialText = "Bring einen Gegenstand zu dir."}
+                    new() { Outcome = EffectOutcome.Special, SpecialText = "Bring einen Gegenstand zu dir."}
                 ],
             },
             new() 
             { 
                 Name = "Lumos",
+                ManaCost = 1,
+                Range = 5,
                 Effects =
                 [
-                    new() { Outcome = IEffect.EffectOutcome.Special, SpecialText = "Lässt deinen Zauberstab leuchten."}
+                    new() { Outcome = EffectOutcome.Special, SpecialText = "Lässt deinen Zauberstab leuchten."}
                 ],
             }
             ];

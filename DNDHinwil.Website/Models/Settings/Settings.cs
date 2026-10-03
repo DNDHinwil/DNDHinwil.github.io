@@ -8,6 +8,7 @@ public class Settings
     public double PreferredTurnLengthInMinutes { get; set; } = 2;
     public TimeSpan PreferredTurnLength => TimeSpan.FromMinutes(PreferredTurnLengthInMinutes);
 
+    public int MeleeRange { get; set; } = 2;
     public (int Value, string Name)[] Dice { get; set; } =
         [
             (4, Text.D4),

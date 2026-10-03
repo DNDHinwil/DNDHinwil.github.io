@@ -1,4 +1,6 @@
-﻿namespace DNDHinwil.Website.Models;
+﻿using DNDHinwil.Website.Enums;
+
+namespace DNDHinwil.Website.Models;
 
 public class ActiveEffect : Effect
 {
@@ -17,16 +19,16 @@ public class ActiveEffect : Effect
         var outcome = "";
         switch (Outcome)
         {
-            case IEffect.EffectOutcome.DealsDamage:
+            case EffectOutcome.DealsDamage:
                 outcome = $"{Strength} {Text.Damage}";
                 break;
-            case IEffect.EffectOutcome.Heals:
+            case EffectOutcome.Heals:
                 outcome = $"{Strength} {Text.Healing}";
                 break;
-            case IEffect.EffectOutcome.ReducesDamage:
+            case EffectOutcome.ReducesDamage:
                 outcome = $"{Strength} {Text.ReducedDamage}";
                 break;
-            case IEffect.EffectOutcome.Special:
+            case EffectOutcome.Special:
                 outcome = SpecialText;
                 break;
             default:
@@ -36,13 +38,13 @@ public class ActiveEffect : Effect
 
         switch (Target)
         {
-            case IEffect.EffectTarget.Health:
+            case EffectTarget.Health:
                 target = $" {Text.To} {Text.HealthShort}";
                 break;
-            case IEffect.EffectTarget.Mana:
+            case EffectTarget.Mana:
                 target = $" {Text.To} {Text.ManaShort}";
                 break;
-            case IEffect.EffectTarget.Special:
+            case EffectTarget.Special:
             default:
                 break;
         }

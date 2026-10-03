@@ -1,8 +1,0 @@
-﻿.spell {
-	display: grid;
-	grid-template-columns: auto max-content 28px;
-}
-.spell-effect {
-	padding-left: 0.5rem;
-	background-color: var(--color-contrast-0);
-}

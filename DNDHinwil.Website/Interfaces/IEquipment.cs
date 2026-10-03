@@ -8,9 +8,3 @@ public interface IEquipment
     int Weight { get; }
     bool Usable { get; }
 }
-
-public interface IEquipment<TEffect> : IEquipment, IHasEffects<TEffect>
-    where TEffect : IEffect
-{
-
-}

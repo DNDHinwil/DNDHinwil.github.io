@@ -1,11 +1,13 @@
-﻿namespace DNDHinwil.Website.Models;
+﻿using DNDHinwil.Website.Enums;
 
-public class Effect : IEffect
+namespace DNDHinwil.Website.Models;
+
+public class Effect : IEffect<EffectTarget, EffectOutcome>
 {
     public string Id { get; set; } = Guid.NewGuid().ToString();
     public int Strength { get; set; } = 3;
-    public IEffect.EffectTarget Target { get; set; } = IEffect.EffectTarget.Health;
-    public IEffect.EffectOutcome Outcome { get; set; } = IEffect.EffectOutcome.DealsDamage;
+    public EffectTarget Target { get; set; } = EffectTarget.Health;
+    public EffectOutcome Outcome { get; set; } = EffectOutcome.DealsDamage;
     public string? SpecialText { get; set; }
 
 
@@ -14,16 +16,16 @@ public class Effect : IEffect
         var outcome = "";
         switch (Outcome)
         {
-            case IEffect.EffectOutcome.DealsDamage:
+            case EffectOutcome.DealsDamage:
                 outcome = $"{Strength} {Text.Damage}";
                 break;
-            case IEffect.EffectOutcome.Heals:
+            case EffectOutcome.Heals:
                 outcome = $"{Strength} {Text.Healing}";
                 break;
-            case IEffect.EffectOutcome.ReducesDamage:
+            case EffectOutcome.ReducesDamage:
                 outcome = $"{Strength} {Text.ReducedDamage}";
                 break;
-            case IEffect.EffectOutcome.Special:
+            case EffectOutcome.Special:
                 return SpecialText ?? "";
             default:
                 break;
@@ -32,16 +34,16 @@ public class Effect : IEffect
 
         switch (Target)
         {
-            case IEffect.EffectTarget.Health:
+            case EffectTarget.Health:
                 target = $" {Text.To} {Text.HealthShort}";
                 break;
-            case IEffect.EffectTarget.Mana:
+            case EffectTarget.Mana:
                 target = $" {Text.To} {Text.ManaShort}";
                 break;
-            case IEffect.EffectTarget.HealthAndMana:
+            case EffectTarget.HealthAndMana:
                 target = $" {Text.To} {Text.HealthShort} & {Text.ManaShort}";
                 break;
-            case IEffect.EffectTarget.Special:
+            case EffectTarget.Special:
                 return SpecialText ?? "";
             default:
                 break;

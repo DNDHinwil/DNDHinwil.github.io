@@ -160,6 +160,15 @@ namespace DNDHinwil.Website.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Abailable Gear.
+        /// </summary>
+        public static string AvailableGear {
+            get {
+                return ResourceManager.GetString("AvailableGear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Available Spells.
         /// </summary>
         public static string AvailableSpells {
@@ -183,6 +192,24 @@ namespace DNDHinwil.Website.Resources {
         public static string BasicHealingPotion {
             get {
                 return ResourceManager.GetString("BasicHealingPotion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bonus.
+        /// </summary>
+        public static string Bonus {
+            get {
+                return ResourceManager.GetString("Bonus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bonuses.
+        /// </summary>
+        public static string Bonuses {
+            get {
+                return ResourceManager.GetString("Bonuses", resourceCulture);
             }
         }
         
@@ -628,6 +655,15 @@ namespace DNDHinwil.Website.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Game Settings.
+        /// </summary>
+        public static string GameSettings {
+            get {
+                return ResourceManager.GetString("GameSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Gear.
         /// </summary>
         public static string Gear {
@@ -979,11 +1015,29 @@ namespace DNDHinwil.Website.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Melee Range.
+        /// </summary>
+        public static string MeleeRange {
+            get {
+                return ResourceManager.GetString("MeleeRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Modifier.
         /// </summary>
         public static string Modifier {
             get {
                 return ResourceManager.GetString("Modifier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mod.
+        /// </summary>
+        public static string Modifier_Short {
+            get {
+                return ResourceManager.GetString("Modifier_Short", resourceCulture);
             }
         }
         
@@ -1033,6 +1087,15 @@ namespace DNDHinwil.Website.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New Gear Bonus.
+        /// </summary>
+        public static string NewGearBonus {
+            get {
+                return ResourceManager.GetString("NewGearBonus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New Spell.
         /// </summary>
         public static string NewSpell {
@@ -1065,6 +1128,15 @@ namespace DNDHinwil.Website.Resources {
         public static string NewTriggeredEffect {
             get {
                 return ResourceManager.GetString("NewTriggeredEffect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Bonuses.
+        /// </summary>
+        public static string NoBonuses {
+            get {
+                return ResourceManager.GetString("NoBonuses", resourceCulture);
             }
         }
         
@@ -1200,6 +1272,24 @@ namespace DNDHinwil.Website.Resources {
         public static string ReducedDamage {
             get {
                 return ResourceManager.GetString("ReducedDamage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove Gear from Inventory.
+        /// </summary>
+        public static string RemoveGearFromInventory {
+            get {
+                return ResourceManager.GetString("RemoveGearFromInventory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove Spell from Library.
+        /// </summary>
+        public static string RemoveSpellFromLibrary {
+            get {
+                return ResourceManager.GetString("RemoveSpellFromLibrary", resourceCulture);
             }
         }
         

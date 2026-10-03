@@ -1,42 +1,27 @@
-﻿namespace DNDHinwil.Website.Models;
+﻿using DNDHinwil.Website.Enums;
 
-public class GearSlot
+namespace DNDHinwil.Website.Models;
+
+public class Slot
 {
-    public Slot Target { get; set; } = Slot.None;
-    public override string ToString() => Target switch
+    public GearSlot Target { get; set; } = GearSlot.None;
+    public string Name => Target switch
     {
-        Slot.None => "",
-        Slot.MainHand => Text.Gear_MainHand,
-        Slot.OffHand => Text.Gear_OffHand,
-        Slot.Twohanded => Text.Gear_Twohanded,
-        Slot.Head => Text.Gear_Head,
-        Slot.Chest => Text.Gear_Chest,
-        Slot.Cloak => Text.Gear_Cloak,
-        Slot.Gloves => Text.Gear_Gloves,
-        Slot.Bracers => Text.Gear_Bracers,
-        Slot.Legs => Text.Gear_Legs,
-        Slot.Boots => Text.Gear_Boots,
-        Slot.Ears => Text.Gear_Ears,
-        Slot.Neck => Text.Gear_Neck,
-        Slot.Finger => Text.Gear_Finger,
+        GearSlot.None => "",
+        GearSlot.MainHand => Text.Gear_MainHand,
+        GearSlot.OffHand => Text.Gear_OffHand,
+        GearSlot.Twohanded => Text.Gear_Twohanded,
+        GearSlot.Head => Text.Gear_Head,
+        GearSlot.Chest => Text.Gear_Chest,
+        GearSlot.Cloak => Text.Gear_Cloak,
+        GearSlot.Gloves => Text.Gear_Gloves,
+        GearSlot.Bracers => Text.Gear_Bracers,
+        GearSlot.Legs => Text.Gear_Legs,
+        GearSlot.Boots => Text.Gear_Boots,
+        GearSlot.Ears => Text.Gear_Ears,
+        GearSlot.Neck => Text.Gear_Neck,
+        GearSlot.Finger => Text.Gear_Finger,
         _ => ""
     };
 
-    public enum Slot
-    {
-        None,
-        MainHand,
-        OffHand,
-        Twohanded,
-        Head,
-        Chest,
-        Cloak,
-        Gloves,
-        Bracers,
-        Legs,
-        Boots,
-        Ears,
-        Neck,
-        Finger
-    }
 }

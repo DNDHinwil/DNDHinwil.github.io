@@ -4,32 +4,36 @@
 <PageTitle>@Constants.SiteName - @Text.SpellLibrary</PageTitle>
 
 <div class="content" style="@($"--color-primary:{_settings.AccentColor};")">
-    <header class="title">
+    <header>
         <h2>@Text.SpellLibrary</h2>
     </header>
-    <section class="spellbook">
-        <h3 style="grid-column:span 2;">@($"{@Text.SpellbookOf} {_activeCharacter.Name}")</h3>
+
+    <CollapsibleSection Title="@($"{@Text.SpellbookOf} {_activeCharacter.Name}")">
         @foreach (var spell in _activeCharacter.Spellbook)
         {
-            <CastableSpell Model="spell" CharacterStats="_activeCharacter.Stats" AbilityScoreTable="_settings.ScoreModifiers"></CastableSpell>
-            <button class="right-button" @onclick="x => RemoveSpellFromSpellbook(spell)">-</button>
+            <div class="spellbook-spell">
+                <SpellOrAbility Model="spell" CharacterStats="_activeCharacter.Stats" AbilityScoreTable="_settings.ScoreModifiers" MeleeRange="_settings.MeleeRange"></SpellOrAbility>
+                <button class="right-button" @onclick="async x => await RemoveSpellFromSpellbook(spell)">-</button>
+            </div>
         }
-    </section>
-    <section class="spell-library">
-        <h3 style="grid-column:span 4;">@Text.AvailableSpells</h3>
-        @foreach (var spell in _spellLibrary)
+    </CollapsibleSection>
+
+    <CollapsibleSection Title="@Text.AvailableSpells">
+        @foreach (var spell in _spellLibrary.Reverse<Spell>())
         {
-            <button class="left-button" command="show-modal" commandfor="delete-spell" @onclick="x => StartEditingSpell(spell)">-</button>
-            <CastableSpell Model="spell" CharacterStats="_activeCharacter.Stats" AbilityScoreTable="_settings.ScoreModifiers"></CastableSpell>
-            <button class="right-button" command="show-modal" commandfor="edit-spell" @onclick="x => StartEditingSpell(spell)">⛭</button>
-            <button class="right-button" @onclick="x => AddSpellToSpellbook(spell)">📖</button>
+            <div class="library-spell">
+                <button class="left-button" command="show-modal" commandfor="delete-spell" @onclick="x => StartEditingSpell(spell)">-</button>
+                <SpellOrAbility Model="spell" MeleeRange="_settings.MeleeRange"></SpellOrAbility>
+                <button class="right-button" command="show-modal" commandfor="edit-spell" @onclick="x => StartEditingSpell(spell)">⛭</button>
+                <button class="right-button" @onclick="async x => await AddSpellToSpellbook(spell)">📖</button>
+            </div>
         }
-        <button command="show-modal" commandfor="edit-spell" @onclick="x => AddNewSpell()" style="width:100%;grid-column:span 4;">@Text.NewSpell</button>
-    </section>
+        <button command="show-modal" commandfor="edit-spell" @onclick="x => AddNewSpell()" style="width:100%;height:32px;margin-top:0.5rem;">@Text.NewSpell</button>
+    </CollapsibleSection>
 
     @if (_editSpell is not null)
     {
-        <dialog id="edit-spell" class="edit-spellt">
+        <dialog id="edit-spell" class="edit-spell">
             <h3>@Text.Spell</h3>
             <InputWithLabel Label="@Text.Name">
                 <InputText @bind-Value="_editSpell.Name"></InputText>
@@ -40,27 +44,29 @@
             <InputWithLabel Label="@Text.ManaCost">
                 <InputNumber @bind-Value="_editSpell.ManaCost"></InputNumber>
             </InputWithLabel>
-            <h4>@Text.Effects</h4>
-            <div class="effects">
+            <div class="edit-spell-effects">
+                <h4 style="width:100%;grid-column:span 2;">@Text.Effects</h4>
                 @if (_editSpell.Effects.Any())
                 {
                     @foreach (var effect in _editSpell.Effects)
                     {
-                        <div class="spell-effect" style="grid-column:span 3;">@effect.ToString()</div>
-                        <button @onclick="x => StartEditingEffect(effect)" command="show-modal" commandfor="edit-active-effect">⛭</button>
+                        <div class="spell-effect">@effect.ToString()</div>
+                        <button @onclick="x => StartEditingEffect(effect)" command="show-modal" commandfor="edit-effect">⛭</button>
                     }
                 }
                 else
                 {
-                    <div>@Text.NoEffects</div>
+                    <div class="spell-effect">@Text.NoEffects</div>
+                    <div class="spell-effect"></div>
                 }
-                <button @onclick="x => AddNewEffect()" command="show-modal" commandfor="edit-effect">@Text.NewSpellEffect</button>
+                <button @onclick="x => AddNewEffect()" command="show-modal" commandfor="edit-effect" style="width:100%;grid-column:span 2;margin-top:0.5rem;">@Text.NewSpellEffect</button>
             </div>
             <button @onclick="x => FinishEditingSpell(false)" command="close" commandfor="edit-spell">@Text.Cancel</button>
             <button @onclick="x => FinishEditingSpell(true)" command="close" commandfor="edit-spell" style="float:right;">@Text.Save</button>
         </dialog>
     }
     <dialog id="delete-spell">
+        <h3>@Text.RemoveSpellFromLibrary</h3>
         <label>@Text.AreYouSure</label>
         <button @onclick="async x => await FinishEditingSpell(false)" command="close" commandfor="delete-spell">@Text.Cancel</button>
         <button @onclick="async x => await DeleteSpell(_editSpell)" command="close" commandfor="delete-spell">@Text.Confirm</button>
@@ -75,11 +81,17 @@
             </InputWithLabel>
             <InputWithLabel Label="@Text.Outcome">
                 <InputSelect @bind-value="_editEffect.Outcome">
-                    <option value="@IEffect.EffectOutcome.DealsDamage">@Text.Damage</option>
-                    <option value="@IEffect.EffectOutcome.Heals">@Text.Heal</option>
-                    <option value="@IEffect.EffectOutcome.Special">@Text.Other</option>
+                    <option value="@EffectOutcome.DealsDamage">@Text.Damage</option>
+                    <option value="@EffectOutcome.Heals">@Text.Heal</option>
+                    <option value="@EffectOutcome.Special">@Text.Other</option>
                 </InputSelect>
             </InputWithLabel>
+            @if (_editEffect.Outcome == EffectOutcome.Special)
+            {
+                <InputWithLabel Label="@Text.Description">
+                    <InputText @bind-Value="_editEffect.SpecialText"></InputText>
+                </InputWithLabel>
+            }
             <InputWithLabel Label="@Text.Dice">
                 <InputNumber @bind-Value="_editEffect.NumberOfDice"></InputNumber>
             </InputWithLabel>
@@ -97,13 +109,13 @@
                     <InputCheckbox @bind-Value="_editEffect.UseStrengthAsBonusPower"></InputCheckbox>
                 </InputWithLabel>
             }
-            @if (_editEffect.Outcome is IEffect.EffectOutcome.DealsDamage or IEffect.EffectOutcome.Heals)
+            @if (_editEffect.Outcome is EffectOutcome.DealsDamage or EffectOutcome.Heals)
             {
                 <InputWithLabel Label="@Text.Target">
                     <InputSelect @bind-value="_editEffect.Target">
-                        <option value="@IEffect.EffectTarget.Health">@Text.Health</option>
-                        <option value="@IEffect.EffectTarget.Mana">@Text.Mana</option>
-                        <option value="@IEffect.EffectTarget.Special">@Text.Special</option>
+                        <option value="@EffectTarget.Health">@Text.Health</option>
+                        <option value="@EffectTarget.Mana">@Text.Mana</option>
+                        <option value="@EffectTarget.Special">@Text.Special</option>
                     </InputSelect>
                 </InputWithLabel>
             }
@@ -116,8 +128,7 @@
                     }
                 </InputSelect>
             </InputWithLabel>
-            <button @onclick="x => FinishEditingEffect(false)" command="close" commandfor="edit-effect">@Text.Cancel</button>
-            <button @onclick="x => FinishEditingEffect(true)" command="close" commandfor="edit-effect" style="float:right;">@Text.Save</button>
+            <button @onclick="x => FinishEditingEffect(true)" command="close" commandfor="edit-effect" style="width:100%;">@Text.OK</button>
         </dialog>
     }
 </div>
@@ -157,11 +168,14 @@
     {
         if (_editSpell is null)
             return;
-        if (!save || _spellLibrary.Any(e => e.Id == _editSpell.Id))
+        if (!save)
         {
             _editSpell = null;
             return;
         }
+        var spellExists = _spellLibrary.FirstOrDefault(s => s.Id == _editSpell.Id);
+        if (spellExists is not null)
+            _spellLibrary.Remove(spellExists);
 
         _spellLibrary.Add(_editSpell);
         await ContentService.SaveSpellLibrary(_spellLibrary);
@@ -178,16 +192,21 @@
     #endregion
 
     #region Spellbook
-    private void AddSpellToSpellbook(Spell spell)
+    private async Task AddSpellToSpellbook(Spell spell)
     {
         var spellAlreadyInBook = _activeCharacter.Spellbook.FirstOrDefault(s => s.Id == spell.Id);
         if (spellAlreadyInBook is not null)
-            return;
+            _activeCharacter.Spellbook.Remove(spellAlreadyInBook);
         _activeCharacter.Spellbook.Add(spell);
+
+        await ContentService.SaveCharacter(_activeCharacter);
     }
 
-    private void RemoveSpellFromSpellbook(Spell spell)
-        => _activeCharacter.Spellbook.RemoveAt(_activeCharacter.Spellbook.FindIndex(sc => sc.Id == spell.Id));
+    private async Task RemoveSpellFromSpellbook(Spell spell)
+    {
+        _activeCharacter.Spellbook.RemoveAt(_activeCharacter.Spellbook.FindIndex(sc => sc.Id == spell.Id));
+        await ContentService.SaveCharacter(_activeCharacter);
+    }
     #endregion
 
     #region Effects

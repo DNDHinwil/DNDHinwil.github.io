@@ -9,6 +9,6 @@
 }
 
 .equipment-effect {
-	padding-left: 0.5rem;
-	background-color: var(--color-contrast-0);
+	margin-left: 0.5rem;
+	background-color: var(--color-contrast-1);
 }

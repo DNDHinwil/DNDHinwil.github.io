@@ -6,7 +6,7 @@
 <PageTitle>@Constants.SiteName - Tracker</PageTitle>
 
 <div class="content" style="@($"--color-primary:{_settings.AccentColor};")">
-    <header class="title">
+    <header>
         <h2>Tracker</h2>
         <TimerOutput Model="_timer"></TimerOutput>
     </header>
@@ -59,22 +59,21 @@
                 <PercentageBar Max="@_activeCharacter.MaxMana" Current="@_activeCharacter.Mana" Color="blue"></PercentageBar>
             </div>
         </div>
-        <div class="turn-buttons">
-            <button popovertargetaction="show" popovertarget="take-rest">@Text.Rest</button>
-            <button popovertargetaction="show" popovertarget="take-heal">@Text.TakeHealing</button>
-            <button popovertargetaction="show" popovertarget="take-damage">@Text.TakeDamage</button>
+        <div>
+            <button class="action-button" popovertargetaction="show" popovertarget="take-rest">@Text.Rest</button>
+            <button class="action-button" popovertarget="take-heal">@Text.TakeHealing</button>
+            <button class="action-button" popovertarget="take-damage">@Text.TakeDamage</button>
         </div>
     </section>
 
-    <section class="spellbook">
-        <h3>@Text.Spellbook</h3>
+    <CollapsibleSection Title="@Text.Spellbook">
         @if (_activeCharacter.Spellbook.Any())
         {
             @foreach (var spell in _activeCharacter.Spellbook)
             {
                 <div class="spell">
-                    <CastableSpell Model="spell" CharacterStats="_activeCharacter.Stats" AbilityScoreTable="_settings.ScoreModifiers"></CastableSpell>
-                    <button>@Text.Cast</button>
+                    <SpellOrAbility Model="spell" CharacterStats="_activeCharacter.Stats" AbilityScoreTable="_settings.ScoreModifiers"></SpellOrAbility>
+                    <button @onclick="async x => await UseSpell(spell)">@Text.Cast</button>
                 </div>
             }
         }
@@ -82,10 +81,9 @@
         {
             <div>@Text.NoSpellsInSpellbook</div>
         }
-    </section>
+    </CollapsibleSection>
 
-    <section class="inventory">
-        <h3>@Text.Inventory</h3>
+    <CollapsibleSection Title="@Text.Inventory">
         @if (_activeCharacter.Inventory.Any())
         {
             @foreach (var item in _activeCharacter.Inventory)
@@ -107,10 +105,9 @@
         {
             <div>@Text.NoEquipmentInInventory</div>
         }
-    </section>
+    </CollapsibleSection>
 
-    <section class="gear">
-        <h3>@Text.Gear</h3>
+    <CollapsibleSection Title="@Text.Gear">
         @if (_activeCharacter.Gear.Where(g => g.IsEquipped).Any())
         {
             @foreach (var item in _activeCharacter.Gear.Where(g => g.IsEquipped))
@@ -125,10 +122,9 @@
         {
             <div>@Text.NoGearEquipped</div>
         }
-    </section>
+    </CollapsibleSection>
 
-    <section class="active-effects">
-        <h3>@Text.ActiveEffects</h3>
+    <CollapsibleSection Title="@Text.ActiveEffects">
         @if (_activeCharacter.ActiveEffects.Any())
         {
             @foreach (var effect in _activeCharacter.ActiveEffects)
@@ -138,13 +134,13 @@
                     <div>@effect.Name</div>
                     @switch (effect.Outcome)
                     {
-                        case IEffect.EffectOutcome.DealsDamage:
+                        case EffectOutcome.DealsDamage:
                             <div>@effect.Strength @Text.Damage</div>
                             break;
-                        case IEffect.EffectOutcome.Heals:
+                        case EffectOutcome.Heals:
                             <div>@effect.Strength @Text.Heal</div>
                             break;
-                        case IEffect.EffectOutcome.Special:
+                        case EffectOutcome.Special:
                             <div></div>
                             break;
                         default:
@@ -170,8 +166,8 @@
         {
             <div>@Text.NoTriggeredEffects</div>
         }
-        <button @onclick="x => AddNewEffect()" style="width:100%;" command="show-modal" commandfor="edit-active-effect">@Text.NewTriggeredEffect</button>
-    </section>
+        <button @onclick="x => AddNewEffect()" style="width:100%;margin-top:0.25rem;height:32px;" command="show-modal" commandfor="edit-active-effect">@Text.NewTriggeredEffect</button>
+    </CollapsibleSection>
 
     @if (_editEffect is not null)
     {
@@ -185,9 +181,9 @@
             </InputWithLabel>
             <InputWithLabel Label="@Text.Outcome">
                 <InputSelect @bind-value="_editEffect.Outcome">
-                    <option value="@IEffect.EffectOutcome.DealsDamage">@Text.Damage</option>
-                    <option value="@IEffect.EffectOutcome.Heals">@Text.Heal</option>
-                    <option value="@IEffect.EffectOutcome.Special">@Text.Other</option>
+                    <option value="@EffectOutcome.DealsDamage">@Text.Damage</option>
+                    <option value="@EffectOutcome.Heals">@Text.Heal</option>
+                    <option value="@EffectOutcome.Special">@Text.Other</option>
                 </InputSelect>
             </InputWithLabel>
             <InputWithLabel Label="@Text.Duration">
@@ -203,13 +199,13 @@
                     <InputNumber @bind-Value="_editEffect.Turns"></InputNumber>
                 </InputWithLabel>
             }
-            @if (_editEffect.Outcome is IEffect.EffectOutcome.DealsDamage or IEffect.EffectOutcome.Heals)
+            @if (_editEffect.Outcome is EffectOutcome.DealsDamage or EffectOutcome.Heals)
             {
                 <InputWithLabel Label="@Text.Target">
                     <InputSelect @bind-value="_editEffect.Target">
-                        <option value="@IEffect.EffectTarget.Health">@Text.Health</option>
-                        <option value="@IEffect.EffectTarget.Mana">@Text.Mana</option>
-                        <option value="@IEffect.EffectTarget.Special">@Text.Special</option>
+                        <option value="@EffectTarget.Health">@Text.Health</option>
+                        <option value="@EffectTarget.Mana">@Text.Mana</option>
+                        <option value="@EffectTarget.Special">@Text.Special</option>
                     </InputSelect>
                 </InputWithLabel>
             }
@@ -234,10 +230,10 @@
         </InputWithLabel>
         <InputWithLabel Label="@Text.Target">
             <InputSelect @bind-value="_quickEffect.Target">
-                <option value="@IEffect.EffectTarget.Health">@Text.Health</option>
-                <option value="@IEffect.EffectTarget.Mana">@Text.Mana</option>
-                <option value="@IEffect.EffectTarget.Special">@Text.None</option>
-                <option value="@IEffect.EffectTarget.HealthAndMana">@Text.HealthShort & @Text.ManaShort</option>
+                <option value="@EffectTarget.Health">@Text.Health</option>
+                <option value="@EffectTarget.Mana">@Text.Mana</option>
+                <option value="@EffectTarget.Special">@Text.None</option>
+                <option value="@EffectTarget.HealthAndMana">@Text.HealthShort & @Text.ManaShort</option>
             </InputSelect>
         </InputWithLabel>
         <button popovertarget="take-heal" popovertargetaction="hide">@Text.Cancel</button>
@@ -251,10 +247,10 @@
         </InputWithLabel>
         <InputWithLabel Label="@Text.Target">
             <InputSelect @bind-value="_quickEffect.Target">
-                <option value="@IEffect.EffectTarget.Health">@Text.Health</option>
-                <option value="@IEffect.EffectTarget.Mana">@Text.Mana</option>
-                <option value="@IEffect.EffectTarget.HealthAndMana">@Text.HealthShort & @Text.ManaShort</option>
-                <option value="@IEffect.EffectTarget.Special">@Text.None</option>
+                <option value="@EffectTarget.Health">@Text.Health</option>
+                <option value="@EffectTarget.Mana">@Text.Mana</option>
+                <option value="@EffectTarget.HealthAndMana">@Text.HealthShort & @Text.ManaShort</option>
+                <option value="@EffectTarget.Special">@Text.None</option>
             </InputSelect>
         </InputWithLabel>
         <button popovertarget="take-damage" popovertargetaction="hide">@Text.Cancel</button>
@@ -264,7 +260,7 @@
 
 @code {
     private Settings _settings = new Settings();
-    private Session? _activeSession;
+    private Session _activeSession;
     private Character _activeCharacter = new Character();
     private ActiveEffect? _editEffect;
     private UpCountingTimer? _timer;
@@ -291,7 +287,7 @@
 
         _timer = new UpCountingTimer(UpdateUi);
         var sessions = await ContentService.LoadSessions();
-        _activeSession = sessions.FirstOrDefault(s => s.EndTime is null);
+        _activeSession = sessions.FirstOrDefault(s => s.EndTime is null) ?? new Session();
 
         var newCulture = new CultureInfo(_settings.Language);
         Thread.CurrentThread.CurrentUICulture = newCulture;
@@ -343,6 +339,9 @@
         }
         await _activeCharacter.UseSpell(spell);
         await ContentService.SaveCharacter(_activeCharacter);
+
+        _activeSession.SpellCasts.Add(new() { CharacterId = _activeCharacter.Id, SpellId = spell.Id });
+        await ContentService.SaveSession(_activeSession);
     }
 
     private async Task UseEquipment(Equipment equipment)
@@ -363,7 +362,7 @@
         await ContentService.SaveCharacter(_activeCharacter);
     }
 
-    public async Task HealUp(IEffect effect)
+    public async Task HealUp(Effect effect)
     {
         await _activeCharacter.Heal(effect);
         await ContentService.SaveCharacter(_activeCharacter);

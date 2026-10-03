@@ -1,4 +1,5 @@
-﻿using DNDHinwil.Website.Extensions;
+﻿using DNDHinwil.Website.Enums;
+using DNDHinwil.Website.Extensions;
 namespace DNDHinwil.Website.Models;
 
 public class Character
@@ -41,13 +42,13 @@ public class Character
     {
         var gearDamageReduction = _equippedGear.Sum(g =>
         {
-            static int affectsDamageReduction(GearBonus b) => b.Target == GearBonus.BonusTarget.DamageReduction ? b.Strength : 0;
+            static int affectsDamageReduction(GearBonus b) => b.Target == BonusTarget.DamageReduction ? b.Strength : 0;
             return g.Bonuses.Sum(affectsDamageReduction);
         });
 
         var activeEffectDamageReduction = ActiveEffects.Sum(g =>
         {
-            static int affectsDamageReduction(ActiveEffect b) => b.Outcome == Interfaces.IEffect.EffectOutcome.ReducesDamage ? b.Strength : 0;
+            static int affectsDamageReduction(ActiveEffect b) => b.Outcome == EffectOutcome.ReducesDamage ? b.Strength : 0;
             return ActiveEffects.Sum(affectsDamageReduction);
         });
 
@@ -59,20 +60,6 @@ public class Character
         if (spell.ManaCost > Mana)
             return;
         Mana -= spell.ManaCost;
-        foreach (var effect in spell.Effects)
-        {
-            switch (effect.Outcome)
-            {
-                case IEffect.EffectOutcome.DealsDamage:
-                    await TakeDamage(effect);
-                    break;
-                case IEffect.EffectOutcome.Heals:
-                    await Heal(effect);
-                    break;
-                default:
-                    break;
-            }
-        }
     }
 
     public async Task UseEquipment(Equipment equipment)
@@ -90,10 +77,10 @@ public class Character
         {
             switch (effect.Outcome)
             {
-                case IEffect.EffectOutcome.DealsDamage:
+                case EffectOutcome.DealsDamage:
                     await TakeDamage(effect);
                     break;
-                case IEffect.EffectOutcome.Heals:
+                case EffectOutcome.Heals:
                     await Heal(effect);
                     break;
                 default:
@@ -109,19 +96,19 @@ public class Character
         Mana = MaxMana;
     }
 
-    public async Task Heal(IEffect effect)
+    public async Task Heal(Effect effect)
     {
         _= ActiveEffects.RemoveAll(x => x.Duration is ActiveEffect.EffectDuration.UntilHealed);
 
         switch (effect.Target)
         {
-            case IEffect.EffectTarget.Health:
+            case EffectTarget.Health:
                 Health += effect.Strength;
                 break;
-            case IEffect.EffectTarget.Mana:
+            case EffectTarget.Mana:
                 Mana += effect.Strength;
                 break;
-            case IEffect.EffectTarget.HealthAndMana:
+            case EffectTarget.HealthAndMana:
                 Health += effect.Strength;
                 Mana += effect.Strength;
                 break;
@@ -134,13 +121,13 @@ public class Character
     {
         switch (effect.Target)
         {
-            case IEffect.EffectTarget.Health:
+            case EffectTarget.Health:
                 Health -= Math.Clamp(effect.Strength - DamageReduction, 0, effect.Strength);
                 break;
-            case IEffect.EffectTarget.Mana:
+            case EffectTarget.Mana:
                 Mana -= effect.Strength;
                 break;
-            case IEffect.EffectTarget.HealthAndMana:
+            case EffectTarget.HealthAndMana:
                 Health -= Math.Clamp(effect.Strength - DamageReduction, 0, effect.Strength);
                 Mana -= effect.Strength;
                 break;
@@ -151,8 +138,8 @@ public class Character
 
     public async Task ExecuteActiveEffects(bool isEndOfTurn)
     {
-        if (ActiveEffects.Any(a => a.Outcome is IEffect.EffectOutcome.Heals
-            && a.Target is IEffect.EffectTarget.Health
+        if (ActiveEffects.Any(a => a.Outcome is EffectOutcome.Heals
+            && a.Target is EffectTarget.Health
             && a.TriggersAtEnd == isEndOfTurn))
             _ = ActiveEffects.RemoveAll(x => x.Duration is ActiveEffect.EffectDuration.UntilHealed);
 
@@ -160,10 +147,10 @@ public class Character
         {
             switch (effect.Outcome)
             {
-                case IEffect.EffectOutcome.DealsDamage:
+                case EffectOutcome.DealsDamage:
                     await TakeDamage(effect);
                     break;
-                case IEffect.EffectOutcome.Heals:
+                case EffectOutcome.Heals:
                     await Heal(effect);
                     break;
                 default:

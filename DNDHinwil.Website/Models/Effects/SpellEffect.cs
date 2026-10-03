@@ -1,4 +1,6 @@
-﻿namespace DNDHinwil.Website.Models;
+﻿using DNDHinwil.Website.Enums;
+
+namespace DNDHinwil.Website.Models;
 
 public class SpellEffect : Effect
 {
@@ -13,16 +15,16 @@ public class SpellEffect : Effect
         var outcome = "";
         switch (Outcome)
         {
-            case IEffect.EffectOutcome.DealsDamage:
+            case EffectOutcome.DealsDamage:
                 outcome = Text.Damage;
                 break;
-            case IEffect.EffectOutcome.Heals:
+            case EffectOutcome.Heals:
                 outcome = Text.Healing;
                 break;
-            case IEffect.EffectOutcome.ReducesDamage:
+            case EffectOutcome.ReducesDamage:
                 outcome = Text.ReducedDamage;
                 break;
-            case IEffect.EffectOutcome.Special:
+            case EffectOutcome.Special:
                 return SpecialText ?? "";
             default:
                 break;
@@ -31,41 +33,46 @@ public class SpellEffect : Effect
         var target = "";
         switch (Target)
         {
-            case IEffect.EffectTarget.Health:
+            case EffectTarget.Health:
                 target = $" {Text.To} {Text.Health}";
                 break;
-            case IEffect.EffectTarget.Mana:
+            case EffectTarget.Mana:
                 target = $" {Text.To} {Text.Mana}";
                 break;
-            case IEffect.EffectTarget.HealthAndMana:
+            case EffectTarget.HealthAndMana:
                 target = $" {Text.To} {Text.HealthShort} & {Text.ManaShort}";
                 break;
-            case IEffect.EffectTarget.Special:
+            case EffectTarget.Special:
                 return SpecialText ?? "";
             default:
                 break;
         }
-        return NumberOfDice < 1 ? $"{Strength} +{BonusStatShort} {outcome}{target}"
-            : UseStrengthAsBonusPower ? $"{NumberOfDice}{Text.D}{DiceType} +{Strength} +{BonusStatShort} {outcome}{target}"
-            : $"{NumberOfDice}{Text.D}{DiceType} +{BonusStatShort} {outcome}{target}";
+
+        var bonusStat = !string.IsNullOrWhiteSpace(BonusStatId) && !string.IsNullOrWhiteSpace(BonusStatShort)
+                        ? $"+{BonusStatShort} "
+                        : "";
+
+        return NumberOfDice < 1 ? $"{Strength} {bonusStat}{outcome}{target}"
+            : UseStrengthAsBonusPower ? $"{NumberOfDice}{Text.D}{DiceType} +{Strength} {bonusStat}{outcome}{target}"
+            : $"{NumberOfDice}{Text.D}{DiceType} {bonusStat}{outcome}{target}";
     }
     public string ToString(Stat? bonusStat, AbilityScore[] table)
     {
-        if (bonusStat is null || BonusStatId is null)
+        if (bonusStat is null || BonusStatId is null || table.Length == 0)
             return ToString();
         var outcome = "";
         switch (Outcome)
         {
-            case IEffect.EffectOutcome.DealsDamage:
+            case EffectOutcome.DealsDamage:
                 outcome = Text.Damage;
                 break;
-            case IEffect.EffectOutcome.Heals:
+            case EffectOutcome.Heals:
                 outcome = Text.Healing;
                 break;
-            case IEffect.EffectOutcome.ReducesDamage:
+            case EffectOutcome.ReducesDamage:
                 outcome = Text.ReducedDamage;
                 break;
-            case IEffect.EffectOutcome.Special:
+            case EffectOutcome.Special:
                 outcome = SpecialText ?? "";
                 break;
             default:
@@ -75,16 +82,19 @@ public class SpellEffect : Effect
         var target = "";
         switch (Target)
         {
-            case IEffect.EffectTarget.Health:
+            case EffectTarget.Health:
                 target = $" {Text.To} {Text.HealthShort}";
                 break;
-            case IEffect.EffectTarget.Mana:
+            case EffectTarget.Mana:
                 target = $" {Text.To} {Text.ManaShort}";
                 break;
-            case IEffect.EffectTarget.Special:
+            case EffectTarget.Special:
             default:
                 break;
         }
+
+
+
         var modifier = bonusStat.GetModifier(table);
         return NumberOfDice < 1 ? $"{Strength} +{modifier} ({bonusStat.Short}) {outcome}{target}"
             : UseStrengthAsBonusPower ? $"{NumberOfDice}{Text.D}{DiceType} +{Strength} +{modifier} ({bonusStat.Short}) {outcome}{target}"

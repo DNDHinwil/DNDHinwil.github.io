@@ -1,21 +1,23 @@
-﻿namespace DNDHinwil.Website;
+﻿using DNDHinwil.Website.Enums;
+
+namespace DNDHinwil.Website;
 
 public static class EnumToStringExtensions
 {
-    public static string ToLocalizedString(this IEffect.EffectOutcome outcome)
+    public static string ToLocalizedString(this EffectOutcome outcome)
         => outcome switch
         {
-            IEffect.EffectOutcome.DealsDamage => Text.Damage,
-            IEffect.EffectOutcome.Heals => Text.Heal,
-            IEffect.EffectOutcome.Special => Text.Other,
+            EffectOutcome.DealsDamage => Text.Damage,
+            EffectOutcome.Heals => Text.Heal,
+            EffectOutcome.Special => Text.Other,
             _ => Text.Other
         };
-    public static string ToLocalizedString(this IEffect.EffectTarget outcome)
+    public static string ToLocalizedString(this EffectTarget outcome)
         => outcome switch
         {
-            IEffect.EffectTarget.Health => Text.Health,
-            IEffect.EffectTarget.Mana => Text.Mana,
-            IEffect.EffectTarget.Special => Text.Special,
+            EffectTarget.Health => Text.Health,
+            EffectTarget.Mana => Text.Mana,
+            EffectTarget.Special => Text.Special,
             _ => Text.Special
         };
 }

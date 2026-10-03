@@ -1,26 +1,16 @@
-﻿namespace DNDHinwil.Website.Models;
+﻿using DNDHinwil.Website.Enums;
 
-public class GearBonus
+namespace DNDHinwil.Website.Models;
+
+public class GearBonus : IEffect<BonusTarget, BonusOutcome>
 {
-    public BonusTarget Target { get; set; } = BonusTarget.Special;
+    public string Id { get; set; } = Guid.NewGuid().ToString();
+    public BonusTarget Target { get; set; } = BonusTarget.None;
     public BonusOutcome Outcome { get; set; } = BonusOutcome.Increases;
     public string? BonusStatId { get; set; }
+    public string? BonusStatShort { get; set; }
     public int Strength { get; set; }
     public string? SpecialText { get; set; }
-    public enum BonusOutcome
-    {
-        Increases,
-        Reduces,
-        Special
-    }
-    public enum BonusTarget
-    {
-        Stat,
-        Health,
-        Mana,
-        DamageReduction,
-        Special
-    }
     public override string ToString()
     {
         var outcome = "";
@@ -33,8 +23,7 @@ public class GearBonus
                 outcome = $"-";
                 break;
             case BonusOutcome.Special:
-                outcome = SpecialText ?? "";
-                break;
+                return SpecialText ?? "";
             default:
                 break;
         }
@@ -43,7 +32,9 @@ public class GearBonus
         switch (Target)
         {
             case BonusTarget.Stat:
-                target = $"{Strength} {Text.Stat}";
+                if (string.IsNullOrWhiteSpace(BonusStatShort))
+                    return SpecialText ?? "";
+                target = $"{Strength} {BonusStatShort}";
                 break;
             case BonusTarget.Health:
                 target = $"{Strength} {Text.Health}";
@@ -54,55 +45,10 @@ public class GearBonus
             case BonusTarget.DamageReduction:
                 target = $"{Strength} {Text.ReducedDamage}";
                 break;
-            case BonusTarget.Special:
-                return SpecialText ?? "";
             default:
                 break;
         }
 
-        return $"{outcome}{target}";
-    }
-
-    public string ToString(Stat? bonusStat)
-    {
-        if (bonusStat is null || BonusStatId is null)
-            return ToString();
-
-        var outcome = "";
-        switch (Outcome)
-        {
-            case BonusOutcome.Increases:
-                outcome = $"+";
-                break;
-            case BonusOutcome.Reduces:
-                outcome = $"-";
-                break;
-            case BonusOutcome.Special:
-                return SpecialText ?? "";
-            default:
-                break;
-        }
-
-        var target = "";
-        switch (Target)
-        {
-            case BonusTarget.Stat:
-                target = $"{Strength} {bonusStat?.Short}";
-                break;
-            case BonusTarget.Health:
-                target = $"{Strength} {Text.Health}";
-                break;
-            case BonusTarget.Mana:
-                target = $"{Strength} {Text.Mana}";
-                break;
-            case BonusTarget.DamageReduction:
-                target = $"{Strength} {Text.ReducedDamage}";
-                break;
-            case BonusTarget.Special:
-                return SpecialText ?? "";
-            default:
-                break;
-        }
         return $"{outcome}{target}";
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace DNDHinwil.Website.Models;
 
-public class Equipment : IEquipment<Effect>
+public class Equipment : IEquipment
 {
     public string Id { get; set; } = Guid.NewGuid().ToString();
     public string Name { get; set; } = Text.Item;

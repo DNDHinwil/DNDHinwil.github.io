@@ -8,26 +8,119 @@
     <header class="title">
         <h2>@Text.Armory</h2>
     </header>
-    <section class="equipment">
-        <h3>@($"{@Text.GearOf.Replace("{{CHARACTER}}", _activeCharacter.Name)}")</h3>
+    <CollapsibleSection Title="@($"{@Text.GearOf.Replace("{{CHARACTER}}", _activeCharacter.Name)}")">
         @foreach (var item in _activeCharacter.Gear)
         {
-            <GearItem Model="item"></GearItem>
+            <div class="character-gear">
+                <GearItem Model="item"></GearItem>
+                <button class="right-button" @onclick="async x => await RemoveGearFromCharacter(item)">-</button>
+            </div>
         }
-    </section>
-    <section class="armory">
-        <h3>@($"{Text.AvailableEquipment}")</h3>
-        @foreach (var item in _armory)
+    </CollapsibleSection>
+    <CollapsibleSection Title="@Text.AvailableGear">
+        @foreach (var item in _armory.Reverse<Gear>())
         {
-            <GearItem Model="item"></GearItem>
+            <div class="armory-gear">
+                <button class="left-button" command="show-modal" commandfor="delete-gear" @onclick="x => StartEditingGear(item)">-</button>
+                <GearItem Model="item"></GearItem>
+                <button class="right-button" command="show-modal" commandfor="edit-gear" @onclick="x => StartEditingGear(item)">⛭</button>
+                <button class="right-button" @onclick="async x => await AddGearToCharacter(item)">🎒</button>
+            </div>
         }
-    </section>
+        <button command="show-modal" commandfor="edit-gear" @onclick="x => AddNewGear()" style="width:100%;height:32px;margin-top:0.5rem;">@Text.NewGear</button>
+    </CollapsibleSection>
+
+    @if (_editGear is not null)
+    {
+        <dialog id="edit-gear" class="edit-gear">
+            <h3>@Text.Gear</h3>
+            <InputWithLabel Label="@Text.Name">
+                <InputText @bind-Value="_editGear.Name"></InputText>
+            </InputWithLabel>
+            <div class="edit-gear-effects">
+                <h4 style="width:100%;grid-column:span 2;">@Text.Bonuses</h4>
+                @if (_editGear.Bonuses.Any())
+                {
+                    @foreach (var effect in _editGear.Bonuses)
+                    {
+                        <div class="gear-effect">@effect.ToString()</div>
+                        <button @onclick="x => StartEditingEffect(effect)" command="show-modal" commandfor="edit-effect">⛭</button>
+                    }
+                }
+                else
+                {
+                    <div class="gear-effect">@Text.NoBonuses</div>
+                    <div class="gear-effect"></div>
+                }
+                <button @onclick="x => AddNewEffect()" command="show-modal" commandfor="edit-effect" style="width:100%;grid-column:span 2;margin-top:0.5rem;">@Text.NewGearBonus</button>
+            </div>
+            <button @onclick="x => FinishEditingGear(false)" command="close" commandfor="edit-gear">@Text.Cancel</button>
+            <button @onclick="x => FinishEditingGear(true)" command="close" commandfor="edit-gear" style="float:right;">@Text.Save</button>
+        </dialog>
+    }
+    <dialog id="delete-gear">
+        <h3>@Text.RemoveGearFromInventory</h3>
+        <label>@Text.AreYouSure</label>
+        <button @onclick="async x => await FinishEditingGear(false)" command="close" commandfor="delete-gear">@Text.Cancel</button>
+        <button @onclick="async x => await DeleteGear(_editGear)" command="close" commandfor="delete-gear">@Text.Confirm</button>
+    </dialog>
+
+    @if (_editBonus is not null)
+    {
+        <dialog id="edit-effect">
+            <h3>@Text.Effect</h3>
+            <InputWithLabel Label="@Text.Strength">
+                <InputNumber @bind-Value="_editBonus.Strength"></InputNumber>
+            </InputWithLabel>
+            <InputWithLabel Label="@Text.Outcome">
+                <InputSelect @bind-value="_editBonus.Outcome">
+                    <option value="@BonusOutcome.Reduces">@Text.Damage</option>
+                    <option value="@BonusOutcome.Increases">@Text.Heal</option>
+                    <option value="@BonusOutcome.Special">@Text.Other</option>
+                </InputSelect>
+            </InputWithLabel>
+            @if (_editBonus.Outcome == BonusOutcome.Special)
+            {
+                <InputWithLabel Label="@Text.Description">
+                    <InputText @bind-Value="_editBonus.SpecialText"></InputText>
+                </InputWithLabel>
+            }
+            @if (_editBonus.Outcome is BonusOutcome.Increases or BonusOutcome.Reduces)
+            {
+                <InputWithLabel Label="@Text.Target">
+                    <InputSelect @bind-value="_editBonus.Target">
+                        <option value="@BonusTarget.None">@Text.None</option>
+                        <option value="@BonusTarget.Health">@Text.Health</option>
+                        <option value="@BonusTarget.Mana">@Text.Mana</option>
+                        <option value="@BonusTarget.Stat">@Text.Stat</option>
+                        <option value="@BonusTarget.DamageReduction">@Text.ReducedDamage</option>
+                    </InputSelect>
+                </InputWithLabel>
+            }
+            @if (_editBonus.Target is BonusTarget.Stat)
+            {
+                <InputWithLabel Label="@Text.BonusStat">
+                    <InputSelect @bind-value="_editBonus.BonusStatId">
+                        <option value="">@Text.None</option>
+                        @foreach (var stat in _activeCharacter.Stats)
+                        {
+                            <option value="@stat.Id">@stat.Name</option>
+                        }
+                    </InputSelect>
+                </InputWithLabel>
+            }
+            <button @onclick="x => FinishEditingEffect(true)" command="close" commandfor="edit-effect" style="width:100%;">@Text.OK</button>
+        </dialog>
+    }
 </div>
  
 @code {
     private Settings _settings = new Settings();
     private Character _activeCharacter = new Character();
     private List<Gear> _armory = [];
+
+    private Gear? _editGear;
+    private GearBonus? _editBonus;
 
     protected override async Task OnInitializedAsync()
     {
@@ -39,6 +132,106 @@
         Text.Culture = newCulture;
     }
 
-    private async Task SavePlayer()
-        => await ContentService.SaveCharacter(_activeCharacter);
+    #region Library
+    // C
+    private void AddNewGear()
+    {
+        var gear = new Gear();
+        gear.Name = $"{Text.Gear} {_armory.Count + 1}";
+        StartEditingGear(gear);
+    }
+    // R
+    private void StartEditingGear(Gear gear)
+        => _editGear = gear;
+    // U
+    private async Task FinishEditingGear(bool save)
+    {
+        if (_editGear is null)
+            return;
+        if (!save)
+        {
+            _editGear = null;
+            return;
+        }
+        var gearExists = _armory.FirstOrDefault(s => s.Id == _editGear.Id);
+        if (gearExists is not null)
+            _armory.Remove(gearExists);
+
+        _armory.Add(_editGear);
+        await ContentService.SaveArmory(_armory);
+        _editGear = null;
+    }
+    // D
+    private async Task DeleteGear(Gear? gear)
+    {
+        if (gear is null)
+            return;
+        _armory.Remove(gear);
+        await ContentService.SaveArmory(_armory);
+    }
+    #endregion
+
+    #region Gear inventory
+    private async Task AddGearToCharacter(Gear gear)
+    {
+        var gearAlreadyInInventory = _activeCharacter.Gear.FirstOrDefault(s => s.Id == gear.Id);
+        if (gearAlreadyInInventory is not null)
+            _activeCharacter.Gear.Remove(gearAlreadyInInventory);
+        _activeCharacter.Gear.Add(gear);
+
+        await ContentService.SaveCharacter(_activeCharacter);
+    }
+
+    private async Task RemoveGearFromCharacter(Gear gear)
+    {
+        _activeCharacter.Gear.RemoveAt(_activeCharacter.Gear.FindIndex(g => g.Id == gear.Id));
+        await ContentService.SaveCharacter(_activeCharacter);
+    }
+    #endregion
+
+    #region Effects
+    // C
+    private void AddNewEffect()
+    {
+        var effect = new GearBonus();
+        StartEditingEffect(effect);
+    }
+
+    // R
+    private void StartEditingEffect(GearBonus effect)
+        => _editBonus = effect;
+
+    // U
+    private async Task FinishEditingEffect(bool save)
+    {
+        if (_editGear is null || _editBonus is null)
+            return;
+        if (!save)
+        {
+            _editBonus = null;
+            return;
+        }
+        // remove old version
+        var effectExists = _editGear.Bonuses.FirstOrDefault(e => e.Id == _editBonus.Id);
+        if (effectExists is not null)
+            _editGear.Bonuses.Remove(effectExists);
+
+        if (!string.IsNullOrWhiteSpace(_editBonus.BonusStatId))
+            _editBonus.BonusStatShort = _activeCharacter.Stats.FirstOrDefault(s => s.Id == _editBonus.BonusStatId)?.Short;
+
+        _editGear.Bonuses.Add(_editBonus);
+
+        await ContentService.SaveArmory(_armory);
+        _editBonus = null;
+    }
+
+    // D
+    private async Task RemoveEffect(GearBonus effect)
+    {
+        if (_editGear is null)
+            return;
+        _editGear.Bonuses.Remove(effect);
+        await ContentService.SaveArmory(_armory);
+    }
+    #endregion
 }
