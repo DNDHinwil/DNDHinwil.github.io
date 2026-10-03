@@ -1,0 +1,12 @@
+﻿.gear-item {
+	display: grid;
+	grid-template-columns: auto max-content 24px 16px;
+}
+
+.gear-label {
+	padding-top: 0.125rem;
+}
+.gear-bonus {
+	margin-left: 0.5rem;
+	background-color: var(--color-contrast-1);
+}

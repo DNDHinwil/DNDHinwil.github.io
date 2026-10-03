@@ -1,17 +1,54 @@
-﻿namespace DNDHinwil.Website.Models;
+﻿using DNDHinwil.Website.Enums;
 
-public class GearBonus
+namespace DNDHinwil.Website.Models;
+
+public class GearBonus : IEffect<BonusTarget, BonusOutcome>
 {
-    public string? StatId { get; set; }
-    public string Text { get; set; } = "";
-    public int Bonus { get; set; }
-    public enum EffectType
+    public string Id { get; set; } = Guid.NewGuid().ToString();
+    public BonusTarget Target { get; set; } = BonusTarget.None;
+    public BonusOutcome Outcome { get; set; } = BonusOutcome.Increases;
+    public string? BonusStatId { get; set; }
+    public string? BonusStatShort { get; set; }
+    public int Strength { get; set; }
+    public string? SpecialText { get; set; }
+    public override string ToString()
     {
-        None,
-        Stat,
-        Health,
-        Mana,
-        DamageReduction,
-        Special
+        var outcome = "";
+        switch (Outcome)
+        {
+            case BonusOutcome.Increases:
+                outcome = $"+";
+                break;
+            case BonusOutcome.Reduces:
+                outcome = $"-";
+                break;
+            case BonusOutcome.Special:
+                return SpecialText ?? "";
+            default:
+                break;
+        }
+
+        var target = "";
+        switch (Target)
+        {
+            case BonusTarget.Stat:
+                if (string.IsNullOrWhiteSpace(BonusStatShort))
+                    return SpecialText ?? "";
+                target = $"{Strength} {BonusStatShort}";
+                break;
+            case BonusTarget.Health:
+                target = $"{Strength} {Text.Health}";
+                break;
+            case BonusTarget.Mana:
+                target = $"{Strength} {Text.Mana}";
+                break;
+            case BonusTarget.DamageReduction:
+                target = $"{Strength} {Text.ReducedDamage}";
+                break;
+            default:
+                break;
+        }
+
+        return $"{outcome}{target}";
     }
 }

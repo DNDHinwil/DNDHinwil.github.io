@@ -1,12 +1,14 @@
-﻿using DNDHinwil.Website.Interfaces;
-using DNDHinwil.Website.Resources;
-
-namespace DNDHinwil.Website.Models;
+﻿namespace DNDHinwil.Website.Models;
 
 public class Gear : IEquipment
 {
+    public string Id { get; set; } = Guid.NewGuid().ToString();
     public string Name { get; set; } = Text.Equipment;
     public string Description { get; set; } = "";
+    public Slot Slot { get; set; } = new();
     public int Weight { get; set; }
+    public int Armor { get; set; }
+    public bool IsEquipped { get; set; }
+    public bool Usable { get; set; }
     public List<GearBonus> Bonuses { get; set; } = [];
 }

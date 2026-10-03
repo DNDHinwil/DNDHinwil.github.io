@@ -1,0 +1,22 @@
+﻿<div class="spell">
+    <h4>@Model.Name</h4>
+    <div class="spell-label" style="text-align:right;">@(Model.Range > MeleeRange ? Model.Range : "")</div>
+    <div style="text-align:left;">@(Model.Range > MeleeRange ? "🏹" : "⚔")</div>
+    <div class="spell-label" style="text-align:right;">@Model.ManaCost</div>
+    <div style="text-align:left;">💧</div>
+    @foreach (var effect in Model.Effects)
+    {
+        <div class="spell-effect" style="grid-column:span 5;">@effect.ToString(CharacterStats.FirstOrDefault(s => s.Id == effect.BonusStatId), AbilityScoreTable)</div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public required Spell Model { get; set; }
+    [Parameter]
+    public IEnumerable<Stat> CharacterStats { get; set; } = [];
+    [Parameter]
+    public AbilityScore[] AbilityScoreTable { get; set; } = [];
+    [Parameter]
+    public int MeleeRange { get; set; } = 2;
+}

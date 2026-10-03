@@ -1,6 +1,7 @@
 ﻿namespace DNDHinwil.Website.Models;
 
-public class Money : Equipment
+public class Money
 {
-    public decimal Quantity { get; set; }
+    public string Name { get; set; } = Text.Item;
+    public decimal Quantity { get; set; } = 1;
 }

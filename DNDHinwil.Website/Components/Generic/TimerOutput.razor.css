@@ -1,8 +1,8 @@
 ﻿.timer {
-	min-width: 100px;
+	min-width: 80px;
 	display: grid;
 	grid-template-columns: auto min-content;
-	border: 2px inset #666;
+	border: 2px solid #666;
 	font-size: inherit;
 }
 

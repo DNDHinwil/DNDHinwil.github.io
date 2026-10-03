@@ -1,0 +1,11 @@
+﻿.spell {
+	display: grid;
+	grid-template-columns: auto 24px 16px 24px 16px;
+}
+.spell-label {
+	padding-top: 0.125rem;
+}
+.spell-effect {
+	margin-left: 0.5rem;
+	background-color: var(--color-contrast-1);
+}

@@ -6,7 +6,7 @@ public class UpCountingTimer : DNDHinwil.Website.Interfaces.ITimer
     private TimeSpan _runTime;
     private readonly long _timeBetweenTicksInMilliseconds = 1000;
     private string _timeFormat => ShowHours ? @"hh\:mm\:ss" : @"mm\:ss";
-    private TimerCallback? _callback;
+    private readonly TimerCallback? _callback;
 
     public bool TimerRunning { get; set; }
     public bool Paused { get; set; }

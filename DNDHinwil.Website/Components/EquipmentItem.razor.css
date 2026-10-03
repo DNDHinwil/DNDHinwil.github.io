@@ -1,0 +1,14 @@
+﻿.quantity {
+	padding-top: 0.25rem;
+	margin-left: 0.5rem;
+}
+
+.equipment-item {
+	display: grid;
+	grid-template-columns: max-content auto;
+}
+
+.equipment-effect {
+	margin-left: 0.5rem;
+	background-color: var(--color-contrast-1);
+}

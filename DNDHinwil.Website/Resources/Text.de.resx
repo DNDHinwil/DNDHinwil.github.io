@@ -186,8 +186,8 @@
   <data name="MaxMP" xml:space="preserve">
     <value>Max MP</value>
   </data>
-  <data name="MagicPower" xml:space="preserve">
-    <value>Magie Power</value>
+  <data name="MagicSense" xml:space="preserve">
+    <value>Magisches Gespür</value>
   </data>
   <data name="Dexterity" xml:space="preserve">
     <value>Geschick</value>
@@ -204,8 +204,8 @@
   <data name="Charisma" xml:space="preserve">
     <value>Charisma</value>
   </data>
-  <data name="MagicPower_Short" xml:space="preserve">
-    <value>MP</value>
+  <data name="MagicSense_Short" xml:space="preserve">
+    <value>MG</value>
   </data>
   <data name="Strength_Short" xml:space="preserve">
     <value>St</value>
@@ -417,8 +417,8 @@
   <data name="SpellbookOf" xml:space="preserve">
     <value>Zauberbuch von</value>
   </data>
-  <data name="EquipmentOf" xml:space="preserve">
-    <value>Ausrüstung von</value>
+  <data name="InventoryOf" xml:space="preserve">
+    <value>{{CHARACTER}}s Inventar</value>
   </data>
   <data name="Duration" xml:space="preserve">
     <value>Dauer</value>
@@ -500,5 +500,170 @@
   </data>
   <data name="Rest" xml:space="preserve">
     <value>Raste</value>
+  </data>
+  <data name="NewSpell" xml:space="preserve">
+    <value>Neuer Zauber</value>
+  </data>
+  <data name="Wand" xml:space="preserve">
+    <value>Zauberstab</value>
+  </data>
+  <data name="Item" xml:space="preserve">
+    <value>Gegenstand</value>
+  </data>
+  <data name="For" xml:space="preserve">
+    <value>Für</value>
+  </data>
+  <data name="ReducedDamage" xml:space="preserve">
+    <value>Reduzierter Schaden</value>
+  </data>
+  <data name="Luck" xml:space="preserve">
+    <value>Glück</value>
+  </data>
+  <data name="Luck_Short" xml:space="preserve">
+    <value>Glk</value>
+  </data>
+  <data name="Templates" xml:space="preserve">
+    <value>Vorlagen</value>
+  </data>
+  <data name="Campaign" xml:space="preserve">
+    <value>Kampagne</value>
+  </data>
+  <data name="Campaigns" xml:space="preserve">
+    <value>Kampagnen</value>
+  </data>
+  <data name="ManaCost" xml:space="preserve">
+    <value>Manakosten</value>
+  </data>
+  <data name="StartCampaign" xml:space="preserve">
+    <value>Starte eine neue Kampagne</value>
+  </data>
+  <data name="StartCampaignWarning" xml:space="preserve">
+    <value>Deine Daten werden gelöscht</value>
+  </data>
+  <data name="NoEquipmentInInventory" xml:space="preserve">
+    <value>Keine Ausrüstung im Inventar</value>
+  </data>
+  <data name="Inventory" xml:space="preserve">
+    <value>Inventar</value>
+  </data>
+  <data name="Use" xml:space="preserve">
+    <value>Benutzen</value>
+  </data>
+  <data name="Gear_MainHand" xml:space="preserve">
+    <value>Dominante Hand</value>
+  </data>
+  <data name="Gear_OffHand" xml:space="preserve">
+    <value>Schwache Hand</value>
+  </data>
+  <data name="Gear_Head" xml:space="preserve">
+    <value>Kopf</value>
+  </data>
+  <data name="Gear_Chest" xml:space="preserve">
+    <value>Brust</value>
+  </data>
+  <data name="Gear_Cloak" xml:space="preserve">
+    <value>Umhang</value>
+  </data>
+  <data name="Gear_Gloves" xml:space="preserve">
+    <value>Handschuhe</value>
+  </data>
+  <data name="Gear_Bracers" xml:space="preserve">
+    <value>Arme</value>
+  </data>
+  <data name="Gear_Legs" xml:space="preserve">
+    <value>Beine</value>
+  </data>
+  <data name="Gear_Boots" xml:space="preserve">
+    <value>Schuhe</value>
+  </data>
+  <data name="Gear_Ears" xml:space="preserve">
+    <value>Ohren</value>
+  </data>
+  <data name="Gear_Neck" xml:space="preserve">
+    <value>Hals</value>
+  </data>
+  <data name="Gear_Finger" xml:space="preserve">
+    <value>Finger</value>
+  </data>
+  <data name="Gear_Twohanded" xml:space="preserve">
+    <value>Zweihändig</value>
+  </data>
+  <data name="NotEnoughMana" xml:space="preserve">
+    <value>Nicht genug Mana</value>
+  </data>
+  <data name="EquipmentChest" xml:space="preserve">
+    <value>Austrüstungskoffer</value>
+  </data>
+  <data name="GearOf" xml:space="preserve">
+    <value>{{CHARACTER}}s Ausstattung</value>
+  </data>
+  <data name="NewEquipment" xml:space="preserve">
+    <value>Neuer Ausrüstungsgegenstand</value>
+  </data>
+  <data name="NewGear" xml:space="preserve">
+    <value>Neuer Ausstattungsgegenstand</value>
+  </data>
+  <data name="Gear" xml:space="preserve">
+    <value>Ausstattung</value>
+  </data>
+  <data name="NoGearEquipped" xml:space="preserve">
+    <value>Keine Ausstattung Ausgerüstet</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Beschreibung</value>
+  </data>
+  <data name="Range" xml:space="preserve">
+    <value>Reichweite</value>
+  </data>
+  <data name="Effects" xml:space="preserve">
+    <value>Effekte</value>
+  </data>
+  <data name="NoEffects" xml:space="preserve">
+    <value>Keine Effekte</value>
+  </data>
+  <data name="Dice" xml:space="preserve">
+    <value>Würfel</value>
+  </data>
+  <data name="UseStrengthAsBonusDamage" xml:space="preserve">
+    <value>Nutze Stärke als bonus schaden</value>
+  </data>
+  <data name="DiceType" xml:space="preserve">
+    <value>Würfeltyp</value>
+  </data>
+  <data name="NewSpellEffect" xml:space="preserve">
+    <value>Neuer Zeubereffekt</value>
+  </data>
+  <data name="BonusStat" xml:space="preserve">
+    <value>Eingenschaftsbonus</value>
+  </data>
+  <data name="RemoveSpellFromLibrary" xml:space="preserve">
+    <value>Zauber von Bibliothek entfernen</value>
+  </data>
+  <data name="MeleeRange" xml:space="preserve">
+    <value>Nahkampfdistanz</value>
+  </data>
+  <data name="GameSettings" xml:space="preserve">
+    <value>Spieleinstellungen</value>
+  </data>
+  <data name="Modifier_Short" xml:space="preserve">
+    <value>Bns</value>
+  </data>
+  <data name="NewGearBonus" xml:space="preserve">
+    <value>Neuer Ausstattungsbonus</value>
+  </data>
+  <data name="RemoveGearFromInventory" xml:space="preserve">
+    <value>Austattung vom Inventar entfernen</value>
+  </data>
+  <data name="AvailableGear" xml:space="preserve">
+    <value>Verfügbare Ausstattung</value>
+  </data>
+  <data name="Bonus" xml:space="preserve">
+    <value>Bonus</value>
+  </data>
+  <data name="Bonuses" xml:space="preserve">
+    <value>Boni</value>
+  </data>
+  <data name="NoBonuses" xml:space="preserve">
+    <value>No Boni</value>
   </data>
 </root>

@@ -1,22 +1,10 @@
 ﻿
 namespace DNDHinwil.Website.Interfaces;
 
-public interface IEffect
+public interface IEffect<TTarget, TOutcome>
 {
-    int Strength { get; set; }
-    public EffectTarget Target { get; set; }
-    public EffectOutcome Outcome { get; set; }
-    public string? SpecialText { get; set; }
-    public enum EffectOutcome
-    {
-        DealsDamage,
-        Heals,
-        Other
-    }
-    public enum EffectTarget
-    {
-        Health,
-        Mana,
-        Special
-    }
+    int Strength { get; }
+    public TTarget Target { get; }
+    public TOutcome Outcome { get; }
+    public string? SpecialText { get; }
 }

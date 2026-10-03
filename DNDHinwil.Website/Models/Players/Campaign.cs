@@ -1,6 +1,6 @@
 ﻿namespace DNDHinwil.Website.Models;
 
-public class Player
+public class Campaign
 {
     public List<Session> Sessions { get; set; } = [];
     public List<Character> Characters { get; set; } = [];

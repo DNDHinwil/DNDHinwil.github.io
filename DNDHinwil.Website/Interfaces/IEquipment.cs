@@ -2,7 +2,9 @@
 
 public interface IEquipment
 {
-    string Name { get; set; }
-    string Description { get; set; }
-    int Weight { get; set; }
+    string Id { get; }
+    string Name { get; }
+    string Description { get; }
+    int Weight { get; }
+    bool Usable { get; }
 }

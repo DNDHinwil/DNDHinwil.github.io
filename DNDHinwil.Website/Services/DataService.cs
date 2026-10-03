@@ -1,8 +1,9 @@
-﻿using DNDHinwil.Website.Models;
-using Microsoft.JSInterop;
-using System.Net.Http.Json;
-using System.Text.Json;
+﻿using DNDHinwil.Website.DB;
+using DNDHinwil.Website.Generators;
+using DNDHinwil.Website.Models;
 using IndexedDB.Blazor;
+using Microsoft.JSInterop;
+using System.Text.Json;
 
 namespace DNDHinwil.Website;
 
@@ -23,13 +24,13 @@ public interface IDataService
     public Task SaveSpellLibrary(List<Spell> spells);
     public Task<Settings> LoadSettings();
     public Task SaveSettings(Settings settings);
+    public Task SaveCampaign(Campaign campaign);
     public Task MakeAlert(string message);
 }
 
-public class DataService(HttpClient client, IJSRuntime js, IIndexedDbFactory dbFactory) : IDataService
+public class DataService(HttpClient client, IJSRuntime js) : IDataService
 {
     private readonly HttpClient _client = client;
-    private readonly IIndexedDbFactory _indexedDbFactory = dbFactory;
     private readonly IJSRuntime _js = js;
 
     public async Task<List<Session>> LoadSessions()
@@ -63,21 +64,17 @@ public class DataService(HttpClient client, IJSRuntime js, IIndexedDbFactory dbF
     public async Task<List<Character>> LoadCharacters()
     {
         var characters = await LoadData<List<Character>>(Constants.PlayerKey);
-        if (characters is null)
-        {
-            characters = [new Character()];
-            var settings = await LoadSettings();
-            settings.ActiveCharacter ??= characters.First().Id;
-            await SaveCharacters(characters);
-            await SaveSettings(settings);
-        }
-        return characters;
+        if (characters is not null)
+            return characters;
+        var campaign = CampaignGenerator.StartHinwilCampaign();
+        await SaveCampaign(campaign);
+        return campaign.Characters;
     }
     public async Task SaveCharacters(List<Character> player)
         => await StoreData(Constants.PlayerKey, player);
 
     public async Task<Character> LoadCharacter(string? id)
-    {        
+    {
         var characters = await LoadCharacters();
         var savedCharacter = characters?.FirstOrDefault(c => c.Id == id) ?? characters?.FirstOrDefault();
         if (savedCharacter is null)
@@ -112,13 +109,13 @@ public class DataService(HttpClient client, IJSRuntime js, IIndexedDbFactory dbF
 
     public async Task<List<Gear>> LoadArmory()
     {
-        var armory = await LoadData<List<Gear>>(Constants.EquipmentKey);
+        var armory = await LoadData<List<Gear>>(Constants.ArmoryKey);
         if (armory is null)
             return [];
         return armory;
     }
     public async Task SaveArmory(List<Gear> armory)
-        => await StoreData(Constants.EquipmentKey, armory);
+        => await StoreData(Constants.ArmoryKey, armory);
 
     public async Task<List<Spell>> LoadSpellLibrary()
     {
@@ -140,6 +137,9 @@ public class DataService(HttpClient client, IJSRuntime js, IIndexedDbFactory dbF
     public async Task SaveSettings(Settings settings)
         => await StoreData(Constants.SettingsKey, settings);
 
+    public async Task MakeAlert(string message)
+        => await _js.InvokeVoidAsync("alert", message);
+
     private async ValueTask StoreData<TData>(string key, TData data)
         => await _js.InvokeVoidAsync("localStorage.setItem",
         [
@@ -158,10 +158,17 @@ public class DataService(HttpClient client, IJSRuntime js, IIndexedDbFactory dbF
         }
         catch (JsonException)
         {
-            return default; 
+            return default;
         }
     }
+    public async Task SaveCampaign(Campaign campaign)
+    {
+        await SaveCharacters(campaign.Characters);
+        await SaveSettings(campaign.Settings);
+        await SaveArmory(campaign.Armory);
+        await SaveEquipmentChest(campaign.EquipmentChest);
+        await SaveSpellLibrary(campaign.SpellLibrary);
 
-    public async Task MakeAlert(string message)
-        => await _js.InvokeVoidAsync("alert", message);
+        await StoreData(Constants.SessionKey, new List<Session>());
+    }
 }
