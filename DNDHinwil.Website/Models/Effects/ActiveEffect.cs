@@ -8,12 +8,6 @@ public class ActiveEffect : Effect
     public EffectDuration Duration { get; set; } = EffectDuration.Turns;
     public int Turns { get; set; } = 3;
     public bool TriggersAtEnd { get; set; }
-    public enum EffectDuration
-    {
-        Turns,
-        UntilRemoved,
-        UntilHealed
-    }
     public override string ToString()
     {
         var outcome = "";

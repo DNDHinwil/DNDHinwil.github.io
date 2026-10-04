@@ -1,23 +1,43 @@
-﻿.character {
+﻿
+header {
 	display: grid;
-	grid-template-columns: max-content max-content min-content auto min-content min-content;
+	grid-template-columns: auto min-content;
+	padding: 0.5rem;
+}
+
+	header > h2 {
+		font-size: 1.5rem;
+		margin: 0;
+	}
+
+button {
+	padding: 0.125rem 0;
+	height: 32px;
+}
+
+.right-button {
+	margin-left: 0.5rem;
+}
+
+.left-button {
+	margin-right: 0.5rem;
+}
+
+.character {
+	padding: 0.5rem;
+	display: grid;
+	grid-template-columns: 40px max-content min-content auto 40px 40px;
 }
 
 	.character :nth-child(2) {
 		margin-right: 0.5rem;
 	}
 	.character :nth-child(3), .character :nth-child(4) {
-		padding-top: 1rem;
-	}
-
-	.character > button {
-		margin-left: 0.25rem;
-		margin-right: 0.25rem;
-		text-align: center;
+		padding-top: 0.5rem;
 	}
 
 	.character > div {
-		padding-top: 0.75rem;
+		padding-top: 0.25rem;
 	}
 
 	.character.active :nth-child(2) {
@@ -29,3 +49,6 @@
 			content: " ✔";
 		}
 
+.create-new {
+	padding: 0.5rem;
+}

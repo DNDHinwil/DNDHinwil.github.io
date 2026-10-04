@@ -61,7 +61,8 @@ public static class CampaignGenerator
                 ],
                 Usable = true,
                 DecreasesWithUse = true,
-                DropWhenEmpty = true
+                DropWhenEmpty = true,
+                CanBeUsedOnSelf = true
             }
         ]; 
     private static List<Gear> GenerateHinwilDefaultGear()
@@ -69,13 +70,13 @@ public static class CampaignGenerator
             new Gear()
             {
                 Name = "Zauberstab",
-                Slot = new() {Target = GearSlot.MainHand},
+                Slot = GearSlot.MainHand,
                 IsEquipped = true
             },
             new Gear()
             {
                 Name = "Schulumhang",
-                Slot = new() {Target = GearSlot.Cloak},
+                Slot = GearSlot.Cloak,
                 IsEquipped = true
             }
         ];

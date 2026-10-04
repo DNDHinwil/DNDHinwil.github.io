@@ -1,13 +1,10 @@
 :root {
-	--min-width: 300px;
+	--min-width: 320px;
 	--navmenu-height: 40px;
 	--color-foreground: #111;
 	--color-foreground-muted: #444;
 	--color-background: #eee;
-	--color-primary-h: 24;
-	--color-primary-s: 100%;
-	--color-primary-l: 50%;
-	--color-primary: hsl(var(--color-primary-h), var(--color-primary-s), var(--color-primary-l));
+	--color-primary: #ff8533;
 	--color-contrast-0: #ddd;
 	--color-contrast-1: #ccc;
 	--color-contrast-2: #bbb;
@@ -20,7 +17,6 @@
 		--color-foreground: #eee;
 		--color-foreground-muted: #aaa;
 		--color-background: #111;
-		--color-primary-l: 60%;
 		--color-contrast-0: #000;
 		--color-contrast-1: #222;
 		--color-contrast-2: #333;
@@ -91,7 +87,7 @@ button {
 	button:hover {
 		cursor: pointer;
 		color: var(--color-foreground-muted);
-		border-color: color-mix(in srgb, var(--color-primary), var(--color-shadow));
+		border-color: color-mix(in srgb, var(--color-primary) 80%, var(--color-foreground-muted));
 	}
 
 h1 {
@@ -133,6 +129,7 @@ header {
 }
 
 dialog {
+	min-width: 300px;
 	background-color: var(--color-background);
 	color: var(--color-foreground);
 	padding: 0.25rem 1rem;
@@ -146,7 +143,7 @@ dialog {
 .content {
 	display: grid;
 	grid-template-columns: 1fr;
-	min-width: 300px;
+	min-width: var(--min-width);
 	max-width: 700px;
 	margin: 0 auto 0.5rem auto;
 	background-color: var(--color-background);

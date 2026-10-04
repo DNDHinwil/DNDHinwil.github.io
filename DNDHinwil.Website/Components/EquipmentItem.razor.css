@@ -3,9 +3,14 @@
 	margin-left: 0.5rem;
 }
 
+.weight {
+	padding-top: 0.25rem;
+	text-align: right;
+}
+
 .equipment-item {
 	display: grid;
-	grid-template-columns: max-content auto;
+	grid-template-columns: max-content auto 60px;
 }
 
 .equipment-effect {

@@ -6,5 +6,6 @@ public class Spell
     public string Name { get; set; } = Text.Fireball;
     public int ManaCost { get; set; }
     public int Range { get; set; }
+    public bool CanBeUsedOnSelf { get; set; }
     public List<SpellEffect> Effects { get; set; } = [];
 }

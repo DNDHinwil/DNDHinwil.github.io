@@ -9,10 +9,11 @@
     </header>
 
     <CollapsibleSection Title="@($"{@Text.SpellbookOf} {_activeCharacter.Name}")">
+        @{var modifiers = _activeCharacter.CalculateModifiers(_settings.ScoreModifiers);}
         @foreach (var spell in _activeCharacter.Spellbook)
         {
             <div class="spellbook-spell">
-                <SpellOrAbility Model="spell" CharacterStats="_activeCharacter.Stats" AbilityScoreTable="_settings.ScoreModifiers" MeleeRange="_settings.MeleeRange"></SpellOrAbility>
+                <SpellOrAbility Model="spell" Modifiers="modifiers" MeleeRange="_settings.MeleeRange"></SpellOrAbility>
                 <button class="right-button" @onclick="async x => await RemoveSpellFromSpellbook(spell)">-</button>
             </div>
         }
@@ -43,6 +44,9 @@
             </InputWithLabel>
             <InputWithLabel Label="@Text.ManaCost">
                 <InputNumber @bind-Value="_editSpell.ManaCost"></InputNumber>
+            </InputWithLabel>
+            <InputWithLabel Label="@Text.CanBeUsedOnSelf">
+                <InputCheckbox @bind-Value="_editSpell.CanBeUsedOnSelf"></InputCheckbox>
             </InputWithLabel>
             <div class="edit-spell-effects">
                 <h4 style="width:100%;grid-column:span 2;">@Text.Effects</h4>

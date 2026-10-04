@@ -56,9 +56,9 @@ public class SpellEffect : Effect
             : UseStrengthAsBonusPower ? $"{NumberOfDice}{Text.D}{DiceType} +{Strength} {bonusStat}{outcome}{target}"
             : $"{NumberOfDice}{Text.D}{DiceType} {bonusStat}{outcome}{target}";
     }
-    public string ToString(Stat? bonusStat, AbilityScore[] table)
+    public string ToString(Modifier? modifier)
     {
-        if (bonusStat is null || BonusStatId is null || table.Length == 0)
+        if (modifier is null || BonusStatId is null)
             return ToString();
         var outcome = "";
         switch (Outcome)
@@ -93,11 +93,8 @@ public class SpellEffect : Effect
                 break;
         }
 
-
-
-        var modifier = bonusStat.GetModifier(table);
-        return NumberOfDice < 1 ? $"{Strength} +{modifier} ({bonusStat.Short}) {outcome}{target}"
-            : UseStrengthAsBonusPower ? $"{NumberOfDice}{Text.D}{DiceType} +{Strength} +{modifier} ({bonusStat.Short}) {outcome}{target}"
-            : $"{NumberOfDice}{Text.D}{DiceType} +{modifier} ({bonusStat.Short}) {outcome}{target}";
+        return NumberOfDice < 1 ? $"{Strength} +{modifier.CalculatedModifier} ({modifier.Stat.Short}) {outcome}{target}"
+            : UseStrengthAsBonusPower ? $"{NumberOfDice}{Text.D}{DiceType} +{Strength} +{modifier.CalculatedModifier} ({modifier.Stat.Short}) {outcome}{target}"
+            : $"{NumberOfDice}{Text.D}{DiceType} +{modifier.CalculatedModifier} ({modifier.Stat.Short}) {outcome}{target}";
     }
 }

@@ -1,17 +1,15 @@
 ﻿
-<div class="stats" style="@($"--stat-count:{Stats.Count};")">
-    @foreach (var stat in Stats)
+<div class="stats" style="@($"--stat-count:{Modifiers.Count};")">
+    @foreach (var modifier in Modifiers)
     {
-        <div class="stat" style="@($"--color:hsl({360 / Stats.Count * Stats.IndexOf(stat)},100%,50%);")">
-            @stat.GetModifier(AbilityScores)
-            <label>@stat.Short</label>
+        <div class="stat" style="@($"--color:hsl({360 / Modifiers.Count * Modifiers.IndexOf(modifier)},100%,50%);")">
+            @modifier.CalculatedModifier
+            <label>@modifier.Stat.Short</label>
         </div>
     }
 </div>
 
 @code {
     [Parameter]
-    public required List<Stat> Stats { get; set; }
-    [Parameter]
-    public required AbilityScore[] AbilityScores { get; set; }
+    public required List<Modifier> Modifiers { get; set; }
 }

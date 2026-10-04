@@ -7,34 +7,118 @@
     <header class="title">
         <h2>@Text.Equipment</h2>
     </header>
-    <section class="inventory">
-        <h3 style="grid-column:span 2;">@Text.InventoryOf.Replace("{{CHARACTER}}", _activeCharacter.Name)</h3>
+    <CollapsibleSection Title="@Text.InventoryOf.Replace("{{CHARACTER}}", _activeCharacter.Name)">
         @foreach (var equipment in _activeCharacter.Inventory)
         {
-            <EquipmentItem Model="equipment"></EquipmentItem>
-            <button @onclick="x => RemoveItemFromInventory(equipment)">-</button>
+            <div class="inventory-item">
+                <EquipmentItem Model="equipment"></EquipmentItem>
+                <button class="right-button" @onclick="x => RemoveEquipmentFromInventory(equipment)">-</button>
+            </div> 
         }
-    </section>
-    <section class="equipment-chest">
+    </CollapsibleSection>
+    <CollapsibleSection Title="@Text.EquipmentChest">
         <h3 style="grid-column:span 3;">@Text.EquipmentChest</h3>
         @foreach (var equipment in _equipmentChest)
         {
-            <button @onclick="async x => await DeleteItem(equipment)">-</button>
-            <EquipmentItem Model="equipment"></EquipmentItem>
-            <button @onclick="x => AddItemToInventory(equipment)">+</button>
+            <div class="equipment-chest-item">
+                <button class="left-button" command="show-modal" commandfor="delete-equipment" @onclick="x => StartEditingEquipment(equipment)">-</button>
+                <EquipmentItem Model="equipment" HideQuantity="true"></EquipmentItem>
+                <button class="right-button" command="show-modal" commandfor="edit-equipment" @onclick="x => StartEditingEquipment(equipment)">⛭</button>
+                <button class="right-button" @onclick="async x => await AddEquipmentToInventory(equipment)">🎒</button>
+            </div>
         }
-        <button @onclick="x => AddNewSpell()" style="width:100%;grid-column:span 3;">@Text.NewEquipment</button>
-    </section>
+        <button command="show-modal" commandfor="edit-equipment" @onclick="x => AddNewEquipment()" style="width:100%;grid-column:span 3;margin-top:0.5rem;">@Text.NewEquipment</button>
+    </CollapsibleSection>
 
     @if (_editEquipment is not null)
     {
-        <dialog id="edit-equipment">
-            <h3>@Text.Effect</h3>
+        <dialog id="edit-equipment" class="edit-equipment">
+            <h3>@Text.Equipment</h3>
             <InputWithLabel Label="@Text.Name">
                 <InputText @bind-Value="_editEquipment.Name"></InputText>
             </InputWithLabel>
-            <button @onclick="x => FinishEditingItem(false)" command="close" commandfor="edit-equipment">@Text.Cancel</button>
-            <button @onclick="x => FinishEditingItem(true)" command="close" commandfor="edit-equipment" style="float:right;">@Text.Save</button>
+            <InputWithLabel Label="@Text.Description">
+                <InputText @bind-Value="_editEquipment.Description"></InputText>
+            </InputWithLabel>
+            <InputWithLabel Label="@Text.Weight">
+                <InputNumber @bind-Value="_editEquipment.Weight"></InputNumber>
+            </InputWithLabel>
+            <InputWithLabel Label="@Text.Usable">
+                <InputCheckbox @bind-Value="_editEquipment.Usable"></InputCheckbox>
+            </InputWithLabel>
+            @if (_editEquipment.Usable)
+            {
+                <InputWithLabel Label="@Text.DecreasesWithUse">
+                    <InputCheckbox @bind-Value="_editEquipment.DecreasesWithUse"></InputCheckbox>
+                </InputWithLabel>
+                <InputWithLabel Label="@Text.CanBeUsedOnSelf">
+                    <InputCheckbox @bind-Value="_editEquipment.CanBeUsedOnSelf"></InputCheckbox>
+                </InputWithLabel>
+                <InputWithLabel Label="@Text.DropWhenEmpty">
+                    <InputCheckbox @bind-Value="_editEquipment.DropWhenEmpty"></InputCheckbox>
+                </InputWithLabel>
+            }
+            <div class="edit-equipment-effects">
+                <h4 style="width:100%;">@Text.Bonuses</h4>
+                <div class="equipment-effect">
+                    @if (_editEquipment.Effects.Any())
+                    {
+                        @foreach (var effect in _editEquipment.Effects)
+                        {
+                            <button class="left-button" @onclick="x => RemoveEffect(effect)">-</button>
+                            <div class="effect-text">@effect.ToString()</div>
+                            <button class="right-button" @onclick="x => StartEditingEffect(effect)" command="show-modal" commandfor="edit-effect">⛭</button>
+                        }
+                    }
+                    else
+                    {
+                        <div style="width:100%;grid-column:span 3;">@Text.NoBonuses</div>
+                    }
+                </div>
+                <button @onclick="x => AddNewEffect()" command="show-modal" commandfor="edit-effect" style="width:100%;margin-top:0.5rem;">@Text.NewEqupmentEffect</button>
+            </div>
+            <button @onclick="x => FinishEditingEqiupment(false)" command="close" commandfor="edit-equipment">@Text.Cancel</button>
+            <button @onclick="x => FinishEditingEqiupment(true)" command="close" commandfor="edit-equipment" style="float:right;">@Text.Save</button>
+        </dialog>
+    }
+    <dialog id="delete-equipment">
+        <h3>@Text.RemoveGearFromInventory</h3>
+        <label>@Text.AreYouSure</label>
+        <button @onclick="async x => await FinishEditingEqiupment(false)" command="close" commandfor="delete-equipment">@Text.Cancel</button>
+        <button @onclick="async x => await DeleteEquipment(_editEquipment)" command="close" commandfor="delete-equipment">@Text.Confirm</button>
+    </dialog>
+
+    @if (_editEffect is not null)
+    {
+        <dialog id="edit-effect">
+            <h3>@Text.Effect</h3>
+            <InputWithLabel Label="@Text.Strength">
+                <InputNumber @bind-Value="_editEffect.Strength"></InputNumber>
+            </InputWithLabel>
+            <InputWithLabel Label="@Text.Outcome">
+                <InputSelect @bind-value="_editEffect.Outcome">
+                    <option value="@EffectOutcome.DealsDamage">@Text.Damage</option>
+                    <option value="@EffectOutcome.Heals">@Text.Heal</option>
+                    <option value="@EffectOutcome.Special">@Text.Other</option>
+                </InputSelect>
+            </InputWithLabel>
+            @if (_editEffect.Outcome == EffectOutcome.Special)
+            {
+                <InputWithLabel Label="@Text.Description">
+                    <InputText @bind-Value="_editEffect.SpecialText"></InputText>
+                </InputWithLabel>
+            }
+            @if (_editEffect.Outcome is EffectOutcome.DealsDamage or EffectOutcome.Heals)
+            {
+                <InputWithLabel Label="@Text.Target">
+                    <InputSelect @bind-value="_editEffect.Target">
+                        <option value="@EffectTarget.Health">@Text.Health</option>
+                        <option value="@EffectTarget.Mana">@Text.Mana</option>
+                        <option value="@EffectTarget.Special">@Text.Special</option>
+                    </InputSelect>
+                </InputWithLabel>
+            }
+            <button @onclick="x => FinishEditingEffect(true)" command="close" commandfor="edit-effect" style="width:100%;">@Text.OK</button>
         </dialog>
     }
 </div>
@@ -45,6 +129,7 @@
     private List<Equipment> _equipmentChest = [];
 
     private Equipment? _editEquipment;
+    private Effect? _editEffect;
 
     protected override async Task OnInitializedAsync()
     {
@@ -57,48 +142,111 @@
         Text.Culture = newCulture;
     }
 
-    private void AddNewSpell()
+    #region Equipment Chest
+    // C
+    private void AddNewEquipment()
     {
         var equipment = new Equipment();
-        equipment.Name = $"{Text.Spell} {_equipmentChest.Count + 1}";
+        equipment.Name = $"{Text.Equipment} {_equipmentChest.Count + 1}";
         StartEditingEquipment(equipment);
     }
-
-    private async Task DeleteItem(Equipment spell)
-    {
-        _equipmentChest.Remove(spell);
-        await ContentService.SaveEquipmentChest(_equipmentChest);
-    }
-
+    // R
     private void StartEditingEquipment(Equipment equipment)
         => _editEquipment = equipment;
-
-    private async Task FinishEditingItem(bool save)
+    // U
+    private async Task FinishEditingEqiupment(bool save)
     {
         if (_editEquipment is null)
             return;
-        if (!save || _equipmentChest.Any(e => e.Id == _editEquipment.Id))
+        if (!save)
         {
             _editEquipment = null;
             return;
         }
+        var equipmentExists = _equipmentChest.FirstOrDefault(s => s.Id == _editEquipment.Id);
+        if (equipmentExists is not null)
+            _equipmentChest.Remove(equipmentExists);
 
         _equipmentChest.Add(_editEquipment);
         await ContentService.SaveEquipmentChest(_equipmentChest);
         _editEquipment = null;
     }
-
-    private void AddItemToInventory(Equipment equipment)
+    // D
+    private async Task DeleteEquipment(Equipment? equipment)
     {
-        var itemAlreadyInInventory = _activeCharacter.Inventory.FirstOrDefault(s => s.Id == equipment.Id);
-        if (itemAlreadyInInventory is not null)
+        if (equipment is null)
             return;
-        _activeCharacter.Inventory.Add(equipment);
+        _equipmentChest.Remove(equipment);
+        await ContentService.SaveEquipmentChest(_equipmentChest);
+    }
+    #endregion
+
+    #region Inventory
+    private async Task AddEquipmentToInventory(Equipment equipment)
+    {
+        var equipmentAlreadyInInventory = _activeCharacter.Inventory.FirstOrDefault(s => s.Id == equipment.Id);
+        if (equipmentAlreadyInInventory is not null)
+            equipmentAlreadyInInventory.Quantity++;
+        else
+            _activeCharacter.Inventory.Add(equipment);
+
+        await ContentService.SaveCharacter(_activeCharacter);
     }
 
-    private void RemoveItemFromInventory(Equipment equipment)
-        => _activeCharacter.Inventory.Remove(equipment);
+    private async Task RemoveEquipmentFromInventory(Equipment equipment)
+    {
+        var equipmentAlreadyInInventory = _activeCharacter.Inventory.FirstOrDefault(s => s.Id == equipment.Id);
+        if (equipmentAlreadyInInventory is null)
+            return;
 
-    private async Task SavePlayer()
-        => await ContentService.SaveCharacter(_activeCharacter);
+        equipmentAlreadyInInventory.Quantity--;
+        if (equipmentAlreadyInInventory.Quantity < 1)
+            _activeCharacter.Inventory.Remove(equipmentAlreadyInInventory);
+        
+        await ContentService.SaveCharacter(_activeCharacter);
+    }
+    #endregion
+
+    #region Effects
+    // C
+    private void AddNewEffect()
+    {
+        var effect = new Effect();
+        StartEditingEffect(effect);
+    }
+
+    // R
+    private void StartEditingEffect(Effect effect)
+        => _editEffect = effect;
+
+    // U
+    private async Task FinishEditingEffect(bool save)
+    {
+        if (_editEquipment is null || _editEffect is null)
+            return;
+        if (!save)
+        {
+            _editEffect = null;
+            return;
+        }
+        // remove old version
+        var effectExists = _editEquipment.Effects.FirstOrDefault(e => e.Id == _editEffect.Id);
+        if (effectExists is not null)
+            _editEquipment.Effects.Remove(effectExists);
+
+        _editEquipment.Effects.Add(_editEffect);
+
+        await ContentService.SaveEquipmentChest(_equipmentChest);
+        _editEffect = null;
+    }
+
+    // D
+    private async Task RemoveEffect(Effect effect)
+    {
+        if (_editEquipment is null)
+            return;
+        _editEquipment.Effects.Remove(effect);
+        await ContentService.SaveEquipmentChest(_equipmentChest);
+    }
+    #endregion
 }

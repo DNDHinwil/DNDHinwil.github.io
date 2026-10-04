@@ -55,14 +55,32 @@ public class Character
         return gearDamageReduction + activeEffectDamageReduction;
     }
 
-    public async Task UseSpell(Spell spell)
+    public async Task UseSpell(Spell spell, bool useOnYourself)
     {
         if (spell.ManaCost > Mana)
             return;
         Mana -= spell.ManaCost;
+
+        if (useOnYourself && spell.CanBeUsedOnSelf)
+        {
+            foreach (var effect in spell.Effects)
+            {
+                switch (effect.Outcome)
+                {
+                    case EffectOutcome.DealsDamage:
+                        await TakeDamage(effect);
+                        break;
+                    case EffectOutcome.Heals:
+                        await Heal(effect);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
     }
 
-    public async Task UseEquipment(Equipment equipment)
+    public async Task UseEquipment(Equipment equipment, bool useOnYourself)
     {
         if (equipment.Quantity < 1)
             return;
@@ -73,18 +91,21 @@ public class Character
                 _ = Inventory.Remove(equipment);
         }
 
-        foreach (var effect in equipment.Effects)
+        if (useOnYourself)
         {
-            switch (effect.Outcome)
+            foreach (var effect in equipment.Effects)
             {
-                case EffectOutcome.DealsDamage:
-                    await TakeDamage(effect);
-                    break;
-                case EffectOutcome.Heals:
-                    await Heal(effect);
-                    break;
-                default:
-                    break;
+                switch (effect.Outcome)
+                {
+                    case EffectOutcome.DealsDamage:
+                        await TakeDamage(effect);
+                        break;
+                    case EffectOutcome.Heals:
+                        await Heal(effect);
+                        break;
+                    default:
+                        break;
+                }
             }
         }
     }
@@ -98,7 +119,7 @@ public class Character
 
     public async Task Heal(Effect effect)
     {
-        _= ActiveEffects.RemoveAll(x => x.Duration is ActiveEffect.EffectDuration.UntilHealed);
+        _= ActiveEffects.RemoveAll(x => x.Duration is EffectDuration.UntilHealed);
 
         switch (effect.Target)
         {
@@ -141,7 +162,7 @@ public class Character
         if (ActiveEffects.Any(a => a.Outcome is EffectOutcome.Heals
             && a.Target is EffectTarget.Health
             && a.TriggersAtEnd == isEndOfTurn))
-            _ = ActiveEffects.RemoveAll(x => x.Duration is ActiveEffect.EffectDuration.UntilHealed);
+            _ = ActiveEffects.RemoveAll(x => x.Duration is EffectDuration.UntilHealed);
 
         foreach (var effect in ActiveEffects.Where(e => e.TriggersAtEnd == isEndOfTurn))
         {
@@ -157,10 +178,21 @@ public class Character
                     break;
             }
 
-            if (effect.Duration is ActiveEffect.EffectDuration.Turns)
+            if (effect.Duration is EffectDuration.Turns)
                 effect.Turns--;
         }
-
+    }
+    public List<Modifier> CalculateModifiers(AbilityScore[] table)
+    {
+        var res = new List<Modifier>();
+        foreach (var stat in Stats)
+        {
+            var modifer = table.LastOrDefault(s => s.Score <= stat.Score)?.Modifier ?? 0;
+            modifer += stat.Boost;
+            modifer += Gear.SelectMany(x => x.Bonuses).Where(b => b.BonusStatId == stat.Id).Sum(b => b.Outcome == BonusOutcome.Increases ? b.Strength : b.Strength * -1);
+            res.Add(new() { Stat = stat, CalculatedModifier = modifer });
+        }
+        return res;
     }
 }
 

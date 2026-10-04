@@ -1,0 +1,17 @@
+﻿
+header {
+	display: grid;
+	grid-template-columns: auto min-content;
+	padding: 0.5rem;
+}
+
+	header > h2 {
+		font-size: 1.5rem;
+		margin: 0;
+	}
+
+.active-session, .turns {
+	padding: 0.5rem;
+	display: grid;
+	grid-template-columns: auto;
+}
