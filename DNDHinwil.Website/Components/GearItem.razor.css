@@ -1,10 +1,10 @@
 ﻿.gear-item {
 	display: grid;
-	grid-template-columns: auto max-content 24px 16px;
+	grid-template-columns: 150px auto 50px;
 }
 
 .gear-label {
-	padding-top: 0.125rem;
+	padding-top: 0.25rem;
 }
 .gear-bonus {
 	margin-left: 0.5rem;

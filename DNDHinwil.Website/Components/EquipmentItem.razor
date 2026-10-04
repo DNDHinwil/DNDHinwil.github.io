@@ -1,17 +1,20 @@
 ﻿<div class="equipment-item">
     <h4>@Model.Name</h4>
-    <div class="quantity">@(Model.Quantity > 0 ? $"x{Model.Quantity}" : "")</div>
+    <div class="quantity">@(Model.Quantity > 0 && !HideQuantity ? $"x{Model.Quantity}" : "")</div>
+    <div class="weight">@(Model.Weight > 0 ? $"{Model.Weight * Model.Quantity} ⚖" : "")</div>
     @if (!string.IsNullOrWhiteSpace(Model.Description))
     {
-        <div class="equipment-effect" style="grid-column:span 2;">@Model.Description</div>
+        <div class="equipment-effect" style="grid-column:span 3;">@Model.Description</div>
     }
     @foreach (var effect in Model.Effects)
     {
-        <div class="equipment-effect" style="grid-column:span 2;">@effect.ToString()</div>
+        <div class="equipment-effect" style="grid-column:span 3;">@effect.ToString()</div>
     }
 </div>
 
 @code {
     [Parameter]
     public required Equipment Model { get; set; }
+    [Parameter]
+    public bool HideQuantity { get; set; }
 }

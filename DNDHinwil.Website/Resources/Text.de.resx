@@ -666,4 +666,34 @@
   <data name="NoBonuses" xml:space="preserve">
     <value>No Boni</value>
   </data>
+  <data name="CanBeUsedOnSelf" xml:space="preserve">
+    <value>Kann auf sich selbst angewendet werden</value>
+  </data>
+  <data name="Usable" xml:space="preserve">
+    <value>Benutzbar</value>
+  </data>
+  <data name="Weight" xml:space="preserve">
+    <value>Gewicht</value>
+  </data>
+  <data name="Quantity" xml:space="preserve">
+    <value>Anzahl</value>
+  </data>
+  <data name="DecreasesWithUse" xml:space="preserve">
+    <value>Wird aufgebraucht bei benutzung</value>
+  </data>
+  <data name="DropWhenEmpty" xml:space="preserve">
+    <value>Wird gelöscht wenn leer</value>
+  </data>
+  <data name="NewEqupmentEffect" xml:space="preserve">
+    <value>Neuer Ausrüstungseffekt</value>
+  </data>
+  <data name="Reduces" xml:space="preserve">
+    <value>Reduziert</value>
+  </data>
+  <data name="Increases" xml:space="preserve">
+    <value>Erhöt</value>
+  </data>
+  <data name="Slot" xml:space="preserve">
+    <value>Ausrüstung für</value>
+  </data>
 </root>

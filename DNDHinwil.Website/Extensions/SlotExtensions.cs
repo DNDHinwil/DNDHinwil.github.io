@@ -1,11 +1,8 @@
-﻿using DNDHinwil.Website.Enums;
+﻿namespace DNDHinwil.Website.Enums;
 
-namespace DNDHinwil.Website.Models;
-
-public class Slot
+public static class SlotExtensions
 {
-    public GearSlot Target { get; set; } = GearSlot.None;
-    public string Name => Target switch
+    public static string GetName(this GearSlot slot) => slot switch
     {
         GearSlot.None => "",
         GearSlot.MainHand => Text.Gear_MainHand,

@@ -6,7 +6,7 @@
     <div style="text-align:left;">💧</div>
     @foreach (var effect in Model.Effects)
     {
-        <div class="spell-effect" style="grid-column:span 5;">@effect.ToString(CharacterStats.FirstOrDefault(s => s.Id == effect.BonusStatId), AbilityScoreTable)</div>
+        <div class="spell-effect" style="grid-column:span 5;">@effect.ToString(Modifiers?.FirstOrDefault(m => effect.BonusStatId == m.Stat.Id))</div>
     }
 </div>
 
@@ -14,9 +14,7 @@
     [Parameter]
     public required Spell Model { get; set; }
     [Parameter]
-    public IEnumerable<Stat> CharacterStats { get; set; } = [];
-    [Parameter]
-    public AbilityScore[] AbilityScoreTable { get; set; } = [];
+    public List<Modifier>? Modifiers { get; set; }
     [Parameter]
     public int MeleeRange { get; set; } = 2;
 }

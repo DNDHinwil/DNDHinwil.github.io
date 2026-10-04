@@ -27,22 +27,20 @@
     <section class="stats">
         <div></div>
         <div>@Text.Name</div>
-        <div style="text-align:center;">@Text.Score</div>
-        <div style="text-align:center;">@Text.Modifier_Short</div>
-        <div>@(_activeCharacter.Stats.Any(s => s.Boost > 0) ? Text.Boost : "")</div>
+        <div >@Text.Score</div>
+        <div>@Text.Modifier</div>
         <div></div>
-        @foreach (var stat in _activeCharacter.Stats)
+        @foreach (var modifier in _activeCharacter.CalculateModifiers(_settings.ScoreModifiers))
         {
             <div class="stat">
-                <button class="left-button" @onclick="x => SelectStatForEditing(stat)" command="show-modal" commandfor="delete-stat">-</button>
-                <div>@stat.Name</div>
-                <div style="text-align:right;">@stat.Score</div>
-                <div style="text-align:center;">@($"+{stat.GetModifier(_settings.ScoreModifiers)}")</div>
-                <div>@(stat.Boost > 0 ? $"(+{stat.Boost})" : "")</div>
-                <button class="right-button" @onclick="x => SelectStatForEditing(stat)" command="show-modal" commandfor="edit-stat">⛭</button>
+                <button class="left-button" @onclick="x => SelectStatForEditing(modifier.Stat)" command="show-modal" commandfor="delete-stat">-</button>
+                <div>@modifier.Stat.Name</div>
+                <div>@modifier.Stat.Score</div>
+                <div>@modifier.CalculatedModifier</div>
+                <button class="right-button" @onclick="x => SelectStatForEditing(modifier.Stat)" command="show-modal" commandfor="edit-stat">⛭</button>
             </div>
         }
-        <button @onclick="x => AddNewStat()" command="show-modal" commandfor="edit-stat" style="grid-column:span 6;">@Text.NewStat</button>
+        <button @onclick="x => AddNewStat()" command="show-modal" commandfor="edit-stat" style="grid-column:span 5;">@Text.NewStat</button>
     </section>
     @if (_editStat is not null)
     {

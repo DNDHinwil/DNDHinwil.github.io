@@ -666,4 +666,34 @@
   <data name="NoBonuses" xml:space="preserve">
     <value>No Bonuses</value>
   </data>
+  <data name="CanBeUsedOnSelf" xml:space="preserve">
+    <value>Can be used on yourself</value>
+  </data>
+  <data name="Usable" xml:space="preserve">
+    <value>Usable</value>
+  </data>
+  <data name="Weight" xml:space="preserve">
+    <value>Weight</value>
+  </data>
+  <data name="Quantity" xml:space="preserve">
+    <value>Quantity</value>
+  </data>
+  <data name="DecreasesWithUse" xml:space="preserve">
+    <value>Decreases with use</value>
+  </data>
+  <data name="DropWhenEmpty" xml:space="preserve">
+    <value>Drop when empty</value>
+  </data>
+  <data name="NewEqupmentEffect" xml:space="preserve">
+    <value>New Equipment Effect</value>
+  </data>
+  <data name="Reduces" xml:space="preserve">
+    <value>Reduces</value>
+  </data>
+  <data name="Increases" xml:space="preserve">
+    <value>Increases</value>
+  </data>
+  <data name="Slot" xml:space="preserve">
+    <value>Slot</value>
+  </data>
 </root>

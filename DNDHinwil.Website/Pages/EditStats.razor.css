@@ -21,7 +21,7 @@ section {
 
 .stats {
 	display: grid;
-	grid-template-columns: 40px 90px 50px 50px auto 40px;
+	grid-template-columns: 40px 110px 70px auto 40px;
 }
 	.stats > button {
 		margin-top: 0.5rem;
@@ -37,15 +37,17 @@ section {
 }
 
 .stat {
-	grid-column: span 6;
+	grid-column: span 5;
 	display: grid;
-	grid-template-columns: 40px 100px 40px 50px auto 40px;
+	grid-template-columns: 40px 120px 80px auto 40px;
+	border-top: 1px dotted var(--color-foreground);
+	margin-bottom: 0.25rem;
 }
 	.stat > div {
-		padding-top: 0.875rem;
+		padding-top: 0.675rem;
 	}
 	.stat > button {
-		margin-top: 0.5rem;
+		margin-top: 0.25rem;
 		height: 32px;
 		width: 32px;
 	}

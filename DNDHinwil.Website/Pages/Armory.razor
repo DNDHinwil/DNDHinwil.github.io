@@ -1,5 +1,4 @@
 ﻿@page "/armory"
-@using System.Globalization
 @inject IDataService ContentService
 
 <PageTitle>@Constants.SiteName - @Text.Armory</PageTitle>
@@ -37,6 +36,23 @@
             <InputWithLabel Label="@Text.Name">
                 <InputText @bind-Value="_editGear.Name"></InputText>
             </InputWithLabel>
+            <InputWithLabel Label="@Text.Slot">
+                <InputSelect @bind-value="_editGear.Slot">
+                    @foreach (var gearSlot in Enum.GetValues<GearSlot>())
+                    {
+                        <option value="@gearSlot">@gearSlot.GetName()</option>
+                    }
+                </InputSelect>
+            </InputWithLabel>
+            <InputWithLabel Label="@Text.Description">
+                <InputText @bind-Value="_editGear.Description"></InputText>
+            </InputWithLabel>
+            <InputWithLabel Label="@Text.Weight">
+                <InputNumber @bind-Value="_editGear.Weight"></InputNumber>
+            </InputWithLabel>
+            <InputWithLabel Label="@Text.Armor">
+                <InputNumber @bind-Value="_editGear.Armor"></InputNumber>
+            </InputWithLabel>
             <div class="edit-gear-effects">
                 <h4 style="width:100%;grid-column:span 2;">@Text.Bonuses</h4>
                 @if (_editGear.Bonuses.Any())
@@ -69,13 +85,10 @@
     {
         <dialog id="edit-effect">
             <h3>@Text.Effect</h3>
-            <InputWithLabel Label="@Text.Strength">
-                <InputNumber @bind-Value="_editBonus.Strength"></InputNumber>
-            </InputWithLabel>
             <InputWithLabel Label="@Text.Outcome">
                 <InputSelect @bind-value="_editBonus.Outcome">
-                    <option value="@BonusOutcome.Reduces">@Text.Damage</option>
-                    <option value="@BonusOutcome.Increases">@Text.Heal</option>
+                    <option value="@BonusOutcome.Reduces">@Text.Reduces</option>
+                    <option value="@BonusOutcome.Increases">@Text.Increases</option>
                     <option value="@BonusOutcome.Special">@Text.Other</option>
                 </InputSelect>
             </InputWithLabel>
@@ -87,6 +100,9 @@
             }
             @if (_editBonus.Outcome is BonusOutcome.Increases or BonusOutcome.Reduces)
             {
+                <InputWithLabel Label="@Text.Strength">
+                    <InputNumber @bind-Value="_editBonus.Strength"></InputNumber>
+                </InputWithLabel>
                 <InputWithLabel Label="@Text.Target">
                     <InputSelect @bind-value="_editBonus.Target">
                         <option value="@BonusTarget.None">@Text.None</option>
@@ -132,7 +148,7 @@
         Text.Culture = newCulture;
     }
 
-    #region Library
+    #region Armory
     // C
     private void AddNewGear()
     {

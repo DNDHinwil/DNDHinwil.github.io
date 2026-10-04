@@ -16,23 +16,22 @@
         }
         else
         {
-            <div style="text-align:center;">@Text.ActiveSession @_activeSession.StartTime.ToString("dd/MM hh:mm")</div>
-            <button @onclick="async x => await EndSession()" style="width:100%;">@Text.EndSession</button>
+            <div style="width:100%;text-align:center;">@Text.ActiveSession @_activeSession.StartTime.ToString("dd/MM hh:mm")</div>
         }
     </section>
     @if (_selectedSession is not null && _selectedSession.Turns.Count > 2)
     {
-        <section>
+        <section class="turns">
             <h3>@Text.Turns</h3>
             <LineGraph Max="(_selectedSession.Turns.Max(t => t.Time!.Value.TotalMinutes) * 1.1d)"
                        Points="TurnsToLineGraphPoints(_selectedSession.Turns)"
-                       Marked="(_selectedSession.Turns.Max(t => t.Time!.Value.TotalMinutes) * 0.95d)"
+                       Marked="_settings.PreferredTurnLength.TotalMinutes"
                        Height="200"></LineGraph>
         </section>
     }
     @if (_sessions.Count > 1)
     {
-        <section>
+        <section class="past-sessions">
             <h3>@Text.PastSessions</h3>
             <InputSelect @bind-Value="_selectedSessionId" @onselect="async x => await SelectSession(_selectedSessionId)">
                 @foreach (var session in _sessions)
@@ -42,13 +41,6 @@
             </InputSelect>
         </section>
     }
-    <section>
-        <h3>@Text.Campaign</h3>
-        <button>@Text.StartCampaign</button>
-    </section>
-    <dialog id="start-campaign">
-
-    </dialog>
 </div>
 
 @code {

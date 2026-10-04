@@ -29,7 +29,7 @@
 
     <section class="player">
         <div class="stats">
-            <StatDisplay Stats="_activeCharacter.Stats" AbilityScores="_settings.ScoreModifiers"></StatDisplay>
+            <StatDisplay Modifiers="@_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></StatDisplay>
         </div>
         <div class="portrait">
             <div class="profile-image" style="grid-column:span 3;">
@@ -48,14 +48,14 @@
                 <div>@Text.HealthShort</div>
                 <div style="text-align:right;">@_activeCharacter.Health</div>
                 <span>/</span>
-                <div style="text-align:left;">@_activeCharacter.MaxHealth</div>
+                <div style="text-align:right;margin-right:0.125rem;">@_activeCharacter.MaxHealth</div>
                 <PercentageBar Max="@_activeCharacter.MaxHealth" Current="@_activeCharacter.Health" Color="red"></PercentageBar>
             </div>
             <div class="mana" style="grid-column:span 3;">
                 <div>@Text.ManaShort</div>
                 <div style="text-align:right;">@_activeCharacter.Mana</div>
                 <span>/</span>
-                <div style="text-align:left;">@_activeCharacter.MaxMana</div>
+                <div style="text-align:right;margin-right:0.125rem;">@_activeCharacter.MaxMana</div>
                 <PercentageBar Max="@_activeCharacter.MaxMana" Current="@_activeCharacter.Mana" Color="blue"></PercentageBar>
             </div>
         </div>
@@ -69,11 +69,20 @@
     <CollapsibleSection Title="@Text.Spellbook">
         @if (_activeCharacter.Spellbook.Any())
         {
+            var modifiers = _activeCharacter.CalculateModifiers(_settings.ScoreModifiers);
             @foreach (var spell in _activeCharacter.Spellbook)
             {
                 <div class="spell">
-                    <SpellOrAbility Model="spell" CharacterStats="_activeCharacter.Stats" AbilityScoreTable="_settings.ScoreModifiers"></SpellOrAbility>
-                    <button @onclick="async x => await UseSpell(spell)">@Text.Cast</button>
+                    <SpellOrAbility Model="spell" Modifiers="modifiers"></SpellOrAbility>
+                    @if (spell.CanBeUsedOnSelf)
+                    {
+                        <button @onclick="async x => await UseSpell(spell, true)">ᛗ</button>
+                    }
+                    else
+                    {
+                        <div></div>
+                    }
+                    <button @onclick="async x => await UseSpell(spell, false)">@Text.Cast</button>
                 </div>
             }
         }
@@ -92,10 +101,19 @@
                     <EquipmentItem Model="item"></EquipmentItem>
                     @if (item.Usable)
                     {
-                        <button @onclick="async x => await UseEquipment(item)">@Text.Use</button>
+                        @if (item.CanBeUsedOnSelf)
+                        {
+                            <button @onclick="async x => await UseEquipment(item, true)">☥</button>
+                        }
+                        else
+                        {
+                            <div></div>
+                        }
+                        <button @onclick="async x => await UseEquipment(item, false)">@Text.Use</button>
                     }
                     else
                     {
+                        <div></div>
                         <div></div>
                     }
                 </div>
@@ -148,13 +166,13 @@
                     }
                     @switch (effect.Duration)
                     {
-                        case ActiveEffect.EffectDuration.Turns:
+                        case EffectDuration.Turns:
                             <div style="text-align:center;">@effect.Turns @Text.Turns</div>
                             break;
-                        case ActiveEffect.EffectDuration.UntilHealed:
+                        case EffectDuration.UntilHealed:
                             <div style="text-align:center;">🩸</div>
                             break;
-                        case ActiveEffect.EffectDuration.UntilRemoved:
+                        case EffectDuration.UntilRemoved:
                             <div style="text-align:center;">∞</div>
                             break;
                     }
@@ -188,12 +206,12 @@
             </InputWithLabel>
             <InputWithLabel Label="@Text.Duration">
                 <InputSelect @bind-value="_editEffect.Duration">
-                    <option value="@ActiveEffect.EffectDuration.Turns">@Text.Turns</option>
-                    <option value="@ActiveEffect.EffectDuration.UntilHealed">@Text.UntilHealed</option>
-                    <option value="@ActiveEffect.EffectDuration.UntilRemoved">@Text.UntilRemoved</option>
+                    <option value="@EffectDuration.Turns">@Text.Turns</option>
+                    <option value="@EffectDuration.UntilHealed">@Text.UntilHealed</option>
+                    <option value="@EffectDuration.UntilRemoved">@Text.UntilRemoved</option>
                 </InputSelect>
             </InputWithLabel>
-            @if (_editEffect.Duration is ActiveEffect.EffectDuration.Turns)
+            @if (_editEffect.Duration is EffectDuration.Turns)
             {
                 <InputWithLabel Label="@Text.Turns">
                     <InputNumber @bind-Value="_editEffect.Turns"></InputNumber>
@@ -232,7 +250,6 @@
             <InputSelect @bind-value="_quickEffect.Target">
                 <option value="@EffectTarget.Health">@Text.Health</option>
                 <option value="@EffectTarget.Mana">@Text.Mana</option>
-                <option value="@EffectTarget.Special">@Text.None</option>
                 <option value="@EffectTarget.HealthAndMana">@Text.HealthShort & @Text.ManaShort</option>
             </InputSelect>
         </InputWithLabel>
@@ -250,7 +267,6 @@
                 <option value="@EffectTarget.Health">@Text.Health</option>
                 <option value="@EffectTarget.Mana">@Text.Mana</option>
                 <option value="@EffectTarget.HealthAndMana">@Text.HealthShort & @Text.ManaShort</option>
-                <option value="@EffectTarget.Special">@Text.None</option>
             </InputSelect>
         </InputWithLabel>
         <button popovertarget="take-damage" popovertargetaction="hide">@Text.Cancel</button>
@@ -260,7 +276,7 @@
 
 @code {
     private Settings _settings = new Settings();
-    private Session _activeSession;
+    private Session _activeSession = new Session();
     private Character _activeCharacter = new Character();
     private ActiveEffect? _editEffect;
     private UpCountingTimer? _timer;
@@ -327,26 +343,26 @@
         await ContentService.SaveSession(_activeSession);
 
         await ContentService.SaveCharacter(_activeCharacter);
-        _activeCharacter.ActiveEffects.RemoveAll(x => x.Duration is ActiveEffect.EffectDuration.Turns && x.Turns < 1);
+        _activeCharacter.ActiveEffects.RemoveAll(x => x.Duration is EffectDuration.Turns && x.Turns < 1);
     }
 
-    private async Task UseSpell(Spell spell)
+    private async Task UseSpell(Spell spell, bool useOnYourself)
     {
         if (spell.ManaCost > _activeCharacter.Mana)
         {
             await ContentService.MakeAlert(Text.NotEnoughMana);
             return;
         }
-        await _activeCharacter.UseSpell(spell);
+        await _activeCharacter.UseSpell(spell, useOnYourself);
         await ContentService.SaveCharacter(_activeCharacter);
 
         _activeSession.SpellCasts.Add(new() { CharacterId = _activeCharacter.Id, SpellId = spell.Id });
         await ContentService.SaveSession(_activeSession);
     }
 
-    private async Task UseEquipment(Equipment equipment)
+    private async Task UseEquipment(Equipment equipment, bool useOnYourself)
     {
-        await _activeCharacter.UseEquipment(equipment);
+        await _activeCharacter.UseEquipment(equipment, useOnYourself);
         await ContentService.SaveCharacter(_activeCharacter);
     }
 

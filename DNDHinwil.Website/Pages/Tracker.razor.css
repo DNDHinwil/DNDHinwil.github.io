@@ -59,7 +59,7 @@ header {
 
 .health, .mana {
 	display: grid;
-	grid-template-columns: 20px 30px min-content 30px auto;
+	grid-template-columns: 20px 40px min-content 40px auto;
 }
 
 .action-button {
@@ -75,13 +75,13 @@ header {
 
 .spell {
 	display: grid;
-	grid-template-columns: auto 60px;
+	grid-template-columns: auto 60px 60px;
 	border-top: 1px dotted var(--color-foreground);
 }
 
 .equipment-item {
 	display: grid;
-	grid-template-columns: auto 60px;
+	grid-template-columns: auto 60px 60px;
 	border-top: 1px dotted var(--color-foreground);
 }
 	.spell > button,

@@ -27,12 +27,14 @@ button {
 	display: grid;
 	grid-template-columns: 1fr 40px;
 	border-top: 1px dotted var(--color-foreground);
+	margin-top: 0.25rem;
 }
 
 .armory-gear {
 	display: grid;
 	grid-template-columns: 40px auto 40px 40px;
 	border-top: 1px dotted var(--color-foreground);
+	margin-top: 0.25rem;
 }
 
 	.character-gear > button,
