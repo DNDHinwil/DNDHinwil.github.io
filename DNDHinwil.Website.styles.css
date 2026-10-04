@@ -6,9 +6,14 @@
 	margin-left: 0.5rem;
 }
 
+.weight[b-618e2hwvvj] {
+	padding-top: 0.25rem;
+	text-align: right;
+}
+
 .equipment-item[b-618e2hwvvj] {
 	display: grid;
-	grid-template-columns: max-content auto;
+	grid-template-columns: max-content auto 60px;
 }
 
 .equipment-effect[b-618e2hwvvj] {
@@ -18,11 +23,11 @@
 /* /Components/GearItem.razor.rz.scp.css */
 .gear-item[b-fjuljd0fq1] {
 	display: grid;
-	grid-template-columns: auto max-content 24px 16px;
+	grid-template-columns: 150px auto 50px;
 }
 
 .gear-label[b-fjuljd0fq1] {
-	padding-top: 0.125rem;
+	padding-top: 0.25rem;
 }
 .gear-bonus[b-fjuljd0fq1] {
 	margin-left: 0.5rem;
@@ -395,12 +400,14 @@ button[b-p08nch7hwf] {
 	display: grid;
 	grid-template-columns: 1fr 40px;
 	border-top: 1px dotted var(--color-foreground);
+	margin-top: 0.25rem;
 }
 
 .armory-gear[b-p08nch7hwf] {
 	display: grid;
 	grid-template-columns: 40px auto 40px 40px;
 	border-top: 1px dotted var(--color-foreground);
+	margin-top: 0.25rem;
 }
 
 	.character-gear > button[b-p08nch7hwf],
@@ -422,108 +429,47 @@ button[b-p08nch7hwf] {
 .gear-effect[b-p08nch7hwf] {
 	padding-top: 0.75rem;
 }
-/* /Pages/CampaignSelection.razor.rz.scp.css */
+/* /Pages/CharacterSelection.razor.rz.scp.css */
 
-.title[b-t8oshn4j5y] {
+header[b-wciicapdkn] {
 	display: grid;
 	grid-template-columns: auto min-content;
+	padding: 0.5rem;
 }
 
-	.title > h2[b-t8oshn4j5y] {
+	header > h2[b-wciicapdkn] {
 		font-size: 1.5rem;
 		margin: 0;
 	}
 
-.timer-controls[b-t8oshn4j5y] {
-	display: grid;
-	grid-template-columns: auto auto;
+button[b-wciicapdkn] {
+	padding: 0.125rem 0;
+	height: 32px;
 }
 
-	.timer-controls > button[b-t8oshn4j5y] {
-		margin-left: auto;
-		margin-right: auto;
-		border-radius: 1rem;
-		height: 30px;
-		width: 120px;
-	}
-
-.player[b-t8oshn4j5y] {
-	display: grid;
-	grid-template-columns: max-content min-content auto min-content 32px min-content 32px;
-}
-	.player > h3[b-t8oshn4j5y] {
-		padding-top: 0.25rem;
-		margin-right: 0.25rem;
-		text-decoration: underline var(--color-primary);
-	}
-	.player > label[b-t8oshn4j5y] {
-		margin: 0;
-		font-size: 1rem;
-	}
-
-.actions[b-t8oshn4j5y] {
-	display: grid;
-	grid-template-columns: auto auto;
+.right-button[b-wciicapdkn] {
+	margin-left: 0.5rem;
 }
 
-	.actions > button[b-t8oshn4j5y] {
-		margin-left: auto;
-		margin-right: auto;
-		border-radius: 1rem;
-		height: 30px;
-		width: 120px;
-	}
-
-.active-effects[b-t8oshn4j5y] {
-	display: grid;
-	grid-template-columns: 30px auto 90px 75px 35px;
+.left-button[b-wciicapdkn] {
+	margin-right: 0.5rem;
 }
 
-	.active-effects > button[b-t8oshn4j5y] {
-		width: 100%;
-		display: block;
-	}
-
-	.active-effects > h4[b-t8oshn4j5y] {
-		text-align: center;
-		text-decoration: underline var(--color-primary);
-	}
-	.active-effects > div[b-t8oshn4j5y] {
-		padding-top: 0.875rem;
-		margin: 0 0.25rem;
-	}
-
-.edit-active-effect[b-t8oshn4j5y] {
-}
-	.edit-active-effect > h3[b-t8oshn4j5y] {
-	}
-
-	.edit-active-effect > button[b-t8oshn4j5y] {
-		display: inline-block;
-		width: 100px;
-		margin: 0.5rem auto 0.25rem auto;
-	}
-/* /Pages/CharacterSelection.razor.rz.scp.css */
 .character[b-wciicapdkn] {
+	padding: 0.5rem;
 	display: grid;
-	grid-template-columns: max-content max-content min-content auto min-content min-content;
+	grid-template-columns: 40px max-content min-content auto 40px 40px;
 }
 
 	.character :nth-child(2)[b-wciicapdkn] {
 		margin-right: 0.5rem;
 	}
 	.character :nth-child(3)[b-wciicapdkn], .character :nth-child(4)[b-wciicapdkn] {
-		padding-top: 1rem;
-	}
-
-	.character > button[b-wciicapdkn] {
-		margin-left: 0.25rem;
-		margin-right: 0.25rem;
-		text-align: center;
+		padding-top: 0.5rem;
 	}
 
 	.character > div[b-wciicapdkn] {
-		padding-top: 0.75rem;
+		padding-top: 0.25rem;
 	}
 
 	.character.active :nth-child(2)[b-wciicapdkn] {
@@ -535,7 +481,38 @@ button[b-p08nch7hwf] {
 			content: " ✔";
 		}
 
+.create-new[b-wciicapdkn] {
+	padding: 0.5rem;
+}
 /* /Pages/EditSettings.razor.rz.scp.css */
+header[b-6t63es5wh7] {
+	display: grid;
+	grid-template-columns: auto min-content;
+	padding: 0.5rem;
+}
+
+	header > h2[b-6t63es5wh7] {
+		font-size: 1.5rem;
+		margin: 0;
+	}
+
+button[b-6t63es5wh7] {
+	padding: 0.125rem 0;
+	height: 32px;
+}
+
+.right-button[b-6t63es5wh7] {
+	margin-left: 0.5rem;
+}
+
+.left-button[b-6t63es5wh7] {
+	margin-right: 0.5rem;
+}
+
+section[b-6t63es5wh7] {
+	padding: 0.5rem;
+}
+
 .settings > button[b-6t63es5wh7] {
 	margin-top: 0.5rem;
 }
@@ -600,7 +577,7 @@ section[b-seb96asjuv] {
 
 .stats[b-seb96asjuv] {
 	display: grid;
-	grid-template-columns: 40px 90px 50px 50px auto 40px;
+	grid-template-columns: 40px 110px 70px auto 40px;
 }
 	.stats > button[b-seb96asjuv] {
 		margin-top: 0.5rem;
@@ -616,18 +593,97 @@ section[b-seb96asjuv] {
 }
 
 .stat[b-seb96asjuv] {
-	grid-column: span 6;
+	grid-column: span 5;
 	display: grid;
-	grid-template-columns: 40px 100px 40px 50px auto 40px;
+	grid-template-columns: 40px 120px 80px auto 40px;
+	border-top: 1px dotted var(--color-foreground);
+	margin-bottom: 0.25rem;
 }
 	.stat > div[b-seb96asjuv] {
-		padding-top: 0.875rem;
+		padding-top: 0.675rem;
 	}
 	.stat > button[b-seb96asjuv] {
-		margin-top: 0.5rem;
+		margin-top: 0.25rem;
 		height: 32px;
 		width: 32px;
 	}
+/* /Pages/EquipmentChest.razor.rz.scp.css */
+
+header[b-mlfjfescgw] {
+	display: grid;
+	grid-template-columns: auto min-content;
+	padding: 0.5rem;
+}
+
+	header > h2[b-mlfjfescgw] {
+		font-size: 1.5rem;
+		margin: 0;
+	}
+
+button[b-mlfjfescgw] {
+	padding: 0.125rem 0;
+	height: 32px;
+}
+
+.right-button[b-mlfjfescgw] {
+	margin-left: 0.5rem;
+}
+
+.left-button[b-mlfjfescgw] {
+	margin-right: 0.5rem;
+}
+
+.inventory-item[b-mlfjfescgw] {
+	display: grid;
+	grid-template-columns: 1fr 40px;
+	border-top: 1px dotted var(--color-foreground);
+}
+
+.equipment-chest-item[b-mlfjfescgw] {
+	display: grid;
+	grid-template-columns: 40px auto 40px 40px;
+	border-top: 1px dotted var(--color-foreground);
+}
+
+	.inventory-item > button[b-mlfjfescgw],
+	.equipment-chest-item > button[b-mlfjfescgw] {
+		margin-top: 0.25rem;
+	}
+
+.edit-equipment > button[b-mlfjfescgw] {
+	width: 80px;
+	margin: 0.5rem 0;
+}
+
+.equipment-effect[b-mlfjfescgw] {
+	margin-top: 0.25rem;
+	padding-top: 0.25rem;
+	border-top: 1px dotted var(--color-foreground);
+	display: grid;
+	grid-template-columns: 50px auto 50px;
+}
+
+.effect-text[b-mlfjfescgw] {
+	padding-top: 0.5rem;
+}
+/* /Pages/SessionOverview.razor.rz.scp.css */
+
+header[b-bvcnn3jp5k] {
+	display: grid;
+	grid-template-columns: auto min-content;
+	padding: 0.5rem;
+}
+
+	header > h2[b-bvcnn3jp5k] {
+		font-size: 1.5rem;
+		margin: 0;
+	}
+
+.active-session[b-bvcnn3jp5k], .turns[b-bvcnn3jp5k] {
+	padding: 0.5rem;
+	display: grid;
+	grid-template-columns: auto;
+}
 /* /Pages/SpellLibrary.razor.rz.scp.css */
 
 header[b-7o5kvrkihh] {
@@ -657,14 +713,16 @@ button[b-7o5kvrkihh] {
 	display: grid;
 	grid-template-columns: 1fr 40px;
 	border-top: 1px dotted var(--color-foreground);
+	margin-top: 0.25rem;
 }
 
 .library-spell[b-7o5kvrkihh] {
 	display: grid;
 	grid-template-columns: 40px auto 40px 40px;
 	border-top: 1px dotted var(--color-foreground);
+	margin-top: 0.25rem;
 }
-	.library-spell > button[b-7o5kvrkihh],
+	.spellbook-spell > button[b-7o5kvrkihh],
 	.library-spell > button[b-7o5kvrkihh] {
 		margin-top: 0.25rem;
 	}
@@ -745,7 +803,7 @@ header[b-v6gsu6n763] {
 
 .health[b-v6gsu6n763], .mana[b-v6gsu6n763] {
 	display: grid;
-	grid-template-columns: 20px 30px min-content 30px auto;
+	grid-template-columns: 20px 40px min-content 40px auto;
 }
 
 .action-button[b-v6gsu6n763] {
@@ -761,13 +819,13 @@ header[b-v6gsu6n763] {
 
 .spell[b-v6gsu6n763] {
 	display: grid;
-	grid-template-columns: auto 60px;
+	grid-template-columns: auto 60px 60px;
 	border-top: 1px dotted var(--color-foreground);
 }
 
 .equipment-item[b-v6gsu6n763] {
 	display: grid;
-	grid-template-columns: auto 60px;
+	grid-template-columns: auto 60px 60px;
 	border-top: 1px dotted var(--color-foreground);
 }
 	.spell > button[b-v6gsu6n763],

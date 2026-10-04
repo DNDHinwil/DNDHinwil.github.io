@@ -1,8 +1,8 @@
 self.assetsManifest = {
-  "version": "7IxP86ky",
+  "version": "5biMMlKU",
   "assets": [
     {
-      "hash": "sha256-d1IDoaPAlvrj23U0OEFHWZ4cMO7zVAdnVE/TKc7+0gk=",
+      "hash": "sha256-+2GJER6T29SD5HwBWbw2ZBtGymVaZjuB6n9wh/1xQAo=",
       "url": "404.html"
     },
     {
@@ -10,7 +10,7 @@ self.assetsManifest = {
       "url": "CNAME"
     },
     {
-      "hash": "sha256-Fnf3RiRYsEHtTzgpIG9LdKUuKHf+qum/AwDmQ7vmgpY=",
+      "hash": "sha256-A897V2Kquty8TLxpwZtrk4m4V9CcfbZt+ZUAX507VVQ=",
       "url": "DNDHinwil.Website.styles.css"
     },
     {
@@ -30,8 +30,8 @@ self.assetsManifest = {
       "url": "_framework/Codespirals.Blazor.Components.2g6ckaa5sj.wasm"
     },
     {
-      "hash": "sha256-D58eXlU7308sEyaArN3vJG7Jqg4nARHzEWzKjZmdC98=",
-      "url": "_framework/DNDHinwil.Website.z3osm8ko2b.wasm"
+      "hash": "sha256-XdGgeBJw/QSB9eHSv5HJbD02bnhOiyqTCZBcCyEgFkU=",
+      "url": "_framework/DNDHinwil.Website.7bxs3xhy65.wasm"
     },
     {
       "hash": "sha256-KPfBDdTsdA1UJa39MMwHDmeTAj43EMBfmy0J8wNBcuo=",
@@ -278,12 +278,12 @@ self.assetsManifest = {
       "url": "_framework/blazor.webassembly.w3qd1tpl0e.js"
     },
     {
-      "hash": "sha256-q2mCEYxSe6qpjr8j6PSmsdelh4xa98o8IfHIc5C5TOo=",
-      "url": "_framework/de/DNDHinwil.Website.resources.pjxi8tgmcy.wasm"
+      "hash": "sha256-ExlfSuwVhIAzZ0fmS9vtYHFxGglgK/A4g9wz+kDCPqA=",
+      "url": "_framework/de/DNDHinwil.Website.resources.7jihpevsjq.wasm"
     },
     {
-      "hash": "sha256-6CgntHdW4XvjLQ9yITcndpFisOd8qv4wqB3KKfG8Ru8=",
-      "url": "_framework/dotnet.kl5fdkhsts.js"
+      "hash": "sha256-z6KOWqU4voGl7uPJ/U47TVInraXGNXas2VqULS49Cuk=",
+      "url": "_framework/dotnet.9en3wpymve.js"
     },
     {
       "hash": "sha256-jZddobLBM2C3lQhYQ61xSQJ/WqD3eQCO3RzoHGaOjx0=",
@@ -314,11 +314,11 @@ self.assetsManifest = {
       "url": "_framework/netstandard.7ykmpdo3fn.wasm"
     },
     {
-      "hash": "sha256-hcRuh7EICQ+1pn1M0WBZ8j+fKw0yzfeboPDbhJxd72w=",
+      "hash": "sha256-DOglnRnIeHBnI2izTucpquC4ZBXTVwzR7yATMUnUIio=",
       "url": "css/app.css"
     },
     {
-      "hash": "sha256-dXJj2mNbSZOJKjCU+KjGqARFQoXx3XVRlHlOyxNLFuw=",
+      "hash": "sha256-r8ml828ocnk4nhQnY05gtwoV7g9VSQhZT1At0GM+3LI=",
       "url": "index.html"
     },
     {
