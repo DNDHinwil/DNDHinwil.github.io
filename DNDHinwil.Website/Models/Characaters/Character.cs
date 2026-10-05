@@ -42,7 +42,7 @@ public class Character
     {
         var gearDamageReduction = _equippedGear.Sum(g =>
         {
-            static int affectsDamageReduction(GearBonus b) => b.Target == BonusTarget.DamageReduction ? b.Strength : 0;
+            static int affectsDamageReduction(PassiveEffect b) => b.Target == BonusTarget.DamageReduction ? b.Strength : 0;
             return g.Bonuses.Sum(affectsDamageReduction);
         });
 

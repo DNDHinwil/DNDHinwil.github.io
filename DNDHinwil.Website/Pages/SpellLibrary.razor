@@ -14,7 +14,7 @@
         {
             <div class="spellbook-spell">
                 <SpellOrAbility Model="spell" Modifiers="modifiers" MeleeRange="_settings.MeleeRange"></SpellOrAbility>
-                <button class="right-button" @onclick="async x => await RemoveSpellFromSpellbook(spell)">-</button>
+                <button class="right-button" @onclick="async x => await RemoveSpellFromSpellbook(spell)">@Constants.Symbol_RemoveFromInventory</button>
             </div>
         }
     </CollapsibleSection>
@@ -23,10 +23,10 @@
         @foreach (var spell in _spellLibrary.Reverse<Spell>())
         {
             <div class="library-spell">
-                <button class="left-button" command="show-modal" commandfor="delete-spell" @onclick="x => StartEditingSpell(spell)">-</button>
+                <button class="left-button" command="show-modal" commandfor="delete-spell" @onclick="x => StartEditingSpell(spell)">@Constants.Symbol_Delete</button>
                 <SpellOrAbility Model="spell" MeleeRange="_settings.MeleeRange"></SpellOrAbility>
-                <button class="right-button" command="show-modal" commandfor="edit-spell" @onclick="x => StartEditingSpell(spell)">⛭</button>
-                <button class="right-button" @onclick="async x => await AddSpellToSpellbook(spell)">📖</button>
+                <button class="right-button" command="show-modal" commandfor="edit-spell" @onclick="x => StartEditingSpell(spell)">@Constants.Symbol_Edit</button>
+                <button class="right-button" @onclick="async x => await AddSpellToSpellbook(spell)">@Constants.Symbol_AddToInventory</button>
             </div>
         }
         <button command="show-modal" commandfor="edit-spell" @onclick="x => AddNewSpell()" style="width:100%;height:32px;margin-top:0.5rem;">@Text.NewSpell</button>

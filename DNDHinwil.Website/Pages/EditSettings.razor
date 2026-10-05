@@ -26,13 +26,18 @@
                 }
             </InputSelect>
         </InputWithLabel>
-        <button @onclick="async x => await SaveSettings()" style="width:100%;">@Text.Save</button>
     </section>
     <section>
         <h3>@Text.GameSettings</h3>
         <InputWithLabel Label="@Text.MeleeRange">
             <InputNumber @bind-value="_settings.MeleeRange"></InputNumber>
         </InputWithLabel>
+        <InputWithLabel Label="@Text.TimerMarkedTime">
+            <InputNumber @bind-value="_settings.PreferredTurnLengthInMinutes"></InputNumber>
+        </InputWithLabel>
+    </section>
+    <section>
+        <button @onclick="async x => await SaveSettings()" style="width:100%;">@Text.Save</button>
     </section>
     <section class="export">
         <h3 style="grid-column:span 2;">@Text.Export</h3>

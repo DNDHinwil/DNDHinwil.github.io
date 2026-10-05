@@ -10,19 +10,6 @@ header {
 		margin: 0;
 	}
 
-.timer-controls {
-	display: grid;
-	grid-template-columns: auto auto;
-}
-
-	.timer-controls > button {
-		margin-left: auto;
-		margin-right: auto;
-		border-radius: 1rem;
-		height: 32px;
-		width: 120px;
-	}
-
 .player {
 	padding: 0.5rem;
 	display: grid;
@@ -31,41 +18,70 @@ header {
 
 .stats {
 	grid-row: span 3;
-	margin-right: 1rem;
+	margin-right: 0.5rem;
 }
 
 .portrait {
+	display: grid;
+	grid-template-columns: 40px auto;
+}
+
+.name {
 	display: grid;
 	grid-template-columns: max-content 30px auto;
 	margin-top: 0.5rem;
 }
 
+.image-and-turn-buttons {
+	display: grid;
+	grid-template-columns: auto max-content;
+	grid-template-rows: 60px;
+}
+
 .profile-image {
+	grid-row: span 2;
 	height: 100px;
 	aspect-ratio: 1;
 	overflow: hidden;
 	border-radius: 50%;
 	border: 4px solid var(--color-primary);
-	margin: 0 auto;
+	margin-right: auto;
 }
 	.profile-image > img {
 		width: 100%;
 		margin: 0 auto;
 	}
 
+.turn-button {
+	height: 32px;
+	width: 80px;
+}
+
 .level {
 	padding-top: 0.375rem;
 }
 
+.rest-button {
+	grid-row: span 2;
+	margin: 0.25rem 0.5rem 0.25rem 0;
+}
+
 .health, .mana {
 	display: grid;
-	grid-template-columns: 20px 40px min-content 40px auto;
+	grid-template-columns: 20px 32px min-content 32px auto;
+}
+
+.quick-actions {
+	display: grid;
+	grid-template-columns: auto 40px;
+}
+.quick-actions > div {
+	margin-top: 1.5rem;
 }
 
 .action-button {
-	width: 100%;
-	margin-top: 2rem;
 	height: 32px;
+	margin: 1rem 0 0 0.5rem;
 }
 
 .spellbook {
@@ -75,13 +91,13 @@ header {
 
 .spell {
 	display: grid;
-	grid-template-columns: auto 60px 60px;
+	grid-template-columns: auto 40px 40px;
 	border-top: 1px dotted var(--color-foreground);
 }
 
 .equipment-item {
 	display: grid;
-	grid-template-columns: auto 60px 60px;
+	grid-template-columns: auto 40px 40px;
 	border-top: 1px dotted var(--color-foreground);
 }
 	.spell > button,
@@ -92,13 +108,17 @@ header {
 
 .active-effect {
 	display: grid;
-	grid-template-columns: 30px auto 90px 75px 35px;
+	grid-template-columns: 40px auto 90px 75px 40px;
 	border-top: 1px dotted var(--color-foreground);
 }
 
 	.active-effect > div {
-		padding-top: 0.875rem;
+		padding-top: 0.75rem;
 		margin: 0 0.25rem;
+	}
+	.active-effect > button {
+		height: 32px;
+		margin-top: 0.5rem;
 	}
 
 .edit-active-effect > button {
@@ -108,3 +128,6 @@ header {
 	height: 32px;
 }
 
+dialog > h4 {
+	margin-bottom: 0.5rem;
+}

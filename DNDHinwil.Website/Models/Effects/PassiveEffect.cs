@@ -2,7 +2,7 @@
 
 namespace DNDHinwil.Website.Models;
 
-public class GearBonus : IEffect<BonusTarget, BonusOutcome>
+public class PassiveEffect : IEffect<BonusTarget, BonusOutcome>
 {
     public string Id { get; set; } = Guid.NewGuid().ToString();
     public BonusTarget Target { get; set; } = BonusTarget.None;

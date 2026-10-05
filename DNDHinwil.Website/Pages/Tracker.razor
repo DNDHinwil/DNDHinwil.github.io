@@ -11,47 +11,54 @@
         <TimerOutput Model="_timer"></TimerOutput>
     </header>
 
-    <section class="timer-controls">
-        <button @onclick="async x => await EndTurn()" class="timer-button">@Text.EndTurn</button>
-        @if (_timer is not null && !_timer.TimerRunning)
-        {
-            <button class="timer-button" @onclick="async x => await StartTurn()">@Text.StartTurn</button>
-        }
-        else if (_timer is not null && _timer.Paused)
-        {
-            <button class="timer-button" @onclick="x => _timer.UnpauseTimer()">@Text.Unpause</button>
-        }
-        else if (_timer is not null)
-        {
-            <button class="timer-button" @onclick="x => _timer.PauseTimer()">@Text.Pause</button>
-        }
-    </section>
-
     <section class="player">
         <div class="stats">
             <StatDisplay Modifiers="@_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></StatDisplay>
         </div>
         <div class="portrait">
-            <div class="profile-image" style="grid-column:span 3;">
-                <img src="@_activeCharacter.ImageUrl" />
+            <div class="image-and-turn-buttons" style="grid-column:span 2;">
+                <div class="profile-image">
+                    <img src="@_activeCharacter.ImageUrl" />
+                </div>
+                <button @onclick="async x => await EndTurn()" class="turn-button">@Text.EndTurn</button>
+                @if (_timer is not null && !_timer.TimerRunning)
+                {
+                    <button class="turn-button" @onclick="async x => await StartTurn()">@Text.StartTurn</button>
+                }
+                else if (_timer is not null && _timer.Paused)
+                {
+                    <button class="turn-button" @onclick="x => _timer.UnpauseTimer()">@Text.Unpause</button>
+                }
+                else if (_timer is not null)
+                {
+                    <button class="turn-button" @onclick="x => _timer.PauseTimer()">@Text.Pause</button>
+                }
             </div>
-            <h3>@_activeCharacter.Name</h3>
-            <div class="level" style="text-align:right;">@Text.Level_Short</div>
-            <div class="level" style="text-align:left;">@_activeCharacter.GetLevel(_settings.LevelThresholds)</div>
-            <div style="grid-column:span 3;margin-bottom:0.125rem;">
+
+            <div class="name" style="grid-column:span 2;">
+                <h3>@_activeCharacter.Name</h3>
+                <div class="level" style="text-align:right;">@Text.Level_Short</div>
+                <div class="level" style="text-align:left;">@_activeCharacter.GetLevel(_settings.LevelThresholds)</div>
+            </div>
+
+            <div style="margin-bottom:0.125rem;grid-column:span 2;">
                 <PercentageBar Max="_experienceToNextLevel.Required"
                                Current="_experienceToNextLevel.Current"
                                Color="#f4d855"
                                Height="5"></PercentageBar>
             </div>
-            <div class="health" style="grid-column:span 3;">
+
+            <button class="left-button rest-button" popovertargetaction="show" popovertarget="take-rest">⛺</button>
+
+            <div class="health">
                 <div>@Text.HealthShort</div>
                 <div style="text-align:right;">@_activeCharacter.Health</div>
                 <span>/</span>
                 <div style="text-align:right;margin-right:0.125rem;">@_activeCharacter.MaxHealth</div>
                 <PercentageBar Max="@_activeCharacter.MaxHealth" Current="@_activeCharacter.Health" Color="red"></PercentageBar>
             </div>
-            <div class="mana" style="grid-column:span 3;">
+
+            <div class="mana">
                 <div>@Text.ManaShort</div>
                 <div style="text-align:right;">@_activeCharacter.Mana</div>
                 <span>/</span>
@@ -59,96 +66,22 @@
                 <PercentageBar Max="@_activeCharacter.MaxMana" Current="@_activeCharacter.Mana" Color="blue"></PercentageBar>
             </div>
         </div>
-        <div>
-            <button class="action-button" popovertargetaction="show" popovertarget="take-rest">@Text.Rest</button>
-            <button class="action-button" popovertarget="take-heal">@Text.TakeHealing</button>
-            <button class="action-button" popovertarget="take-damage">@Text.TakeDamage</button>
+        <div class="quick-actions">
+            <div>@Text.TakeHealing</div>
+            <button class="action-button" popovertarget="take-heal">✚</button>
+            <div>@Text.TakeDamage</div>
+            <button class="action-button" popovertarget="take-damage">⚡</button>
         </div>
     </section>
 
-    <CollapsibleSection Title="@Text.Spellbook">
-        @if (_activeCharacter.Spellbook.Any())
-        {
-            var modifiers = _activeCharacter.CalculateModifiers(_settings.ScoreModifiers);
-            @foreach (var spell in _activeCharacter.Spellbook)
-            {
-                <div class="spell">
-                    <SpellOrAbility Model="spell" Modifiers="modifiers"></SpellOrAbility>
-                    @if (spell.CanBeUsedOnSelf)
-                    {
-                        <button @onclick="async x => await UseSpell(spell, true)">ᛗ</button>
-                    }
-                    else
-                    {
-                        <div></div>
-                    }
-                    <button @onclick="async x => await UseSpell(spell, false)">@Text.Cast</button>
-                </div>
-            }
-        }
-        else
-        {
-            <div>@Text.NoSpellsInSpellbook</div>
-        }
-    </CollapsibleSection>
-
-    <CollapsibleSection Title="@Text.Inventory">
-        @if (_activeCharacter.Inventory.Any())
-        {
-            @foreach (var item in _activeCharacter.Inventory)
-            {
-                <div class="equipment-item">
-                    <EquipmentItem Model="item"></EquipmentItem>
-                    @if (item.Usable)
-                    {
-                        @if (item.CanBeUsedOnSelf)
-                        {
-                            <button @onclick="async x => await UseEquipment(item, true)">☥</button>
-                        }
-                        else
-                        {
-                            <div></div>
-                        }
-                        <button @onclick="async x => await UseEquipment(item, false)">@Text.Use</button>
-                    }
-                    else
-                    {
-                        <div></div>
-                        <div></div>
-                    }
-                </div>
-            }
-        }
-        else
-        {
-            <div>@Text.NoEquipmentInInventory</div>
-        }
-    </CollapsibleSection>
-
-    <CollapsibleSection Title="@Text.Gear">
-        @if (_activeCharacter.Gear.Where(g => g.IsEquipped).Any())
-        {
-            @foreach (var item in _activeCharacter.Gear.Where(g => g.IsEquipped))
-            {
-                <div class="equipment-item">
-                    <GearItem Model="item"></GearItem>
-                    <div></div>
-                </div>
-            }
-        }
-        else
-        {
-            <div>@Text.NoGearEquipped</div>
-        }
-    </CollapsibleSection>
-
+    
     <CollapsibleSection Title="@Text.ActiveEffects">
         @if (_activeCharacter.ActiveEffects.Any())
         {
             @foreach (var effect in _activeCharacter.ActiveEffects)
             {
                 <div class="active-effect">
-                    <button class="active-effect-button" @onclick="x => RemoveEffect(effect)">-</button>
+                    <button class="left-button" @onclick="x => RemoveEffect(effect)">-</button>
                     <div>@effect.Name</div>
                     @switch (effect.Outcome)
                     {
@@ -176,7 +109,7 @@
                             <div style="text-align:center;">∞</div>
                             break;
                     }
-                    <button @onclick="x => StartEditingEffect(effect)" command="show-modal" commandfor="edit-active-effect">⛭</button>
+                    <button class="right-button" @onclick="x => StartEditingEffect(effect)" command="show-modal" commandfor="edit-active-effect">⛭</button>
                 </div>
             }
         }
@@ -184,7 +117,91 @@
         {
             <div>@Text.NoTriggeredEffects</div>
         }
-        <button @onclick="x => AddNewEffect()" style="width:100%;margin-top:0.25rem;height:32px;" command="show-modal" commandfor="edit-active-effect">@Text.NewTriggeredEffect</button>
+        <button @onclick="x => AddNewEffect()" style="width:100%;margin-top:0.5rem;height:32px;" command="show-modal" commandfor="edit-active-effect">@Text.NewTriggeredEffect</button>
+    </CollapsibleSection>
+
+    <CollapsibleSection Title="@Text.Spellbook">
+        @if (_activeCharacter.Spellbook.Any())
+        {
+            var modifiers = _activeCharacter.CalculateModifiers(_settings.ScoreModifiers);
+            @foreach (var spell in _activeCharacter.Spellbook)
+            {
+                <div class="spell">
+                    <SpellOrAbility Model="spell" Modifiers="modifiers"></SpellOrAbility>
+                    @if (spell.CanBeUsedOnSelf)
+                    {
+                        <button @onclick="async x => await UseSpell(spell, true)">@Constants.Symbol_UseOnSelf</button>
+                    }
+                    else
+                    {
+                        <div></div>
+                    }
+                    <button @onclick="async x => await UseSpell(spell, false)">@Constants.Symbol_Use</button>
+                </div>
+            }
+        }
+        else
+        {
+            <div>@Text.NoSpellsInSpellbook</div>
+        }
+    </CollapsibleSection>
+
+    <CollapsibleSection Title="@Text.Inventory">
+        @if (_activeCharacter.Inventory.Any())
+        {
+            @foreach (var item in _activeCharacter.Inventory)
+            {
+                <div class="equipment-item">
+                    <EquipmentItem Model="item"></EquipmentItem>
+                    @if (item.Usable)
+                    {
+                        @if (item.CanBeUsedOnSelf)
+                        {
+                            <button @onclick="async x => await UseEquipment(item, true)">@Constants.Symbol_UseOnSelf</button>
+                        }
+                        else
+                        {
+                            <div></div>
+                        }
+                        <button @onclick="async x => await UseEquipment(item, false)">@Constants.Symbol_Use</button>
+                    }
+                    else
+                    {
+                        <div></div>
+                        <div></div>
+                    }
+                </div>
+            }
+        }
+        else
+        {
+            <div>@Text.NoEquipmentInInventory</div>
+        }
+    </CollapsibleSection>
+
+    <CollapsibleSection Title="@Text.Gear">
+        @if (_activeCharacter.Gear.Where(g => g.IsEquipped).Any())
+        {
+            @foreach (var item in _activeCharacter.Gear.Where(g => g.IsEquipped))
+            {
+                <div class="equipment-item">
+                    <GearItem Model="item"></GearItem>
+                    @if (item.Usable)
+                    {
+                        
+                    }
+                    else
+                    {
+                        <div></div>
+                        <div></div>
+                    }
+                </div>
+            }
+        }
+        else
+        {
+            <div>@Text.NoGearEquipped</div>
+        }
     </CollapsibleSection>
 
     @if (_editEffect is not null)
@@ -238,7 +255,7 @@
     <dialog id="take-rest" popover>
         <h4>@Text.Rest</h4>
         <button popovertarget="take-rest" popovertargetaction="hide">@Text.Cancel</button>
-        <button popovertarget="take-rest" popovertargetaction="hide" @onclick="async x => await Rest()">@Text.OK</button>
+        <button style="float:right;" popovertarget="take-rest" popovertargetaction="hide" @onclick="async x => await Rest()">@Text.OK</button>
     </dialog>
 
     <dialog id="take-heal" popover>
@@ -254,7 +271,7 @@
             </InputSelect>
         </InputWithLabel>
         <button popovertarget="take-heal" popovertargetaction="hide">@Text.Cancel</button>
-        <button popovertarget="take-heal" popovertargetaction="hide" @onclick="async x => await HealUp(_quickEffect)">@Text.OK</button>
+        <button style="float:right;" popovertarget="take-heal" popovertargetaction="hide" @onclick="async x => await HealUp(_quickEffect)">@Text.OK</button>
     </dialog>
 
     <dialog id="take-damage" popover>
@@ -270,7 +287,7 @@
             </InputSelect>
         </InputWithLabel>
         <button popovertarget="take-damage" popovertargetaction="hide">@Text.Cancel</button>
-        <button popovertarget="take-damage" popovertargetaction="hide" @onclick="async x => await TakeDamage(_quickEffect)">@Text.OK</button>
+        <button style="float:right;" popovertarget="take-damage" popovertargetaction="hide" @onclick="async x => await TakeDamage(_quickEffect)">@Text.OK</button>
     </dialog>
 </div>
 

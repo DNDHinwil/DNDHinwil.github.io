@@ -11,4 +11,10 @@ public static class Constants
     public const string ArmoryKey = $"{BaseKey}_Armory";
     public const string SpellbookKey = $"{BaseKey}_Spellbook";
     public const string SettingsKey = $"{BaseKey}_Settings";
+    public const string Symbol_Use = "🢧";
+    public const string Symbol_UseOnSelf = "⭯";
+    public const string Symbol_AddToInventory = "⨣";
+    public const string Symbol_RemoveFromInventory = "⤼";
+    public const string Symbol_Edit = "⛭";
+    public const string Symbol_Delete = "⨺";
 }

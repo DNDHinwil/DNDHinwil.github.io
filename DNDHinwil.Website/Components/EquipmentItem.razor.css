@@ -10,7 +10,7 @@
 
 .equipment-item {
 	display: grid;
-	grid-template-columns: max-content auto 60px;
+	grid-template-columns: max-content auto max-content;
 }
 
 .equipment-effect {

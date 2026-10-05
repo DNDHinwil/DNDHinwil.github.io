@@ -1609,6 +1609,15 @@ namespace DNDHinwil.Website.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Marked Time in Minutes.
+        /// </summary>
+        public static string TimerMarkedTime {
+            get {
+                return ResourceManager.GetString("TimerMarkedTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to to.
         /// </summary>
         public static string To {

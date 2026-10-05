@@ -696,4 +696,7 @@
   <data name="Slot" xml:space="preserve">
     <value>Slot</value>
   </data>
+  <data name="TimerMarkedTime" xml:space="preserve">
+    <value>Marked Time in Minutes</value>
+  </data>
 </root>

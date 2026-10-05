@@ -14,16 +14,8 @@ button {
 	height: 32px;
 }
 
-.right-button {
-	margin-left: 0.5rem;
-}
-
-.left-button {
-	margin-right: 0.5rem;
-}
-
 section {
-	padding: 0.5rem;
+	padding: 0.25rem 0.5rem;
 }
 
 .settings > button {

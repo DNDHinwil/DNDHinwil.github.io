@@ -15,14 +15,6 @@ button {
 	height: 32px;
 }
 
-.right-button {
-	margin-left: 0.5rem;
-}
-
-.left-button {
-	margin-right: 0.5rem;
-}
-
 .character {
 	padding: 0.5rem;
 	display: grid;
