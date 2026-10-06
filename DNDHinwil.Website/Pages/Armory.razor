@@ -20,7 +20,7 @@
         @foreach (var item in _armory.Reverse<Gear>())
         {
             <div class="armory-gear">
-                <button class="left-button" command="show-modal" commandfor="delete-gear" @onclick="x => StartEditingGear(item)">@Constants.Symbol_Delete</button>
+                <button class="left-button" command="show-modal" commandfor="delete-gear" @onclick="x => StartEditingGear(item)">@Constants.Symbol_RemoveFromInventory</button>
                 <GearItem Model="item"></GearItem>
                 <button class="right-button" command="show-modal" commandfor="edit-gear" @onclick="x => StartEditingGear(item)">@Constants.Symbol_Edit</button>
                 <button class="right-button" @onclick="async x => await AddGearToCharacter(item)">@Constants.Symbol_AddToInventory</button>

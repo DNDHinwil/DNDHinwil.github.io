@@ -42,8 +42,6 @@ public class SpellEffect : Effect
             case EffectTarget.HealthAndMana:
                 target = $" {Text.To} {Text.HealthShort} & {Text.ManaShort}";
                 break;
-            case EffectTarget.Special:
-                return SpecialText ?? "";
             default:
                 break;
         }
@@ -73,8 +71,7 @@ public class SpellEffect : Effect
                 outcome = Text.ReducedDamage;
                 break;
             case EffectOutcome.Special:
-                outcome = SpecialText ?? "";
-                break;
+                return SpecialText ?? "";
             default:
                 break;
         }
@@ -88,7 +85,6 @@ public class SpellEffect : Effect
             case EffectTarget.Mana:
                 target = $" {Text.To} {Text.ManaShort}";
                 break;
-            case EffectTarget.Special:
             default:
                 break;
         }

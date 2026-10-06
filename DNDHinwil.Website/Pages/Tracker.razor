@@ -48,7 +48,7 @@
                                Height="5"></PercentageBar>
             </div>
 
-            <button class="left-button rest-button" popovertargetaction="show" popovertarget="take-rest">⛺</button>
+            <button class="left-button rest-button" popovertargetaction="show" popovertarget="take-rest">@Constants.Symbol_Rest</button>
 
             <div class="health">
                 <div>@Text.HealthShort</div>
@@ -68,9 +68,9 @@
         </div>
         <div class="quick-actions">
             <div>@Text.TakeHealing</div>
-            <button class="action-button" popovertarget="take-heal">✚</button>
+            <button class="action-button" popovertarget="take-heal">@Constants.Symbol_Heal</button>
             <div>@Text.TakeDamage</div>
-            <button class="action-button" popovertarget="take-damage">⚡</button>
+            <button class="action-button" popovertarget="take-damage">@Constants.Symbol_Damage</button>
         </div>
     </section>
 
@@ -81,7 +81,7 @@
             @foreach (var effect in _activeCharacter.ActiveEffects)
             {
                 <div class="active-effect">
-                    <button class="left-button" @onclick="x => RemoveEffect(effect)">-</button>
+                    <button class="left-button" @onclick="x => RemoveEffect(effect)">@Constants.Symbol_Delete</button>
                     <div>@effect.Name</div>
                     @switch (effect.Outcome)
                     {
@@ -103,13 +103,13 @@
                             <div style="text-align:center;">@effect.Turns @Text.Turns</div>
                             break;
                         case EffectDuration.UntilHealed:
-                            <div style="text-align:center;">🩸</div>
+                            <div style="text-align:center;">@Constants.Symbol_UntilHealed</div>
                             break;
                         case EffectDuration.UntilRemoved:
-                            <div style="text-align:center;">∞</div>
+                            <div style="text-align:center;">@Constants.Symbol_UntilRemoved</div>
                             break;
                     }
-                    <button class="right-button" @onclick="x => StartEditingEffect(effect)" command="show-modal" commandfor="edit-active-effect">⛭</button>
+                    <button class="right-button" @onclick="x => StartEditingEffect(effect)" command="show-modal" commandfor="edit-active-effect">@Constants.Symbol_Edit</button>
                 </div>
             }
         }
@@ -240,7 +240,7 @@
                     <InputSelect @bind-value="_editEffect.Target">
                         <option value="@EffectTarget.Health">@Text.Health</option>
                         <option value="@EffectTarget.Mana">@Text.Mana</option>
-                        <option value="@EffectTarget.Special">@Text.Special</option>
+                        <option value="@EffectTarget.HealthAndMana">@Text.HealthShort & @Text.ManaShort</option>
                     </InputSelect>
                 </InputWithLabel>
             }

@@ -87,7 +87,7 @@
     public void AddNewStat()
     {
         var stat = new Stat();
-        stat.Name = $"{Text.Effect} {_activeCharacter.ActiveEffects.Count}";
+        stat.Name = $"{Text.Stat} {_activeCharacter.ActiveEffects.Count}";
         SelectStatForEditing(stat);
     }
     public void SelectStatForEditing(Stat stat)

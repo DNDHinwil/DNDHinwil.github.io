@@ -12,7 +12,7 @@
         @foreach (var character in _characters)
         {
             <div class="character @(character.Id == _settings.ActiveCharacter ? "active" : "")">
-                <button class="left-button" @onclick="async x => await SelectCharacterForEditing(character)" command="show-modal" commandfor="delete-character" style="font-size:0.5rem;">@Constants.Symbol_Delete</button>
+                <button class="left-button" @onclick="async x => await SelectCharacterForEditing(character)" command="show-modal" commandfor="delete-character">@Constants.Symbol_Delete</button>
                 <div style="font-size:1.25rem;">@character.Name</div>
                 <div style="text-align:right;">@Text.Level_Short</div>
                 <div style="text-align:left;">@character.GetLevel(_settings.LevelThresholds)</div>

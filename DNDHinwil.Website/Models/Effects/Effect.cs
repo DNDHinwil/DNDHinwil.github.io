@@ -43,8 +43,6 @@ public class Effect : IEffect<EffectTarget, EffectOutcome>
             case EffectTarget.HealthAndMana:
                 target = $" {Text.To} {Text.HealthShort} & {Text.ManaShort}";
                 break;
-            case EffectTarget.Special:
-                return SpecialText ?? "";
             default:
                 break;
         }

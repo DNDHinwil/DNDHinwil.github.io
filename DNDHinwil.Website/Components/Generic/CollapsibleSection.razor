@@ -2,7 +2,7 @@
 
 <section>
     <h3>@Title</h3>
-    <button @onclick="x => IsCollapsed = !IsCollapsed" type="button" class="collapsible">@(IsCollapsed ? "☰" : "^")</button>
+    <button @onclick="x => IsCollapsed = !IsCollapsed" type="button" class="collapsible">@(IsCollapsed ? "☰" : "▲")</button>
     <div class="collapsible-section-content @_isCollapsed">
         @ChildContent
     </div>
