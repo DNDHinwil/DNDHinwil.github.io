@@ -89,8 +89,8 @@ public class SpellEffect : Effect
                 break;
         }
 
-        return NumberOfDice < 1 ? $"{Strength} +{modifier.CalculatedModifier} ({modifier.Stat.Short}) {outcome}{target}"
-            : UseStrengthAsBonusPower ? $"{NumberOfDice}{Text.D}{DiceType} +{Strength} +{modifier.CalculatedModifier} ({modifier.Stat.Short}) {outcome}{target}"
-            : $"{NumberOfDice}{Text.D}{DiceType} +{modifier.CalculatedModifier} ({modifier.Stat.Short}) {outcome}{target}";
+        return NumberOfDice < 1 ? $"{Strength} +{modifier.TotalValue} ({modifier.Stat.Short}) {outcome}{target}"
+            : UseStrengthAsBonusPower ? $"{NumberOfDice}{Text.D}{DiceType} +{Strength} +{modifier.TotalValue} ({modifier.Stat.Short}) {outcome}{target}"
+            : $"{NumberOfDice}{Text.D}{DiceType} +{modifier.TotalValue} ({modifier.Stat.Short}) {outcome}{target}";
     }
 }

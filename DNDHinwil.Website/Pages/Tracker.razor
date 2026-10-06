@@ -68,9 +68,9 @@
         </div>
         <div class="quick-actions">
             <div>@Text.TakeHealing</div>
-            <button class="action-button" popovertarget="take-heal">@Constants.Symbol_Heal</button>
+            <button class="action-button" popovertarget="quick-effect" @onclick="x => StartQuickEffect(false)">@Constants.Symbol_Heal</button>
             <div>@Text.TakeDamage</div>
-            <button class="action-button" popovertarget="take-damage">@Constants.Symbol_Damage</button>
+            <button class="action-button" popovertarget="quick-effect" @onclick="x => StartQuickEffect(true)">@Constants.Symbol_Damage</button>
         </div>
     </section>
 
@@ -204,40 +204,40 @@
         }
     </CollapsibleSection>
 
-    @if (_editEffect is not null)
+    @if (_editActiveEffect is not null)
     {
         <dialog id="edit-active-effect" class="edit-active-effect">
             <h3>@Text.Effect</h3>
             <InputWithLabel Label="@Text.Name">
-                <InputText @bind-Value="_editEffect.Name"></InputText>
+                <InputText @bind-Value="_editActiveEffect.Name"></InputText>
             </InputWithLabel>
             <InputWithLabel Label="@Text.Strength">
-                <InputNumber @bind-Value="_editEffect.Strength"></InputNumber>
+                <InputNumber @bind-Value="_editActiveEffect.Strength"></InputNumber>
             </InputWithLabel>
             <InputWithLabel Label="@Text.Outcome">
-                <InputSelect @bind-value="_editEffect.Outcome">
+                <InputSelect @bind-value="_editActiveEffect.Outcome">
                     <option value="@EffectOutcome.DealsDamage">@Text.Damage</option>
                     <option value="@EffectOutcome.Heals">@Text.Heal</option>
                     <option value="@EffectOutcome.Special">@Text.Other</option>
                 </InputSelect>
             </InputWithLabel>
             <InputWithLabel Label="@Text.Duration">
-                <InputSelect @bind-value="_editEffect.Duration">
+                <InputSelect @bind-value="_editActiveEffect.Duration">
                     <option value="@EffectDuration.Turns">@Text.Turns</option>
                     <option value="@EffectDuration.UntilHealed">@Text.UntilHealed</option>
                     <option value="@EffectDuration.UntilRemoved">@Text.UntilRemoved</option>
                 </InputSelect>
             </InputWithLabel>
-            @if (_editEffect.Duration is EffectDuration.Turns)
+            @if (_editActiveEffect.Duration is EffectDuration.Turns)
             {
                 <InputWithLabel Label="@Text.Turns">
-                    <InputNumber @bind-Value="_editEffect.Turns"></InputNumber>
+                    <InputNumber @bind-Value="_editActiveEffect.Turns"></InputNumber>
                 </InputWithLabel>
             }
-            @if (_editEffect.Outcome is EffectOutcome.DealsDamage or EffectOutcome.Heals)
+            @if (_editActiveEffect.Outcome is EffectOutcome.DealsDamage or EffectOutcome.Heals)
             {
                 <InputWithLabel Label="@Text.Target">
-                    <InputSelect @bind-value="_editEffect.Target">
+                    <InputSelect @bind-value="_editActiveEffect.Target">
                         <option value="@EffectTarget.Health">@Text.Health</option>
                         <option value="@EffectTarget.Mana">@Text.Mana</option>
                         <option value="@EffectTarget.HealthAndMana">@Text.HealthShort & @Text.ManaShort</option>
@@ -245,10 +245,29 @@
                 </InputWithLabel>
             }
             <InputWithLabel Label="@Text.TriggersAtEndOfTurn">
-                <InputCheckbox @bind-Value="_editEffect.TriggersAtEnd"></InputCheckbox>
+                <InputCheckbox @bind-Value="_editActiveEffect.TriggersAtEnd"></InputCheckbox>
             </InputWithLabel>
             <button @onclick="x => FinishEditingEffect(false)" command="close" commandfor="edit-active-effect">@Text.Cancel</button>
             <button @onclick="x => FinishEditingEffect(true)" command="close" commandfor="edit-active-effect" style="float:right;">@Text.Save</button>
+        </dialog>
+    }
+
+    @if (_quickEffect is not null)
+    {
+        <dialog id="quick-effect" popover>
+            <h4>@(_quickEffect.Outcome == EffectOutcome.DealsDamage ? Text.Damage : Text.Heal)</h4>
+            <InputWithLabel Label="@(_quickEffect.Outcome == EffectOutcome.DealsDamage ? Text.DamageFor : Text.HealFor)">
+                <InputNumber @bind-Value="_quickEffect.Strength"></InputNumber>
+            </InputWithLabel>
+            <InputWithLabel Label="@Text.To">
+                <InputSelect @bind-value="_quickEffect.Target">
+                    <option value="@EffectTarget.Health">@Text.Health</option>
+                    <option value="@EffectTarget.Mana">@Text.Mana</option>
+                    <option value="@EffectTarget.HealthAndMana">@Text.HealthShort & @Text.ManaShort</option>
+                </InputSelect>
+            </InputWithLabel>
+            <button popovertarget="quick-effect" popovertargetaction="hide">@Text.Cancel</button>
+            <button style="float:right;" popovertarget="quick-effect" popovertargetaction="hide" @onclick="async x => await ExecuteQuickEffect()">@Text.OK</button>
         </dialog>
     }
 
@@ -257,50 +276,19 @@
         <button popovertarget="take-rest" popovertargetaction="hide">@Text.Cancel</button>
         <button style="float:right;" popovertarget="take-rest" popovertargetaction="hide" @onclick="async x => await Rest()">@Text.OK</button>
     </dialog>
-
-    <dialog id="take-heal" popover>
-        <h4>@Text.Heal</h4>
-        <InputWithLabel Label="@Text.TakeHealing">
-            <InputNumber @bind-Value="_quickEffect.Strength"></InputNumber>
-        </InputWithLabel>
-        <InputWithLabel Label="@Text.Target">
-            <InputSelect @bind-value="_quickEffect.Target">
-                <option value="@EffectTarget.Health">@Text.Health</option>
-                <option value="@EffectTarget.Mana">@Text.Mana</option>
-                <option value="@EffectTarget.HealthAndMana">@Text.HealthShort & @Text.ManaShort</option>
-            </InputSelect>
-        </InputWithLabel>
-        <button popovertarget="take-heal" popovertargetaction="hide">@Text.Cancel</button>
-        <button style="float:right;" popovertarget="take-heal" popovertargetaction="hide" @onclick="async x => await HealUp(_quickEffect)">@Text.OK</button>
-    </dialog>
-
-    <dialog id="take-damage" popover>
-        <h4>@Text.Damage</h4>
-        <InputWithLabel Label="@Text.TakeDamage">
-            <InputNumber @bind-Value="_quickEffect.Strength"></InputNumber>
-        </InputWithLabel>
-        <InputWithLabel Label="@Text.Target">
-            <InputSelect @bind-value="_quickEffect.Target">
-                <option value="@EffectTarget.Health">@Text.Health</option>
-                <option value="@EffectTarget.Mana">@Text.Mana</option>
-                <option value="@EffectTarget.HealthAndMana">@Text.HealthShort & @Text.ManaShort</option>
-            </InputSelect>
-        </InputWithLabel>
-        <button popovertarget="take-damage" popovertargetaction="hide">@Text.Cancel</button>
-        <button style="float:right;" popovertarget="take-damage" popovertargetaction="hide" @onclick="async x => await TakeDamage(_quickEffect)">@Text.OK</button>
-    </dialog>
 </div>
 
 @code {
     private Settings _settings = new Settings();
-    private Session _activeSession = new Session();
     private Character _activeCharacter = new Character();
-    private ActiveEffect? _editEffect;
-    private UpCountingTimer? _timer;
-    private Turn? _activeTurn;
     private (int Current, int Required) _experienceToNextLevel = (0, 300);
 
-    private Effect _quickEffect = new Effect();
+    private Session? _activeSession;
+    private UpCountingTimer? _timer;
+    private Turn? _activeTurn;
+
+    private ActiveEffect? _editActiveEffect;
+    private Effect? _quickEffect;
 
     protected override void OnInitialized()
     {
@@ -327,15 +315,19 @@
         Text.Culture = newCulture;
     }
 
-    public async Task StartTurn()
+    private void UpdateUi(object? state)
+    {
+        StateHasChanged();
+    }
+
+    private async Task StartTurn()
     {
         if (_activeSession is null)
         {  
             _activeSession = new();
             await ContentService.SaveSession(_activeSession);
         }
-        if (_timer is null)
-            _timer = new UpCountingTimer(UpdateUi);
+        _timer ??= new UpCountingTimer(UpdateUi);
 
         _activeTurn = new Turn() { Character = _activeCharacter };
         _activeSession.Turns.Add(_activeTurn);
@@ -347,7 +339,7 @@
         await ContentService.SaveCharacter(_activeCharacter);
     }
 
-    public async Task EndTurn()
+    private async Task EndTurn()
     {
         if (_activeSession is null || _timer is null || _activeTurn is null)
             return;
@@ -359,8 +351,8 @@
         _activeTurn = null;
         await ContentService.SaveSession(_activeSession);
 
-        await ContentService.SaveCharacter(_activeCharacter);
         _activeCharacter.ActiveEffects.RemoveAll(x => x.Duration is EffectDuration.Turns && x.Turns < 1);
+        await ContentService.SaveCharacter(_activeCharacter);
     }
 
     private async Task UseSpell(Spell spell, bool useOnYourself)
@@ -373,13 +365,14 @@
         await _activeCharacter.UseSpell(spell, useOnYourself);
         await ContentService.SaveCharacter(_activeCharacter);
 
+        _activeSession ??= new Session();
         _activeSession.SpellCasts.Add(new() { CharacterId = _activeCharacter.Id, SpellId = spell.Id });
         await ContentService.SaveSession(_activeSession);
     }
 
     private async Task UseEquipment(Equipment equipment, bool useOnYourself)
     {
-        await _activeCharacter.UseEquipment(equipment, useOnYourself);
+        await _activeCharacter.UseEquipmentItem(equipment, useOnYourself);
         await ContentService.SaveCharacter(_activeCharacter);
     }
 
@@ -389,24 +382,30 @@
         await ContentService.SaveCharacter(_activeCharacter);
     }
 
-    public async Task Rest()
+    private async Task Rest()
     {
         await _activeCharacter.Rest();
         await ContentService.SaveCharacter(_activeCharacter);
     }
 
-    public async Task HealUp(Effect effect)
+    #region Quick Effect
+    private void StartQuickEffect(bool isDamaging)
+        => _quickEffect = new Effect()
+            {
+                Outcome = isDamaging ? EffectOutcome.DealsDamage : EffectOutcome.Heals
+            };
+
+    private async Task ExecuteQuickEffect()
     {
-        await _activeCharacter.Heal(effect);
+        if (_quickEffect is null)
+            return;
+        await _activeCharacter.UseQuickEffect(_quickEffect);
+        _quickEffect = null;
         await ContentService.SaveCharacter(_activeCharacter);
     }
+    #endregion
 
-    public async Task TakeDamage(Effect effect)
-    {
-        await _activeCharacter.TakeDamage(effect);
-        await ContentService.SaveCharacter(_activeCharacter);
-    }
-
+    #region Active Effects
     private void AddNewEffect()
     {
         var effect = new ActiveEffect();
@@ -415,21 +414,21 @@
     }
 
     private void StartEditingEffect(ActiveEffect effect)
-        => _editEffect = effect;
+        => _editActiveEffect = effect;
 
     private async Task FinishEditingEffect(bool save)
     {
-        if (_editEffect is null)
+        if (_editActiveEffect is null)
             return;
-        if (!save || _activeCharacter.ActiveEffects.Any(e => e.Id == _editEffect.Id))
+        if (!save || _activeCharacter.ActiveEffects.Any(e => e.Id == _editActiveEffect.Id))
         {
-            _editEffect = null;
+            _editActiveEffect = null;
             return;
         }
-        _activeCharacter.ActiveEffects.Add(_editEffect);
+        _activeCharacter.ActiveEffects.Add(_editActiveEffect);
 
+        _editActiveEffect = null;
         await ContentService.SaveCharacter(_activeCharacter);
-        _editEffect = null;
     }
 
     private async Task RemoveEffect(ActiveEffect effect)
@@ -437,9 +436,5 @@
         _activeCharacter.ActiveEffects.Remove(effect);
         await ContentService.SaveCharacter(_activeCharacter);
     }
-
-    private void UpdateUi(object? state)
-    {
-        StateHasChanged();
-    }
+    #endregion
 }

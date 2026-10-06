@@ -36,7 +36,7 @@
                 <button class="left-button" @onclick="x => SelectStatForEditing(modifier.Stat)" command="show-modal" commandfor="delete-stat">@Constants.Symbol_Delete</button>
                 <div>@modifier.Stat.Name</div>
                 <div>@modifier.Stat.Score</div>
-                <div>@modifier.CalculatedModifier</div>
+                <div>@modifier.TotalValue</div>
                 <button class="right-button" @onclick="x => SelectStatForEditing(modifier.Stat)" command="show-modal" commandfor="edit-stat">@Constants.Symbol_Edit</button>
             </div>
         }

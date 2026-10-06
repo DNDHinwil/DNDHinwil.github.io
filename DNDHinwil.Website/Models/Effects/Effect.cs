@@ -10,7 +10,6 @@ public class Effect : IEffect<EffectTarget, EffectOutcome>
     public EffectOutcome Outcome { get; set; } = EffectOutcome.DealsDamage;
     public string? SpecialText { get; set; }
 
-
     public override string ToString()
     {
         var outcome = "";

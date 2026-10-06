@@ -246,9 +246,6 @@
   <data name="Test" xml:space="preserve">
     <value>Test</value>
   </data>
-  <data name="TakeDamage" xml:space="preserve">
-    <value>Nimm Schaden</value>
-  </data>
   <data name="TakeHealing" xml:space="preserve">
     <value>Heile Dich</value>
   </data>
@@ -698,5 +695,14 @@
   </data>
   <data name="TimerMarkedTime" xml:space="preserve">
     <value>Markierte Zeit in Minuten</value>
+  </data>
+  <data name="HealFor" xml:space="preserve">
+    <value>Heile für</value>
+  </data>
+  <data name="DamageFor" xml:space="preserve">
+    <value>Nimm Schaden</value>
+  </data>
+  <data name="TakeDamage" xml:space="preserve">
+    <value>Nimm Schaden</value>
   </data>
 </root>

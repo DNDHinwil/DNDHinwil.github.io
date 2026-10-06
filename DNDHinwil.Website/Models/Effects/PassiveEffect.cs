@@ -42,7 +42,7 @@ public class PassiveEffect : IEffect<BonusTarget, BonusOutcome>
             case BonusTarget.Mana:
                 target = $"{Strength} {Text.Mana}";
                 break;
-            case BonusTarget.DamageReduction:
+            case BonusTarget.IncomingDamage:
                 target = $"{Strength} {Text.ReducedDamage}";
                 break;
             default:

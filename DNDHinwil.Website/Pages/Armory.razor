@@ -12,7 +12,7 @@
         {
             <div class="character-gear">
                 <GearItem Model="item"></GearItem>
-                <button class="right-button" @onclick="async x => await RemoveGearFromCharacter(item)">@Constants.Symbol_Delete</button>
+                <button class="right-button" @onclick="async x => await RemoveGearFromCharacter(item)">@Constants.Symbol_RemoveFromInventory</button>
             </div>
         }
     </CollapsibleSection>
@@ -109,7 +109,7 @@
                         <option value="@BonusTarget.Health">@Text.Health</option>
                         <option value="@BonusTarget.Mana">@Text.Mana</option>
                         <option value="@BonusTarget.Stat">@Text.Stat</option>
-                        <option value="@BonusTarget.DamageReduction">@Text.ReducedDamage</option>
+                        <option value="@BonusTarget.IncomingDamage">@Text.ReducedDamage</option>
                     </InputSelect>
                 </InputWithLabel>
             }

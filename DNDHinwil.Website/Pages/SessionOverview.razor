@@ -16,7 +16,7 @@
         }
         else
         {
-            <div style="width:100%;text-align:center;">@Text.ActiveSession @_activeSession.StartTime.ToString("dd/MM hh:mm")</div>
+            <div style="width:100%;text-align:center;">@Text.ActiveSession @_activeSession.StartTime.ToLocalTime().ToString("dd/MM hh:mm")</div>
         }
     </section>
     @if (_selectedSession is not null && _selectedSession.Turns.Count > 2)

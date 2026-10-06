@@ -448,6 +448,15 @@ namespace DNDHinwil.Website.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Damage for.
+        /// </summary>
+        public static string DamageFor {
+            get {
+                return ResourceManager.GetString("DamageFor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Decreases with use.
         /// </summary>
         public static string DecreasesWithUse {
@@ -840,6 +849,15 @@ namespace DNDHinwil.Website.Resources {
         public static string Heal {
             get {
                 return ResourceManager.GetString("Heal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Heal for.
+        /// </summary>
+        public static string HealFor {
+            get {
+                return ResourceManager.GetString("HealFor", resourceCulture);
             }
         }
         
