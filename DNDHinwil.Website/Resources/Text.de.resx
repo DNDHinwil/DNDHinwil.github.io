@@ -133,7 +133,7 @@
     <value>Beende den Zug</value>
   </data>
   <data name="Heal" xml:space="preserve">
-    <value>Heilung</value>
+    <value>Heile</value>
   </data>
   <data name="Heals" xml:space="preserve">
     <value>Heilt</value>
@@ -704,5 +704,8 @@
   </data>
   <data name="TakeDamage" xml:space="preserve">
     <value>Nimm Schaden</value>
+  </data>
+  <data name="PictureUrl" xml:space="preserve">
+    <value>Bild url</value>
   </data>
 </root>

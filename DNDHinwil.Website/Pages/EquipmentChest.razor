@@ -61,21 +61,21 @@
             }
             <div class="edit-equipment-effects">
                 <h4 style="width:100%;">@Text.Bonuses</h4>
-                <div class="equipment-effect">
-                    @if (_editEquipment.Effects.Any())
+                @if (_editEquipment.Effects.Any())
+                {
+                    @foreach (var effect in _editEquipment.Effects)
                     {
-                        @foreach (var effect in _editEquipment.Effects)
-                        {
-                            <button class="left-button" @onclick="x => RemoveEffect(effect)">-</button>
+                        <div class="equipment-effect">
+                            <button class="left-button" @onclick="x => RemoveEffect(effect)">@Constants.Symbol_Delete</button>
                             <div class="effect-text">@effect.ToString()</div>
-                            <button class="right-button" @onclick="x => StartEditingEffect(effect)" command="show-modal" commandfor="edit-effect">⛭</button>
-                        }
+                            <button class="right-button" @onclick="x => StartEditingEffect(effect)" command="show-modal" commandfor="edit-effect">@Constants.Symbol_Edit</button>
+                        </div>
                     }
-                    else
-                    {
-                        <div style="width:100%;grid-column:span 3;">@Text.NoBonuses</div>
-                    }
-                </div>
+                }
+                else
+                {
+                    <div style="width:100%;grid-column:span 3;">@Text.NoBonuses</div>
+                }
                 <button @onclick="x => AddNewEffect()" command="show-modal" commandfor="edit-effect" style="width:100%;margin-top:0.5rem;">@Text.NewEqupmentEffect</button>
             </div>
             <button @onclick="x => FinishEditingEqiupment(false)" command="close" commandfor="edit-equipment">@Text.Cancel</button>

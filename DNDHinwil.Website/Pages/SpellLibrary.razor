@@ -54,14 +54,16 @@
                 {
                     @foreach (var effect in _editSpell.Effects)
                     {
-                        <div class="spell-effect">@effect.ToString()</div>
-                        <button @onclick="x => StartEditingEffect(effect)" command="show-modal" commandfor="edit-effect">⛭</button>
+                        <div class="spell-effect">
+                            <button class="left-button" @onclick="x => RemoveEffect(effect)">@Constants.Symbol_Delete</button>
+                            <div class="effect-text">@effect.ToString()</div>
+                            <button class="right-button" @onclick="x => StartEditingEffect(effect)" command="show-modal" commandfor="edit-effect">@Constants.Symbol_Edit</button>
+                        </div>
                     }
                 }
                 else
                 {
                     <div class="spell-effect">@Text.NoEffects</div>
-                    <div class="spell-effect"></div>
                 }
                 <button @onclick="x => AddNewEffect()" command="show-modal" commandfor="edit-effect" style="width:100%;grid-column:span 2;margin-top:0.5rem;">@Text.NewSpellEffect</button>
             </div>
@@ -69,6 +71,7 @@
             <button @onclick="x => FinishEditingSpell(true)" command="close" commandfor="edit-spell" style="float:right;">@Text.Save</button>
         </dialog>
     }
+
     <dialog id="delete-spell">
         <h3>@Text.RemoveSpellFromLibrary</h3>
         <label>@Text.AreYouSure</label>

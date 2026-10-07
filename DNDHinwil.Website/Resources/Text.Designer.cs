@@ -1312,6 +1312,15 @@ namespace DNDHinwil.Website.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Picture url.
+        /// </summary>
+        public static string PictureUrl {
+            get {
+                return ResourceManager.GetString("PictureUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Player.
         /// </summary>
         public static string Player {
@@ -1591,7 +1600,7 @@ namespace DNDHinwil.Website.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Heal Up.
+        ///   Looks up a localized string similar to Heal Yourself.
         /// </summary>
         public static string TakeHealing {
             get {

@@ -33,6 +33,9 @@
             <InputWithLabel Label="@Text.Name">
                 <InputText @bind-Value="_characterToEdit.Name"></InputText>
             </InputWithLabel>
+            <InputWithLabel Label="@Text.PictureUrl">
+                <InputText @bind-Value="_characterToEdit.ImageUrl"></InputText>
+            </InputWithLabel>
             <button @onclick="async x => await FinishEditingCharacter(false)" command="close" commandfor="edit-character">@Text.Cancel</button>
             <button @onclick="async x => await FinishEditingCharacter(true)" command="close" commandfor="edit-character" style="float:right;">@Text.OK</button>
         </dialog>

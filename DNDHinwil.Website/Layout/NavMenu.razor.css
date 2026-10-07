@@ -8,11 +8,10 @@
 	width: 2rem;
 	padding: 0 0.25rem;
 	background-color: var(--color-foreground);
-	border: 2px solid var(--color-background);
+	border-color: var(--color-foreground-muted);
 }
 	.navbar-toggler:hover {
-		color: var(--color-primary-shade);
-		border-color: var(--color-primary-shade);
+		border-color: var(--color-primary);
 	}
 
 .line {

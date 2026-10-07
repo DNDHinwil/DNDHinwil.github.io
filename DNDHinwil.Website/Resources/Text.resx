@@ -247,7 +247,7 @@
     <value>Test</value>
   </data>
   <data name="TakeHealing" xml:space="preserve">
-    <value>Heal Up</value>
+    <value>Heal Yourself</value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
@@ -704,5 +704,8 @@
   </data>
   <data name="TakeDamage" xml:space="preserve">
     <value>Take Damage</value>
+  </data>
+  <data name="PictureUrl" xml:space="preserve">
+    <value>Picture url</value>
   </data>
 </root>

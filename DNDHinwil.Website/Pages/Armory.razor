@@ -20,7 +20,7 @@
         @foreach (var item in _armory.Reverse<Gear>())
         {
             <div class="armory-gear">
-                <button class="left-button" command="show-modal" commandfor="delete-gear" @onclick="x => StartEditingGear(item)">@Constants.Symbol_RemoveFromInventory</button>
+                <button class="left-button" command="show-modal" commandfor="delete-gear" @onclick="x => StartEditingGear(item)">@Constants.Symbol_Delete</button>
                 <GearItem Model="item"></GearItem>
                 <button class="right-button" command="show-modal" commandfor="edit-gear" @onclick="x => StartEditingGear(item)">@Constants.Symbol_Edit</button>
                 <button class="right-button" @onclick="async x => await AddGearToCharacter(item)">@Constants.Symbol_AddToInventory</button>
@@ -54,21 +54,23 @@
                 <InputNumber @bind-Value="_editGear.Armor"></InputNumber>
             </InputWithLabel>
             <div class="edit-gear-effects">
-                <h4 style="width:100%;grid-column:span 2;">@Text.Bonuses</h4>
+                <h4>@Text.Bonuses</h4>
                 @if (_editGear.Bonuses.Any())
                 {
                     @foreach (var effect in _editGear.Bonuses)
                     {
-                        <div class="gear-effect">@effect.ToString()</div>
-                        <button @onclick="x => StartEditingEffect(effect)" command="show-modal" commandfor="edit-effect">⛭</button>
+                        <div class="gear-effect">
+                            <button class="left-button" @onclick="async x => await RemoveEffect(effect)" command="show-modal" commandfor="edit-effect">@Constants.Symbol_Delete</button>
+                            <div>@effect.ToString()</div>
+                            <button class="right-button" @onclick="x => StartEditingEffect(effect)" command="show-modal" commandfor="edit-effect">@Constants.Symbol_Edit</button>
+                        </div>
                     }
                 }
                 else
                 {
-                    <div class="gear-effect">@Text.NoBonuses</div>
-                    <div class="gear-effect"></div>
+                    <div>@Text.NoBonuses</div>
                 }
-                <button @onclick="x => AddNewEffect()" command="show-modal" commandfor="edit-effect" style="width:100%;grid-column:span 2;margin-top:0.5rem;">@Text.NewGearBonus</button>
+                <button @onclick="x => AddNewEffect()" command="show-modal" commandfor="edit-effect" style="margin-top:0.5rem;">@Text.NewGearBonus</button>
             </div>
             <button @onclick="x => FinishEditingGear(false)" command="close" commandfor="edit-gear">@Text.Cancel</button>
             <button @onclick="x => FinishEditingGear(true)" command="close" commandfor="edit-gear" style="float:right;">@Text.Save</button>
