@@ -1,5 +1,5 @@
 :root {
-	--min-width: 320px;
+	--min-width: 340px;
 	--navmenu-height: 40px;
 	--color-foreground: #111;
 	--color-foreground-muted: #444;
@@ -22,36 +22,6 @@
 		--color-contrast-2: #333;
 		--color-contrast-3: #444;
 		--color-shadow: #1111;
-	}
-}
-
-@media (min-width: 620px) {
-	:root {
-		--post-list-columns: repeat(2, minmax(0, 1fr));
-	}
-}
-
-@media (min-width: 840px) {
-	:root {
-		--navmenu-height: 0px;
-	}
-}
-
-@media (min-width: 1150px) {
-	:root {
-		--post-list-columns: repeat(3, minmax(0, 1fr));
-	}
-}
-
-@media (min-width: 1460px) {
-	:root {
-		--post-list-columns: repeat(4, minmax(0, 1fr));
-	}
-}
-
-@media (min-width: 1770px) {
-	:root {
-		--post-list-columns: repeat(5, minmax(0, 1fr));
 	}
 }
 
@@ -136,6 +106,12 @@ dialog {
 	border: 5px inset var(--color-primary);
 }
 
+	dialog > button {
+		min-width: 120px;
+		margin-top: 0.5rem;
+		margin-bottom: 0.5rem;
+	}
+
 ::backdrop {
 	background-color: color-mix(in srgb, var(--color-background), var(--color-shadow) 30%);
 }
@@ -151,6 +127,14 @@ dialog {
 	border-top: none;
 	border-radius: 0 0 1rem 1rem;
 	overflow: hidden;
+}
+
+.right-button {
+	margin-left: 0.5rem;
+}
+
+.left-button {
+	margin-right: 0.5rem;
 }
 
 #blazor-error-ui {
