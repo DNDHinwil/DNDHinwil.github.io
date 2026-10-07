@@ -2,9 +2,7 @@
 
 public enum EffectOutcome
 {
-    DealsDamage,
-    Heals,
-    ReducesDamage,
-    BoostsStat,
+    Increases,
+    Reduces,
     Special
 }

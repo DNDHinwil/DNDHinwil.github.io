@@ -5,7 +5,7 @@
 
     <div style="grid-column:span 2;">@(!string.IsNullOrWhiteSpace(Model.Description) ? Model.Description : "")</div>
     <div style="text-align:right;">@(Model.Armor > 0 ? $"{Model.Armor} 🛡" : "")</div>
-    @foreach (var effect in Model.Bonuses)
+    @foreach (var effect in Model.Buffs)
     {
         <div class="gear-bonus" style="grid-column:span 3;">@effect.ToString()</div>
     }

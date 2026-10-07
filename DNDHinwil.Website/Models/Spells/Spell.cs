@@ -7,5 +7,5 @@ public class Spell
     public int ManaCost { get; set; }
     public int Range { get; set; }
     public bool CanBeUsedOnSelf { get; set; }
-    public List<SpellEffect> Effects { get; set; } = [];
+    public List<Effect> Effects { get; set; } = [];
 }

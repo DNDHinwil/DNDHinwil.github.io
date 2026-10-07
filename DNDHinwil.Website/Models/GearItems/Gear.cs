@@ -12,5 +12,5 @@ public class Gear : IEquipment
     public int Armor { get; set; }
     public bool IsEquipped { get; set; }
     public bool Usable { get; set; }
-    public List<PassiveEffect> Bonuses { get; set; } = [];
+    public List<Effect> Buffs { get; set; } = [];
 }

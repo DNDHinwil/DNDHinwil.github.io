@@ -47,7 +47,7 @@ public static class CampaignGenerator
             new(){Name = Text.Strength, Short = Text.Strength_Short, Score = 10 },
             new(){Name = Text.Charisma, Short = Text.Charisma_Short, Score = 10 },
             new(){Name = Text.Constitution, Short = Text.Constitution_Short, Score = 10 },
-            new(){Name = Text.Luck, Short = Text.Wisdom_Short, Score = 10 }
+            new(){Name = Text.Luck, Short = Text.Luck_Short, Score = 10 }
             ];
     private static List<Equipment> GenerateHinwilDefaultEquipment()
         => [

@@ -55,9 +55,9 @@
             </InputWithLabel>
             <div class="edit-gear-effects">
                 <h4>@Text.Bonuses</h4>
-                @if (_editGear.Bonuses.Any())
+                @if (_editGear.Buffs.Any())
                 {
-                    @foreach (var effect in _editGear.Bonuses)
+                    @foreach (var effect in _editGear.Buffs)
                     {
                         <div class="gear-effect">
                             <button class="left-button" @onclick="async x => await RemoveEffect(effect)" command="show-modal" commandfor="edit-effect">@Constants.Symbol_Delete</button>
@@ -89,18 +89,18 @@
             <h3>@Text.Effect</h3>
             <InputWithLabel Label="@Text.Outcome">
                 <InputSelect @bind-value="_editBonus.Outcome">
-                    <option value="@BonusOutcome.Reduces">@Text.Reduces</option>
-                    <option value="@BonusOutcome.Increases">@Text.Increases</option>
-                    <option value="@BonusOutcome.Special">@Text.Other</option>
+                    <option value="@EffectOutcome.Reduces">@Text.Reduces</option>
+                    <option value="@EffectOutcome.Increases">@Text.Increases</option>
+                    <option value="@EffectOutcome.Special">@Text.Other</option>
                 </InputSelect>
             </InputWithLabel>
-            @if (_editBonus.Outcome == BonusOutcome.Special)
+            @if (_editBonus.Outcome == EffectOutcome.Special)
             {
                 <InputWithLabel Label="@Text.Description">
                     <InputText @bind-Value="_editBonus.SpecialText"></InputText>
                 </InputWithLabel>
             }
-            @if (_editBonus.Outcome is BonusOutcome.Increases or BonusOutcome.Reduces)
+            @if (_editBonus.Outcome is EffectOutcome.Increases or EffectOutcome.Reduces)
             {
                 <InputWithLabel Label="@Text.Strength">
                     <InputNumber @bind-Value="_editBonus.Strength"></InputNumber>
@@ -230,14 +230,14 @@
             return;
         }
         // remove old version
-        var effectExists = _editGear.Bonuses.FirstOrDefault(e => e.Id == _editBonus.Id);
+        var effectExists = _editGear.Buffs.FirstOrDefault(e => e.Id == _editBonus.Id);
         if (effectExists is not null)
-            _editGear.Bonuses.Remove(effectExists);
+            _editGear.Buffs.Remove(effectExists);
 
         if (!string.IsNullOrWhiteSpace(_editBonus.BonusStatId))
             _editBonus.BonusStatShort = _activeCharacter.Stats.FirstOrDefault(s => s.Id == _editBonus.BonusStatId)?.Short;
 
-        _editGear.Bonuses.Add(_editBonus);
+        _editGear.Buffs.Add(_editBonus);
 
         await ContentService.SaveArmory(_armory);
         _editBonus = null;
@@ -248,7 +248,7 @@
     {
         if (_editGear is null)
             return;
-        _editGear.Bonuses.Remove(effect);
+        _editGear.Buffs.Remove(effect);
         await ContentService.SaveArmory(_armory);
     }
     #endregion

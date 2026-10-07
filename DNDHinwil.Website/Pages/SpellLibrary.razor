@@ -83,9 +83,6 @@
     {
         <dialog id="edit-effect">
             <h3>@Text.Effect</h3>
-            <InputWithLabel Label="@Text.Strength">
-                <InputNumber @bind-Value="_editEffect.Strength"></InputNumber>
-            </InputWithLabel>
             <InputWithLabel Label="@Text.Outcome">
                 <InputSelect @bind-value="_editEffect.Outcome">
                     <option value="@EffectOutcome.DealsDamage">@Text.Damage</option>
@@ -112,8 +109,14 @@
                         }
                     </InputSelect>
                 </InputWithLabel>
-                <InputWithLabel Label="@Text.UseStrengthAsBonusDamage">
+                <InputWithLabel Label="@Text.FlatBonusDamage">
                     <InputCheckbox @bind-Value="_editEffect.UseStrengthAsBonusPower"></InputCheckbox>
+                </InputWithLabel>
+            }
+            @if (_editEffect.NumberOfDice < 1 || _editEffect.UseStrengthAsBonusPower)
+            {
+                <InputWithLabel Label="@Text.Strength">
+                    <InputNumber @bind-Value="_editEffect.Strength"></InputNumber>
                 </InputWithLabel>
             }
             @if (_editEffect.Outcome is EffectOutcome.DealsDamage or EffectOutcome.Heals)

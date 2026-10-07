@@ -287,7 +287,7 @@
     private UpCountingTimer? _timer;
     private Turn? _activeTurn;
 
-    private ActiveEffect? _editActiveEffect;
+    private EffectOverTime? _editActiveEffect;
     private Effect? _quickEffect;
 
     protected override void OnInitialized()
@@ -408,12 +408,12 @@
     #region Active Effects
     private void AddNewEffect()
     {
-        var effect = new ActiveEffect();
+        var effect = new EffectOverTime();
         effect.Name = $"{Text.Effect} {_activeCharacter.ActiveEffects.Count}";
         StartEditingEffect(effect);
     }
 
-    private void StartEditingEffect(ActiveEffect effect)
+    private void StartEditingEffect(EffectOverTime effect)
         => _editActiveEffect = effect;
 
     private async Task FinishEditingEffect(bool save)
@@ -431,7 +431,7 @@
         await ContentService.SaveCharacter(_activeCharacter);
     }
 
-    private async Task RemoveEffect(ActiveEffect effect)
+    private async Task RemoveEffect(EffectOverTime effect)
     {
         _activeCharacter.ActiveEffects.Remove(effect);
         await ContentService.SaveCharacter(_activeCharacter);

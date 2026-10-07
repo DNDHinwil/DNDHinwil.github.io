@@ -247,7 +247,7 @@
     <value>Test</value>
   </data>
   <data name="TakeHealing" xml:space="preserve">
-    <value>Heile Dich</value>
+    <value>Heile</value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>Abbrechen</value>
@@ -621,8 +621,8 @@
   <data name="Dice" xml:space="preserve">
     <value>Würfel</value>
   </data>
-  <data name="UseStrengthAsBonusDamage" xml:space="preserve">
-    <value>Nutze Stärke als bonus schaden</value>
+  <data name="FlatBonusDamage" xml:space="preserve">
+    <value>Bonus Schaden</value>
   </data>
   <data name="DiceType" xml:space="preserve">
     <value>Würfeltyp</value>
@@ -707,5 +707,17 @@
   </data>
   <data name="PictureUrl" xml:space="preserve">
     <value>Bild url</value>
+  </data>
+  <data name="Value" xml:space="preserve">
+    <value>Wert</value>
+  </data>
+  <data name="IncomingDamage" xml:space="preserve">
+    <value>Eingehender Schaden</value>
+  </data>
+  <data name="OutgoingDamage" xml:space="preserve">
+    <value>Verursachter Schaden</value>
+  </data>
+  <data name="StatNotSet" xml:space="preserve">
+    <value>Eigenschaft nicht definiert</value>
   </data>
 </root>
