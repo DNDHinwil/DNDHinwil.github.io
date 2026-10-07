@@ -33,11 +33,11 @@
         @foreach (var modifier in _activeCharacter.CalculateModifiers(_settings.ScoreModifiers))
         {
             <div class="stat">
-                <button class="left-button" @onclick="x => SelectStatForEditing(modifier.Stat)" command="show-modal" commandfor="delete-stat">-</button>
+                <button class="left-button" @onclick="x => SelectStatForEditing(modifier.Stat)" command="show-modal" commandfor="delete-stat">@Constants.Symbol_Delete</button>
                 <div>@modifier.Stat.Name</div>
                 <div>@modifier.Stat.Score</div>
-                <div>@modifier.CalculatedModifier</div>
-                <button class="right-button" @onclick="x => SelectStatForEditing(modifier.Stat)" command="show-modal" commandfor="edit-stat">⛭</button>
+                <div>@modifier.TotalValue</div>
+                <button class="right-button" @onclick="x => SelectStatForEditing(modifier.Stat)" command="show-modal" commandfor="edit-stat">@Constants.Symbol_Edit</button>
             </div>
         }
         <button @onclick="x => AddNewStat()" command="show-modal" commandfor="edit-stat" style="grid-column:span 5;">@Text.NewStat</button>
@@ -87,7 +87,7 @@
     public void AddNewStat()
     {
         var stat = new Stat();
-        stat.Name = $"{Text.Effect} {_activeCharacter.ActiveEffects.Count}";
+        stat.Name = $"{Text.Stat} {_activeCharacter.ActiveEffects.Count}";
         SelectStatForEditing(stat);
     }
     public void SelectStatForEditing(Stat stat)

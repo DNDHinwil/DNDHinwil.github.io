@@ -6,5 +6,6 @@ public enum BonusTarget
     Stat,
     Health,
     Mana,
-    DamageReduction
+    IncomingDamage,
+    OutgoingDamage
 }

@@ -10,10 +10,11 @@
 
 .equipment-item {
 	display: grid;
-	grid-template-columns: max-content auto 60px;
+	grid-template-columns: max-content auto max-content;
 }
 
 .equipment-effect {
-	margin-left: 0.5rem;
+	margin-left: 0.25rem;
+	padding-left: 0.25rem;
 	background-color: var(--color-contrast-1);
 }

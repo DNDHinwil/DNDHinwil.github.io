@@ -5,5 +5,6 @@ public enum EffectOutcome
     DealsDamage,
     Heals,
     ReducesDamage,
+    BoostsStat,
     Special
 }

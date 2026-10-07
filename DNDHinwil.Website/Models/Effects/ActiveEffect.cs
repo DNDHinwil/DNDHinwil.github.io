@@ -38,7 +38,9 @@ public class ActiveEffect : Effect
             case EffectTarget.Mana:
                 target = $" {Text.To} {Text.ManaShort}";
                 break;
-            case EffectTarget.Special:
+            case EffectTarget.HealthAndMana:
+                target = $" {Text.To} {Text.HealthShort} & {Text.ManaShort}";
+                break;
             default:
                 break;
         }

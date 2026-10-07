@@ -3,7 +3,7 @@
     @foreach (var modifier in Modifiers)
     {
         <div class="stat" style="@($"--color:hsl({360 / Modifiers.Count * Modifiers.IndexOf(modifier)},100%,50%);")">
-            @modifier.CalculatedModifier
+            @modifier.TotalValue
             <label>@modifier.Stat.Short</label>
         </div>
     }

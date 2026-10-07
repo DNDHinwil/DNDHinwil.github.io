@@ -448,6 +448,15 @@ namespace DNDHinwil.Website.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Damage for.
+        /// </summary>
+        public static string DamageFor {
+            get {
+                return ResourceManager.GetString("DamageFor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Decreases with use.
         /// </summary>
         public static string DecreasesWithUse {
@@ -840,6 +849,15 @@ namespace DNDHinwil.Website.Resources {
         public static string Heal {
             get {
                 return ResourceManager.GetString("Heal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Heal for.
+        /// </summary>
+        public static string HealFor {
+            get {
+                return ResourceManager.GetString("HealFor", resourceCulture);
             }
         }
         
@@ -1294,6 +1312,15 @@ namespace DNDHinwil.Website.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Picture url.
+        /// </summary>
+        public static string PictureUrl {
+            get {
+                return ResourceManager.GetString("PictureUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Player.
         /// </summary>
         public static string Player {
@@ -1573,7 +1600,7 @@ namespace DNDHinwil.Website.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Heal Up.
+        ///   Looks up a localized string similar to Heal Yourself.
         /// </summary>
         public static string TakeHealing {
             get {
@@ -1605,6 +1632,15 @@ namespace DNDHinwil.Website.Resources {
         public static string Test {
             get {
                 return ResourceManager.GetString("Test", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Marked Time in Minutes.
+        /// </summary>
+        public static string TimerMarkedTime {
+            get {
+                return ResourceManager.GetString("TimerMarkedTime", resourceCulture);
             }
         }
         

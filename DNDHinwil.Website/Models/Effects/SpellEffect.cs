@@ -42,8 +42,6 @@ public class SpellEffect : Effect
             case EffectTarget.HealthAndMana:
                 target = $" {Text.To} {Text.HealthShort} & {Text.ManaShort}";
                 break;
-            case EffectTarget.Special:
-                return SpecialText ?? "";
             default:
                 break;
         }
@@ -73,8 +71,7 @@ public class SpellEffect : Effect
                 outcome = Text.ReducedDamage;
                 break;
             case EffectOutcome.Special:
-                outcome = SpecialText ?? "";
-                break;
+                return SpecialText ?? "";
             default:
                 break;
         }
@@ -88,13 +85,12 @@ public class SpellEffect : Effect
             case EffectTarget.Mana:
                 target = $" {Text.To} {Text.ManaShort}";
                 break;
-            case EffectTarget.Special:
             default:
                 break;
         }
 
-        return NumberOfDice < 1 ? $"{Strength} +{modifier.CalculatedModifier} ({modifier.Stat.Short}) {outcome}{target}"
-            : UseStrengthAsBonusPower ? $"{NumberOfDice}{Text.D}{DiceType} +{Strength} +{modifier.CalculatedModifier} ({modifier.Stat.Short}) {outcome}{target}"
-            : $"{NumberOfDice}{Text.D}{DiceType} +{modifier.CalculatedModifier} ({modifier.Stat.Short}) {outcome}{target}";
+        return NumberOfDice < 1 ? $"{Strength} +{modifier.TotalValue} ({modifier.Stat.Short}) {outcome}{target}"
+            : UseStrengthAsBonusPower ? $"{NumberOfDice}{Text.D}{DiceType} +{Strength} +{modifier.TotalValue} ({modifier.Stat.Short}) {outcome}{target}"
+            : $"{NumberOfDice}{Text.D}{DiceType} +{modifier.TotalValue} ({modifier.Stat.Short}) {outcome}{target}";
     }
 }

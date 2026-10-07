@@ -1,6 +1,6 @@
 ﻿namespace DNDHinwil.Website.Enums;
 
-public static class SlotExtensions
+public static class EnumExtensions
 {
     public static string GetName(this GearSlot slot) => slot switch
     {

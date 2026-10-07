@@ -10,7 +10,6 @@ public class Effect : IEffect<EffectTarget, EffectOutcome>
     public EffectOutcome Outcome { get; set; } = EffectOutcome.DealsDamage;
     public string? SpecialText { get; set; }
 
-
     public override string ToString()
     {
         var outcome = "";
@@ -43,8 +42,6 @@ public class Effect : IEffect<EffectTarget, EffectOutcome>
             case EffectTarget.HealthAndMana:
                 target = $" {Text.To} {Text.HealthShort} & {Text.ManaShort}";
                 break;
-            case EffectTarget.Special:
-                return SpecialText ?? "";
             default:
                 break;
         }

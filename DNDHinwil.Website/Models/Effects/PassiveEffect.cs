@@ -2,7 +2,7 @@
 
 namespace DNDHinwil.Website.Models;
 
-public class GearBonus : IEffect<BonusTarget, BonusOutcome>
+public class PassiveEffect : IEffect<BonusTarget, BonusOutcome>
 {
     public string Id { get; set; } = Guid.NewGuid().ToString();
     public BonusTarget Target { get; set; } = BonusTarget.None;
@@ -42,7 +42,7 @@ public class GearBonus : IEffect<BonusTarget, BonusOutcome>
             case BonusTarget.Mana:
                 target = $"{Strength} {Text.Mana}";
                 break;
-            case BonusTarget.DamageReduction:
+            case BonusTarget.IncomingDamage:
                 target = $"{Strength} {Text.ReducedDamage}";
                 break;
             default:

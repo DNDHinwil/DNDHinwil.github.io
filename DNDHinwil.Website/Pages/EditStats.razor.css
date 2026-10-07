@@ -28,14 +28,6 @@ section {
 		height: 32px;
 	}
 
-.right-button {
-	margin-left: 0.5rem;
-}
-
-.left-button {
-	margin-right: 0.5rem;
-}
-
 .stat {
 	grid-column: span 5;
 	display: grid;

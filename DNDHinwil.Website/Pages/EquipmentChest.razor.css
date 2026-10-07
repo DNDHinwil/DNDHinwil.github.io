@@ -15,17 +15,9 @@ button {
 	height: 32px;
 }
 
-.right-button {
-	margin-left: 0.5rem;
-}
-
-.left-button {
-	margin-right: 0.5rem;
-}
-
 .inventory-item {
 	display: grid;
-	grid-template-columns: 1fr 40px;
+	grid-template-columns: 40px auto 40px;
 	border-top: 1px dotted var(--color-foreground);
 }
 
@@ -50,7 +42,7 @@ button {
 	padding-top: 0.25rem;
 	border-top: 1px dotted var(--color-foreground);
 	display: grid;
-	grid-template-columns: 50px auto 50px;
+	grid-template-columns: 40px auto 40px;
 }
 
 .effect-text {

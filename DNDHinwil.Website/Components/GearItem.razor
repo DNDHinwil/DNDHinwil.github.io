@@ -1,6 +1,6 @@
 ﻿<div class="gear-item">
     <h4>@Model.Name</h4>
-    <div class="gear-label" style="text-align:right;">@Model.Slot.GetName()</div>
+    <div class="gear-label">@Model.Slot.GetName()</div>
     <div style="text-align:right;">@(Model.Weight > 0 ? $"{Model.Weight} ⚖" : "")</div>
 
     <div style="grid-column:span 2;">@(!string.IsNullOrWhiteSpace(Model.Description) ? Model.Description : "")</div>

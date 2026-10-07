@@ -2,8 +2,8 @@
 
 public enum EffectTarget
 {
+    None,
     Health,
     Mana,
-    HealthAndMana,
-    Special
+    HealthAndMana
 }
