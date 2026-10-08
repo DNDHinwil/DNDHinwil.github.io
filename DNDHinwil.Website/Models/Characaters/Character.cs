@@ -8,7 +8,7 @@ public class Character
     private int _maxMana = 2;
     private int _currentHealth = 2;
     private int _currentMana = 2;
-    private List<Effect> AllEffects => [.. ActiveEffects, .. EquippedGear.SelectMany(g => g.Buffs)];
+    private List<Effect> AllEffects => [.. ActiveEffects, .. EquippedGear.SelectMany(g => g.Effects)];
 
     [Key]
     public string Id { get; set; } = Guid.NewGuid().ToString();
@@ -96,7 +96,7 @@ public class Character
             && a.TriggersAtEndOfTurn == isEndOfTurn))
             _ = ActiveEffects.RemoveAll(x => x.Duration is EffectDuration.UntilHealed);
 
-        foreach (var effect in ActiveEffects.Where(e => e.TriggersAtEndOfTurn == isEndOfTurn))
+        foreach (var effect in ActiveEffects.Where(e => e.TriggersAtEndOfTurn == isEndOfTurn && e.NumberOfDice > 0))
         {
             await TriggerEffectOnCharacter(effect);
             if (effect.Duration is EffectDuration.Turns)
@@ -115,7 +115,7 @@ public class Character
                 StatValue = table.LastOrDefault(s => s.Score <= stat.Score)?.Modifier ?? 0,
                 BoostValue = stat.Boost,
                 EffectValue = ActiveEffects.Where(b => b.BonusStatId == stat.Id).Sum(b => b.Outcome == EffectOutcome.Increases ? b.Strength : b.Strength * -1),
-                EquipmentValue = EquippedGear.SelectMany(x => x.Buffs).Where(b => b.BonusStatId == stat.Id).Sum(b => b.Outcome == EffectOutcome.Increases ? b.Strength : b.Strength * -1)
+                EquipmentValue = EquippedGear.SelectMany(x => x.Effects).Where(b => b.BonusStatId == stat.Id).Sum(b => b.Outcome == EffectOutcome.Increases ? b.Strength : b.Strength * -1)
             };
             res.Add(modifier);
         }

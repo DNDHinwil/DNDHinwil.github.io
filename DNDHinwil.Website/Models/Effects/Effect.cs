@@ -4,8 +4,9 @@ namespace DNDHinwil.Website.Models;
 
 public class Effect : IEffect
 {
-    public string Name { get; set; } = "Effect";
     public string Id { get; set; } = Guid.NewGuid().ToString();
+    public EffectType EffectType { get; set; } = EffectType.Quick;
+    public string Name { get; set; } = Text.Effect;
     public int NumberOfDice { get; set; }
     public int DiceType { get; set; }
     public int Strength { get; set; } = 3;
@@ -14,6 +15,7 @@ public class Effect : IEffect
     public EffectTarget Target { get; set; } = EffectTarget.Health;
     public string? SpecialText { get; set; }
     public string? BonusStatId { get; set; }
+    public string? TargetStatId { get; set; }
     public EffectDuration Duration { get; set; } = EffectDuration.None;
     public int Turns { get; set; } = 3;
     public bool TriggersAtEndOfTurn { get; set; }
@@ -25,47 +27,57 @@ public class Effect : IEffect
 
         return Target switch
         {
-            EffectTarget.Health => $"{DiceToString()} {(Outcome is EffectOutcome.Increases ? Text.Healing : Text.Damage)} {Text.To} {Text.HealthShort}",
-            EffectTarget.Mana => $"{DiceToString()} {(Outcome is EffectOutcome.Increases ? Text.Healing : Text.Damage)} {Text.To} {Text.ManaShort}",
-            EffectTarget.MaxHealth => $"{(Outcome is EffectOutcome.Increases ? "+" : "-")}{Strength} {Text.MaxHP}",
-            EffectTarget.MaxMana => $"{(Outcome is EffectOutcome.Increases ? "+" : "-")}{Strength} {Text.MaxMP}",
-            EffectTarget.IncomingDamage => $"{(Outcome is EffectOutcome.Increases ? "+" : "-")}{Strength} {Text.IncomingDamage}",
-            EffectTarget.OutgoingDamage => $"{(Outcome is EffectOutcome.Increases ? "+" : "-")}{Strength} {Text.OutgoingDamage}",
+            EffectTarget.Health => $"{StrengthToString()} {(Outcome is EffectOutcome.Increases ? Text.Healing : Text.Damage)} {Text.To} {Text.HealthShort}{DurationToString()}",
+            EffectTarget.Mana => $"{StrengthToString()} {(Outcome is EffectOutcome.Increases ? Text.Healing : Text.Damage)} {Text.To} {Text.ManaShort}{DurationToString()}",
+            EffectTarget.MaxHealth => $"{(Outcome is EffectOutcome.Increases ? "+" : "-")}{Strength} {Text.MaxHP}{DurationToString()}",
+            EffectTarget.MaxMana => $"{(Outcome is EffectOutcome.Increases ? "+" : "-")}{Strength} {Text.MaxMP}{DurationToString()}",
+            EffectTarget.IncomingDamage => $"{(Outcome is EffectOutcome.Increases ? "+" : "-")}{Strength} {Text.IncomingDamage}{DurationToString()}",
+            EffectTarget.OutgoingDamage => $"{(Outcome is EffectOutcome.Increases ? "+" : "-")}{Strength} {Text.OutgoingDamage}{DurationToString()}",
             EffectTarget.Stat => Text.StatNotSet,
             _ => "",
         };
     }
-    public new string ToString(Modifier? modifier)
+    public string ToString(Modifier? bonusModifier, Modifier? targetModifier)
     {
         if (Outcome is EffectOutcome.Special)
             return SpecialText ?? "";
-        if (Target is not EffectTarget.Stat || modifier is null || BonusStatId is null || modifier.Stat.Id != BonusStatId)
+        if (Target is EffectTarget.Stat && (targetModifier is null || TargetStatId is null || targetModifier.Stat.Id != TargetStatId))
             return ToString();
 
         return Target switch
         {
-            EffectTarget.Health => $"{DiceToString(modifier)} {(Outcome is EffectOutcome.Increases ? Text.Healing : Text.Damage)} {Text.To} {Text.HealthShort}",
-            EffectTarget.Mana => $"{DiceToString(modifier)} {(Outcome is EffectOutcome.Increases ? Text.Healing : Text.Damage)} {Text.To} {Text.ManaShort}",
-            EffectTarget.MaxHealth => $"{(Outcome is EffectOutcome.Increases ? "+" : "-")}{Strength} {Text.MaxHP}",
-            EffectTarget.MaxMana => $"{(Outcome is EffectOutcome.Increases ? "+" : "-")}{Strength} {Text.MaxMP}",
-            EffectTarget.IncomingDamage => $"{(Outcome is EffectOutcome.Increases ? "+" : "-")}{Strength} {Text.IncomingDamage}",
-            EffectTarget.OutgoingDamage => $"{(Outcome is EffectOutcome.Increases ? "+" : "-")}{Strength} {Text.OutgoingDamage}",
-            EffectTarget.Stat => $"{(Outcome is EffectOutcome.Increases ? "+" : "-")}{Strength} {modifier.Stat.Short}",
-            _ => "",
+            EffectTarget.Health => $"{StrengthToString(bonusModifier)} {(Outcome is EffectOutcome.Increases ? Text.Healing : Text.Damage)} {Text.To} {Text.HealthShort}{DurationToString()}",
+            EffectTarget.Mana => $"{StrengthToString(bonusModifier)} {(Outcome is EffectOutcome.Increases ? Text.Healing : Text.Damage)} {Text.To} {Text.ManaShort}{DurationToString()}",
+            EffectTarget.MaxHealth => $"{(Outcome is EffectOutcome.Increases ? "+" : "-")}{StrengthToString(bonusModifier)} {Text.MaxHP}{DurationToString()}",
+            EffectTarget.MaxMana => $"{(Outcome is EffectOutcome.Increases ? "+" : "-")}{StrengthToString(bonusModifier)} {Text.MaxMP}{DurationToString()}",
+            EffectTarget.IncomingDamage => $"{(Outcome is EffectOutcome.Increases ? "+" : "-")}{StrengthToString(bonusModifier)} {Text.IncomingDamage}{DurationToString()}",
+            EffectTarget.OutgoingDamage => $"{(Outcome is EffectOutcome.Increases ? "+" : "-")}{StrengthToString(bonusModifier)} {Text.OutgoingDamage}{DurationToString()}",
+            EffectTarget.Stat => $"{(Outcome is EffectOutcome.Increases ? "+" : "-")}{StrengthToString(bonusModifier)} {targetModifier!.Stat.Short}{DurationToString()}",
+            _ => ""
         };
     }
 
-    private string DiceToString()
+    private string DurationToString()
+        => Duration switch
+        {
+            EffectDuration.Turns => $" {Text.ForXTurns.Replace("{{TURNS}}", Turns.ToString())}",
+            EffectDuration.UntilHealed => Text.UntilHealed,
+            EffectDuration.UntilRemoved => Text.UntilRemoved,
+            _ => ""
+        };
+
+    private string StrengthToString()
         => NumberOfDice < 1 ? $"{Strength}"
             : UseStrengthAsBonusPower ? $"{NumberOfDice} {Text.D}{DiceType} +{Strength}"
             : $"{NumberOfDice} {Text.D}{DiceType}";
-    private string DiceToString(Modifier? modifier)
-    {
-        if (modifier is null)
-            return DiceToString();
 
-        return NumberOfDice < 1 ? $"{Strength} +{modifier.TotalValue} ({modifier.Stat.Short})"
-            : UseStrengthAsBonusPower ? $"{NumberOfDice} {Text.D}{DiceType} +{Strength} +{modifier.TotalValue} ({modifier.Stat.Short})"
-            : $"{NumberOfDice} {Text.D}{DiceType} +{modifier.TotalValue} ({modifier.Stat.Short})";
+    private string StrengthToString(Modifier? bonusModifier)
+    {
+        if (bonusModifier is null || BonusStatId is null || bonusModifier.Stat.Id != BonusStatId)
+            return StrengthToString();
+
+        return NumberOfDice < 1 ? $"{Strength} +{bonusModifier.TotalValue} ({bonusModifier.Stat.Short})"
+            : UseStrengthAsBonusPower ? $"{NumberOfDice} {Text.D}{DiceType} +{Strength} +{bonusModifier.TotalValue} ({bonusModifier.Stat.Short})"
+            : $"{NumberOfDice} {Text.D}{DiceType} +{bonusModifier.TotalValue} ({bonusModifier.Stat.Short})";
     }
 }

@@ -720,4 +720,10 @@
   <data name="StatNotSet" xml:space="preserve">
     <value>Eigenschaft nicht definiert</value>
   </data>
+  <data name="ForXTurns" xml:space="preserve">
+    <value>für {{TURNS}} Züge</value>
+  </data>
+  <data name="StatToBuff" xml:space="preserve">
+    <value>Verstärkte Eigenschaft</value>
+  </data>
 </root>

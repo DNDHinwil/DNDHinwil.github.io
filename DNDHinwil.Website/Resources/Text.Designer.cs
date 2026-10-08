@@ -700,6 +700,15 @@ namespace DNDHinwil.Website.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to for {{TURNS}} Turns.
+        /// </summary>
+        public static string ForXTurns {
+            get {
+                return ResourceManager.GetString("ForXTurns", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Game Settings.
         /// </summary>
         public static string GameSettings {
@@ -1605,6 +1614,15 @@ namespace DNDHinwil.Website.Resources {
         public static string Stats {
             get {
                 return ResourceManager.GetString("Stats", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stat to Buff.
+        /// </summary>
+        public static string StatToBuff {
+            get {
+                return ResourceManager.GetString("StatToBuff", resourceCulture);
             }
         }
         

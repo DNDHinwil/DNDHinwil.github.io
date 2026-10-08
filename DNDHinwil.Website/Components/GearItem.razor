@@ -5,14 +5,16 @@
 
     <div style="grid-column:span 2;">@(!string.IsNullOrWhiteSpace(Model.Description) ? Model.Description : "")</div>
     <div style="text-align:right;">@(Model.Armor > 0 ? $"{Model.Armor} 🛡" : "")</div>
-    @foreach (var effect in Model.Buffs)
+    @foreach (var effect in Model.Effects)
     {
-        <div class="gear-bonus" style="grid-column:span 3;">@effect.ToString()</div>
+        <div class="gear-bonus" style="grid-column:span 3;">@effect.ToString(Modifiers?.FirstOrDefault(m => effect.BonusStatId == m.Stat.Id), Modifiers?.FirstOrDefault(m => effect.TargetStatId == m.Stat.Id))</div>
     }
 </div>
 
 @code {
     [Parameter]
     public required Gear Model { get; set; }
+    [Parameter]
+    public List<Modifier>? Modifiers { get; set; }
 
 }

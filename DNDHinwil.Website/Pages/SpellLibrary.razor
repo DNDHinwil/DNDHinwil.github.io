@@ -79,68 +79,10 @@
         <button @onclick="async x => await DeleteSpell(_editSpell)" command="close" commandfor="delete-spell">@Text.Confirm</button>
     </dialog>
 
-    @if (_editEffect is not null)
-    {
-        <dialog id="edit-effect">
-            <h3>@Text.Effect</h3>
-            <InputWithLabel Label="@Text.Outcome">
-                <InputSelect @bind-value="_editEffect.Outcome">
-                    <option value="@EffectOutcome.DealsDamage">@Text.Damage</option>
-                    <option value="@EffectOutcome.Heals">@Text.Heal</option>
-                    <option value="@EffectOutcome.Special">@Text.Other</option>
-                </InputSelect>
-            </InputWithLabel>
-            @if (_editEffect.Outcome == EffectOutcome.Special)
-            {
-                <InputWithLabel Label="@Text.Description">
-                    <InputText @bind-Value="_editEffect.SpecialText"></InputText>
-                </InputWithLabel>
-            }
-            <InputWithLabel Label="@Text.Dice">
-                <InputNumber @bind-Value="_editEffect.NumberOfDice"></InputNumber>
-            </InputWithLabel>
-            @if (_editEffect.NumberOfDice > 0)
-            {
-                <InputWithLabel Label="@Text.DiceType">
-                    <InputSelect @bind-value="_editEffect.DiceType">
-                        @foreach (var dice in _settings.Dice)
-                        {
-                            <option value="@dice.Value">@dice.Name</option>
-                        }
-                    </InputSelect>
-                </InputWithLabel>
-                <InputWithLabel Label="@Text.FlatBonusDamage">
-                    <InputCheckbox @bind-Value="_editEffect.UseStrengthAsBonusPower"></InputCheckbox>
-                </InputWithLabel>
-            }
-            @if (_editEffect.NumberOfDice < 1 || _editEffect.UseStrengthAsBonusPower)
-            {
-                <InputWithLabel Label="@Text.Strength">
-                    <InputNumber @bind-Value="_editEffect.Strength"></InputNumber>
-                </InputWithLabel>
-            }
-            @if (_editEffect.Outcome is EffectOutcome.DealsDamage or EffectOutcome.Heals)
-            {
-                <InputWithLabel Label="@Text.Target">
-                    <InputSelect @bind-value="_editEffect.Target">
-                        <option value="@EffectTarget.Health">@Text.Health</option>
-                        <option value="@EffectTarget.Mana">@Text.Mana</option>
-                        <option value="@EffectTarget.HealthAndMana">@Text.HealthShort & @Text.ManaShort</option>
-                    </InputSelect>
-                </InputWithLabel>
-            }
-            <InputWithLabel Label="@Text.BonusStat">
-                <InputSelect @bind-value="_editEffect.BonusStatId">
-                    <option value="">@Text.None</option>
-                    @foreach (var stat in _activeCharacter.Stats)
-                    {
-                        <option value="@stat.Id">@stat.Name</option>
-                    }
-                </InputSelect>
-            </InputWithLabel>
-            <button @onclick="x => FinishEditingEffect(true)" command="close" commandfor="edit-effect" style="width:100%;">@Text.OK</button>
-        </dialog>
-    }
+    <EditEffect EffectToEdit="_editEffect"
+                OnClickCallback="@(async x => await FinishEditingEffect(true))"
+                Stats="_activeCharacter.Stats"
+                Dice="_settings.Dice"></EditEffect>
 </div>
 
 @code {
@@ -149,7 +91,7 @@
     private List<Spell> _spellLibrary = [];
 
     private Spell? _editSpell;
-    private SpellEffect? _editEffect;
+    private Effect? _editEffect;
 
     protected override async Task OnInitializedAsync()
     {
@@ -223,12 +165,12 @@
     // C
     private void AddNewEffect()
     {
-        var effect = new SpellEffect();
+        var effect = new Effect() { EffectType = EffectType.Active };
         StartEditingEffect(effect);
     }
 
     // R
-    private void StartEditingEffect(SpellEffect effect)
+    private void StartEditingEffect(Effect effect)
         => _editEffect = effect;
 
     // U
@@ -246,9 +188,6 @@
         if (effectExists is not null)
             _editSpell.Effects.Remove(effectExists);
 
-        if (!string.IsNullOrWhiteSpace(_editEffect.BonusStatId))
-            _editEffect.BonusStatShort = _activeCharacter.Stats.FirstOrDefault(s => s.Id == _editEffect.BonusStatId)?.Short;
-        
         _editSpell.Effects.Add(_editEffect);
 
         await ContentService.SaveSpellLibrary(_spellLibrary);
@@ -256,7 +195,7 @@
     }
 
     // D
-    private async Task RemoveEffect(SpellEffect effect)
+    private async Task RemoveEffect(Effect effect)
     {
         if (_editSpell is null)
             return;

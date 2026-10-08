@@ -6,7 +6,7 @@
     <div style="text-align:left;">💧</div>
     @foreach (var effect in Model.Effects)
     {
-        <div class="spell-effect" style="grid-column:span 5;">@effect.ToString(Modifiers?.FirstOrDefault(m => effect.BonusStatId == m.Stat.Id))</div>
+        <div class="spell-effect" style="grid-column:span 5;">@effect.ToString(Modifiers?.FirstOrDefault(m => effect.BonusStatId == m.Stat.Id), Modifiers?.FirstOrDefault(m => effect.TargetStatId == m.Stat.Id))</div>
     }
 </div>
 

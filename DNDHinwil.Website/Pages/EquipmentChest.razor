@@ -89,39 +89,10 @@
         <button @onclick="async x => await DeleteEquipment(_editEquipment)" command="close" commandfor="delete-equipment">@Text.Confirm</button>
     </dialog>
 
-    @if (_editEffect is not null)
-    {
-        <dialog id="edit-effect">
-            <h3>@Text.Effect</h3>
-            <InputWithLabel Label="@Text.Strength">
-                <InputNumber @bind-Value="_editEffect.Strength"></InputNumber>
-            </InputWithLabel>
-            <InputWithLabel Label="@Text.Outcome">
-                <InputSelect @bind-value="_editEffect.Outcome">
-                    <option value="@EffectOutcome.DealsDamage">@Text.Damage</option>
-                    <option value="@EffectOutcome.Heals">@Text.Heal</option>
-                    <option value="@EffectOutcome.Special">@Text.Other</option>
-                </InputSelect>
-            </InputWithLabel>
-            @if (_editEffect.Outcome == EffectOutcome.Special)
-            {
-                <InputWithLabel Label="@Text.Description">
-                    <InputText @bind-Value="_editEffect.SpecialText"></InputText>
-                </InputWithLabel>
-            }
-            @if (_editEffect.Outcome is EffectOutcome.DealsDamage or EffectOutcome.Heals)
-            {
-                <InputWithLabel Label="@Text.Target">
-                    <InputSelect @bind-value="_editEffect.Target">
-                        <option value="@EffectTarget.Health">@Text.Health</option>
-                        <option value="@EffectTarget.Mana">@Text.Mana</option>
-                        <option value="@EffectTarget.HealthAndMana">@Text.HealthShort & @Text.ManaShort</option>
-                    </InputSelect>
-                </InputWithLabel>
-            }
-            <button @onclick="x => FinishEditingEffect(true)" command="close" commandfor="edit-effect" style="width:100%;">@Text.OK</button>
-        </dialog>
-    }
+    <EditEffect EffectToEdit="_editEffect"
+                OnClickCallback="@(async x => await FinishEditingEffect(true))"
+                Stats="_activeCharacter.Stats"
+                Dice="_settings.Dice"></EditEffect>
 </div>
 
 @code {
@@ -215,7 +186,7 @@
     // C
     private void AddNewEffect()
     {
-        var effect = new Effect();
+        var effect = new Effect() { EffectType = EffectType.Active };
         StartEditingEffect(effect);
     }
 

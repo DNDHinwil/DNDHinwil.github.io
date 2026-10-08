@@ -720,4 +720,10 @@
   <data name="StatNotSet" xml:space="preserve">
     <value>Stat not defined</value>
   </data>
+  <data name="ForXTurns" xml:space="preserve">
+    <value>for {{TURNS}} Turns</value>
+  </data>
+  <data name="StatToBuff" xml:space="preserve">
+    <value>Stat to Buff</value>
+  </data>
 </root>
