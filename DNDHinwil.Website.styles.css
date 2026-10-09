@@ -1,5 +1,12 @@
 @import '_content/Codespirals.Blazor.Components/Codespirals.Blazor.Components.frf8j9a5xl.bundle.scp.css';
 
+/* /Components/EffectView.razor.rz.scp.css */
+
+.effect[b-dknnartwxl] {
+	margin-left: 0.25rem;
+	padding-left: 0.25rem;
+	background-color: var(--color-contrast-1);
+}
 /* /Components/EquipmentItem.razor.rz.scp.css */
 .quantity[b-618e2hwvvj] {
 	padding-top: 0.25rem;
@@ -516,8 +523,11 @@ section[b-6t63es5wh7] {
 
 .tables[b-6t63es5wh7] {
 	display: grid;
-	grid-template-columns: max-content 20px max-content;
+	grid-template-columns: auto auto;
 }
+	.tables > div[b-6t63es5wh7] {
+		margin-right: 1rem;
+	}
 
 .modifiers[b-6t63es5wh7] {
 	display: grid;
@@ -534,11 +544,20 @@ section[b-6t63es5wh7] {
 	display: grid;
 	grid-template-columns: max-content 60px;
 }
-
 	.levels > div[b-6t63es5wh7] {
 		text-align: right;
 		border-top: 1px solid var(--color-foreground);
 	}
+
+.dice[b-6t63es5wh7] {
+	display: grid;
+	grid-template-columns: max-content 60px;
+}
+
+.dice > div[b-6t63es5wh7] {
+	text-align: right;
+	border-top: 1px solid var(--color-foreground);
+}
 /* /Pages/EditStats.razor.rz.scp.css */
 
 header[b-seb96asjuv] {
@@ -814,13 +833,19 @@ header[b-v6gsu6n763] {
 }
 	.spell > button[b-v6gsu6n763],
 	.equipment-item > button[b-v6gsu6n763] {
-		margin: 0.5rem 0 0.5rem 0.5rem;
+		margin-top: 0.25rem;
 		height: 32px;
 	}
 
+.passive-effect[b-v6gsu6n763] {
+	display: grid;
+	grid-template-columns: 40px auto 40px;
+	border-top: 1px dotted var(--color-foreground);
+}
+
 .active-effect[b-v6gsu6n763] {
 	display: grid;
-	grid-template-columns: 40px auto 90px 75px 40px;
+	grid-template-columns: 40px auto 40px;
 	border-top: 1px dotted var(--color-foreground);
 }
 
@@ -830,7 +855,8 @@ header[b-v6gsu6n763] {
 	}
 	.active-effect > button[b-v6gsu6n763] {
 		height: 32px;
-		margin-top: 0.5rem;
+		margin-top: 0.25rem;
+		margin-bottom: 0.25rem;
 	}
 
 .edit-active-effect > button[b-v6gsu6n763] {
