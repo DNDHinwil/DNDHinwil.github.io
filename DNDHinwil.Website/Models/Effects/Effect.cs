@@ -20,12 +20,8 @@ public class Effect : IEffect
     public int Turns { get; set; } = 3;
     public bool TriggersAtEndOfTurn { get; set; }
 
-    public int CalculateTotalStrength(Modifier? bonusModifier)
-    {
-        if (bonusModifier is null || BonusStatId is null || bonusModifier.Stat.Id != BonusStatId)
-            return Strength;
-        return Strength + bonusModifier.TotalValue;
-    }
+    public int GetTotalStrength(Modifier? bonusModifier)
+        => bonusModifier is not null && BonusStatId == BonusStatId ? bonusModifier.TotalValue + Strength : Strength;
 
     public override string ToString()
     {
@@ -63,7 +59,6 @@ public class Effect : IEffect
             _ => ""
         };
     }
-
     private string GetName()
         => string.IsNullOrWhiteSpace(Name) ? "" : $"{Name}: ";
 
@@ -71,8 +66,8 @@ public class Effect : IEffect
         => Duration switch
         {
             EffectDuration.Turns => $" {Text.ForXTurns.Replace("{{TURNS}}", Turns.ToString())}",
-            EffectDuration.UntilHealed => Text.UntilHealed,
-            EffectDuration.UntilRemoved => Text.UntilRemoved,
+            EffectDuration.UntilHealed => $" {Text.UntilHealed}",
+            EffectDuration.UntilRemoved => $" {Text.UntilRemoved}",
             _ => ""
         };
 

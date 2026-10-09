@@ -60,6 +60,14 @@ button {
 		border-color: color-mix(in srgb, var(--color-primary) 80%, var(--color-foreground-muted));
 	}
 
+.right-button {
+	margin-left: 0.5rem;
+}
+
+.left-button {
+	margin-right: 0.5rem;
+}
+
 h1 {
 	font-size: 1.625rem;
 	text-decoration: underline overline;
@@ -98,6 +106,10 @@ header {
 	padding-bottom: 0.25rem;
 }
 
+hr {
+	margin: 0.25rem 0 0 0;
+}
+
 dialog {
 	min-width: 300px;
 	background-color: var(--color-background);
@@ -127,14 +139,6 @@ dialog {
 	border-top: none;
 	border-radius: 0 0 1rem 1rem;
 	overflow: hidden;
-}
-
-.right-button {
-	margin-left: 0.5rem;
-}
-
-.left-button {
-	margin-right: 0.5rem;
 }
 
 #blazor-error-ui {

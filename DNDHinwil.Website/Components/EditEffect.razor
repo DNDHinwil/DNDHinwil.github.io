@@ -29,8 +29,8 @@
             </InputWithLabel>
             <InputWithLabel Label="@Text.Outcome">
                 <InputSelect @bind-value="EffectToEdit.Outcome">
-                    <option value="@EffectOutcome.Reduces">@Text.Reduces</option>
-                    <option value="@EffectOutcome.Increases">@Text.Increases</option>
+                    <option value="@EffectOutcome.Reduces">@(EffectToEdit.Target is EffectTarget.Health or EffectTarget.Mana ? Text.Damage : Text.Reduces)</option>
+                    <option value="@EffectOutcome.Increases">@(EffectToEdit.Target is EffectTarget.Health or EffectTarget.Mana ? Text.Healing : Text.Increases)</option>
                     <option value="@EffectOutcome.Special">@Text.Other</option>
                 </InputSelect>
             </InputWithLabel>
@@ -42,22 +42,25 @@
             }
             else
             {
-                <InputWithLabel Label="@Text.Dice">
-                    <InputNumber @bind-Value="EffectToEdit.NumberOfDice"></InputNumber>
-                </InputWithLabel>
-                @if (EffectToEdit.NumberOfDice > 0)
+                @if (EffectToEdit.EffectType is EffectType.Active)
                 {
-                    <InputWithLabel Label="@Text.DiceType">
-                        <InputSelect @bind-value="EffectToEdit.DiceType">
-                            @foreach (var die in Dice)
-                            {
-                                <option value="@die.Value">@die.Name</option>
-                            }
-                        </InputSelect>
+                    <InputWithLabel Label="@Text.Dice">
+                        <InputNumber @bind-Value="EffectToEdit.NumberOfDice"></InputNumber>
                     </InputWithLabel>
-                    <InputWithLabel Label="@Text.FlatBonusDamage">
-                        <InputCheckbox @bind-Value="EffectToEdit.UseStrengthAsBonusPower"></InputCheckbox>
-                    </InputWithLabel>
+                    @if (EffectToEdit.NumberOfDice > 0)
+                    {
+                        <InputWithLabel Label="@Text.DiceType">
+                            <InputSelect @bind-value="EffectToEdit.DiceType">
+                                @foreach (var die in Dice)
+                                {
+                                    <option value="@die.Value">@die.Name</option>
+                                }
+                            </InputSelect>
+                        </InputWithLabel>
+                        <InputWithLabel Label="@Text.FlatBonusDamage">
+                            <InputCheckbox @bind-Value="EffectToEdit.UseStrengthAsBonusPower"></InputCheckbox>
+                        </InputWithLabel>
+                    }
                 }
                 @if (EffectToEdit.NumberOfDice < 1 || EffectToEdit.UseStrengthAsBonusPower)
                 {
@@ -127,6 +130,9 @@
                         <option value="@EffectDuration.UntilHealed">@Text.UntilHealed</option>
                     </InputSelect>
                 </InputWithLabel>
+            }
+            @if (EffectToEdit.Duration is not EffectDuration.None)
+            {
                 <InputWithLabel Label="@Text.TriggersAtEndOfTurn">
                     <InputCheckbox @bind-Value="EffectToEdit.TriggersAtEndOfTurn"></InputCheckbox>
                 </InputWithLabel>

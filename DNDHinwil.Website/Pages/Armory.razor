@@ -61,7 +61,7 @@
                     {
                         <div class="gear-effect">
                             <button class="left-button" @onclick="async x => await RemoveEffect(effect)" command="show-modal" commandfor="edit-effect">@Constants.Symbol_Delete</button>
-                            <div>@effect.ToString()</div>
+                            <EffectView Model="effect" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></EffectView>
                             <button class="right-button" @onclick="x => StartEditingEffect(effect)" command="show-modal" commandfor="edit-effect">@Constants.Symbol_Edit</button>
                         </div>
                     }
@@ -70,8 +70,8 @@
                 {
                     <div>@Text.NoBonuses</div>
                 }
-                <button @onclick="x => AddNewEffect(true)" command="show-modal" commandfor="edit-effect" style="margin-top:0.5rem;">@Text.NewGearBonus</button>
-                <button @onclick="x => AddNewEffect(false)" command="show-modal" commandfor="edit-effect" style="margin-top:0.5rem;">@Text.NewGearBonus</button>
+                <button @onclick="x => AddNewEffect(true)" command="show-modal" commandfor="edit-effect" style="margin-top:0.5rem;">@Text.NewActiveEffect</button>
+                <button @onclick="x => AddNewEffect(false)" command="show-modal" commandfor="edit-effect" style="margin-top:0.5rem;">@Text.NewPassiveEffect</button>
             </div>
             <button @onclick="x => FinishEditingGear(false)" command="close" commandfor="edit-gear">@Text.Cancel</button>
             <button @onclick="x => FinishEditingGear(true)" command="close" commandfor="edit-gear" style="float:right;">@Text.Save</button>

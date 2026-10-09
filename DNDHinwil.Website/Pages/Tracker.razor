@@ -54,16 +54,16 @@
                 <div>@Text.HealthShort</div>
                 <div style="text-align:right;">@_activeCharacter.Health</div>
                 <span>/</span>
-                <div style="text-align:right;margin-right:0.125rem;">@_activeCharacter.MaxHealth</div>
-                <PercentageBar Max="@_activeCharacter.MaxHealth" Current="@_activeCharacter.Health" Color="red"></PercentageBar>
+                <div style="text-align:right;margin-right:0.125rem;">@_activeCharacter.GetMaxHealth()</div>
+                <PercentageBar Max="@_activeCharacter.GetMaxHealth()" Current="@_activeCharacter.Health" Color="red"></PercentageBar>
             </div>
 
             <div class="mana">
                 <div>@Text.ManaShort</div>
                 <div style="text-align:right;">@_activeCharacter.Mana</div>
                 <span>/</span>
-                <div style="text-align:right;margin-right:0.125rem;">@_activeCharacter.MaxMana</div>
-                <PercentageBar Max="@_activeCharacter.MaxMana" Current="@_activeCharacter.Mana" Color="blue"></PercentageBar>
+                <div style="text-align:right;margin-right:0.125rem;">@_activeCharacter.GetMaxMana()</div>
+                <PercentageBar Max="@_activeCharacter.GetMaxMana()" Current="@_activeCharacter.Mana" Color="blue"></PercentageBar>
             </div>
         </div>
         <div class="quick-actions">
@@ -74,9 +74,18 @@
         </div>
     </section>
 
-    <CollapsibleSection Title="@Text.ActiveEffects">
-        @if (_activeCharacter.ActiveEffects.Any())
+    <CollapsibleSection Title="@Text.BuffsAndDebuffs">
+        @if (_activeCharacter.ActiveEffects.Any() || _activeCharacter.GetPassiveEffects().Any())
         {
+            @foreach (var effect in _activeCharacter.GetPassiveEffects())
+            {
+                <div class="passive-effect">
+                    <div style="text-align:center;margin-right:0.5rem;">⛨</div>
+                    <EffectView Model="effect" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></EffectView>
+                    <div></div>
+                </div>
+            }
+            <hr />
             @foreach (var effect in _activeCharacter.ActiveEffects)
             {
                 <div class="active-effect">
@@ -88,9 +97,9 @@
         }
         else
         {
-            <div>@Text.NoTriggeredEffects</div>
+            <div>@Text.NoActiveEffects</div>
         }
-        <button @onclick="x => AddNewActiveEffect()" style="width:100%;margin-top:0.5rem;height:32px;" command="show-modal" commandfor="edit-effect">@Text.NewTriggeredEffect</button>
+        <button @onclick="x => AddNewActiveEffect()" style="width:100%;margin-top:0.5rem;height:32px;" command="show-modal" commandfor="edit-effect">@Text.NewActiveEffect</button>
     </CollapsibleSection>
 
     <CollapsibleSection Title="@Text.Spellbook">
@@ -102,13 +111,13 @@
                     <SpellOrAbility Model="spell" Modifiers="@_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></SpellOrAbility>
                     @if (spell.CanBeUsedOnSelf)
                     {
-                        <button @onclick="async x => await UseSpell(spell, true)">@Constants.Symbol_UseOnSelf</button>
+                        <button class="right-button" @onclick="async x => await UseSpell(spell, true)">@Constants.Symbol_UseOnSelf</button>
                     }
                     else
                     {
                         <div></div>
                     }
-                    <button @onclick="async x => await UseSpell(spell, false)">@Constants.Symbol_Use</button>
+                    <button class="right-button" @onclick="async x => await UseSpell(spell, false)">@Constants.Symbol_Use</button>
                 </div>
             }
         }
@@ -129,13 +138,13 @@
                     {
                         @if (item.CanBeUsedOnSelf)
                         {
-                            <button @onclick="async x => await UseEquipment(item, true)">@Constants.Symbol_UseOnSelf</button>
+                            <button class="right-button" @onclick="async x => await UseEquipment(item, true)">@Constants.Symbol_UseOnSelf</button>
                         }
                         else
                         {
                             <div></div>
                         }
-                        <button @onclick="async x => await UseEquipment(item, false)">@Constants.Symbol_Use</button>
+                        <button class="right-button" @onclick="async x => await UseEquipment(item, false)">@Constants.Symbol_Use</button>
                     }
                     else
                     {
@@ -158,10 +167,17 @@
             {
                 <div class="equipment-item">
                     <GearItem Model="item" Modifiers="@_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></GearItem>
-                    @if (item.Effects.Any(e => e.EffectType is EffectType.Active))
+                    @if (item.Usable)
                     {
-                        <div></div>
-                        <div></div>
+                        @if (item.CanBeUsedOnSelf)
+                        {
+                            <button class="right-button" @onclick="async x => await UseGear(item, true)">@Constants.Symbol_UseOnSelf</button>
+                        }
+                        else
+                        {
+                            <div></div>
+                        }
+                        <button class="right-button" @onclick="async x => await UseGear(item, false)">@Constants.Symbol_Use</button>
                     }
                     else
                     {
@@ -280,7 +296,7 @@
         _activeTurn = null;
         await ContentService.SaveSession(_activeSession);
 
-        _activeCharacter.ActiveEffects.RemoveAll(x => x.Duration is EffectDuration.Turns && x.Turns < 1);
+        _activeCharacter.ActiveEffects.Where(x => x.Duration is EffectDuration.Turns && x.Turns < 1).Select(async e => await _activeCharacter.RemoveActiveEffect(e));
         await ContentService.SaveCharacter(_activeCharacter);
     }
 
@@ -291,7 +307,7 @@
             await ContentService.MakeAlert(Text.NotEnoughMana);
             return;
         }
-        await _activeCharacter.UseSpell(spell, useOnYourself);
+        await _activeCharacter.UseSpell(spell, useOnYourself, _activeCharacter.CalculateModifiers(_settings.ScoreModifiers));
         await ContentService.SaveCharacter(_activeCharacter);
 
         _activeSession ??= new Session();
@@ -301,13 +317,19 @@
 
     private async Task UseEquipment(Equipment equipment, bool useOnYourself)
     {
-        await _activeCharacter.UseEquipmentItem(equipment, useOnYourself);
+        await _activeCharacter.UseEquipmentItem(equipment, useOnYourself, _activeCharacter.CalculateModifiers(_settings.ScoreModifiers));
+        await ContentService.SaveCharacter(_activeCharacter);
+    }
+
+    private async Task UseGear(Gear equipment, bool useOnYourself)
+    {
+        await _activeCharacter.UseGear(equipment, useOnYourself, _activeCharacter.CalculateModifiers(_settings.ScoreModifiers));
         await ContentService.SaveCharacter(_activeCharacter);
     }
 
     private async Task ExecuteActiveEffects(bool isEndOfTurn)
     {
-        await _activeCharacter.ExecuteActiveEffects(isEndOfTurn);
+        await _activeCharacter.ExecuteActiveEffects(isEndOfTurn, _activeCharacter.CalculateModifiers(_settings.ScoreModifiers));
         await ContentService.SaveCharacter(_activeCharacter);
     }
 
@@ -337,7 +359,7 @@
     #region Active Effects
     private void AddNewActiveEffect()
     {
-        var effect = new Effect() { EffectType = EffectType.Active };
+        var effect = new Effect() { EffectType = EffectType.Active, Duration = EffectDuration.UntilRemoved };
         effect.Name = $"{Text.Effect} {_activeCharacter.ActiveEffects.Count + 1}";
         StartEditingActiveEffect(effect);
     }
@@ -351,7 +373,7 @@
             return;
 
         if (save && !_activeCharacter.ActiveEffects.Any(e => e.Id == _editActiveEffect.Id))
-            _activeCharacter.ActiveEffects.Add(_editActiveEffect);
+            await _activeCharacter.AddActiveEffect(_editActiveEffect);
 
         _editActiveEffect = null;
         await ContentService.SaveCharacter(_activeCharacter);
@@ -359,7 +381,7 @@
 
     private async Task RemoveActiveEffect(Effect effect)
     {
-        _activeCharacter.ActiveEffects.Remove(effect);
+        await _activeCharacter.RemoveActiveEffect(effect);
         await ContentService.SaveCharacter(_activeCharacter);
     }
     #endregion

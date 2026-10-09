@@ -147,8 +147,8 @@
   <data name="Name" xml:space="preserve">
     <value>Name</value>
   </data>
-  <data name="NewTriggeredEffect" xml:space="preserve">
-    <value>Neuer aktivierter Effekt</value>
+  <data name="NewActiveEffect" xml:space="preserve">
+    <value>Neuer Aktiver Effekt</value>
   </data>
   <data name="None" xml:space="preserve">
     <value>Keines</value>
@@ -172,10 +172,10 @@
     <value>Züge</value>
   </data>
   <data name="UntilRemoved" xml:space="preserve">
-    <value>Bis Entfernt</value>
+    <value>bis Entfernt</value>
   </data>
   <data name="UntilHealed" xml:space="preserve">
-    <value>Bis Geheilt</value>
+    <value>bis Geheilt</value>
   </data>
   <data name="Back" xml:space="preserve">
     <value>Zurück</value>
@@ -276,8 +276,8 @@
   <data name="Modifiers" xml:space="preserve">
     <value>Bonuses</value>
   </data>
-  <data name="TriggeredEffect" xml:space="preserve">
-    <value>Aktivierter Effekt</value>
+  <data name="ActiveEffect" xml:space="preserve">
+    <value>Aktiver Effekt</value>
   </data>
   <data name="Equipment" xml:space="preserve">
     <value>Ausrüstung</value>
@@ -402,8 +402,8 @@
   <data name="Cast" xml:space="preserve">
     <value>Wirken</value>
   </data>
-  <data name="NoTriggeredEffects" xml:space="preserve">
-    <value>Keine aktivierten Effekte</value>
+  <data name="NoActiveEffects" xml:space="preserve">
+    <value>Keine aktiven Effekte</value>
   </data>
   <data name="NoSpellsInSpellbook" xml:space="preserve">
     <value>Keine Zauber im Zauberbuch</value>
@@ -725,5 +725,17 @@
   </data>
   <data name="StatToBuff" xml:space="preserve">
     <value>Verstärkte Eigenschaft</value>
+  </data>
+  <data name="BuffsAndDebuffs" xml:space="preserve">
+    <value>Buffs und Debuffs</value>
+  </data>
+  <data name="BaseMaxHealth" xml:space="preserve">
+    <value>Basis Maximum Lebenspunkte</value>
+  </data>
+  <data name="BaseMaxMana" xml:space="preserve">
+    <value>Basis Maximum Mana</value>
+  </data>
+  <data name="NewPassiveEffect" xml:space="preserve">
+    <value>Neuer Passiver Effekt</value>
   </data>
 </root>

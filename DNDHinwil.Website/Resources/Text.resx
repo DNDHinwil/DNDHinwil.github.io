@@ -147,8 +147,8 @@
   <data name="Name" xml:space="preserve">
     <value>Name</value>
   </data>
-  <data name="NewTriggeredEffect" xml:space="preserve">
-    <value>New triggered Effect</value>
+  <data name="NewActiveEffect" xml:space="preserve">
+    <value>New Active Effect</value>
   </data>
   <data name="None" xml:space="preserve">
     <value>None</value>
@@ -172,10 +172,10 @@
     <value>Turns</value>
   </data>
   <data name="UntilRemoved" xml:space="preserve">
-    <value>Until Removed</value>
+    <value>until Removed</value>
   </data>
   <data name="UntilHealed" xml:space="preserve">
-    <value>Until Healed</value>
+    <value>until Healed</value>
   </data>
   <data name="Back" xml:space="preserve">
     <value>Back</value>
@@ -276,8 +276,8 @@
   <data name="Modifiers" xml:space="preserve">
     <value>Modifiers</value>
   </data>
-  <data name="TriggeredEffect" xml:space="preserve">
-    <value>Triggered Effect</value>
+  <data name="ActiveEffect" xml:space="preserve">
+    <value>Active Effect</value>
   </data>
   <data name="Equipment" xml:space="preserve">
     <value>Equipment</value>
@@ -402,8 +402,8 @@
   <data name="Cast" xml:space="preserve">
     <value>Cast</value>
   </data>
-  <data name="NoTriggeredEffects" xml:space="preserve">
-    <value>No triggered effects</value>
+  <data name="NoActiveEffects" xml:space="preserve">
+    <value>No active Effects</value>
   </data>
   <data name="NoSpellsInSpellbook" xml:space="preserve">
     <value>No spells in Spellbook</value>
@@ -725,5 +725,17 @@
   </data>
   <data name="StatToBuff" xml:space="preserve">
     <value>Stat to Buff</value>
+  </data>
+  <data name="BuffsAndDebuffs" xml:space="preserve">
+    <value>Buffs and Debuffs</value>
+  </data>
+  <data name="BaseMaxHealth" xml:space="preserve">
+    <value>Base Max Health</value>
+  </data>
+  <data name="BaseMaxMana" xml:space="preserve">
+    <value>Base Max Mana</value>
+  </data>
+  <data name="NewPassiveEffect" xml:space="preserve">
+    <value>New Passive Effect</value>
   </data>
 </root>
