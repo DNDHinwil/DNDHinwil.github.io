@@ -1,10 +1,14 @@
 ﻿
+using DNDHinwil.Website.Enums;
+
 namespace DNDHinwil.Website.Interfaces;
 
-public interface IEffect<TTarget, TOutcome>
+public interface IEffect
 {
+    public string Id { get; set; }
     int Strength { get; }
-    public TTarget Target { get; }
-    public TOutcome Outcome { get; }
+    public EffectTarget Target { get; }
+    public EffectOutcome Outcome { get; }
     public string? SpecialText { get; }
+    public string? BonusStatId { get; set; }
 }

@@ -15,11 +15,11 @@
         <InputWithLabel Label="@Text.LevelModifier">
             <InputNumber @bind-Value="_activeCharacter.LevelModifier"></InputNumber>
         </InputWithLabel>
-        <InputWithLabel Label="@Text.MaxHP">
-            <InputNumber @bind-Value="_activeCharacter.MaxHealth"></InputNumber>
+        <InputWithLabel Label="@Text.BaseMaxHealth">
+            <InputNumber @bind-Value="_activeCharacter.BaseMaxHealth"></InputNumber>
         </InputWithLabel>
-        <InputWithLabel Label="@Text.MaxMP">
-            <InputNumber @bind-Value="_activeCharacter.MaxMana"></InputNumber>
+        <InputWithLabel Label="@Text.BaseMaxMana">
+            <InputNumber @bind-Value="_activeCharacter.BaseMaxMana"></InputNumber>
         </InputWithLabel>
         
         <button @onclick="async x => await SavePlayer()" style="width:100%;">@Text.Save</button>

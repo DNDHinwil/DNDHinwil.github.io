@@ -6,15 +6,22 @@
     {
         <div class="equipment-effect" style="grid-column:span 3;">@Model.Description</div>
     }
-    @foreach (var effect in Model.Effects)
+    @if (Model.Effects.Any())
     {
-        <div class="equipment-effect" style="grid-column:span 3;">@effect.ToString()</div>
+        <div class="effects" style="grid-column:span 3;">
+            @foreach (var effect in Model.Effects)
+            {
+                <EffectView Model="effect" Modifiers="Modifiers"></EffectView>
+            }
+        </div>
     }
 </div>
 
 @code {
     [Parameter]
     public required Equipment Model { get; set; }
+    [Parameter]
+    public List<Modifier>? Modifiers { get; set; }
     [Parameter]
     public bool HideQuantity { get; set; }
 }

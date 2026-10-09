@@ -11,7 +11,7 @@
         @foreach (var item in _activeCharacter.Gear)
         {
             <div class="character-gear">
-                <GearItem Model="item"></GearItem>
+                <GearItem Model="item" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></GearItem>
                 <button class="right-button" @onclick="async x => await RemoveGearFromCharacter(item)">@Constants.Symbol_RemoveFromInventory</button>
             </div>
         }
@@ -21,7 +21,7 @@
         {
             <div class="armory-gear">
                 <button class="left-button" command="show-modal" commandfor="delete-gear" @onclick="x => StartEditingGear(item)">@Constants.Symbol_Delete</button>
-                <GearItem Model="item"></GearItem>
+                <GearItem Model="item" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></GearItem>
                 <button class="right-button" command="show-modal" commandfor="edit-gear" @onclick="x => StartEditingGear(item)">@Constants.Symbol_Edit</button>
                 <button class="right-button" @onclick="async x => await AddGearToCharacter(item)">@Constants.Symbol_AddToInventory</button>
             </div>
@@ -55,13 +55,13 @@
             </InputWithLabel>
             <div class="edit-gear-effects">
                 <h4>@Text.Bonuses</h4>
-                @if (_editGear.Bonuses.Any())
+                @if (_editGear.Effects.Any())
                 {
-                    @foreach (var effect in _editGear.Bonuses)
+                    @foreach (var effect in _editGear.Effects)
                     {
                         <div class="gear-effect">
                             <button class="left-button" @onclick="async x => await RemoveEffect(effect)" command="show-modal" commandfor="edit-effect">@Constants.Symbol_Delete</button>
-                            <div>@effect.ToString()</div>
+                            <EffectView Model="effect" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></EffectView>
                             <button class="right-button" @onclick="x => StartEditingEffect(effect)" command="show-modal" commandfor="edit-effect">@Constants.Symbol_Edit</button>
                         </div>
                     }
@@ -70,7 +70,8 @@
                 {
                     <div>@Text.NoBonuses</div>
                 }
-                <button @onclick="x => AddNewEffect()" command="show-modal" commandfor="edit-effect" style="margin-top:0.5rem;">@Text.NewGearBonus</button>
+                <button @onclick="x => AddNewEffect(true)" command="show-modal" commandfor="edit-effect" style="margin-top:0.5rem;">@Text.NewActiveEffect</button>
+                <button @onclick="x => AddNewEffect(false)" command="show-modal" commandfor="edit-effect" style="margin-top:0.5rem;">@Text.NewPassiveEffect</button>
             </div>
             <button @onclick="x => FinishEditingGear(false)" command="close" commandfor="edit-gear">@Text.Cancel</button>
             <button @onclick="x => FinishEditingGear(true)" command="close" commandfor="edit-gear" style="float:right;">@Text.Save</button>
@@ -83,53 +84,10 @@
         <button @onclick="async x => await DeleteGear(_editGear)" command="close" commandfor="delete-gear">@Text.Confirm</button>
     </dialog>
 
-    @if (_editBonus is not null)
-    {
-        <dialog id="edit-effect">
-            <h3>@Text.Effect</h3>
-            <InputWithLabel Label="@Text.Outcome">
-                <InputSelect @bind-value="_editBonus.Outcome">
-                    <option value="@BonusOutcome.Reduces">@Text.Reduces</option>
-                    <option value="@BonusOutcome.Increases">@Text.Increases</option>
-                    <option value="@BonusOutcome.Special">@Text.Other</option>
-                </InputSelect>
-            </InputWithLabel>
-            @if (_editBonus.Outcome == BonusOutcome.Special)
-            {
-                <InputWithLabel Label="@Text.Description">
-                    <InputText @bind-Value="_editBonus.SpecialText"></InputText>
-                </InputWithLabel>
-            }
-            @if (_editBonus.Outcome is BonusOutcome.Increases or BonusOutcome.Reduces)
-            {
-                <InputWithLabel Label="@Text.Strength">
-                    <InputNumber @bind-Value="_editBonus.Strength"></InputNumber>
-                </InputWithLabel>
-                <InputWithLabel Label="@Text.Target">
-                    <InputSelect @bind-value="_editBonus.Target">
-                        <option value="@BonusTarget.None">@Text.None</option>
-                        <option value="@BonusTarget.Health">@Text.Health</option>
-                        <option value="@BonusTarget.Mana">@Text.Mana</option>
-                        <option value="@BonusTarget.Stat">@Text.Stat</option>
-                        <option value="@BonusTarget.IncomingDamage">@Text.ReducedDamage</option>
-                    </InputSelect>
-                </InputWithLabel>
-            }
-            @if (_editBonus.Target is BonusTarget.Stat)
-            {
-                <InputWithLabel Label="@Text.BonusStat">
-                    <InputSelect @bind-value="_editBonus.BonusStatId">
-                        <option value="">@Text.None</option>
-                        @foreach (var stat in _activeCharacter.Stats)
-                        {
-                            <option value="@stat.Id">@stat.Name</option>
-                        }
-                    </InputSelect>
-                </InputWithLabel>
-            }
-            <button @onclick="x => FinishEditingEffect(true)" command="close" commandfor="edit-effect" style="width:100%;">@Text.OK</button>
-        </dialog>
-    }
+    <EditEffect EffectToEdit="_editEffect"
+                OnClickCallback="@(async x => await FinishEditingEffect(true))"
+                Stats="_activeCharacter.Stats"
+                Dice="_settings.Dice"></EditEffect>
 </div>
  
 @code {
@@ -138,7 +96,7 @@
     private List<Gear> _armory = [];
 
     private Gear? _editGear;
-    private PassiveEffect? _editBonus;
+    private Effect? _editEffect;
 
     protected override async Task OnInitializedAsync()
     {
@@ -209,46 +167,43 @@
 
     #region Effects
     // C
-    private void AddNewEffect()
+    private void AddNewEffect(bool isActive)
     {
-        var effect = new PassiveEffect();
+        var effect = new Effect() { EffectType = isActive ? EffectType.Active : EffectType.Passive };
         StartEditingEffect(effect);
     }
 
     // R
-    private void StartEditingEffect(PassiveEffect effect)
-        => _editBonus = effect;
+    private void StartEditingEffect(Effect effect)
+        => _editEffect = effect;
 
     // U
     private async Task FinishEditingEffect(bool save)
     {
-        if (_editGear is null || _editBonus is null)
+        if (_editGear is null || _editEffect is null)
             return;
         if (!save)
         {
-            _editBonus = null;
+            _editEffect = null;
             return;
         }
         // remove old version
-        var effectExists = _editGear.Bonuses.FirstOrDefault(e => e.Id == _editBonus.Id);
+        var effectExists = _editGear.Effects.FirstOrDefault(e => e.Id == _editEffect.Id);
         if (effectExists is not null)
-            _editGear.Bonuses.Remove(effectExists);
+            _editGear.Effects.Remove(effectExists);
 
-        if (!string.IsNullOrWhiteSpace(_editBonus.BonusStatId))
-            _editBonus.BonusStatShort = _activeCharacter.Stats.FirstOrDefault(s => s.Id == _editBonus.BonusStatId)?.Short;
-
-        _editGear.Bonuses.Add(_editBonus);
+        _editGear.Effects.Add(_editEffect);
 
         await ContentService.SaveArmory(_armory);
-        _editBonus = null;
+        _editEffect = null;
     }
 
     // D
-    private async Task RemoveEffect(PassiveEffect effect)
+    private async Task RemoveEffect(Effect effect)
     {
         if (_editGear is null)
             return;
-        _editGear.Bonuses.Remove(effect);
+        _editGear.Effects.Remove(effect);
         await ContentService.SaveArmory(_armory);
     }
     #endregion

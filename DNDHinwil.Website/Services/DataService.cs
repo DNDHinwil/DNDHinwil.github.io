@@ -91,6 +91,7 @@ public class DataService(HttpClient client, IJSRuntime js) : IDataService
         {
             _ = characters.Remove(savedCharacter);
         }
+
         characters.Add(characterToSave);
 
         await SaveCharacters(characters);

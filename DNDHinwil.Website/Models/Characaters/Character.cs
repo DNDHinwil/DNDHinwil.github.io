@@ -1,28 +1,43 @@
 ﻿using DNDHinwil.Website.Enums;
 using DNDHinwil.Website.Extensions;
+using System.Collections.ObjectModel;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 namespace DNDHinwil.Website.Models;
 
 public class Character
 {
+    private int _maxHealth = 2;
+    private int _maxMana = 2;
     private int _currentHealth = 2;
     private int _currentMana = 2;
+    private List<Effect> _activeEffects = [];
+    private ReadOnlyCollection<Effect> AllEffects => [.. ActiveEffects, .. EquippedGear.SelectMany(g => g.Effects)];
 
     [Key]
     public string Id { get; set; } = Guid.NewGuid().ToString();
     public string Name { get; set; } = Text.DefaultCharacterName;
     public string ImageUrl { get; set; } = "https://i.imgur.com/k6W1HJn.png";
     public int ExperiencePoints { get; set; }
-    public int MaxHealth { get; set; } = 2;
+    public int BaseMaxHealth
+    {
+        get => _maxHealth;
+        set => _maxHealth = Math.Clamp(value, 1, int.MaxValue);
+    }
     public int Health
     {
-        get => _currentHealth;
-        set => _currentHealth = Math.Clamp(value, 0, MaxHealth);
+        get => Math.Clamp(_currentHealth, 0, GetMaxHealth());
+        set => _currentHealth = Math.Clamp(value, 0, GetMaxHealth());
     }
-    public int MaxMana { get; set; } = 2;
+    public int BaseMaxMana
+    {
+        get => _maxMana;
+        set => _maxMana = Math.Clamp(value, 1, int.MaxValue);
+    }
     public int Mana
     {
-        get => _currentMana;
-        set => _currentMana = Math.Clamp(value, 0, MaxMana);
+        get => Math.Clamp(_currentMana, 0, GetMaxMana());
+        set => _currentMana = Math.Clamp(value, 0, GetMaxMana());
     }
     public int LevelModifier { get; set; }
     public int Armor => EquippedGear.Any() ? EquippedGear.Max(g => g.Armor) : 0;
@@ -33,14 +48,23 @@ public class Character
     public IEnumerable<Gear> EquippedGear => Gear.Where(g => g.IsEquipped);
     public List<Spell> Spellbook { get; set; } = [];
     public List<Stat> Stats { get; set; } = [];
-    public List<ActiveEffect> ActiveEffects { get; set; } = [];
+    public ReadOnlyCollection<Effect> ActiveEffects => _activeEffects.AsReadOnly();
+
+    public int GetMaxHealth()
+        => Math.Clamp(_maxHealth + GetModifier(AllEffects, EffectTarget.MaxHealth), 1, int.MaxValue);
+
+    public int GetMaxMana()
+        => Math.Clamp(_maxMana + GetModifier(AllEffects, EffectTarget.MaxMana), 0, int.MaxValue);
 
     public int GetLevel(IEnumerable<LevelThreshold> thresholds)
         => (thresholds.GetLastThreshold(ExperiencePoints)?.Level ?? 0) + LevelModifier;
 
-    public async Task UseQuickEffect(Effect effect) => await UseEffectsOnYourself([effect]);
+    public List<Effect> GetPassiveEffects()
+        => [.. EquippedGear.SelectMany(g => g.Effects).Where(e => e.EffectType is EffectType.Passive)];
 
-    public async Task UseSpell(Spell spell, bool useOnYourself)
+    public async Task UseQuickEffect(Effect effect) => await TriggerEffectOnCharacter(effect, null);
+
+    public async Task UseSpell(Spell spell, bool useOnYourself, List<Modifier> modifiers)
     {
         if (spell.ManaCost > Mana)
             return;
@@ -48,13 +72,14 @@ public class Character
 
         if (useOnYourself && spell.CanBeUsedOnSelf)
         {
-            await UseEffectsOnYourself(spell.Effects);
+            AddActiveEffects(spell.Effects);
+            _ = spell.Effects.Where(e => e.Duration is EffectDuration.None).Select(e => TriggerEffectOnCharacter(e, modifiers.FirstOrDefault(m => m.Stat.Id == e.BonusStatId)));
         }
     }
 
-    public async Task UseEquipmentItem(Equipment equipment, bool useOnYourself)
+    public async Task UseEquipmentItem(Equipment equipment, bool useOnYourself, List<Modifier> modifiers)
     {
-        if (equipment.Quantity < 1)
+        if (equipment.Cooldown > 0 || equipment.Quantity < 1)
             return;
         if (equipment.DecreasesWithUse)
         {
@@ -63,44 +88,52 @@ public class Character
                 _ = Inventory.Remove(equipment);
         }
 
-        if (useOnYourself)
+        if (useOnYourself && equipment.CanBeUsedOnSelf)
         {
-            await UseEffectsOnYourself(equipment.Effects);
+            AddActiveEffects(equipment.Effects);
+            _ = equipment.Effects.Where(e => e.Duration is EffectDuration.None).Select(e => TriggerEffectOnCharacter(e, modifiers.FirstOrDefault(m => m.Stat.Id == e.BonusStatId)));
         }
     }
+    public async Task UseGear(Gear gear, bool useOnYourself, List<Modifier> modifiers)
+    {
+        if (gear.Cooldown > 0 || !gear.IsEquipped)
+            return;
+
+        if (useOnYourself && gear.CanBeUsedOnSelf)
+        {
+            AddActiveEffects(gear.Effects);
+            _ = gear.Effects.Where(e => e.Duration is EffectDuration.None).Select(e => TriggerEffectOnCharacter(e, modifiers.FirstOrDefault(m => m.Stat.Id == e.BonusStatId)));
+        }
+    }
+
+    public async Task AddActiveEffect(Effect effect)
+        => AddActiveEffects([effect]);
+    public async Task RemoveActiveEffect(Effect effect) 
+        => _activeEffects.Remove(effect);
 
     public async Task Rest()
     {
-        ActiveEffects.RemoveAll(x => x.Duration == EffectDuration.Turns);
-        Health = MaxHealth;
-        Mana = MaxMana;
+        _ = _activeEffects.RemoveAll(x => x.Duration is EffectDuration.Turns or EffectDuration.UntilHealed);
+        Health = GetMaxHealth();
+        Mana = GetMaxMana();
     }
 
-    public async Task ExecuteActiveEffects(bool isEndOfTurn)
+    public async Task ExecuteActiveEffects(bool isEndOfTurn, List<Modifier> modifiers)
     {
-        if (ActiveEffects.Any(a => a.Outcome is EffectOutcome.Heals
+        if (ActiveEffects.Any(a => a.Outcome is EffectOutcome.Increases
             && a.Target is EffectTarget.Health
-            && a.TriggersAtEnd == isEndOfTurn))
-            _ = ActiveEffects.RemoveAll(x => x.Duration is EffectDuration.UntilHealed);
+            && a.TriggersAtEndOfTurn == isEndOfTurn))
+            _ = _activeEffects.RemoveAll(x => x.Duration is EffectDuration.UntilHealed);
 
-        foreach (var effect in ActiveEffects.Where(e => e.TriggersAtEnd == isEndOfTurn))
+        foreach (var effect in ActiveEffects.Where(e => e.TriggersAtEndOfTurn == isEndOfTurn && e.NumberOfDice < 1))
         {
-            switch (effect.Outcome)
-            {
-                case EffectOutcome.DealsDamage:
-                    await TakeDamage(effect);
-                    break;
-                case EffectOutcome.Heals:
-                    await Heal(effect);
-                    break;
-                default:
-                    break;
-            }
-
+            await TriggerEffectOnCharacter(effect, modifiers.FirstOrDefault(m => m.Stat.Id == effect.BonusStatId));
             if (effect.Duration is EffectDuration.Turns)
                 effect.Turns--;
         }
+        _ = _activeEffects.RemoveAll(e => e.Duration is EffectDuration.Turns && e.Turns < 1);
     }
+
     public List<Modifier> CalculateModifiers(AbilityScore[] table)
     {
         var res = new List<Modifier>();
@@ -111,83 +144,46 @@ public class Character
                 Stat = stat,
                 StatValue = table.LastOrDefault(s => s.Score <= stat.Score)?.Modifier ?? 0,
                 BoostValue = stat.Boost,
-                EquipmentValue = Gear.SelectMany(x => x.Bonuses).Where(b => b.BonusStatId == stat.Id).Sum(b => b.Outcome == BonusOutcome.Increases ? b.Strength : b.Strength * -1)
+                EffectValue = GetModifier(ActiveEffects.Where(b => b.TargetStatId == stat.Id), EffectTarget.Stat),
+                EquipmentValue = GetModifier(EquippedGear.SelectMany(g => g.Effects).Where(b => b.TargetStatId == stat.Id), EffectTarget.Stat)
             };
             res.Add(modifier);
         }
         return res;
     }
-    private async Task Heal(Effect effect)
-    {
-        _ = ActiveEffects.RemoveAll(x => x.Duration is EffectDuration.UntilHealed);
-
-        switch (effect.Target)
-        {
-            case EffectTarget.Health:
-                Health += effect.Strength;
-                break;
-            case EffectTarget.Mana:
-                Mana += effect.Strength;
-                break;
-            case EffectTarget.HealthAndMana:
-                Health += effect.Strength;
-                Mana += effect.Strength;
-                break;
-            default:
-                break;
-        }
-    }
-
-    private async Task TakeDamage(Effect effect)
-    {
-        switch (effect.Target)
-        {
-            case EffectTarget.Health:
-                Health -= Math.Clamp(effect.Strength - DamageReduction, 0, effect.Strength);
-                break;
-            case EffectTarget.Mana:
-                Mana -= effect.Strength;
-                break;
-            case EffectTarget.HealthAndMana:
-                Health -= Math.Clamp(effect.Strength - DamageReduction, 0, effect.Strength);
-                Mana -= effect.Strength;
-                break;
-            default:
-                break;
-        }
-    }
     private int GetHealthDamageReduction()
+        => GetModifier(AllEffects, EffectTarget.IncomingDamage);
+
+    private static int GetModifier(IEnumerable<Effect> effects, EffectTarget target)
+        => effects.Where(e => e.Target == target).Sum(e => e.Outcome is EffectOutcome.Increases ? e.Strength : e.Strength * -1);
+
+    private void AddActiveEffects(IEnumerable<Effect> effects)
     {
-        var gearDamageReduction = EquippedGear.Sum(g =>
-        {
-            static int affectsDamageReduction(PassiveEffect b) => b.Target == BonusTarget.IncomingDamage && b.Outcome == BonusOutcome.Reduces ? b.Strength : 0;
-            return g.Bonuses.Sum(affectsDamageReduction);
-        });
-
-        var activeEffectDamageReduction = ActiveEffects.Sum(g =>
-        {
-            static int affectsDamageReduction(ActiveEffect b) => b.Target == EffectTarget.Health && b.Outcome == EffectOutcome.ReducesDamage ? b.Strength : 0;
-            return ActiveEffects.Sum(affectsDamageReduction);
-        });
-
-        return gearDamageReduction + activeEffectDamageReduction;
+        var serializedEffects = JsonSerializer.Serialize(effects.Where(e => e.EffectType is EffectType.Active));
+        _activeEffects.AddRange(JsonSerializer.Deserialize<List<Effect>>(serializedEffects) ?? []);
     }
 
-    private async Task UseEffectsOnYourself(IEnumerable<Effect> effects)
+    private async Task TriggerEffectOnCharacter(Effect effect, Modifier? modifier)
     {
-        foreach (var effect in effects)
+        if (effect.Outcome is EffectOutcome.Special)
+            return;
+
+        if (effect.Outcome is EffectOutcome.Increases && effect.Target is EffectTarget.Health or EffectTarget.MaxHealth)
         {
-            switch (effect.Outcome)
-            {
-                case EffectOutcome.DealsDamage:
-                    await TakeDamage(effect);
-                    break;
-                case EffectOutcome.Heals:
-                    await Heal(effect);
-                    break;
-                default:
-                    break;
-            }
+            _ = _activeEffects.RemoveAll(x => x.Duration is EffectDuration.UntilHealed);
+        }
+
+
+        switch (effect.Target)
+        {
+            case EffectTarget.Health:
+                Health = effect.Outcome is EffectOutcome.Increases ? Health + effect.GetTotalStrength(modifier) : Health - effect.Strength;
+                break;
+            case EffectTarget.Mana:
+                Mana = effect.Outcome is EffectOutcome.Increases ? Mana + effect.Strength : Mana - effect.Strength;
+                break;
+            default:
+                break;
         }
     }
 }

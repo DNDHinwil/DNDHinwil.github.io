@@ -47,7 +47,7 @@ public static class CampaignGenerator
             new(){Name = Text.Strength, Short = Text.Strength_Short, Score = 10 },
             new(){Name = Text.Charisma, Short = Text.Charisma_Short, Score = 10 },
             new(){Name = Text.Constitution, Short = Text.Constitution_Short, Score = 10 },
-            new(){Name = Text.Luck, Short = Text.Wisdom_Short, Score = 10 }
+            new(){Name = Text.Luck, Short = Text.Luck_Short, Score = 10 }
             ];
     private static List<Equipment> GenerateHinwilDefaultEquipment()
         => [
@@ -56,8 +56,8 @@ public static class CampaignGenerator
                 Name = "Einfacher Heiltrank",
                 Effects =
                 [
-                    new() { Outcome = EffectOutcome.Heals, Strength = 5, Target = EffectTarget.Health},
-                    new() { Outcome = EffectOutcome.Heals, Strength = 3, Target = EffectTarget.Mana}
+                    new() { Outcome = EffectOutcome.Reduces, Strength = 5, Target = EffectTarget.Health},
+                    new() { Outcome = EffectOutcome.Reduces, Strength = 3, Target = EffectTarget.Mana}
                 ],
                 Usable = true,
                 DecreasesWithUse = true,
@@ -89,7 +89,7 @@ public static class CampaignGenerator
                 Range = 10,
                 Effects =
                 [
-                    new() { Outcome = EffectOutcome.DealsDamage, Strength = 5, Target = EffectTarget.Health, }
+                    new() { Outcome = EffectOutcome.Reduces, Strength = 5, Target = EffectTarget.Health, }
                 ],
             },
             new() 

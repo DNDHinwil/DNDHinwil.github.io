@@ -5,5 +5,9 @@ public enum EffectTarget
     None,
     Health,
     Mana,
-    HealthAndMana
+    MaxHealth,
+    MaxMana,
+    Stat,
+    IncomingDamage,
+    OutgoingDamage
 }

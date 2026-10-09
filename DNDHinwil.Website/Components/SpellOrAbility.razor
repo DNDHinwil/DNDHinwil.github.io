@@ -4,9 +4,14 @@
     <div style="text-align:left;">@(Model.Range > MeleeRange ? "🏹" : "⚔")</div>
     <div class="spell-label" style="text-align:right;">@Model.ManaCost</div>
     <div style="text-align:left;">💧</div>
-    @foreach (var effect in Model.Effects)
+    @if (Model.Effects.Any())
     {
-        <div class="spell-effect" style="grid-column:span 5;">@effect.ToString(Modifiers?.FirstOrDefault(m => effect.BonusStatId == m.Stat.Id))</div>
+        <div class="effects" style="grid-column:span 5;">
+            @foreach (var effect in Model.Effects)
+            {
+                <EffectView Model="effect" Modifiers="Modifiers"></EffectView>
+            }
+        </div>
     }
 </div>
 

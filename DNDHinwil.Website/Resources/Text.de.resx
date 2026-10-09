@@ -147,8 +147,8 @@
   <data name="Name" xml:space="preserve">
     <value>Name</value>
   </data>
-  <data name="NewTriggeredEffect" xml:space="preserve">
-    <value>Neuer aktivierter Effekt</value>
+  <data name="NewActiveEffect" xml:space="preserve">
+    <value>Neuer Aktiver Effekt</value>
   </data>
   <data name="None" xml:space="preserve">
     <value>Keines</value>
@@ -172,10 +172,10 @@
     <value>Züge</value>
   </data>
   <data name="UntilRemoved" xml:space="preserve">
-    <value>Bis Entfernt</value>
+    <value>bis Entfernt</value>
   </data>
   <data name="UntilHealed" xml:space="preserve">
-    <value>Bis Geheilt</value>
+    <value>bis Geheilt</value>
   </data>
   <data name="Back" xml:space="preserve">
     <value>Zurück</value>
@@ -247,7 +247,7 @@
     <value>Test</value>
   </data>
   <data name="TakeHealing" xml:space="preserve">
-    <value>Heile Dich</value>
+    <value>Heile</value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>Abbrechen</value>
@@ -276,8 +276,8 @@
   <data name="Modifiers" xml:space="preserve">
     <value>Bonuses</value>
   </data>
-  <data name="TriggeredEffect" xml:space="preserve">
-    <value>Aktivierter Effekt</value>
+  <data name="ActiveEffect" xml:space="preserve">
+    <value>Aktiver Effekt</value>
   </data>
   <data name="Equipment" xml:space="preserve">
     <value>Ausrüstung</value>
@@ -402,8 +402,8 @@
   <data name="Cast" xml:space="preserve">
     <value>Wirken</value>
   </data>
-  <data name="NoTriggeredEffects" xml:space="preserve">
-    <value>Keine aktivierten Effekte</value>
+  <data name="NoActiveEffects" xml:space="preserve">
+    <value>Keine aktiven Effekte</value>
   </data>
   <data name="NoSpellsInSpellbook" xml:space="preserve">
     <value>Keine Zauber im Zauberbuch</value>
@@ -621,8 +621,8 @@
   <data name="Dice" xml:space="preserve">
     <value>Würfel</value>
   </data>
-  <data name="UseStrengthAsBonusDamage" xml:space="preserve">
-    <value>Nutze Stärke als bonus schaden</value>
+  <data name="FlatBonusDamage" xml:space="preserve">
+    <value>Bonus Schaden</value>
   </data>
   <data name="DiceType" xml:space="preserve">
     <value>Würfeltyp</value>
@@ -707,5 +707,35 @@
   </data>
   <data name="PictureUrl" xml:space="preserve">
     <value>Bild url</value>
+  </data>
+  <data name="Value" xml:space="preserve">
+    <value>Wert</value>
+  </data>
+  <data name="IncomingDamage" xml:space="preserve">
+    <value>Eingehender Schaden</value>
+  </data>
+  <data name="OutgoingDamage" xml:space="preserve">
+    <value>Verursachter Schaden</value>
+  </data>
+  <data name="StatNotSet" xml:space="preserve">
+    <value>Eigenschaft nicht definiert</value>
+  </data>
+  <data name="ForXTurns" xml:space="preserve">
+    <value>für {{TURNS}} Züge</value>
+  </data>
+  <data name="StatToBuff" xml:space="preserve">
+    <value>Verstärkte Eigenschaft</value>
+  </data>
+  <data name="BuffsAndDebuffs" xml:space="preserve">
+    <value>Buffs und Debuffs</value>
+  </data>
+  <data name="BaseMaxHealth" xml:space="preserve">
+    <value>Basis Maximum Lebenspunkte</value>
+  </data>
+  <data name="BaseMaxMana" xml:space="preserve">
+    <value>Basis Maximum Mana</value>
+  </data>
+  <data name="NewPassiveEffect" xml:space="preserve">
+    <value>Neuer Passiver Effekt</value>
   </data>
 </root>

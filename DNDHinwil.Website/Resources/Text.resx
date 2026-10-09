@@ -147,8 +147,8 @@
   <data name="Name" xml:space="preserve">
     <value>Name</value>
   </data>
-  <data name="NewTriggeredEffect" xml:space="preserve">
-    <value>New triggered Effect</value>
+  <data name="NewActiveEffect" xml:space="preserve">
+    <value>New Active Effect</value>
   </data>
   <data name="None" xml:space="preserve">
     <value>None</value>
@@ -172,10 +172,10 @@
     <value>Turns</value>
   </data>
   <data name="UntilRemoved" xml:space="preserve">
-    <value>Until Removed</value>
+    <value>until Removed</value>
   </data>
   <data name="UntilHealed" xml:space="preserve">
-    <value>Until Healed</value>
+    <value>until Healed</value>
   </data>
   <data name="Back" xml:space="preserve">
     <value>Back</value>
@@ -247,7 +247,7 @@
     <value>Test</value>
   </data>
   <data name="TakeHealing" xml:space="preserve">
-    <value>Heal Yourself</value>
+    <value>Heal</value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
@@ -276,8 +276,8 @@
   <data name="Modifiers" xml:space="preserve">
     <value>Modifiers</value>
   </data>
-  <data name="TriggeredEffect" xml:space="preserve">
-    <value>Triggered Effect</value>
+  <data name="ActiveEffect" xml:space="preserve">
+    <value>Active Effect</value>
   </data>
   <data name="Equipment" xml:space="preserve">
     <value>Equipment</value>
@@ -402,8 +402,8 @@
   <data name="Cast" xml:space="preserve">
     <value>Cast</value>
   </data>
-  <data name="NoTriggeredEffects" xml:space="preserve">
-    <value>No triggered effects</value>
+  <data name="NoActiveEffects" xml:space="preserve">
+    <value>No active Effects</value>
   </data>
   <data name="NoSpellsInSpellbook" xml:space="preserve">
     <value>No spells in Spellbook</value>
@@ -424,7 +424,7 @@
     <value>Experience</value>
   </data>
   <data name="ExperienceTable" xml:space="preserve">
-    <value>ExperienceTable</value>
+    <value>Experience Table</value>
   </data>
   <data name="BasicHealingPotion" xml:space="preserve">
     <value>Basic healing Potion</value>
@@ -621,8 +621,8 @@
   <data name="Dice" xml:space="preserve">
     <value>Dice</value>
   </data>
-  <data name="UseStrengthAsBonusDamage" xml:space="preserve">
-    <value>Use Strength as bonus damage</value>
+  <data name="FlatBonusDamage" xml:space="preserve">
+    <value>Flat bonus Damage</value>
   </data>
   <data name="DiceType" xml:space="preserve">
     <value>Dice type</value>
@@ -707,5 +707,35 @@
   </data>
   <data name="PictureUrl" xml:space="preserve">
     <value>Picture url</value>
+  </data>
+  <data name="Value" xml:space="preserve">
+    <value>Value</value>
+  </data>
+  <data name="IncomingDamage" xml:space="preserve">
+    <value>Incoming Damage</value>
+  </data>
+  <data name="OutgoingDamage" xml:space="preserve">
+    <value>Damage done</value>
+  </data>
+  <data name="StatNotSet" xml:space="preserve">
+    <value>Stat not defined</value>
+  </data>
+  <data name="ForXTurns" xml:space="preserve">
+    <value>for {{TURNS}} Turns</value>
+  </data>
+  <data name="StatToBuff" xml:space="preserve">
+    <value>Stat to Buff</value>
+  </data>
+  <data name="BuffsAndDebuffs" xml:space="preserve">
+    <value>Buffs and Debuffs</value>
+  </data>
+  <data name="BaseMaxHealth" xml:space="preserve">
+    <value>Base Max Health</value>
+  </data>
+  <data name="BaseMaxMana" xml:space="preserve">
+    <value>Base Max Mana</value>
+  </data>
+  <data name="NewPassiveEffect" xml:space="preserve">
+    <value>New Passive Effect</value>
   </data>
 </root>

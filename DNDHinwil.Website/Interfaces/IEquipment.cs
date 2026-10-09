@@ -1,4 +1,6 @@
-﻿namespace DNDHinwil.Website.Interfaces;
+﻿using DNDHinwil.Website.Models;
+
+namespace DNDHinwil.Website.Interfaces;
 
 public interface IEquipment
 {
@@ -7,4 +9,7 @@ public interface IEquipment
     string Description { get; }
     int Weight { get; }
     bool Usable { get; }
+    bool CanBeUsedOnSelf { get; }
+    List<Effect> Effects { get; }
+    int Cooldown { get; }
 }

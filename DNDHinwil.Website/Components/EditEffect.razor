@@ -1,0 +1,162 @@
+﻿@inject IDataService ContentService
+
+@if (EffectToEdit is not null)
+{
+    <dialog id="edit-effect">
+        <h3>@Text.Effect</h3>
+        @if (EffectToEdit.EffectType is EffectType.Quick)
+        {
+            <InputWithLabel Label="@Text.Strength">
+                <InputNumber @bind-Value="EffectToEdit.Strength"></InputNumber>
+            </InputWithLabel>
+            <InputWithLabel Label="@Text.Outcome">
+                <InputSelect @bind-value="EffectToEdit.Outcome">
+                    <option value="@EffectOutcome.Reduces">@Text.Damage</option>
+                    <option value="@EffectOutcome.Increases">@Text.Healing</option>
+                </InputSelect>
+            </InputWithLabel>
+            <InputWithLabel Label="@Text.Target">
+                <InputSelect @bind-value="EffectToEdit.Target">
+                    <option value="@EffectTarget.Health">@Text.Health</option>
+                    <option value="@EffectTarget.Mana">@Text.Mana</option>
+                </InputSelect>
+            </InputWithLabel>
+        }
+        else
+        {
+            <InputWithLabel Label="@Text.Name">
+                <InputText @bind-Value="EffectToEdit.Name"></InputText>
+            </InputWithLabel>
+            <InputWithLabel Label="@Text.Outcome">
+                <InputSelect @bind-value="EffectToEdit.Outcome">
+                    <option value="@EffectOutcome.Reduces">@(EffectToEdit.Target is EffectTarget.Health or EffectTarget.Mana ? Text.Damage : Text.Reduces)</option>
+                    <option value="@EffectOutcome.Increases">@(EffectToEdit.Target is EffectTarget.Health or EffectTarget.Mana ? Text.Healing : Text.Increases)</option>
+                    <option value="@EffectOutcome.Special">@Text.Other</option>
+                </InputSelect>
+            </InputWithLabel>
+            @if (EffectToEdit.Outcome == EffectOutcome.Special)
+            {
+                <InputWithLabel Label="@Text.Description">
+                    <InputText @bind-Value="EffectToEdit.SpecialText"></InputText>
+                </InputWithLabel>
+            }
+            else
+            {
+                @if (EffectToEdit.EffectType is EffectType.Active)
+                {
+                    <InputWithLabel Label="@Text.Dice">
+                        <InputNumber @bind-Value="EffectToEdit.NumberOfDice"></InputNumber>
+                    </InputWithLabel>
+                    @if (EffectToEdit.NumberOfDice > 0)
+                    {
+                        <InputWithLabel Label="@Text.DiceType">
+                            <InputSelect @bind-value="EffectToEdit.DiceType">
+                                @foreach (var die in Dice)
+                                {
+                                    <option value="@die.Value">@die.Name</option>
+                                }
+                            </InputSelect>
+                        </InputWithLabel>
+                        <InputWithLabel Label="@Text.FlatBonusDamage">
+                            <InputCheckbox @bind-Value="EffectToEdit.UseStrengthAsBonusPower"></InputCheckbox>
+                        </InputWithLabel>
+                    }
+                }
+                @if (EffectToEdit.NumberOfDice < 1 || EffectToEdit.UseStrengthAsBonusPower)
+                {
+                    <InputWithLabel Label="@Text.Strength">
+                        <InputNumber @bind-Value="EffectToEdit.Strength"></InputNumber>
+                    </InputWithLabel>
+                }
+
+                <InputWithLabel Label="@Text.Target">
+                    <InputSelect @bind-value="EffectToEdit.Target">
+                        <option value="@EffectTarget.Health">@Text.Health</option>
+                        <option value="@EffectTarget.Mana">@Text.Mana</option>
+                        <option value="@EffectTarget.Stat">@Text.Stat</option>
+                        <option value="@EffectTarget.MaxHealth">@Text.MaxHP</option>
+                        <option value="@EffectTarget.MaxMana">@Text.MaxMP</option>
+                        <option value="@EffectTarget.IncomingDamage">@Text.IncomingDamage</option>
+                        <option value="@EffectTarget.OutgoingDamage">@Text.OutgoingDamage</option>
+                    </InputSelect>
+                </InputWithLabel>
+
+                @if (EffectToEdit.Target is EffectTarget.Stat)
+                {
+                    <InputWithLabel Label="@Text.StatToBuff">
+                        @if (Stats.Any())
+                        {
+                            <InputSelect @bind-value="EffectToEdit.TargetStatId">
+                                <option value="">@Text.None</option>
+                                @foreach (var stat in Stats.Where(s => s.Id != EffectToEdit.BonusStatId))
+                                {
+                                    <option value="@stat.Id">@stat.Name</option>
+                                }
+                            </InputSelect>
+                        }
+                        else
+                        {
+                            <div>Text.StatNotSet</div>
+                        }
+                    </InputWithLabel>
+                }
+                else
+                {
+                    <InputWithLabel Label="@Text.BonusStat">
+                        @if (Stats.Any())
+                        {
+                            <InputSelect @bind-value="EffectToEdit.BonusStatId">
+                                <option value="">@Text.None</option>
+                                @foreach (var stat in Stats.Where(s => s.Id != EffectToEdit.TargetStatId))
+                                {
+                                    <option value="@stat.Id">@stat.Name</option>
+                                }
+                            </InputSelect>
+                        }
+                        else
+                        {
+                            <div>@Text.StatNotSet</div>
+                        }
+                    </InputWithLabel>
+                }
+
+            }
+            @if (EffectToEdit.EffectType is EffectType.Active)
+            {
+                <InputWithLabel Label="@Text.Duration">
+                    <InputSelect @bind-value="EffectToEdit.Duration">
+                        <option value="@EffectDuration.UntilRemoved">@Text.UntilRemoved</option>
+                        <option value="@EffectDuration.Turns">@Text.Turns</option>
+                        <option value="@EffectDuration.UntilHealed">@Text.UntilHealed</option>
+                    </InputSelect>
+                </InputWithLabel>
+            }
+            @if (EffectToEdit.Duration is not EffectDuration.None)
+            {
+                <InputWithLabel Label="@Text.TriggersAtEndOfTurn">
+                    <InputCheckbox @bind-Value="EffectToEdit.TriggersAtEndOfTurn"></InputCheckbox>
+                </InputWithLabel>
+            }
+            @if (EffectToEdit.Duration is EffectDuration.Turns)
+            {
+                <InputWithLabel Label="@Text.Turns">
+                    <InputNumber @bind-Value="EffectToEdit.Turns"></InputNumber>
+                </InputWithLabel>
+            }
+        }
+        <button command="close" commandfor="edit-effect">@Text.Cancel</button>
+        <button @onclick="OnClickCallback" command="close" commandfor="edit-effect" style="float:right;">@Text.OK</button>
+    </dialog>
+}
+
+@code {
+    [Parameter]
+    public Effect? EffectToEdit { get; set; }
+    [Parameter]
+    public required EventCallback<MouseEventArgs> OnClickCallback { get; set; }
+    [Parameter]
+    public List<Stat> Stats { get; set; } = [];
+    [Parameter]
+    public Die[] Dice { get; set; } = [];
+
+}

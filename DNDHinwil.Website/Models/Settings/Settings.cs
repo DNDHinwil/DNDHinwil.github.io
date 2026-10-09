@@ -9,15 +9,15 @@ public class Settings
     public TimeSpan PreferredTurnLength => TimeSpan.FromMinutes(PreferredTurnLengthInMinutes);
 
     public int MeleeRange { get; set; } = 2;
-    public (int Value, string Name)[] Dice { get; set; } =
+    public Die[] Dice { get; set; } =
         [
-            (4, Text.D4),
-            (6, Text.D6),
-            (8, Text.D8),
-            (10, Text.D10),
-            (12, Text.D12),
-            (20, Text.D20),
-            (100, Text.D100),
+            new() { Value = 4, Name = Text.D4},
+            new() { Value = 6, Name = Text.D6},
+            new() { Value = 8, Name = Text.D8},
+            new() { Value = 10, Name = Text.D10},
+            new() { Value = 12, Name = Text.D12},
+            new() { Value = 20, Name = Text.D20},
+            new() { Value = 100, Name = Text.D100}
         ];
     public AbilityScore[] ScoreModifiers { get; set; } =
         [
@@ -31,7 +31,7 @@ public class Settings
             new(){ Score = 14, Modifier = 2 },
             new(){ Score = 16, Modifier = 3 },
             new(){ Score = 18, Modifier = 4 },
-            new(){ Score = 20, Modifier = 5 },
+            new(){ Score = 20, Modifier = 5 }
         ];
     public LevelThreshold[] LevelThresholds { get; set; } =
         [
