@@ -5,9 +5,14 @@
 
     <div style="grid-column:span 2;">@(!string.IsNullOrWhiteSpace(Model.Description) ? Model.Description : "")</div>
     <div style="text-align:right;">@(Model.Armor > 0 ? $"{Model.Armor} 🛡" : "")</div>
-    @foreach (var effect in Model.Effects)
+    @if (Model.Effects.Any())
     {
-        <div class="gear-bonus" style="grid-column:span 3;">@effect.ToString(Modifiers?.FirstOrDefault(m => effect.BonusStatId == m.Stat.Id), Modifiers?.FirstOrDefault(m => effect.TargetStatId == m.Stat.Id))</div>
+        <div class="effects" style="grid-column:span 3;">
+            @foreach (var effect in Model.Effects)
+            {
+                <EffectView Model="effect" Modifiers="Modifiers"></EffectView>
+            }
+        </div>
     }
 </div>
 

@@ -6,7 +6,7 @@ public class Effect : IEffect
 {
     public string Id { get; set; } = Guid.NewGuid().ToString();
     public EffectType EffectType { get; set; } = EffectType.Quick;
-    public string Name { get; set; } = Text.Effect;
+    public string Name { get; set; } = string.Empty;
     public int NumberOfDice { get; set; }
     public int DiceType { get; set; }
     public int Strength { get; set; } = 3;
@@ -20,19 +20,26 @@ public class Effect : IEffect
     public int Turns { get; set; } = 3;
     public bool TriggersAtEndOfTurn { get; set; }
 
+    public int CalculateTotalStrength(Modifier? bonusModifier)
+    {
+        if (bonusModifier is null || BonusStatId is null || bonusModifier.Stat.Id != BonusStatId)
+            return Strength;
+        return Strength + bonusModifier.TotalValue;
+    }
+
     public override string ToString()
     {
         if (Outcome is EffectOutcome.Special)
-            return SpecialText ?? "";
+            return $"{GetName()}{SpecialText ?? ""}{DurationToString()}" ;
 
         return Target switch
         {
-            EffectTarget.Health => $"{StrengthToString()} {(Outcome is EffectOutcome.Increases ? Text.Healing : Text.Damage)} {Text.To} {Text.HealthShort}{DurationToString()}",
-            EffectTarget.Mana => $"{StrengthToString()} {(Outcome is EffectOutcome.Increases ? Text.Healing : Text.Damage)} {Text.To} {Text.ManaShort}{DurationToString()}",
-            EffectTarget.MaxHealth => $"{(Outcome is EffectOutcome.Increases ? "+" : "-")}{Strength} {Text.MaxHP}{DurationToString()}",
-            EffectTarget.MaxMana => $"{(Outcome is EffectOutcome.Increases ? "+" : "-")}{Strength} {Text.MaxMP}{DurationToString()}",
-            EffectTarget.IncomingDamage => $"{(Outcome is EffectOutcome.Increases ? "+" : "-")}{Strength} {Text.IncomingDamage}{DurationToString()}",
-            EffectTarget.OutgoingDamage => $"{(Outcome is EffectOutcome.Increases ? "+" : "-")}{Strength} {Text.OutgoingDamage}{DurationToString()}",
+            EffectTarget.Health => $"{GetName()}{StrengthToString()} {(Outcome is EffectOutcome.Increases ? Text.Healing : Text.Damage)} {Text.To} {Text.HealthShort}{DurationToString()}",
+            EffectTarget.Mana => $"{GetName()}{StrengthToString()} {(Outcome is EffectOutcome.Increases ? Text.Healing : Text.Damage)} {Text.To} {Text.ManaShort}{DurationToString()}",
+            EffectTarget.MaxHealth => $"{GetName()}{(Outcome is EffectOutcome.Increases ? "+" : "-")}{Strength} {Text.MaxHP}{DurationToString()}",
+            EffectTarget.MaxMana => $"{GetName()}{(Outcome is EffectOutcome.Increases ? "+" : "-")}{Strength} {Text.MaxMP}{DurationToString()}",
+            EffectTarget.IncomingDamage => $"{GetName()}{(Outcome is EffectOutcome.Increases ? "+" : "-")}{Strength} {Text.IncomingDamage}{DurationToString()}",
+            EffectTarget.OutgoingDamage => $"{GetName()}{(Outcome is EffectOutcome.Increases ? "+" : "-")}{Strength} {Text.OutgoingDamage}{DurationToString()}",
             EffectTarget.Stat => Text.StatNotSet,
             _ => "",
         };
@@ -40,22 +47,25 @@ public class Effect : IEffect
     public string ToString(Modifier? bonusModifier, Modifier? targetModifier)
     {
         if (Outcome is EffectOutcome.Special)
-            return SpecialText ?? "";
+            return $"{GetName()}{SpecialText ?? ""}{DurationToString()}";
         if (Target is EffectTarget.Stat && (targetModifier is null || TargetStatId is null || targetModifier.Stat.Id != TargetStatId))
             return ToString();
 
         return Target switch
         {
-            EffectTarget.Health => $"{StrengthToString(bonusModifier)} {(Outcome is EffectOutcome.Increases ? Text.Healing : Text.Damage)} {Text.To} {Text.HealthShort}{DurationToString()}",
-            EffectTarget.Mana => $"{StrengthToString(bonusModifier)} {(Outcome is EffectOutcome.Increases ? Text.Healing : Text.Damage)} {Text.To} {Text.ManaShort}{DurationToString()}",
-            EffectTarget.MaxHealth => $"{(Outcome is EffectOutcome.Increases ? "+" : "-")}{StrengthToString(bonusModifier)} {Text.MaxHP}{DurationToString()}",
-            EffectTarget.MaxMana => $"{(Outcome is EffectOutcome.Increases ? "+" : "-")}{StrengthToString(bonusModifier)} {Text.MaxMP}{DurationToString()}",
-            EffectTarget.IncomingDamage => $"{(Outcome is EffectOutcome.Increases ? "+" : "-")}{StrengthToString(bonusModifier)} {Text.IncomingDamage}{DurationToString()}",
-            EffectTarget.OutgoingDamage => $"{(Outcome is EffectOutcome.Increases ? "+" : "-")}{StrengthToString(bonusModifier)} {Text.OutgoingDamage}{DurationToString()}",
-            EffectTarget.Stat => $"{(Outcome is EffectOutcome.Increases ? "+" : "-")}{StrengthToString(bonusModifier)} {targetModifier!.Stat.Short}{DurationToString()}",
+            EffectTarget.Health => $"{GetName()}{StrengthToString(bonusModifier)} {(Outcome is EffectOutcome.Increases ? Text.Healing : Text.Damage)} {Text.To} {Text.HealthShort}{DurationToString()}",
+            EffectTarget.Mana => $"{GetName()}{StrengthToString(bonusModifier)} {(Outcome is EffectOutcome.Increases ? Text.Healing : Text.Damage)} {Text.To} {Text.ManaShort}{DurationToString()}",
+            EffectTarget.MaxHealth => $"{GetName()}{(Outcome is EffectOutcome.Increases ? "+" : "-")}{StrengthToString(bonusModifier)} {Text.MaxHP}{DurationToString()}",
+            EffectTarget.MaxMana => $"{GetName()}{(Outcome is EffectOutcome.Increases ? "+" : "-")}{StrengthToString(bonusModifier)} {Text.MaxMP}{DurationToString()}",
+            EffectTarget.IncomingDamage => $"{GetName()}{(Outcome is EffectOutcome.Increases ? "+" : "-")}{StrengthToString(bonusModifier)} {Text.IncomingDamage}{DurationToString()}",
+            EffectTarget.OutgoingDamage => $"{GetName()}{(Outcome is EffectOutcome.Increases ? "+" : "-")}{StrengthToString(bonusModifier)} {Text.OutgoingDamage}{DurationToString()}",
+            EffectTarget.Stat => $"{GetName()}{(Outcome is EffectOutcome.Increases ? "+" : "-")}{StrengthToString(null)} {targetModifier!.Stat.Short}{DurationToString()}",
             _ => ""
         };
     }
+
+    private string GetName()
+        => string.IsNullOrWhiteSpace(Name) ? "" : $"{Name}: ";
 
     private string DurationToString()
         => Duration switch
@@ -80,4 +90,5 @@ public class Effect : IEffect
             : UseStrengthAsBonusPower ? $"{NumberOfDice} {Text.D}{DiceType} +{Strength} +{bonusModifier.TotalValue} ({bonusModifier.Stat.Short})"
             : $"{NumberOfDice} {Text.D}{DiceType} +{bonusModifier.TotalValue} ({bonusModifier.Stat.Short})";
     }
+
 }

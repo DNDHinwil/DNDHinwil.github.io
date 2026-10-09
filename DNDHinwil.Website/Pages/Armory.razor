@@ -11,7 +11,7 @@
         @foreach (var item in _activeCharacter.Gear)
         {
             <div class="character-gear">
-                <GearItem Model="item"></GearItem>
+                <GearItem Model="item" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></GearItem>
                 <button class="right-button" @onclick="async x => await RemoveGearFromCharacter(item)">@Constants.Symbol_RemoveFromInventory</button>
             </div>
         }
@@ -21,7 +21,7 @@
         {
             <div class="armory-gear">
                 <button class="left-button" command="show-modal" commandfor="delete-gear" @onclick="x => StartEditingGear(item)">@Constants.Symbol_Delete</button>
-                <GearItem Model="item"></GearItem>
+                <GearItem Model="item" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></GearItem>
                 <button class="right-button" command="show-modal" commandfor="edit-gear" @onclick="x => StartEditingGear(item)">@Constants.Symbol_Edit</button>
                 <button class="right-button" @onclick="async x => await AddGearToCharacter(item)">@Constants.Symbol_AddToInventory</button>
             </div>
@@ -70,7 +70,8 @@
                 {
                     <div>@Text.NoBonuses</div>
                 }
-                <button @onclick="x => AddNewEffect()" command="show-modal" commandfor="edit-effect" style="margin-top:0.5rem;">@Text.NewGearBonus</button>
+                <button @onclick="x => AddNewEffect(true)" command="show-modal" commandfor="edit-effect" style="margin-top:0.5rem;">@Text.NewGearBonus</button>
+                <button @onclick="x => AddNewEffect(false)" command="show-modal" commandfor="edit-effect" style="margin-top:0.5rem;">@Text.NewGearBonus</button>
             </div>
             <button @onclick="x => FinishEditingGear(false)" command="close" commandfor="edit-gear">@Text.Cancel</button>
             <button @onclick="x => FinishEditingGear(true)" command="close" commandfor="edit-gear" style="float:right;">@Text.Save</button>
@@ -166,9 +167,9 @@
 
     #region Effects
     // C
-    private void AddNewEffect()
+    private void AddNewEffect(bool isActive)
     {
-        var effect = new Effect() { EffectType = EffectType.Passive };
+        var effect = new Effect() { EffectType = isActive ? EffectType.Active : EffectType.Passive };
         StartEditingEffect(effect);
     }
 

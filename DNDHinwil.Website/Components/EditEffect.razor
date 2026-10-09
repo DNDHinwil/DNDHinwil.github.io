@@ -29,8 +29,8 @@
             </InputWithLabel>
             <InputWithLabel Label="@Text.Outcome">
                 <InputSelect @bind-value="EffectToEdit.Outcome">
-                    <option value="@EffectOutcome.Reduces">@(EffectToEdit.EffectType is EffectType.Passive ? Text.Reduces : Text.Damage)</option>
-                    <option value="@EffectOutcome.Increases">@(EffectToEdit.EffectType is EffectType.Passive ? Text.Increases : Text.Heal)</option>
+                    <option value="@EffectOutcome.Reduces">@Text.Reduces</option>
+                    <option value="@EffectOutcome.Increases">@Text.Increases</option>
                     <option value="@EffectOutcome.Special">@Text.Other</option>
                 </InputSelect>
             </InputWithLabel>
@@ -65,22 +65,6 @@
                         <InputNumber @bind-Value="EffectToEdit.Strength"></InputNumber>
                     </InputWithLabel>
                 }
-                <InputWithLabel Label="@Text.BonusStat">
-                    @if (Stats.Any())
-                    {
-                        <InputSelect @bind-value="EffectToEdit.BonusStatId">
-                            <option value="">@Text.None</option>
-                            @foreach (var stat in Stats.Where(s => s.Id != EffectToEdit.TargetStatId))
-                            {
-                                <option value="@stat.Id">@stat.Name</option>
-                            }
-                        </InputSelect>
-                    }
-                    else
-                    {
-                        <div>@Text.StatNotSet</div>
-                    }
-                </InputWithLabel>
 
                 <InputWithLabel Label="@Text.Target">
                     <InputSelect @bind-value="EffectToEdit.Target">
@@ -113,21 +97,49 @@
                         }
                     </InputWithLabel>
                 }
-
-                @if (EffectToEdit.EffectType is EffectType.Active)
+                else
                 {
-                    <InputWithLabel Label="@Text.Duration">
-                        <InputSelect @bind-value="EffectToEdit.Duration">
-                            <option value="@EffectDuration.Turns">@Text.Turns</option>
-                            <option value="@EffectDuration.UntilHealed">@Text.UntilHealed</option>
-                            <option value="@EffectDuration.UntilRemoved">@Text.UntilRemoved</option>
-                        </InputSelect>
+                    <InputWithLabel Label="@Text.BonusStat">
+                        @if (Stats.Any())
+                        {
+                            <InputSelect @bind-value="EffectToEdit.BonusStatId">
+                                <option value="">@Text.None</option>
+                                @foreach (var stat in Stats.Where(s => s.Id != EffectToEdit.TargetStatId))
+                                {
+                                    <option value="@stat.Id">@stat.Name</option>
+                                }
+                            </InputSelect>
+                        }
+                        else
+                        {
+                            <div>@Text.StatNotSet</div>
+                        }
                     </InputWithLabel>
                 }
+
+            }
+            @if (EffectToEdit.EffectType is EffectType.Active)
+            {
+                <InputWithLabel Label="@Text.Duration">
+                    <InputSelect @bind-value="EffectToEdit.Duration">
+                        <option value="@EffectDuration.UntilRemoved">@Text.UntilRemoved</option>
+                        <option value="@EffectDuration.Turns">@Text.Turns</option>
+                        <option value="@EffectDuration.UntilHealed">@Text.UntilHealed</option>
+                    </InputSelect>
+                </InputWithLabel>
+                <InputWithLabel Label="@Text.TriggersAtEndOfTurn">
+                    <InputCheckbox @bind-Value="EffectToEdit.TriggersAtEndOfTurn"></InputCheckbox>
+                </InputWithLabel>
+            }
+            @if (EffectToEdit.Duration is EffectDuration.Turns)
+            {
+                <InputWithLabel Label="@Text.Turns">
+                    <InputNumber @bind-Value="EffectToEdit.Turns"></InputNumber>
+                </InputWithLabel>
             }
         }
-
-        <button @onclick="OnClickCallback" command="close" commandfor="edit-effect" style="width:100%;">@Text.OK</button>
+        <button command="close" commandfor="edit-effect">@Text.Cancel</button>
+        <button @onclick="OnClickCallback" command="close" commandfor="edit-effect" style="float:right;">@Text.OK</button>
     </dialog>
 }
 

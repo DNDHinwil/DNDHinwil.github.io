@@ -96,7 +96,7 @@ public class Character
             && a.TriggersAtEndOfTurn == isEndOfTurn))
             _ = ActiveEffects.RemoveAll(x => x.Duration is EffectDuration.UntilHealed);
 
-        foreach (var effect in ActiveEffects.Where(e => e.TriggersAtEndOfTurn == isEndOfTurn && e.NumberOfDice > 0))
+        foreach (var effect in ActiveEffects.Where(e => e.TriggersAtEndOfTurn == isEndOfTurn && e.NumberOfDice < 1))
         {
             await TriggerEffectOnCharacter(effect);
             if (effect.Duration is EffectDuration.Turns)
@@ -114,8 +114,8 @@ public class Character
                 Stat = stat,
                 StatValue = table.LastOrDefault(s => s.Score <= stat.Score)?.Modifier ?? 0,
                 BoostValue = stat.Boost,
-                EffectValue = ActiveEffects.Where(b => b.BonusStatId == stat.Id).Sum(b => b.Outcome == EffectOutcome.Increases ? b.Strength : b.Strength * -1),
-                EquipmentValue = EquippedGear.SelectMany(x => x.Effects).Where(b => b.BonusStatId == stat.Id).Sum(b => b.Outcome == EffectOutcome.Increases ? b.Strength : b.Strength * -1)
+                EffectValue = GetModifier(ActiveEffects.Where(b => b.TargetStatId == stat.Id), EffectTarget.Stat),
+                EquipmentValue = GetModifier(EquippedGear.SelectMany(g => g.Effects).Where(b => b.TargetStatId == stat.Id), EffectTarget.Stat)
             };
             res.Add(modifier);
         }

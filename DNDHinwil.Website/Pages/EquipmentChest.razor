@@ -12,7 +12,7 @@
         {
             <div class="inventory-item">
                 <button class="left-button" @onclick="x => RemoveEquipmentFromInventory(equipment, true)">@Constants.Symbol_Delete</button>
-                <EquipmentItem Model="equipment"></EquipmentItem>
+                <EquipmentItem Model="equipment" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></EquipmentItem>
                 <button class="right-button" @onclick="x => RemoveEquipmentFromInventory(equipment, false)">@Constants.Symbol_RemoveFromInventory</button>
             </div> 
         }
@@ -23,7 +23,7 @@
         {
             <div class="equipment-chest-item">
                 <button class="left-button" command="show-modal" commandfor="delete-equipment" @onclick="x => StartEditingEquipment(equipment)">@Constants.Symbol_Delete</button>
-                <EquipmentItem Model="equipment" HideQuantity="true"></EquipmentItem>
+                <EquipmentItem Model="equipment" HideQuantity="true" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></EquipmentItem>
                 <button class="right-button" command="show-modal" commandfor="edit-equipment" @onclick="x => StartEditingEquipment(equipment)">@Constants.Symbol_Edit</button>
                 <button class="right-button" @onclick="async x => await AddEquipmentToInventory(equipment)">@Constants.Symbol_AddToInventory</button>
             </div>

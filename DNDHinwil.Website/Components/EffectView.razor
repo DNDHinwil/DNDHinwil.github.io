@@ -1,0 +1,9 @@
+﻿
+<div class="effect">@Model.ToString(Modifiers?.FirstOrDefault(m => Model.BonusStatId == m.Stat.Id), Modifiers?.FirstOrDefault(m => Model.TargetStatId == m.Stat.Id))</div>
+
+@code {
+    [Parameter]
+    public required Effect Model { get; set; }
+    [Parameter]
+    public List<Modifier>? Modifiers { get; set; }
+}

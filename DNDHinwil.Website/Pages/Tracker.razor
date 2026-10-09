@@ -81,33 +81,7 @@
             {
                 <div class="active-effect">
                     <button class="left-button" @onclick="x => RemoveActiveEffect(effect)">@Constants.Symbol_Delete</button>
-                    <div>@effect.Name</div>
-                    @switch (effect.Outcome)
-                    {
-                        case EffectOutcome.Reduces:
-                            <div>@effect.Strength @Text.Damage</div>
-                            break;
-                        case EffectOutcome.Increases:
-                            <div>@effect.Strength @Text.Heal</div>
-                            break;
-                        case EffectOutcome.Special:
-                            <div></div>
-                            break;
-                        default:
-                            break;
-                    }
-                    @switch (effect.Duration)
-                    {
-                        case EffectDuration.Turns:
-                            <div style="text-align:center;">@effect.Turns @Text.Turns</div>
-                            break;
-                        case EffectDuration.UntilHealed:
-                            <div style="text-align:center;">@Constants.Symbol_UntilHealed</div>
-                            break;
-                        case EffectDuration.UntilRemoved:
-                            <div style="text-align:center;">@Constants.Symbol_UntilRemoved</div>
-                            break;
-                    }
+                    <EffectView Model="effect" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></EffectView>
                     <button class="right-button" @onclick="x => StartEditingActiveEffect(effect)" command="show-modal" commandfor="edit-effect">@Constants.Symbol_Edit</button>
                 </div>
             }
@@ -184,9 +158,10 @@
             {
                 <div class="equipment-item">
                     <GearItem Model="item" Modifiers="@_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></GearItem>
-                    @if (item.Effects.Any(e => e.Duration != EffectDuration.None))
+                    @if (item.Effects.Any(e => e.EffectType is EffectType.Active))
                     {
-                        
+                        <div></div>
+                        <div></div>
                     }
                     else
                     {

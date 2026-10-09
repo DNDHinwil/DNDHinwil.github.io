@@ -108,7 +108,7 @@ header {
 
 .active-effect {
 	display: grid;
-	grid-template-columns: 40px auto 90px 75px 40px;
+	grid-template-columns: 40px auto 40px;
 	border-top: 1px dotted var(--color-foreground);
 }
 
