@@ -10,13 +10,15 @@
     <CollapsibleSection Title="@Text.InventoryOf.Replace("{{CHARACTER}}", _activeCharacter.Name)">
         @foreach (var equipment in _activeCharacter.Inventory)
         {
-            <div class="inventory-item">
+            <div class="equipment-chest-item">
                 <button class="left-button" @onclick="x => RemoveEquipmentFromInventory(equipment, true)">@Constants.Symbol_Delete</button>
                 <EquipmentItem Model="equipment" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></EquipmentItem>
+                <div></div>
                 <button class="right-button" @onclick="x => RemoveEquipmentFromInventory(equipment, false)">@Constants.Symbol_RemoveFromInventory</button>
             </div> 
         }
     </CollapsibleSection>
+
     <CollapsibleSection Title="@Text.EquipmentChest">
         <h3 style="grid-column:span 3;">@Text.EquipmentChest</h3>
         @foreach (var equipment in _equipmentChest)

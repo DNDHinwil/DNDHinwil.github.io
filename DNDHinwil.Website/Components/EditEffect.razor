@@ -29,8 +29,8 @@
             </InputWithLabel>
             <InputWithLabel Label="@Text.Outcome">
                 <InputSelect @bind-value="EffectToEdit.Outcome">
-                    <option value="@EffectOutcome.Reduces">@(EffectToEdit.Target is EffectTarget.Health or EffectTarget.Mana ? Text.Damage : Text.Reduces)</option>
-                    <option value="@EffectOutcome.Increases">@(EffectToEdit.Target is EffectTarget.Health or EffectTarget.Mana ? Text.Healing : Text.Increases)</option>
+                    <option value="@EffectOutcome.Reduces">@(EffectToEdit.Target is EffectTarget.Health or EffectTarget.Mana && EffectToEdit.EffectType is EffectType.Active ? Text.Damage : Text.Reduces)</option>
+                    <option value="@EffectOutcome.Increases">@(EffectToEdit.Target is EffectTarget.Health or EffectTarget.Mana && EffectToEdit.EffectType is EffectType.Active ? Text.Healing : Text.Increases)</option>
                     <option value="@EffectOutcome.Special">@Text.Other</option>
                 </InputSelect>
             </InputWithLabel>

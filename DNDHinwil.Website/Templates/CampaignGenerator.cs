@@ -2,7 +2,7 @@
 using DNDHinwil.Website.Models;
 using System.Globalization;
 
-namespace DNDHinwil.Website.Generators;
+namespace DNDHinwil.Website.Templates;
 
 public static class CampaignGenerator
 {

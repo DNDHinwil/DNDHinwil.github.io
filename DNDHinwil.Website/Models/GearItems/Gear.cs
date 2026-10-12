@@ -2,7 +2,7 @@
 
 namespace DNDHinwil.Website.Models;
 
-public class Gear : IEquipment
+public class Gear : IEquipment, IHasEffects<Effect>
 {
     public string Id { get; set; } = Guid.NewGuid().ToString();
     public string Name { get; set; } = Text.Equipment;
@@ -11,12 +11,14 @@ public class Gear : IEquipment
     public List<Effect> Effects { get; set; } = [];
     public bool Usable => Effects.Any(e => e.EffectType is EffectType.Active);
     public bool CanBeUsedOnSelf { get; set; }
-    public int Cooldown { get; private set; }
+    public int Cooldown { get; set; }
+    public int CooldownLeft { get; private set; }
+    public int Range { get; set; }
     public GearSlot Slot { get; set; } = GearSlot.None;
     public int Armor { get; set; }
     public bool IsEquipped { get; set; }
 
-    public List<Effect> Use(int cooldown = 0)
+    public List<Effect> Use()
     {
         if (!Usable || Cooldown > 0)
             return [];

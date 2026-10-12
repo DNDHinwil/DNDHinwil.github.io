@@ -12,8 +12,10 @@
         @{var modifiers = _activeCharacter.CalculateModifiers(_settings.ScoreModifiers);}
         @foreach (var spell in _activeCharacter.Spellbook)
         {
-            <div class="spellbook-spell">
+            <div class="library-spell">
+                <div></div>
                 <SpellOrAbility Model="spell" Modifiers="modifiers" MeleeRange="_settings.MeleeRange"></SpellOrAbility>
+                <div></div>
                 <button class="right-button" @onclick="async x => await RemoveSpellFromSpellbook(spell)">@Constants.Symbol_RemoveFromInventory</button>
             </div>
         }

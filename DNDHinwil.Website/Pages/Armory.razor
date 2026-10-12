@@ -10,8 +10,10 @@
     <CollapsibleSection Title="@($"{@Text.GearOf.Replace("{{CHARACTER}}", _activeCharacter.Name)}")">
         @foreach (var item in _activeCharacter.Gear)
         {
-            <div class="character-gear">
+            <div class="armory-gear">
+                <div></div>
                 <GearItem Model="item" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></GearItem>
+                <div></div>
                 <button class="right-button" @onclick="async x => await RemoveGearFromCharacter(item)">@Constants.Symbol_RemoveFromInventory</button>
             </div>
         }
@@ -103,6 +105,7 @@
         _settings = await ContentService.LoadSettings();
         _activeCharacter = await ContentService.LoadCharacter(_settings.ActiveCharacter);
         _armory = await ContentService.LoadArmory();
+
         var newCulture = new CultureInfo(_settings.Language);
         Thread.CurrentThread.CurrentUICulture = newCulture;
         Text.Culture = newCulture;

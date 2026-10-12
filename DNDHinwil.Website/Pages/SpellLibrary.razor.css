@@ -15,20 +15,12 @@ button {
 	height: 32px;
 }
 
-.spellbook-spell {
-	display: grid;
-	grid-template-columns: 1fr 40px;
-	border-top: 1px dotted var(--color-foreground);
-	margin-top: 0.25rem;
-}
-
 .library-spell {
 	display: grid;
 	grid-template-columns: 40px auto 40px 40px;
 	border-top: 1px dotted var(--color-foreground);
 	margin-top: 0.25rem;
 }
-	.spellbook-spell > button,
 	.library-spell > button {
 		margin-top: 0.25rem;
 	}
