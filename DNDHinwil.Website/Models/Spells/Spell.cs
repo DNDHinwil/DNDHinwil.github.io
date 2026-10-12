@@ -10,15 +10,6 @@ public class Spell : IHasEffects<Effect>
     public int Range { get; set; }
     public bool CanBeUsedOnSelf { get; set; }
     public int Cooldown { get; set; }
-    public int CooldownLeft { get; private set; }
+    public int CooldownLeft { get; set; }
     public List<Effect> Effects { get; set; } = [];
-    public List<Effect> Use()
-    {
-        if (CooldownLeft > 0)
-            return [];
-        CooldownLeft = Cooldown;
-        if (!CanBeUsedOnSelf)
-            return [];
-        return Effects.FindAll(e => e.EffectType == EffectType.Active);
-    }
 }

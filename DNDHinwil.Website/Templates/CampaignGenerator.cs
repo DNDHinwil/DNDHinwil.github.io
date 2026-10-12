@@ -59,7 +59,6 @@ public static class CampaignGenerator
                     new() { Outcome = EffectOutcome.Reduces, Strength = 5, Target = EffectTarget.Health},
                     new() { Outcome = EffectOutcome.Reduces, Strength = 3, Target = EffectTarget.Mana}
                 ],
-                Usable = true,
                 DecreasesWithUse = true,
                 DropWhenEmpty = true,
                 CanBeUsedOnSelf = true

@@ -1,6 +1,6 @@
 ﻿using DNDHinwil.Website.DB;
-using DNDHinwil.Website.Generators;
 using DNDHinwil.Website.Models;
+using DNDHinwil.Website.Templates;
 using IndexedDB.Blazor;
 using Microsoft.JSInterop;
 using System.Text.Json;

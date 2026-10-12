@@ -6,5 +6,4 @@ public class Stat
     public string Name { get; set; } = Text.Stat;
     public string Short { get; set; } = "XX";
     public int Score { get; set; } = 10;
-    public int Boost { get; set; }
 }

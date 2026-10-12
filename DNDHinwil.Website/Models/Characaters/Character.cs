@@ -143,7 +143,6 @@ public class Character
             {
                 Stat = stat,
                 StatValue = table.LastOrDefault(s => s.Score <= stat.Score)?.Modifier ?? 0,
-                BoostValue = stat.Boost,
                 EffectValue = GetModifier(ActiveEffects.Where(b => b.TargetStatId == stat.Id), EffectTarget.Stat),
                 EquipmentValue = GetModifier(EquippedGear.SelectMany(g => g.Effects).Where(b => b.TargetStatId == stat.Id), EffectTarget.Stat)
             };
