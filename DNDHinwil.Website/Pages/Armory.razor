@@ -12,8 +12,8 @@
         {
             <div class="armory-gear">
                 <div></div>
-                <GearItem Model="item" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></GearItem>
-                <div></div>
+                <GearItem Model="item" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)" IsEquippable="true"></GearItem>
+                <button class="right-button" @onclick="async x => await ToggleEquip(item)">@(item.IsEquipped ? Constants.Symbol_Equipped : Constants.Symbol_Unequipped)</button>
                 <button class="right-button" @onclick="async x => await RemoveGearFromCharacter(item)">@Constants.Symbol_RemoveFromInventory</button>
             </div>
         }
@@ -72,8 +72,9 @@
                 {
                     <div>@Text.NoBonuses</div>
                 }
-                <button @onclick="x => AddNewEffect(true)" command="show-modal" commandfor="edit-effect" style="margin-top:0.5rem;">@Text.NewActiveEffect</button>
-                <button @onclick="x => AddNewEffect(false)" command="show-modal" commandfor="edit-effect" style="margin-top:0.5rem;">@Text.NewPassiveEffect</button>
+                <button @onclick="x => AddNewEffect(EffectType.Active)" command="show-modal" commandfor="edit-effect" style="margin-top:0.5rem;">@Text.NewActiveEffect</button>
+                <button @onclick="x => AddNewEffect(EffectType.Passive)" command="show-modal" commandfor="edit-effect" style="margin-top:0.5rem;">@Text.NewPassiveEffect</button>
+                <button @onclick="x => AddNewEffect(EffectType.Curse)" command="show-modal" commandfor="edit-effect" style="margin-top:0.5rem;">@Text.NewCurse</button>
             </div>
             <button @onclick="x => FinishEditingGear(false)" command="close" commandfor="edit-gear">@Text.Cancel</button>
             <button @onclick="x => FinishEditingGear(true)" command="close" commandfor="edit-gear" style="float:right;">@Text.Save</button>
@@ -87,7 +88,7 @@
     </dialog>
 
     <EditEffect EffectToEdit="_editEffect"
-                OnClickCallback="@(async x => await FinishEditingEffect(true))"
+                SaveEditCallback="@(async x => await FinishEditingEffect(true))"
                 Stats="_activeCharacter.Stats"
                 Dice="_settings.Dice"></EditEffect>
 </div>
@@ -161,6 +162,12 @@
         await ContentService.SaveCharacter(_activeCharacter);
     }
 
+    private async Task ToggleEquip(Gear gear)
+    {
+        await _activeCharacter.EquipGear(gear);
+        await ContentService.SaveCharacter(_activeCharacter);
+    }
+
     private async Task RemoveGearFromCharacter(Gear gear)
     {
         _activeCharacter.Gear.RemoveAt(_activeCharacter.Gear.FindIndex(g => g.Id == gear.Id));
@@ -170,9 +177,9 @@
 
     #region Effects
     // C
-    private void AddNewEffect(bool isActive)
+    private void AddNewEffect(EffectType effectType)
     {
-        var effect = new Effect() { EffectType = isActive ? EffectType.Active : EffectType.Passive };
+        var effect = new Effect() { EffectType = effectType };
         StartEditingEffect(effect);
     }
 
@@ -183,9 +190,7 @@
     // U
     private async Task FinishEditingEffect(bool save)
     {
-        if (_editGear is null || _editEffect is null)
-            return;
-        if (!save)
+        if (_editGear is null || _editEffect is null || !save)
         {
             _editEffect = null;
             return;

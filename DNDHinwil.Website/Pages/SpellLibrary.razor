@@ -58,7 +58,7 @@
                     {
                         <div class="spell-effect">
                             <button class="left-button" @onclick="x => RemoveEffect(effect)">@Constants.Symbol_Delete</button>
-                            <div class="effect-text">@effect.ToString()</div>
+                            <EffectView Model="effect" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></EffectView>
                             <button class="right-button" @onclick="x => StartEditingEffect(effect)" command="show-modal" commandfor="edit-effect">@Constants.Symbol_Edit</button>
                         </div>
                     }
@@ -82,7 +82,7 @@
     </dialog>
 
     <EditEffect EffectToEdit="_editEffect"
-                OnClickCallback="@(async x => await FinishEditingEffect(true))"
+                SaveEditCallback="@(async x => await FinishEditingEffect(true))"
                 Stats="_activeCharacter.Stats"
                 Dice="_settings.Dice"></EditEffect>
 </div>

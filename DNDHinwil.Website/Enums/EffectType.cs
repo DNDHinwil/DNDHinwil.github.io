@@ -2,7 +2,7 @@
 
 public enum EffectType
 {
-    Quick,
     Active,
-    Passive
+    Passive,
+    Curse
 }

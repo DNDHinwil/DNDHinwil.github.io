@@ -1,10 +1,21 @@
 ﻿<div class="gear-item">
     <h4>@Model.Name</h4>
-    <div class="gear-label">@Model.Slot.GetName()</div>
+    @if (IsEquippable && Model.IsEquipped)
+    {
+        <div class="gear-label">
+            @Text.Equipped
+        </div>
+    }
+    else
+    {
+        <div></div>
+    }
     <div style="text-align:right;">@(Model.Weight > 0 ? $"{Model.Weight} ⚖" : "")</div>
 
-    <div style="grid-column:span 2;">@(!string.IsNullOrWhiteSpace(Model.Description) ? Model.Description : "")</div>
+    <div class="gear-label" style="grid-column:span 2;">@Model.Slot.GetName()</div>
     <div style="text-align:right;">@(Model.Armor > 0 ? $"{Model.Armor} 🛡" : "")</div>
+
+    <div style="grid-column:span 3;">@(!string.IsNullOrWhiteSpace(Model.Description) ? Model.Description : "")</div>
     @if (Model.Effects.Any())
     {
         <div class="effects" style="grid-column:span 3;">
@@ -21,5 +32,6 @@
     public required Gear Model { get; set; }
     [Parameter]
     public List<Modifier>? Modifiers { get; set; }
-
+    [Parameter]
+    public bool IsEquippable { get; set; }
 }

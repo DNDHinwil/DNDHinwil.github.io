@@ -29,3 +29,31 @@
 		background: var(--color-background);
 		border: 1px solid var(--color);
 	}
+
+.has-tooltip {
+	position: relative;
+	cursor: pointer;
+}
+
+.stat-tooltip {
+	visibility: hidden;
+	display: grid;
+	grid-template-columns: max-content 40px;
+	background-color: var(--color-background);
+	color: var(--color-foreground);
+	padding: 0.25rem;
+	border: 1px solid var(--color-foreground);
+	border-radius: 0.25rem;
+	position: absolute;
+	left: 3rem;
+	top: -0.5rem;
+	z-index: 1; /* Ensure tooltip is displayed above content */
+}
+.stat-tooltip > div {
+	text-align: left;
+}
+
+/* Show the tooltip text on hover */
+.has-tooltip:hover .stat-tooltip {
+	visibility: visible;
+}

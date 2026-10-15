@@ -1,0 +1,58 @@
+﻿@namespace DNDHinwil.Website.Components
+
+@if (SpellToEdit is not null)
+{
+    <dialog id="edit-spell" class="edit-spell">
+        <h3>@Text.Spell</h3>
+        <InputWithLabel Label="@Text.Name">
+            <InputText @bind-Value="SpellToEdit.Name"></InputText>
+        </InputWithLabel>
+        <InputWithLabel Label="@Text.Range">
+            <InputNumber @bind-Value="SpellToEdit.Range"></InputNumber>
+        </InputWithLabel>
+        <InputWithLabel Label="@Text.ManaCost">
+            <InputNumber @bind-Value="SpellToEdit.ManaCost"></InputNumber>
+        </InputWithLabel>
+        <InputWithLabel Label="@Text.CanBeUsedOnSelf">
+            <InputCheckbox @bind-Value="SpellToEdit.CanBeUsedOnSelf"></InputCheckbox>
+        </InputWithLabel>
+        <div class="edit-spell-effects">
+            <h4 style="width:100%;grid-column:span 2;">@Text.Effects</h4>
+            @if (SpellToEdit.Effects.Any())
+            {
+                @foreach (var effect in SpellToEdit.Effects)
+                {
+                    <div class="spell-effect">
+                        <button class="left-button" @onclick="RemoveEffectCallback">@Constants.Symbol_Delete</button>
+                        <EffectView Model="effect" Modifiers="Modifiers"></EffectView>
+                        <button class="right-button" @onclick="StartEditingEffectCallback" command="show-modal" commandfor="edit-effect">@Constants.Symbol_Edit</button>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="spell-effect">@Text.NoEffects</div>
+            }
+            <button @onclick="AddNewEffectCallback" command="show-modal" commandfor="edit-effect" style="width:100%;grid-column:span 2;margin-top:0.5rem;">@Text.NewSpellEffect</button>
+        </div>
+        <button command="close" commandfor="edit-spell">@Text.Cancel</button>
+        <button @onclick="FinishEditingSpellCallback" command="close" commandfor="edit-spell" style="float:right;">@Text.Save</button>
+    </dialog>
+}
+
+@code {
+    [Parameter]
+    public Spell? SpellToEdit { get; set; }
+    [Parameter]
+    public required EventCallback<MouseEventArgs> AddNewEffectCallback { get; set; }
+    [Parameter]
+    public required EventCallback<MouseEventArgs> StartEditingEffectCallback { get; set; }
+    [Parameter]
+    public required EventCallback<MouseEventArgs> RemoveEffectCallback { get; set; }
+    [Parameter]
+    public required EventCallback<MouseEventArgs> FinishEditingSpellCallback { get; set; }
+    [Parameter]
+    public List<Modifier> Modifiers { get; set; } = [];
+    [Parameter]
+    public Die[] Dice { get; set; } = [];
+}

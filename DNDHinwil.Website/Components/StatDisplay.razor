@@ -2,9 +2,17 @@
 <div class="stats" style="@($"--stat-count:{Modifiers.Count};")">
     @foreach (var modifier in Modifiers)
     {
-        <div class="stat" style="@($"--color:hsl({360 / Modifiers.Count * Modifiers.IndexOf(modifier)},100%,50%);")">
+        <div class="stat has-tooltip" style="@($"--color:hsl({360 / Modifiers.Count * Modifiers.IndexOf(modifier)},100%,50%);")">
             @modifier.TotalValue
             <label>@modifier.Stat.Short</label>
+            <div class="stat-tooltip">
+                <div>@Text.ModifierFromStats (@modifier.Stat.Score)</div>
+                <div style="text-align:right;">@modifier.StatValue</div>
+                <div>@Text.ModifierFromActiveEffects</div>
+                <div style="text-align:right;">@modifier.ActiveEffectValue</div>
+                <div>@Text.ModifierFromPassiveBuffs</div>
+                <div style="text-align:right;">@modifier.PassiveBuffValue</div>
+            </div>
         </div>
     }
 </div>

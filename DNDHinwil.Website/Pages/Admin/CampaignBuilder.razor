@@ -67,8 +67,8 @@
                     @foreach (var effect in _editSpell.Effects)
                     {
                         <div class="spell-effect">
-                            <button class="left-button" @onclick="x => RemoveEffect(effect)">@Constants.Symbol_Delete</button>
-                            <div class="effect-text">@effect.ToString()</div>
+                            <button class="left-button" @onclick="async x => await RemoveEffect(_editItem, effect)">@Constants.Symbol_Delete</button>
+                            <EffectView Model="effect" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></EffectView>
                             <button class="right-button" @onclick="x => StartEditingEffect(effect)" command="show-modal" commandfor="edit-effect">@Constants.Symbol_Edit</button>
                         </div>
                     }
@@ -84,7 +84,6 @@
         </dialog>
     }
 
-    
     @if (_editGear is not null)
     {
         <dialog id="edit-gear" class="edit-gear">
@@ -116,7 +115,7 @@
                     @foreach (var effect in _editGear.Effects)
                     {
                         <div class="gear-effect">
-                            <button class="left-button" @onclick="async x => await RemoveEffect(effect)" command="show-modal" commandfor="edit-effect">@Constants.Symbol_Delete</button>
+                            <button class="left-button" @onclick="async x => await RemoveEffect(_editGear, effect)" command="show-modal" commandfor="edit-effect">@Constants.Symbol_Delete</button>
                             <EffectView Model="effect" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></EffectView>
                             <button class="right-button" @onclick="x => StartEditingEffect(effect)" command="show-modal" commandfor="edit-effect">@Constants.Symbol_Edit</button>
                         </div>
@@ -134,22 +133,29 @@
         </dialog>
     }
 
-    <dialog id="delete-spell">
+    <dialog class="delete-dialog" id="delete-spell">
         <h3>@Text.RemoveSpellFromLibrary</h3>
         <label>@Text.AreYouSure</label>
         <button @onclick="async x => await FinishEditingSpell(false)" command="close" commandfor="delete-spell">@Text.Cancel</button>
         <button @onclick="async x => await DeleteSpell(_editSpell)" command="close" commandfor="delete-spell">@Text.Confirm</button>
     </dialog>
 
-    <dialog id="delete-gear">
+    <dialog class="delete-dialog" id="delete-gear">
         <h3>@Text.RemoveGearFromInventory</h3>
         <label>@Text.AreYouSure</label>
         <button @onclick="async x => await FinishEditingGear(false)" command="close" commandfor="delete-gear">@Text.Cancel</button>
         <button @onclick="async x => await DeleteGear(_editGear)" command="close" commandfor="delete-gear">@Text.Confirm</button>
     </dialog>
 
+    <dialog class="delete-dialog" id="delete-equipment">
+        <h3>@Text.RemoveGearFromInventory</h3>
+        <label>@Text.AreYouSure</label>
+        <button @onclick="async x => await FinishEditingEqiupment(false)" command="close" commandfor="delete-equipment">@Text.Cancel</button>
+        <button @onclick="async x => await DeleteEquipment(_editEquipment)" command="close" commandfor="delete-equipment">@Text.Confirm</button>
+    </dialog>
+
     <EditEffect EffectToEdit="_editEffect"
-                OnClickCallback="@(async x => await FinishEditingEffect(true))"
+                SaveEditCallback="@(async x => await FinishEditingEffect(_editItem, true))"
                 Stats="_activeCharacter.Stats"
                 Dice="_settings.Dice"></EditEffect>
 </div>
@@ -164,6 +170,8 @@
     private Equipment? _editEquipment;
     private Gear? _editGear;
     private Spell? _editSpell;
+
+    private IHasEffects<Effect>? _editItem;
     private Effect? _editEffect;
 
     protected override async Task OnInitializedAsync()
@@ -189,7 +197,7 @@
     }
     // R
     private void StartEditingSpell(Spell spell)
-        => _editSpell = spell;
+        => _editItem = _editSpell = spell;
     // U
     private async Task FinishEditingSpell(bool save)
     {
@@ -228,7 +236,7 @@
     }
     // R
     private void StartEditingGear(Gear gear)
-        => _editGear = gear;
+        => _editItem = _editGear = gear;
     // U
     private async Task FinishEditingGear(bool save)
     {
@@ -267,7 +275,7 @@
     }
     // R
     private void StartEditingEquipment(Equipment equipment)
-        => _editEquipment = equipment;
+        => _editItem = _editEquipment = equipment;
     // U
     private async Task FinishEditingEqiupment(bool save)
     {
@@ -309,32 +317,39 @@
         => _editEffect = effect;
 
     // U
-    private async Task FinishEditingEffect(bool save)
+    private async Task FinishEditingEffect<THasEffects>(THasEffects? item, bool save)
+        where THasEffects : IHasEffects<Effect>
     {
-        if (_editSpell is null || _editEffect is null)
+        if (item is null || _editEffect is null)
             return;
         if (!save)
         {
+            item = default;
             _editEffect = null;
             return;
         }
         // remove old version
-        var effectExists = _editSpell.Effects.FirstOrDefault(e => e.Id == _editEffect.Id);
+        var effectExists = item.Effects.FirstOrDefault(e => e.Id == _editEffect.Id);
         if (effectExists is not null)
-            _editSpell.Effects.Remove(effectExists);
+            item.Effects.Remove(effectExists);
 
-        _editSpell.Effects.Add(_editEffect);
+        item.Effects.Add(_editEffect);
 
+        await ContentService.SaveArmory(_armory);
+        await ContentService.SaveEquipmentChest(_equipmentChest);
         await ContentService.SaveSpellLibrary(_spellLibrary);
         _editEffect = null;
     }
 
     // D
-    private async Task RemoveEffect(Effect effect)
+    private async Task RemoveEffect<THasEffects>(THasEffects? item, Effect effect)
+        where THasEffects : IHasEffects<Effect>
     {
-        if (_editSpell is null)
+        if (item is null)
             return;
-        _editSpell.Effects.Remove(effect);
+        item.Effects.Remove(effect);
+        await ContentService.SaveArmory(_armory);
+        await ContentService.SaveEquipmentChest(_equipmentChest);
         await ContentService.SaveSpellLibrary(_spellLibrary);
     }
     #endregion
