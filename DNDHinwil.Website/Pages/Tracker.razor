@@ -69,17 +69,22 @@
         <div class="misc">
             <div>@Text.Armor</div>
             <div>@_activeCharacter.GetArmor()</div>
+            <div></div>
             <div>@Text.Money</div>
+            <div></div>
             @foreach (var money in _activeCharacter.Money)
             {
-                //TODO
+                <div class="money">
+                    <div>@($"{money.Quantity} ")</div>
+                    <button class="right-button" popovertarget="edit-money" @onclick="x => StartEditingMoney(money)">±</button>
+                </div>
             }
         </div>
         <div class="quick-actions">
             <div>@Text.TakeHealing</div>
-            <button class="action-button" popovertarget="quick-effect" @onclick="x => StartQuickEffect(false)">@Constants.Symbol_Heal</button>
+            <button class="right-button action-button" popovertarget="quick-effect" @onclick="x => StartQuickEffect(false)">@Constants.Symbol_Heal</button>
             <div>@Text.TakeDamage</div>
-            <button class="action-button" popovertarget="quick-effect" @onclick="x => StartQuickEffect(true)">@Constants.Symbol_Damage</button>
+            <button class="right-button action-button" popovertarget="quick-effect" @onclick="x => StartQuickEffect(true)">@Constants.Symbol_Damage</button>
         </div>
     </section>
 
@@ -244,6 +249,17 @@
         <button popovertarget="take-rest" popovertargetaction="hide">@Text.Cancel</button>
         <button style="float:right;" popovertarget="take-rest" popovertargetaction="hide" @onclick="async x => await Rest()">@Text.OK</button>
     </dialog>
+
+    @if (_editMoney is not null)
+    {
+        <dialog id="edit-money" popover>
+            <h4>@_editMoney.Name</h4>
+            <InputWithLabel Label="@Text.Quantity">
+                <InputNumber @bind-Value="_editMoney.Quantity"></InputNumber>
+            </InputWithLabel>
+            <button style="float:right;" popovertarget="edit-money" popovertargetaction="hide" @onclick="async x => await Rest()">@Text.Save</button>
+        </dialog>
+    }
 </div>
 
 @code {
@@ -257,6 +273,7 @@
 
     private Effect? _editActiveEffect;
     private Effect? _quickEffect;
+    private Money? _editMoney;
 
     protected override void OnInitialized()
     {
@@ -365,6 +382,15 @@
     private async Task Rest()
     {
         await _activeCharacter.Rest();
+        await ContentService.SaveCharacter(_activeCharacter);
+    }
+
+    private async Task StartEditingMoney(Money money)
+        => _editMoney = money;
+
+    private async Task FinishEditingMoney()
+    {
+        _editMoney = null;
         await ContentService.SaveCharacter(_activeCharacter);
     }
 

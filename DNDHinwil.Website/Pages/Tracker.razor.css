@@ -71,6 +71,17 @@ header {
 	grid-template-columns: 20px 32px min-content 32px auto;
 }
 
+.misc {
+	display: grid;
+	grid-template-columns: max-content auto;
+}
+
+.money {
+	grid-row: span 2;
+	display: grid;
+	grid-template-columns: auto 40px;
+}
+
 .quick-actions {
 	display: grid;
 	grid-template-columns: auto 40px;
@@ -81,7 +92,7 @@ header {
 
 .action-button {
 	height: 32px;
-	margin: 1rem 0 0 0.5rem;
+	margin-top: 1rem;
 }
 
 .spellbook {
