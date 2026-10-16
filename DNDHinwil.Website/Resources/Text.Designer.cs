@@ -646,6 +646,15 @@ namespace DNDHinwil.Website.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enchantment.
+        /// </summary>
+        public static string Enchantment {
+            get {
+                return ResourceManager.GetString("Enchantment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to End.
         /// </summary>
         public static string End {
@@ -1240,6 +1249,15 @@ namespace DNDHinwil.Website.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Money.
+        /// </summary>
+        public static string Money {
+            get {
+                return ResourceManager.GetString("Money", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name.
         /// </summary>
         public static string Name {
@@ -1263,6 +1281,15 @@ namespace DNDHinwil.Website.Resources {
         public static string NewCurse {
             get {
                 return ResourceManager.GetString("NewCurse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Enchantment.
+        /// </summary>
+        public static string NewEnchantment {
+            get {
+                return ResourceManager.GetString("NewEnchantment", resourceCulture);
             }
         }
         
@@ -1416,6 +1443,15 @@ namespace DNDHinwil.Website.Resources {
         public static string OK {
             get {
                 return ResourceManager.GetString("OK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to On Equip Effect.
+        /// </summary>
+        public static string OnEquipEffect {
+            get {
+                return ResourceManager.GetString("OnEquipEffect", resourceCulture);
             }
         }
         

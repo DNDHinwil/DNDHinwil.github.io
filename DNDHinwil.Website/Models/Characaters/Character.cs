@@ -40,8 +40,6 @@ public class Character
         set => _currentMana = Math.Clamp(value, 0, GetMaxMana());
     }
     public int LevelModifier { get; set; }
-    public int Armor => GetEquippedGear().Any() ? GetEquippedGear().Max(g => g.Armor) : 0;
-    public int DamageReduction => GetHealthDamageReduction();
     public List<Equipment> Inventory { get; set; } = [];
     public List<Money> Money { get; set; } = [];
     public List<Gear> Gear { get; set; } = [];
@@ -52,7 +50,7 @@ public class Character
     public IEnumerable<Gear> GetEquippedGear()
     {
         var equippedGear = Gear.Where(g => g.IsEquipped);
-        foreach (var curse in equippedGear.SelectMany(g => g.Effects).Where(e => e.EffectType is EffectType.Curse && !ActiveEffects.Select(ae => ae.Id).Contains(e.Id)))
+        foreach (var curse in equippedGear.SelectMany(g => g.Effects).Where(e => e.EffectType is EffectType.Enchantment && !ActiveEffects.Select(ae => ae.Id).Contains(e.Id)))
             _activeEffects.Add(curse);
         return equippedGear;
     }
@@ -109,14 +107,14 @@ public class Character
 
         if (gear.IsEquipped)
         {
-            foreach (var curse in gear.Effects.Where(e => e.EffectType is EffectType.Curse))
+            foreach (var curse in gear.Effects.Where(e => e.EffectType is EffectType.Enchantment))
             {
                 await AddActiveEffect(curse);
             }
         }
         else
         {
-            foreach (var curse in gear.Effects.Where(e => e.EffectType is EffectType.Curse))
+            foreach (var curse in gear.Effects.Where(e => e.EffectType is EffectType.Enchantment))
             {
                 var curseExists = _activeEffects.FirstOrDefault(e => e.Id == curse.Id);
                 if (curseExists is not null)
@@ -184,12 +182,14 @@ public class Character
     private int GetHealthDamageReduction()
         => GetModifier(AllEffects, EffectTarget.IncomingDamage);
 
+    public int GetArmor() => GetEquippedGear().Any() ? GetEquippedGear().Max(g => g.Armor) : 0;
+
     private static int GetModifier(IEnumerable<Effect> effects, EffectTarget target)
         => effects.Where(e => e.Target == target).Sum(e => e.Outcome is EffectOutcome.Increases ? e.Strength : e.Strength * -1);
 
     private void AddCopiesOfActiveEffects(IEnumerable<Effect> effects)
     {
-        var serializedEffects = JsonSerializer.Serialize(effects.Where(e => e.EffectType is EffectType.Active or EffectType.Curse));
+        var serializedEffects = JsonSerializer.Serialize(effects.Where(e => e.EffectType is EffectType.Active or EffectType.Enchantment));
         _activeEffects.AddRange(JsonSerializer.Deserialize<List<Effect>>(serializedEffects) ?? []);
     }
 

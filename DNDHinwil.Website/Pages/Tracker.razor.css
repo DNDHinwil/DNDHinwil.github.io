@@ -17,7 +17,7 @@ header {
 }
 
 .stats {
-	grid-row: span 3;
+	grid-row: span 4;
 	margin-right: 0.5rem;
 }
 
@@ -117,10 +117,6 @@ header {
 	grid-template-columns: 40px auto 40px 40px;
 	border-top: 1px dotted var(--color-foreground);
 }
-
-	.active-effect > div {
-		color: red;
-	}
 
 	.active-effect > button {
 		height: 32px;

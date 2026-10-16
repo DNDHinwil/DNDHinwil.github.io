@@ -66,6 +66,15 @@
                 <PercentageBar Max="@_activeCharacter.GetMaxMana()" Current="@_activeCharacter.Mana" Color="blue"></PercentageBar>
             </div>
         </div>
+        <div class="misc">
+            <div>@Text.Armor</div>
+            <div>@_activeCharacter.GetArmor()</div>
+            <div>@Text.Money</div>
+            @foreach (var money in _activeCharacter.Money)
+            {
+                //TODO
+            }
+        </div>
         <div class="quick-actions">
             <div>@Text.TakeHealing</div>
             <button class="action-button" popovertarget="quick-effect" @onclick="x => StartQuickEffect(false)">@Constants.Symbol_Heal</button>
@@ -89,19 +98,19 @@
             @foreach (var effect in _activeCharacter.ActiveEffects)
             {
                 <div class="active-effect">
-                    @if (effect.EffectType is EffectType.Curse)
-                    {
-                        <div style="margin-right:0.5rem;">⛨🕱</div>
-                        <EffectView Model="effect" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></EffectView>
-                        <div></div>
-                        <div></div>
-                    }
-                    else
+                    @if (effect.EffectType is EffectType.Active)
                     {
                         <button class="left-button" @onclick="x => RemoveActiveEffect(effect)">@Constants.Symbol_Delete</button>
                         <EffectView Model="effect" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></EffectView>
                         <div></div>
                         <button class="right-button" @onclick="x => StartEditingActiveEffect(effect)" command="show-modal" commandfor="edit-effect">@Constants.Symbol_Edit</button>
+                    }
+                    else
+                    {
+                        <div style="margin-right:0.5rem;">⛨</div>
+                        <EffectView Model="effect" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></EffectView>
+                        <div></div>
+                        <div></div>
                     }
                 </div>
             }

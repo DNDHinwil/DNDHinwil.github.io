@@ -22,7 +22,7 @@
         }
         else
         {
-            @if (EffectToEdit.EffectType is EffectType.Active or EffectType.Curse)
+            @if (EffectToEdit.EffectType is EffectType.Active or EffectType.Enchantment)
             {
                 <InputWithLabel Label="@Text.Dice">
                     <InputNumber @bind-Value="EffectToEdit.NumberOfDice"></InputNumber>
@@ -111,7 +111,7 @@
                 </InputSelect>
             </InputWithLabel>
         }
-        @if (EffectToEdit.EffectType is EffectType.Curse || EffectToEdit.Duration is not EffectDuration.Instant)
+        @if (EffectToEdit.EffectType is EffectType.Enchantment || EffectToEdit.Duration is not EffectDuration.Instant)
         {
             <InputWithLabel Label="@Text.TriggersAtEndOfTurn">
                 <InputCheckbox @bind-Value="EffectToEdit.TriggersAtEndOfTurn"></InputCheckbox>

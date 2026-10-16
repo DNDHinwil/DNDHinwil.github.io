@@ -4,5 +4,5 @@ public enum EffectType
 {
     Active,
     Passive,
-    Curse
+    Enchantment
 }

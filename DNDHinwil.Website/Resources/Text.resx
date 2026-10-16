@@ -768,4 +768,16 @@
   <data name="TriggersAtStartOfTurn" xml:space="preserve">
     <value>at Start of Turn</value>
   </data>
+  <data name="OnEquipEffect" xml:space="preserve">
+    <value>On Equip Effect</value>
+  </data>
+  <data name="Enchantment" xml:space="preserve">
+    <value>Enchantment</value>
+  </data>
+  <data name="NewEnchantment" xml:space="preserve">
+    <value>New Enchantment</value>
+  </data>
+  <data name="Money" xml:space="preserve">
+    <value>Money</value>
+  </data>
 </root>

@@ -768,4 +768,16 @@
   <data name="TriggersAtStartOfTurn" xml:space="preserve">
     <value>am Anfang des Zuges</value>
   </data>
+  <data name="OnEquipEffect" xml:space="preserve">
+    <value>Au</value>
+  </data>
+  <data name="Enchantment" xml:space="preserve">
+    <value>Verzauberung</value>
+  </data>
+  <data name="NewEnchantment" xml:space="preserve">
+    <value>Neue Verzauberung</value>
+  </data>
+  <data name="Money" xml:space="preserve">
+    <value>Geld</value>
+  </data>
 </root>

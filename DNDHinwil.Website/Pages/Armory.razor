@@ -74,7 +74,7 @@
                 }
                 <button @onclick="x => AddNewEffect(EffectType.Active)" command="show-modal" commandfor="edit-effect" style="margin-top:0.5rem;">@Text.NewActiveEffect</button>
                 <button @onclick="x => AddNewEffect(EffectType.Passive)" command="show-modal" commandfor="edit-effect" style="margin-top:0.5rem;">@Text.NewPassiveEffect</button>
-                <button @onclick="x => AddNewEffect(EffectType.Curse)" command="show-modal" commandfor="edit-effect" style="margin-top:0.5rem;">@Text.NewCurse</button>
+                <button @onclick="x => AddNewEffect(EffectType.Enchantment)" command="show-modal" commandfor="edit-effect" style="margin-top:0.5rem;">@Text.NewEnchantment</button>
             </div>
             <button @onclick="x => FinishEditingGear(false)" command="close" commandfor="edit-gear">@Text.Cancel</button>
             <button @onclick="x => FinishEditingGear(true)" command="close" commandfor="edit-gear" style="float:right;">@Text.Save</button>

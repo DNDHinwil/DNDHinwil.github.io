@@ -62,7 +62,7 @@ public class Effect : IEffect
         };
 
     private string TimingToString()
-        => (EffectType is EffectType.Active && Duration is not EffectDuration.Instant) || EffectType is EffectType.Curse 
+        => (EffectType is EffectType.Active && Duration is not EffectDuration.Instant) || EffectType is EffectType.Enchantment 
             ?  TriggersAtEndOfTurn 
                 ? $" {Text.TriggersAtEndOfTurn}"
                 : $" {Text.TriggersAtStartOfTurn}"
