@@ -56,8 +56,8 @@ public static class CampaignGenerator
                 Name = "Einfacher Heiltrank",
                 Effects =
                 [
-                    new() { Outcome = EffectOutcome.Reduces, Strength = 5, Target = EffectTarget.Health},
-                    new() { Outcome = EffectOutcome.Reduces, Strength = 3, Target = EffectTarget.Mana}
+                    new() { Outcome = EffectOutcome.Increases, Strength = 5, Target = EffectTarget.Health},
+                    new() { Outcome = EffectOutcome.Increases, Strength = 3, Target = EffectTarget.Mana}
                 ],
                 DecreasesWithUse = true,
                 DropWhenEmpty = true,

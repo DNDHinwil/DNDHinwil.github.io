@@ -67,18 +67,18 @@
             </div>
         </div>
         <div class="misc">
-            <div>@Text.Armor</div>
-            <div>@_activeCharacter.GetArmor()</div>
-            <div></div>
-            <div>@Text.Money</div>
-            <div></div>
-            @foreach (var money in _activeCharacter.Money)
-            {
-                <div class="money">
-                    <div>@($"{money.Quantity} ")</div>
-                    <button class="right-button" popovertarget="edit-money" @onclick="x => StartEditingMoney(money)">±</button>
-                </div>
-            }
+            <div>@(_activeCharacter.GetArmor() > 0 ? $"{Text.Armor}: {_activeCharacter.GetArmor()}" : "")</div>
+
+            <div class="money">
+                <div style="text-align:center;border-bottom:1px solid var(--color-foreground);">@Text.Money</div>
+                @foreach (var money in _activeCharacter.Money)
+                {
+                    <div class="currency">
+                        <div>@($"{money.Quantity} {money.Name}")</div>
+                        <button class="right-button" popovertarget="edit-money" @onclick="x => StartEditingMoney(money)">＄</button>
+                    </div>
+                }
+            </div>
         </div>
         <div class="quick-actions">
             <div>@Text.TakeHealing</div>
@@ -94,7 +94,7 @@
             @foreach (var effect in _activeCharacter.GetPassiveEffects())
             {
                 <div class="passive-effect">
-                    <div style="margin-right:0.5rem;">⛨</div>
+                    <div style="margin-right:0.5rem;text-align:center;">⛨</div>
                     <EffectView Model="effect" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></EffectView>
                     <div></div>
                 </div>
@@ -112,7 +112,7 @@
                     }
                     else
                     {
-                        <div style="margin-right:0.5rem;">⛨</div>
+                        <div style="margin-right:0.5rem;text-align:center;">⛨</div>
                         <EffectView Model="effect" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></EffectView>
                         <div></div>
                         <div></div>
@@ -133,7 +133,7 @@
             @foreach (var spell in _activeCharacter.Spellbook)
             {
                 <div class="spell">
-                    <div></div>
+                    <div style="margin-right:0.5rem;text-align:center;">📜</div>
                     <SpellOrAbility Model="spell" Modifiers="@_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></SpellOrAbility>
                     @if (spell.CanBeUsedOnSelf)
                     {
@@ -159,7 +159,7 @@
             @foreach (var item in _activeCharacter.Inventory)
             {
                 <div class="equipment-item">
-                    <div></div>
+                    <div style="margin-right:0.5rem;text-align:center;">👜</div>
                     <EquipmentItem Model="item" Modifiers="@_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></EquipmentItem>
                     @if (item.Usable)
                     {

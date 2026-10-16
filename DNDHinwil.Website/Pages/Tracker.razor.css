@@ -2,7 +2,7 @@
 header {
 	display: grid;
 	grid-template-columns: auto min-content;
-	padding: 0.5rem;
+	padding: 0.5rem 0.5rem 0 0.5rem;
 }
 
 	header > h2 {
@@ -73,14 +73,27 @@ header {
 
 .misc {
 	display: grid;
-	grid-template-columns: max-content auto;
+	grid-template-columns: auto max-content;
 }
 
 .money {
 	grid-row: span 2;
 	display: grid;
-	grid-template-columns: auto 40px;
+	grid-template-columns: max-content;
 }
+
+.currency {
+	display: grid;
+	grid-template-columns: auto 40px;
+	margin-top: 0.25rem;
+}
+	.currency > div {
+		text-align: right;
+		margin-top: 0.25rem;
+	}
+	.currency > button {
+		height: 32px;
+	}
 
 .quick-actions {
 	display: grid;
@@ -88,6 +101,7 @@ header {
 }
 .quick-actions > div {
 	margin-top: 1.5rem;
+	text-align: right;
 }
 
 .action-button {

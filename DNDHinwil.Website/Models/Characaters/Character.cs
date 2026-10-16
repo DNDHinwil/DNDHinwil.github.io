@@ -81,6 +81,21 @@ public class Character
         }
     }
 
+    public async Task AddCopyOfEquipmentItem(Equipment equipment)
+    {
+        var serializedEquipment = JsonSerializer.Serialize(equipment);
+        var itemCopy = JsonSerializer.Deserialize<Equipment>(serializedEquipment);
+        if (itemCopy is null)
+            return;
+        var equipmentExists = Inventory.FirstOrDefault(e => e.Id == itemCopy.Id);
+        if (equipmentExists is not null)
+        {
+            itemCopy.Quantity += equipmentExists.Quantity;
+            _ = Inventory.Remove(equipmentExists);
+        }
+        Inventory.Add(itemCopy);
+    }
+
     public async Task UseEquipmentItem(Equipment equipment, bool useOnYourself, List<Modifier> modifiers)
     {
         if (equipment.Cooldown > 0 || equipment.Quantity < 1)
@@ -118,7 +133,7 @@ public class Character
             {
                 var curseExists = _activeEffects.FirstOrDefault(e => e.Id == curse.Id);
                 if (curseExists is not null)
-                    _activeEffects.Remove(curseExists);
+                    _ = _activeEffects.Remove(curseExists);
             }
         }
     }
