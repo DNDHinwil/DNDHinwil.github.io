@@ -1852,7 +1852,7 @@ namespace DNDHinwil.Website.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Marked Time in Minutes.
+        ///   Looks up a localized string similar to Preferred Turn length in Minutes.
         /// </summary>
         public static string TimerMarkedTime {
             get {

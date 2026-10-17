@@ -694,7 +694,7 @@
     <value>Slot</value>
   </data>
   <data name="TimerMarkedTime" xml:space="preserve">
-    <value>Marked Time in Minutes</value>
+    <value>Preferred Turn length in Minutes</value>
   </data>
   <data name="HealFor" xml:space="preserve">
     <value>Heal for</value>

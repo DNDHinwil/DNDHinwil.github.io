@@ -694,7 +694,7 @@
     <value>Ausrüstung für</value>
   </data>
   <data name="TimerMarkedTime" xml:space="preserve">
-    <value>Markierte Zeit in Minuten</value>
+    <value>Beforzugte Zuglänge in Minuten</value>
   </data>
   <data name="HealFor" xml:space="preserve">
     <value>Heile für</value>

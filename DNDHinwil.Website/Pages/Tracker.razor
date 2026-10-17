@@ -67,8 +67,6 @@
             </div>
         </div>
         <div class="misc">
-            <div>@(_activeCharacter.GetArmor() > 0 ? $"{Text.Armor}: {_activeCharacter.GetArmor()}" : "")</div>
-
             <div class="money">
                 <div style="text-align:center;border-bottom:1px solid var(--color-foreground);">@Text.Money</div>
                 @foreach (var money in _activeCharacter.Money)
@@ -79,16 +77,20 @@
                     </div>
                 }
             </div>
-        </div>
-        <div class="quick-actions">
-            <div>@Text.TakeHealing</div>
-            <button class="right-button action-button" popovertarget="quick-effect" @onclick="x => StartQuickEffect(false)">@Constants.Symbol_Heal</button>
-            <div>@Text.TakeDamage</div>
-            <button class="right-button action-button" popovertarget="quick-effect" @onclick="x => StartQuickEffect(true)">@Constants.Symbol_Damage</button>
+            <div class="quick-actions">
+                <div>@Text.TakeHealing</div>
+                <button class="right-button action-button" popovertarget="quick-effect" @onclick="x => StartQuickEffect(false)">@Constants.Symbol_Heal</button>
+                <div>@Text.TakeDamage</div>
+                <button class="right-button action-button" popovertarget="quick-effect" @onclick="x => StartQuickEffect(true)">@Constants.Symbol_Damage</button>
+            </div>
         </div>
     </section>
 
     <CollapsibleSection Title="@Text.BuffsAndDebuffs">
+        @if (_activeCharacter.GetArmor() > 0)
+        {
+            <div>@($"{Text.Armor}: {_activeCharacter.GetArmor()}")</div>
+        }
         @if (_activeCharacter.ActiveEffects.Any() || _activeCharacter.GetPassiveEffects().Any())
         {
             @foreach (var effect in _activeCharacter.GetPassiveEffects())
