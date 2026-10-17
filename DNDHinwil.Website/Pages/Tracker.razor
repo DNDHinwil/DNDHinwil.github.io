@@ -66,21 +66,37 @@
                 <PercentageBar Max="@_activeCharacter.GetMaxMana()" Current="@_activeCharacter.Mana" Color="blue"></PercentageBar>
             </div>
         </div>
-        <div class="quick-actions">
-            <div>@Text.TakeHealing</div>
-            <button class="action-button" popovertarget="quick-effect" @onclick="x => StartQuickEffect(false)">@Constants.Symbol_Heal</button>
-            <div>@Text.TakeDamage</div>
-            <button class="action-button" popovertarget="quick-effect" @onclick="x => StartQuickEffect(true)">@Constants.Symbol_Damage</button>
+        <div class="misc">
+            <div class="money">
+                <div style="text-align:center;border-bottom:1px solid var(--color-foreground);">@Text.Money</div>
+                @foreach (var money in _activeCharacter.Money)
+                {
+                    <div class="currency">
+                        <div>@($"{money.Quantity} {money.Name}")</div>
+                        <button class="right-button" popovertarget="edit-money" @onclick="x => StartEditingMoney(money)">＄</button>
+                    </div>
+                }
+            </div>
+            <div class="quick-actions">
+                <div>@Text.TakeHealing</div>
+                <button class="right-button action-button" popovertarget="quick-effect" @onclick="x => StartQuickEffect(false)">@Constants.Symbol_Heal</button>
+                <div>@Text.TakeDamage</div>
+                <button class="right-button action-button" popovertarget="quick-effect" @onclick="x => StartQuickEffect(true)">@Constants.Symbol_Damage</button>
+            </div>
         </div>
     </section>
 
     <CollapsibleSection Title="@Text.BuffsAndDebuffs">
+        @if (_activeCharacter.GetArmor() > 0)
+        {
+            <div>@($"{Text.Armor}: {_activeCharacter.GetArmor()}")</div>
+        }
         @if (_activeCharacter.ActiveEffects.Any() || _activeCharacter.GetPassiveEffects().Any())
         {
             @foreach (var effect in _activeCharacter.GetPassiveEffects())
             {
                 <div class="passive-effect">
-                    <div style="text-align:center;margin-right:0.5rem;">⛨</div>
+                    <div style="margin-right:0.5rem;text-align:center;">⛨</div>
                     <EffectView Model="effect" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></EffectView>
                     <div></div>
                 </div>
@@ -89,9 +105,20 @@
             @foreach (var effect in _activeCharacter.ActiveEffects)
             {
                 <div class="active-effect">
-                    <button class="left-button" @onclick="x => RemoveActiveEffect(effect)">@Constants.Symbol_Delete</button>
-                    <EffectView Model="effect" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></EffectView>
-                    <button class="right-button" @onclick="x => StartEditingActiveEffect(effect)" command="show-modal" commandfor="edit-effect">@Constants.Symbol_Edit</button>
+                    @if (effect.EffectType is EffectType.Active)
+                    {
+                        <button class="left-button" @onclick="x => RemoveActiveEffect(effect)">@Constants.Symbol_Delete</button>
+                        <EffectView Model="effect" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></EffectView>
+                        <div></div>
+                        <button class="right-button" @onclick="x => StartEditingActiveEffect(effect)" command="show-modal" commandfor="edit-effect">@Constants.Symbol_Edit</button>
+                    }
+                    else
+                    {
+                        <div style="margin-right:0.5rem;text-align:center;">⛨</div>
+                        <EffectView Model="effect" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></EffectView>
+                        <div></div>
+                        <div></div>
+                    }
                 </div>
             }
         }
@@ -108,6 +135,7 @@
             @foreach (var spell in _activeCharacter.Spellbook)
             {
                 <div class="spell">
+                    <div style="margin-right:0.5rem;text-align:center;">📜</div>
                     <SpellOrAbility Model="spell" Modifiers="@_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></SpellOrAbility>
                     @if (spell.CanBeUsedOnSelf)
                     {
@@ -133,6 +161,7 @@
             @foreach (var item in _activeCharacter.Inventory)
             {
                 <div class="equipment-item">
+                    <div style="margin-right:0.5rem;text-align:center;">👜</div>
                     <EquipmentItem Model="item" Modifiers="@_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></EquipmentItem>
                     @if (item.Usable)
                     {
@@ -161,12 +190,13 @@
     </CollapsibleSection>
 
     <CollapsibleSection Title="@Text.Gear">
-        @if (_activeCharacter.Gear.Where(g => g.IsEquipped).Any())
+        @if (_activeCharacter.Gear.Any())
         {
-            @foreach (var item in _activeCharacter.Gear.Where(g => g.IsEquipped))
+            @foreach (var item in _activeCharacter.Gear)
             {
                 <div class="equipment-item">
-                    <GearItem Model="item" Modifiers="@_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></GearItem>
+                    <button class="left-button" @onclick="async x => await ToggleEquip(item)">@(item.IsEquipped ? Constants.Symbol_Equipped : Constants.Symbol_Unequipped)</button>
+                    <GearItem Model="item" Modifiers="@_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)" IsEquippable="true"></GearItem>
                     @if (item.Usable)
                     {
                         @if (item.CanBeUsedOnSelf)
@@ -194,7 +224,7 @@
     </CollapsibleSection>
 
     <EditEffect EffectToEdit="_editActiveEffect" 
-        OnClickCallback="@(async x => await FinishEditingActiveEffect(true))"
+        SaveEditCallback="@(async x => await FinishEditingActiveEffect(true))"
         Stats="_activeCharacter.Stats"
         Dice="_settings.Dice"></EditEffect>
 
@@ -221,6 +251,17 @@
         <button popovertarget="take-rest" popovertargetaction="hide">@Text.Cancel</button>
         <button style="float:right;" popovertarget="take-rest" popovertargetaction="hide" @onclick="async x => await Rest()">@Text.OK</button>
     </dialog>
+
+    @if (_editMoney is not null)
+    {
+        <dialog id="edit-money" popover>
+            <h4>@_editMoney.Name</h4>
+            <InputWithLabel Label="@Text.Quantity">
+                <InputNumber @bind-Value="_editMoney.Quantity"></InputNumber>
+            </InputWithLabel>
+            <button style="float:right;" popovertarget="edit-money" popovertargetaction="hide" @onclick="async x => await Rest()">@Text.Save</button>
+        </dialog>
+    }
 </div>
 
 @code {
@@ -234,6 +275,7 @@
 
     private Effect? _editActiveEffect;
     private Effect? _quickEffect;
+    private Money? _editMoney;
 
     protected override void OnInitialized()
     {
@@ -321,6 +363,12 @@
         await ContentService.SaveCharacter(_activeCharacter);
     }
 
+    private async Task ToggleEquip(Gear gear)
+    {
+        await _activeCharacter.EquipGear(gear);
+        await ContentService.SaveCharacter(_activeCharacter);
+    }
+
     private async Task UseGear(Gear equipment, bool useOnYourself)
     {
         await _activeCharacter.UseGear(equipment, useOnYourself, _activeCharacter.CalculateModifiers(_settings.ScoreModifiers));
@@ -336,6 +384,15 @@
     private async Task Rest()
     {
         await _activeCharacter.Rest();
+        await ContentService.SaveCharacter(_activeCharacter);
+    }
+
+    private async Task StartEditingMoney(Money money)
+        => _editMoney = money;
+
+    private async Task FinishEditingMoney()
+    {
+        _editMoney = null;
         await ContentService.SaveCharacter(_activeCharacter);
     }
 

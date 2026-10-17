@@ -1,6 +1,6 @@
 ﻿<div class="equipment-item">
     <h4>@Model.Name</h4>
-    <div class="quantity">@(Model.Quantity > 0 && !HideQuantity ? $"x{Model.Quantity}" : "")</div>
+    <div class="quantity">@(Model.Quantity > 1 ? $"x{Model.Quantity}" : "")</div>
     <div class="weight">@(Model.Weight > 0 ? $"{Model.Weight * Model.Quantity} ⚖" : "")</div>
     @if (!string.IsNullOrWhiteSpace(Model.Description))
     {
@@ -22,6 +22,4 @@
     public required Equipment Model { get; set; }
     [Parameter]
     public List<Modifier>? Modifiers { get; set; }
-    [Parameter]
-    public bool HideQuantity { get; set; }
 }

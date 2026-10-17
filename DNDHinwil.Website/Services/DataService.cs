@@ -1,6 +1,6 @@
 ﻿using DNDHinwil.Website.DB;
-using DNDHinwil.Website.Generators;
 using DNDHinwil.Website.Models;
+using DNDHinwil.Website.Templates;
 using IndexedDB.Blazor;
 using Microsoft.JSInterop;
 using System.Text.Json;
@@ -141,6 +141,17 @@ public class DataService(HttpClient client, IJSRuntime js) : IDataService
     public async Task MakeAlert(string message)
         => await _js.InvokeVoidAsync("alert", message);
 
+    public async Task SaveCampaign(Campaign campaign)
+    {
+        await SaveCharacters(campaign.Characters);
+        await SaveSettings(campaign.Settings);
+        await SaveArmory(campaign.Armory);
+        await SaveEquipmentChest(campaign.EquipmentChest);
+        await SaveSpellLibrary(campaign.SpellLibrary);
+
+        await StoreData(Constants.SessionKey, new List<Session>());
+    }
+
     private async ValueTask StoreData<TData>(string key, TData data)
         => await _js.InvokeVoidAsync("localStorage.setItem",
         [
@@ -161,15 +172,5 @@ public class DataService(HttpClient client, IJSRuntime js) : IDataService
         {
             return default;
         }
-    }
-    public async Task SaveCampaign(Campaign campaign)
-    {
-        await SaveCharacters(campaign.Characters);
-        await SaveSettings(campaign.Settings);
-        await SaveArmory(campaign.Armory);
-        await SaveEquipmentChest(campaign.EquipmentChest);
-        await SaveSpellLibrary(campaign.SpellLibrary);
-
-        await StoreData(Constants.SessionKey, new List<Session>());
     }
 }

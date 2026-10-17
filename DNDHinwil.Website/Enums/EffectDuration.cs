@@ -2,7 +2,7 @@
 
 public enum EffectDuration
 {
-    None,
+    Instant,
     Turns,
     UntilRemoved,
     UntilHealed

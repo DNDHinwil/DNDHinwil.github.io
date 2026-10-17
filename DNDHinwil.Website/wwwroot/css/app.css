@@ -9,7 +9,7 @@
 	--color-contrast-1: #ccc;
 	--color-contrast-2: #bbb;
 	--color-contrast-3: #aaa;
-	--color-shadow: #05050505;
+	--color-shadow: #555;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -21,7 +21,7 @@
 		--color-contrast-1: #222;
 		--color-contrast-2: #333;
 		--color-contrast-3: #444;
-		--color-shadow: #1111;
+		--color-shadow: #aaa;
 	}
 }
 
@@ -51,7 +51,6 @@ button {
 	background-color: var(--color-contrast-0);
 	color: var(--color-foreground);
 	border-radius: 1rem;
-	box-shadow: 2px 2px 1px var(--color-shadow);
 }
 
 	button:hover {
@@ -79,12 +78,11 @@ h2 {
 }
 
 h3 {
-	font-size: 1.125rem;
+	font-size: 1.25rem;
 }
 
 h4 {
-	font-size: 1rem;
-	text-decoration: underline;
+	font-size: 1.125rem;
 }
 
 h5 {
@@ -94,7 +92,7 @@ h5 {
 
 h1, h2, h3, h4, h5 {
 	font-weight: bold;
-	margin: 0.25rem 0 0 0;
+	margin: 0;
 	display: block;
 }
 
@@ -110,8 +108,12 @@ hr {
 	margin: 0.25rem 0 0 0;
 }
 
+select, option {
+	text-transform: capitalize;
+}
+
 dialog {
-	min-width: 300px;
+	min-width: 280px;
 	background-color: var(--color-background);
 	color: var(--color-foreground);
 	padding: 0.25rem 1rem;
@@ -125,7 +127,7 @@ dialog {
 	}
 
 ::backdrop {
-	background-color: color-mix(in srgb, var(--color-background), var(--color-shadow) 30%);
+	background-color: color-mix(in srgb, var(--color-background), #8888 30%);
 }
 
 .content {

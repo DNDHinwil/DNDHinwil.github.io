@@ -15,19 +15,12 @@ button {
 	height: 32px;
 }
 
-.inventory-item {
-	display: grid;
-	grid-template-columns: 40px auto 40px;
-	border-top: 1px dotted var(--color-foreground);
-}
-
 .equipment-chest-item {
 	display: grid;
 	grid-template-columns: 40px auto 40px 40px;
 	border-top: 1px dotted var(--color-foreground);
 }
 
-	.inventory-item > button,
 	.equipment-chest-item > button {
 		margin-top: 0.25rem;
 	}

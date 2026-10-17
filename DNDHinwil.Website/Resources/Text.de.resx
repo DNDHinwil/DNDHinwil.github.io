@@ -232,7 +232,7 @@
     <value>Unpausieren</value>
   </data>
   <data name="TriggersAtEndOfTurn" xml:space="preserve">
-    <value>Ende des Zuges</value>
+    <value>am Ende des Zuges</value>
   </data>
   <data name="Stats" xml:space="preserve">
     <value>Eigenschaften</value>
@@ -694,7 +694,7 @@
     <value>Ausrüstung für</value>
   </data>
   <data name="TimerMarkedTime" xml:space="preserve">
-    <value>Markierte Zeit in Minuten</value>
+    <value>Beforzugte Zuglänge in Minuten</value>
   </data>
   <data name="HealFor" xml:space="preserve">
     <value>Heile für</value>
@@ -737,5 +737,47 @@
   </data>
   <data name="NewPassiveEffect" xml:space="preserve">
     <value>Neuer Passiver Effekt</value>
+  </data>
+  <data name="Instant" xml:space="preserve">
+    <value>Blitzartig</value>
+  </data>
+  <data name="ModifierFromStats" xml:space="preserve">
+    <value>Bonus von Eigenschaften</value>
+  </data>
+  <data name="ModifierFromActiveEffects" xml:space="preserve">
+    <value>Bonus von Aktiven Effekten</value>
+  </data>
+  <data name="ModifierFromPassiveBuffs" xml:space="preserve">
+    <value>Bonus von Passiven Buffs</value>
+  </data>
+  <data name="Spells" xml:space="preserve">
+    <value>Zauber</value>
+  </data>
+  <data name="Equipped" xml:space="preserve">
+    <value>Ausgerüstet</value>
+  </data>
+  <data name="Equip" xml:space="preserve">
+    <value>Ausrüsten</value>
+  </data>
+  <data name="Curse" xml:space="preserve">
+    <value>Fluch</value>
+  </data>
+  <data name="NewCurse" xml:space="preserve">
+    <value>Neuer Fluch</value>
+  </data>
+  <data name="TriggersAtStartOfTurn" xml:space="preserve">
+    <value>am Anfang des Zuges</value>
+  </data>
+  <data name="OnEquipEffect" xml:space="preserve">
+    <value>Au</value>
+  </data>
+  <data name="Enchantment" xml:space="preserve">
+    <value>Verzauberung</value>
+  </data>
+  <data name="NewEnchantment" xml:space="preserve">
+    <value>Neue Verzauberung</value>
+  </data>
+  <data name="Money" xml:space="preserve">
+    <value>Geld</value>
   </data>
 </root>

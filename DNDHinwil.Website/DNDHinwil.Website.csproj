@@ -9,9 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Components\TrackerSections\**" />
     <Compile Remove="wwwroot\images\**" />
+    <Content Remove="Components\TrackerSections\**" />
     <Content Remove="wwwroot\images\**" />
+    <EmbeddedResource Remove="Components\TrackerSections\**" />
     <EmbeddedResource Remove="wwwroot\images\**" />
+    <None Remove="Components\TrackerSections\**" />
     <None Remove="wwwroot\images\**" />
   </ItemGroup>
 
@@ -58,7 +62,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Components\TrackerSections\" />
     <Folder Include="wwwroot\resources\" />
   </ItemGroup>
 

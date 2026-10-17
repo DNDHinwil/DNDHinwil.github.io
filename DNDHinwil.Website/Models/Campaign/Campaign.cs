@@ -2,7 +2,7 @@
 
 public class Campaign
 {
-    public List<Session> Sessions { get; set; } = [];
+    public string Name { get; set; }
     public List<Character> Characters { get; set; } = [];
     public List<Spell> SpellLibrary { get; set; } = [];
     public List<Equipment> EquipmentChest { get; set; } = [];

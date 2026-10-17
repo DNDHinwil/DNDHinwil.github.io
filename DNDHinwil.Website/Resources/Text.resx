@@ -232,7 +232,7 @@
     <value>Unpause</value>
   </data>
   <data name="TriggersAtEndOfTurn" xml:space="preserve">
-    <value>End of Turn</value>
+    <value>at End of Turn</value>
   </data>
   <data name="Stats" xml:space="preserve">
     <value>Stats</value>
@@ -694,7 +694,7 @@
     <value>Slot</value>
   </data>
   <data name="TimerMarkedTime" xml:space="preserve">
-    <value>Marked Time in Minutes</value>
+    <value>Preferred Turn length in Minutes</value>
   </data>
   <data name="HealFor" xml:space="preserve">
     <value>Heal for</value>
@@ -737,5 +737,47 @@
   </data>
   <data name="NewPassiveEffect" xml:space="preserve">
     <value>New Passive Effect</value>
+  </data>
+  <data name="Instant" xml:space="preserve">
+    <value>Instant</value>
+  </data>
+  <data name="ModifierFromStats" xml:space="preserve">
+    <value>Modifier from Stats</value>
+  </data>
+  <data name="ModifierFromActiveEffects" xml:space="preserve">
+    <value>Modifier from Active Effects</value>
+  </data>
+  <data name="ModifierFromPassiveBuffs" xml:space="preserve">
+    <value>Modifier from Passive Buffs</value>
+  </data>
+  <data name="Spells" xml:space="preserve">
+    <value>Spells</value>
+  </data>
+  <data name="Equipped" xml:space="preserve">
+    <value>Equipped</value>
+  </data>
+  <data name="Equip" xml:space="preserve">
+    <value>Equip</value>
+  </data>
+  <data name="Curse" xml:space="preserve">
+    <value>Curse</value>
+  </data>
+  <data name="NewCurse" xml:space="preserve">
+    <value>New Curse</value>
+  </data>
+  <data name="TriggersAtStartOfTurn" xml:space="preserve">
+    <value>at Start of Turn</value>
+  </data>
+  <data name="OnEquipEffect" xml:space="preserve">
+    <value>On Equip Effect</value>
+  </data>
+  <data name="Enchantment" xml:space="preserve">
+    <value>Enchantment</value>
+  </data>
+  <data name="NewEnchantment" xml:space="preserve">
+    <value>New Enchantment</value>
+  </data>
+  <data name="Money" xml:space="preserve">
+    <value>Money</value>
   </data>
 </root>

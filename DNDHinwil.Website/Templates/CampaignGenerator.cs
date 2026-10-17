@@ -2,7 +2,7 @@
 using DNDHinwil.Website.Models;
 using System.Globalization;
 
-namespace DNDHinwil.Website.Generators;
+namespace DNDHinwil.Website.Templates;
 
 public static class CampaignGenerator
 {
@@ -56,10 +56,9 @@ public static class CampaignGenerator
                 Name = "Einfacher Heiltrank",
                 Effects =
                 [
-                    new() { Outcome = EffectOutcome.Reduces, Strength = 5, Target = EffectTarget.Health},
-                    new() { Outcome = EffectOutcome.Reduces, Strength = 3, Target = EffectTarget.Mana}
+                    new() { Outcome = EffectOutcome.Increases, Strength = 5, Target = EffectTarget.Health},
+                    new() { Outcome = EffectOutcome.Increases, Strength = 3, Target = EffectTarget.Mana}
                 ],
-                Usable = true,
                 DecreasesWithUse = true,
                 DropWhenEmpty = true,
                 CanBeUsedOnSelf = true

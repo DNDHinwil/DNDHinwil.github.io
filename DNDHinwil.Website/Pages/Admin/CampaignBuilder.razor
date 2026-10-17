@@ -1,0 +1,356 @@
+﻿@page "/campaign"
+@inject IDataService ContentService
+
+<PageTitle>@Constants.SiteName - @Text.Campaigns</PageTitle>
+
+<div class="content" style="@($"--color-primary:{_settings.AccentColor};")">
+    <header>
+        <h2>@Text.Campaign</h2>
+    </header>
+
+    <CollapsibleSection Title="@Text.AvailableSpells">
+        @foreach (var spell in _spellLibrary.Reverse<Spell>())
+        {
+            <div class="campaign-item">
+                <button class="left-button" command="show-modal" commandfor="delete-spell" @onclick="x => StartEditingSpell(spell)">@Constants.Symbol_Delete</button>
+                <SpellOrAbility Model="spell" MeleeRange="_settings.MeleeRange"></SpellOrAbility>
+                <button class="right-button" command="show-modal" commandfor="edit-spell" @onclick="x => StartEditingSpell(spell)">@Constants.Symbol_Edit</button>
+            </div>
+        }
+        <button command="show-modal" commandfor="edit-spell" @onclick="x => AddNewSpell()" style="width:100%;height:32px;margin-top:0.5rem;">@Text.NewSpell</button>
+    </CollapsibleSection>
+
+    <CollapsibleSection Title="@Text.AvailableGear">
+        @foreach (var item in _armory.Reverse<Gear>())
+        {
+            <div class="campaign-item">
+                <button class="left-button" command="show-modal" commandfor="delete-gear" @onclick="x => StartEditingGear(item)">@Constants.Symbol_Delete</button>
+                <GearItem Model="item" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></GearItem>
+                <button class="right-button" command="show-modal" commandfor="edit-gear" @onclick="x => StartEditingGear(item)">@Constants.Symbol_Edit</button>
+            </div>
+        }
+        <button command="show-modal" commandfor="edit-gear" @onclick="x => AddNewGear()" style="width:100%;height:32px;margin-top:0.5rem;">@Text.NewGear</button>
+    </CollapsibleSection>
+
+    <CollapsibleSection Title="@Text.EquipmentChest">
+        @foreach (var equipment in _equipmentChest)
+        {
+            <div class="campaign-item">
+                <button class="left-button" command="show-modal" commandfor="delete-equipment" @onclick="x => StartEditingEquipment(equipment)">@Constants.Symbol_Delete</button>
+                <EquipmentItem Model="equipment" HideQuantity="true" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></EquipmentItem>
+                <button class="right-button" command="show-modal" commandfor="edit-equipment" @onclick="x => StartEditingEquipment(equipment)">@Constants.Symbol_Edit</button>
+            </div>
+        }
+        <button command="show-modal" commandfor="edit-equipment" @onclick="x => AddNewEquipment()" style="width:100%;grid-column:span 3;margin-top:0.5rem;">@Text.NewEquipment</button>
+    </CollapsibleSection>
+
+    @if (_editSpell is not null)
+    {
+        <dialog id="edit-spell" class="edit-spell">
+            <h3>@Text.Spell</h3>
+            <InputWithLabel Label="@Text.Name">
+                <InputText @bind-Value="_editSpell.Name"></InputText>
+            </InputWithLabel>
+            <InputWithLabel Label="@Text.Range">
+                <InputNumber @bind-Value="_editSpell.Range"></InputNumber>
+            </InputWithLabel>
+            <InputWithLabel Label="@Text.ManaCost">
+                <InputNumber @bind-Value="_editSpell.ManaCost"></InputNumber>
+            </InputWithLabel>
+            <InputWithLabel Label="@Text.CanBeUsedOnSelf">
+                <InputCheckbox @bind-Value="_editSpell.CanBeUsedOnSelf"></InputCheckbox>
+            </InputWithLabel>
+            <div class="edit-spell-effects">
+                <h4 style="width:100%;grid-column:span 2;">@Text.Effects</h4>
+                @if (_editSpell.Effects.Any())
+                {
+                    @foreach (var effect in _editSpell.Effects)
+                    {
+                        <div class="spell-effect">
+                            <button class="left-button" @onclick="async x => await RemoveEffect(_editItem, effect)">@Constants.Symbol_Delete</button>
+                            <EffectView Model="effect" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></EffectView>
+                            <button class="right-button" @onclick="x => StartEditingEffect(effect)" command="show-modal" commandfor="edit-effect">@Constants.Symbol_Edit</button>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="spell-effect">@Text.NoEffects</div>
+                }
+                <button @onclick="x => AddNewEffect()" command="show-modal" commandfor="edit-effect" style="width:100%;grid-column:span 2;margin-top:0.5rem;">@Text.NewSpellEffect</button>
+            </div>
+            <button @onclick="x => FinishEditingSpell(false)" command="close" commandfor="edit-spell">@Text.Cancel</button>
+            <button @onclick="x => FinishEditingSpell(true)" command="close" commandfor="edit-spell" style="float:right;">@Text.Save</button>
+        </dialog>
+    }
+
+    @if (_editGear is not null)
+    {
+        <dialog id="edit-gear" class="edit-gear">
+            <h3>@Text.Gear</h3>
+            <InputWithLabel Label="@Text.Name">
+                <InputText @bind-Value="_editGear.Name"></InputText>
+            </InputWithLabel>
+            <InputWithLabel Label="@Text.Slot">
+                <InputSelect @bind-value="_editGear.Slot">
+                    @foreach (var gearSlot in Enum.GetValues<GearSlot>())
+                    {
+                        <option value="@gearSlot">@gearSlot.GetName()</option>
+                    }
+                </InputSelect>
+            </InputWithLabel>
+            <InputWithLabel Label="@Text.Description">
+                <InputText @bind-Value="_editGear.Description"></InputText>
+            </InputWithLabel>
+            <InputWithLabel Label="@Text.Weight">
+                <InputNumber @bind-Value="_editGear.Weight"></InputNumber>
+            </InputWithLabel>
+            <InputWithLabel Label="@Text.Armor">
+                <InputNumber @bind-Value="_editGear.Armor"></InputNumber>
+            </InputWithLabel>
+            <div class="edit-gear-effects">
+                <h4>@Text.Bonuses</h4>
+                @if (_editGear.Effects.Any())
+                {
+                    @foreach (var effect in _editGear.Effects)
+                    {
+                        <div class="gear-effect">
+                            <button class="left-button" @onclick="async x => await RemoveEffect(_editGear, effect)" command="show-modal" commandfor="edit-effect">@Constants.Symbol_Delete</button>
+                            <EffectView Model="effect" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></EffectView>
+                            <button class="right-button" @onclick="x => StartEditingEffect(effect)" command="show-modal" commandfor="edit-effect">@Constants.Symbol_Edit</button>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div>@Text.NoBonuses</div>
+                }
+                <button @onclick="x => AddNewEffect(true)" command="show-modal" commandfor="edit-effect" style="margin-top:0.5rem;">@Text.NewActiveEffect</button>
+                <button @onclick="x => AddNewEffect(false)" command="show-modal" commandfor="edit-effect" style="margin-top:0.5rem;">@Text.NewPassiveEffect</button>
+            </div>
+            <button @onclick="x => FinishEditingGear(false)" command="close" commandfor="edit-gear">@Text.Cancel</button>
+            <button @onclick="x => FinishEditingGear(true)" command="close" commandfor="edit-gear" style="float:right;">@Text.Save</button>
+        </dialog>
+    }
+
+    <dialog class="delete-dialog" id="delete-spell">
+        <h3>@Text.RemoveSpellFromLibrary</h3>
+        <label>@Text.AreYouSure</label>
+        <button @onclick="async x => await FinishEditingSpell(false)" command="close" commandfor="delete-spell">@Text.Cancel</button>
+        <button @onclick="async x => await DeleteSpell(_editSpell)" command="close" commandfor="delete-spell">@Text.Confirm</button>
+    </dialog>
+
+    <dialog class="delete-dialog" id="delete-gear">
+        <h3>@Text.RemoveGearFromInventory</h3>
+        <label>@Text.AreYouSure</label>
+        <button @onclick="async x => await FinishEditingGear(false)" command="close" commandfor="delete-gear">@Text.Cancel</button>
+        <button @onclick="async x => await DeleteGear(_editGear)" command="close" commandfor="delete-gear">@Text.Confirm</button>
+    </dialog>
+
+    <dialog class="delete-dialog" id="delete-equipment">
+        <h3>@Text.RemoveGearFromInventory</h3>
+        <label>@Text.AreYouSure</label>
+        <button @onclick="async x => await FinishEditingEqiupment(false)" command="close" commandfor="delete-equipment">@Text.Cancel</button>
+        <button @onclick="async x => await DeleteEquipment(_editEquipment)" command="close" commandfor="delete-equipment">@Text.Confirm</button>
+    </dialog>
+
+    <EditEffect EffectToEdit="_editEffect"
+                SaveEditCallback="@(async x => await FinishEditingEffect(_editItem, true))"
+                Stats="_activeCharacter.Stats"
+                Dice="_settings.Dice"></EditEffect>
+</div>
+
+@code {
+    private Settings _settings = new Settings();
+    private Character _activeCharacter = new Character();
+    private List<Spell> _spellLibrary = [];
+    private List<Gear> _armory = [];
+    private List<Equipment> _equipmentChest = [];
+
+    private Equipment? _editEquipment;
+    private Gear? _editGear;
+    private Spell? _editSpell;
+
+    private IHasEffects<Effect>? _editItem;
+    private Effect? _editEffect;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _settings = await ContentService.LoadSettings();
+        _activeCharacter = await ContentService.LoadCharacter(_settings.ActiveCharacter);
+        _spellLibrary = await ContentService.LoadSpellLibrary();
+        _armory = await ContentService.LoadArmory();
+        _equipmentChest = await ContentService.LoadEquipmentChest();
+
+        var newCulture = new CultureInfo(_settings.Language);
+        Thread.CurrentThread.CurrentUICulture = newCulture;
+        Text.Culture = newCulture;
+    }
+
+    #region Library
+    // C
+    private void AddNewSpell()
+    {
+        var spell = new Spell();
+        spell.Name = $"{Text.Spell} {_spellLibrary.Count + 1}";
+        StartEditingSpell(spell);
+    }
+    // R
+    private void StartEditingSpell(Spell spell)
+        => _editItem = _editSpell = spell;
+    // U
+    private async Task FinishEditingSpell(bool save)
+    {
+        if (_editSpell is null)
+            return;
+        if (!save)
+        {
+            _editSpell = null;
+            return;
+        }
+        var spellExists = _spellLibrary.FirstOrDefault(s => s.Id == _editSpell.Id);
+        if (spellExists is not null)
+            _spellLibrary.Remove(spellExists);
+
+        _spellLibrary.Add(_editSpell);
+        await ContentService.SaveSpellLibrary(_spellLibrary);
+        _editSpell = null;
+    }
+    // D
+    private async Task DeleteSpell(Spell? spell)
+    {
+        if (spell is null)
+            return;
+        _spellLibrary.Remove(spell);
+        await ContentService.SaveSpellLibrary(_spellLibrary);
+    }
+    #endregion
+
+    #region Armory
+    // C
+    private void AddNewGear()
+    {
+        var gear = new Gear();
+        gear.Name = $"{Text.Gear} {_armory.Count + 1}";
+        StartEditingGear(gear);
+    }
+    // R
+    private void StartEditingGear(Gear gear)
+        => _editItem = _editGear = gear;
+    // U
+    private async Task FinishEditingGear(bool save)
+    {
+        if (_editGear is null)
+            return;
+        if (!save)
+        {
+            _editGear = null;
+            return;
+        }
+        var gearExists = _armory.FirstOrDefault(s => s.Id == _editGear.Id);
+        if (gearExists is not null)
+            _armory.Remove(gearExists);
+
+        _armory.Add(_editGear);
+        await ContentService.SaveArmory(_armory);
+        _editGear = null;
+    }
+    // D
+    private async Task DeleteGear(Gear? gear)
+    {
+        if (gear is null)
+            return;
+        _armory.Remove(gear);
+        await ContentService.SaveArmory(_armory);
+    }
+    #endregion
+
+    #region Equipment Chest
+    // C
+    private void AddNewEquipment()
+    {
+        var equipment = new Equipment();
+        equipment.Name = $"{Text.Equipment} {_equipmentChest.Count + 1}";
+        StartEditingEquipment(equipment);
+    }
+    // R
+    private void StartEditingEquipment(Equipment equipment)
+        => _editItem = _editEquipment = equipment;
+    // U
+    private async Task FinishEditingEqiupment(bool save)
+    {
+        if (_editEquipment is null)
+            return;
+        if (!save)
+        {
+            _editEquipment = null;
+            return;
+        }
+        var equipmentExists = _equipmentChest.FirstOrDefault(s => s.Id == _editEquipment.Id);
+        if (equipmentExists is not null)
+            _equipmentChest.Remove(equipmentExists);
+
+        _equipmentChest.Add(_editEquipment);
+        await ContentService.SaveEquipmentChest(_equipmentChest);
+        _editEquipment = null;
+    }
+    // D
+    private async Task DeleteEquipment(Equipment? equipment)
+    {
+        if (equipment is null)
+            return;
+        _equipmentChest.Remove(equipment);
+        await ContentService.SaveEquipmentChest(_equipmentChest);
+    }
+    #endregion
+
+    #region Effects
+    // C
+    private void AddNewEffect(bool isActive = true)
+    {
+        var effect = new Effect() { EffectType = isActive ? EffectType.Active : EffectType.Passive };
+        StartEditingEffect(effect);
+    }
+
+    // R
+    private void StartEditingEffect(Effect effect)
+        => _editEffect = effect;
+
+    // U
+    private async Task FinishEditingEffect<THasEffects>(THasEffects? item, bool save)
+        where THasEffects : IHasEffects<Effect>
+    {
+        if (item is null || _editEffect is null)
+            return;
+        if (!save)
+        {
+            item = default;
+            _editEffect = null;
+            return;
+        }
+        // remove old version
+        var effectExists = item.Effects.FirstOrDefault(e => e.Id == _editEffect.Id);
+        if (effectExists is not null)
+            item.Effects.Remove(effectExists);
+
+        item.Effects.Add(_editEffect);
+
+        await ContentService.SaveArmory(_armory);
+        await ContentService.SaveEquipmentChest(_equipmentChest);
+        await ContentService.SaveSpellLibrary(_spellLibrary);
+        _editEffect = null;
+    }
+
+    // D
+    private async Task RemoveEffect<THasEffects>(THasEffects? item, Effect effect)
+        where THasEffects : IHasEffects<Effect>
+    {
+        if (item is null)
+            return;
+        item.Effects.Remove(effect);
+        await ContentService.SaveArmory(_armory);
+        await ContentService.SaveEquipmentChest(_equipmentChest);
+        await ContentService.SaveSpellLibrary(_spellLibrary);
+    }
+    #endregion
+}

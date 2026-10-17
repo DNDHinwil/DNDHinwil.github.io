@@ -55,9 +55,6 @@
             <InputWithLabel Label="@Text.Score">
                 <InputNumber @bind-Value="_editStat.Score"></InputNumber>
             </InputWithLabel>
-            <InputWithLabel Label="@Text.Boost">
-                <InputNumber @bind-Value="_editStat.Boost"></InputNumber>
-            </InputWithLabel>
             <button @onclick="x => FinishEditingStat(false)" command="close" commandfor="edit-stat">@Text.Cancel</button>
             <button @onclick="x => FinishEditingStat(true)" command="close" commandfor="edit-stat" style="float:right;">@Text.Save</button>
         </dialog>

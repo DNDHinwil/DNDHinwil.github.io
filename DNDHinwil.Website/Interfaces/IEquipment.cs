@@ -2,14 +2,12 @@
 
 namespace DNDHinwil.Website.Interfaces;
 
-public interface IEquipment
+public interface IEquipment<TEffect> : IHasEffects<TEffect>
+    where TEffect : IEffect
 {
     string Id { get; }
     string Name { get; }
     string Description { get; }
     int Weight { get; }
     bool Usable { get; }
-    bool CanBeUsedOnSelf { get; }
-    List<Effect> Effects { get; }
-    int Cooldown { get; }
 }

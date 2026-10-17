@@ -2,7 +2,6 @@
 
 public enum EffectTarget
 {
-    None,
     Health,
     Mana,
     MaxHealth,
