@@ -9,12 +9,12 @@
 }
 /* /Components/EquipmentItem.razor.rz.scp.css */
 .quantity[b-618e2hwvvj] {
-	padding-top: 0.25rem;
+	padding-top: 0.125rem;
 	margin-left: 0.5rem;
 }
 
 .weight[b-618e2hwvvj] {
-	padding-top: 0.25rem;
+	padding-top: 0.125rem;
 	text-align: right;
 }
 
@@ -31,11 +31,11 @@
 /* /Components/GearItem.razor.rz.scp.css */
 .gear-item[b-fjuljd0fq1] {
 	display: grid;
-	grid-template-columns: 130px auto 50px;
+	grid-template-columns: 150px auto 50px;
 }
 
 .gear-label[b-fjuljd0fq1] {
-	padding-top: 0.25rem;
+
 }
 .gear-bonus[b-fjuljd0fq1] {
 	margin-left: 0.25rem;
@@ -248,6 +248,34 @@ tbody > tr > th[b-ohkuqywe93] {
 		background: var(--color-background);
 		border: 1px solid var(--color);
 	}
+
+.has-tooltip[b-u60kk723l3] {
+	position: relative;
+	cursor: pointer;
+}
+
+.stat-tooltip[b-u60kk723l3] {
+	visibility: hidden;
+	display: grid;
+	grid-template-columns: max-content 40px;
+	background-color: var(--color-background);
+	color: var(--color-foreground);
+	padding: 0.25rem;
+	border: 1px solid var(--color-foreground);
+	border-radius: 0.25rem;
+	position: absolute;
+	left: 3rem;
+	top: -0.5rem;
+	z-index: 1; /* Ensure tooltip is displayed above content */
+}
+.stat-tooltip > div[b-u60kk723l3] {
+	text-align: left;
+}
+
+/* Show the tooltip text on hover */
+.has-tooltip:hover .stat-tooltip[b-u60kk723l3] {
+	visibility: visible;
+}
 /* /Layout/MainLayout.razor.rz.scp.css */
 .page[b-fzvffkfgi1] {
     --sidebar-height: 2.5rem;
@@ -379,6 +407,21 @@ nav[b-n07nno9l7k] {
 		overflow-y: auto;
 	}
 }
+/* /Pages/Admin/CampaignBuilder.razor.rz.scp.css */
+button[b-go4zaq2uo9]{
+    height: 32px;
+}
+
+.campaign-item[b-go4zaq2uo9] {
+    display: grid;
+    grid-template-columns: 40px auto 40px;
+    border-top: 1px dotted var(--color-foreground);
+    margin-top: 0.25rem;
+}
+
+    .campaign-item > button[b-go4zaq2uo9] {
+        margin-top: 0.25rem;
+    }
 /* /Pages/Armory.razor.rz.scp.css */
 
 header[b-p08nch7hwf] {
@@ -397,13 +440,6 @@ button[b-p08nch7hwf] {
 	height: 32px;
 }
 
-.character-gear[b-p08nch7hwf] {
-	display: grid;
-	grid-template-columns: 1fr 40px;
-	border-top: 1px dotted var(--color-foreground);
-	margin-top: 0.25rem;
-}
-
 .armory-gear[b-p08nch7hwf] {
 	display: grid;
 	grid-template-columns: 40px auto 40px 40px;
@@ -411,7 +447,6 @@ button[b-p08nch7hwf] {
 	margin-top: 0.25rem;
 }
 
-	.character-gear > button[b-p08nch7hwf],
 	.armory-gear > button[b-p08nch7hwf] {
 		margin-top: 0.25rem;
 	}
@@ -622,19 +657,12 @@ button[b-mlfjfescgw] {
 	height: 32px;
 }
 
-.inventory-item[b-mlfjfescgw] {
-	display: grid;
-	grid-template-columns: 40px auto 40px;
-	border-top: 1px dotted var(--color-foreground);
-}
-
 .equipment-chest-item[b-mlfjfescgw] {
 	display: grid;
 	grid-template-columns: 40px auto 40px 40px;
 	border-top: 1px dotted var(--color-foreground);
 }
 
-	.inventory-item > button[b-mlfjfescgw],
 	.equipment-chest-item > button[b-mlfjfescgw] {
 		margin-top: 0.25rem;
 	}
@@ -691,20 +719,12 @@ button[b-7o5kvrkihh] {
 	height: 32px;
 }
 
-.spellbook-spell[b-7o5kvrkihh] {
-	display: grid;
-	grid-template-columns: 1fr 40px;
-	border-top: 1px dotted var(--color-foreground);
-	margin-top: 0.25rem;
-}
-
 .library-spell[b-7o5kvrkihh] {
 	display: grid;
 	grid-template-columns: 40px auto 40px 40px;
 	border-top: 1px dotted var(--color-foreground);
 	margin-top: 0.25rem;
 }
-	.spellbook-spell > button[b-7o5kvrkihh],
 	.library-spell > button[b-7o5kvrkihh] {
 		margin-top: 0.25rem;
 	}
@@ -733,7 +753,7 @@ button[b-7o5kvrkihh] {
 header[b-v6gsu6n763] {
 	display: grid;
 	grid-template-columns: auto min-content;
-	padding: 0.5rem;
+	padding: 0.5rem 0.5rem 0 0.5rem;
 }
 
 	header > h2[b-v6gsu6n763] {
@@ -748,7 +768,7 @@ header[b-v6gsu6n763] {
 }
 
 .stats[b-v6gsu6n763] {
-	grid-row: span 3;
+	grid-row: span 4;
 	margin-right: 0.5rem;
 }
 
@@ -802,17 +822,43 @@ header[b-v6gsu6n763] {
 	grid-template-columns: 20px 32px min-content 32px auto;
 }
 
+.misc[b-v6gsu6n763] {
+	display: grid;
+	grid-template-columns: auto max-content;
+}
+
+.money[b-v6gsu6n763] {
+	margin-top: 1.5rem;
+	display: grid;
+	grid-template-columns: max-content;
+}
+
+.currency[b-v6gsu6n763] {
+	display: grid;
+	grid-template-columns: auto 40px;
+	margin-top: 0.25rem;
+}
+	.currency > div[b-v6gsu6n763] {
+		text-align: right;
+		margin-top: 0.25rem;
+	}
+	.currency > button[b-v6gsu6n763] {
+		height: 32px;
+	}
+
 .quick-actions[b-v6gsu6n763] {
+	grid-row: span 2;
 	display: grid;
 	grid-template-columns: auto 40px;
 }
 .quick-actions > div[b-v6gsu6n763] {
 	margin-top: 1.5rem;
+	text-align: right;
 }
 
 .action-button[b-v6gsu6n763] {
 	height: 32px;
-	margin: 1rem 0 0 0.5rem;
+	margin-top: 1rem;
 }
 
 .spellbook[b-v6gsu6n763] {
@@ -822,13 +868,13 @@ header[b-v6gsu6n763] {
 
 .spell[b-v6gsu6n763] {
 	display: grid;
-	grid-template-columns: auto 40px 40px;
+	grid-template-columns: 40px auto 40px 40px;
 	border-top: 1px dotted var(--color-foreground);
 }
 
 .equipment-item[b-v6gsu6n763] {
 	display: grid;
-	grid-template-columns: auto 40px 40px;
+	grid-template-columns: 40px auto 40px 40px;
 	border-top: 1px dotted var(--color-foreground);
 }
 	.spell > button[b-v6gsu6n763],
@@ -839,20 +885,16 @@ header[b-v6gsu6n763] {
 
 .passive-effect[b-v6gsu6n763] {
 	display: grid;
-	grid-template-columns: 40px auto 40px;
+	grid-template-columns: 40px auto 40px 40px;
 	border-top: 1px dotted var(--color-foreground);
 }
 
 .active-effect[b-v6gsu6n763] {
 	display: grid;
-	grid-template-columns: 40px auto 40px;
+	grid-template-columns: 40px auto 40px 40px;
 	border-top: 1px dotted var(--color-foreground);
 }
 
-	.active-effect > div[b-v6gsu6n763] {
-		padding-top: 0.75rem;
-		margin: 0 0.25rem;
-	}
 	.active-effect > button[b-v6gsu6n763] {
 		height: 32px;
 		margin-top: 0.25rem;
