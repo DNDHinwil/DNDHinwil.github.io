@@ -1,6 +1,4 @@
-﻿using DNDHinwil.Website.Models;
-
-namespace DNDHinwil.Website.Extensions;
+﻿namespace DNDHinwil.Website.Extensions;
 
 public static class ExperienceExtensions
 {

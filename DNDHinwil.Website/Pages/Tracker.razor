@@ -72,8 +72,8 @@
                 @foreach (var money in _activeCharacter.Money)
                 {
                     <div class="currency">
+                        <button class="left-button" popovertarget="edit-money" @onclick="x => StartEditingMoney(money)">＄</button>
                         <div>@($"{money.Quantity} {money.Name}")</div>
-                        <button class="right-button" popovertarget="edit-money" @onclick="x => StartEditingMoney(money)">＄</button>
                     </div>
                 }
             </div>
@@ -86,7 +86,7 @@
         </div>
     </section>
 
-    <CollapsibleSection Title="@Text.BuffsAndDebuffs">
+    <CollapsibleSection Title="@Text.BuffsAndDebuffs">  
         @if (_activeCharacter.GetArmor() > 0)
         {
             <div>@($"{Text.Armor}: {_activeCharacter.GetArmor()}")</div>

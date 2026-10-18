@@ -6,5 +6,6 @@
   <Folder Name="/workflows/">
     <File Path=".github/workflows/deploy-gh-pages.yml" />
   </Folder>
+  <Project Path="DNDHinwil.Lib/DNDHinwil.Lib.csproj" Id="3a349cfa-6ee0-4b37-939f-858165bd8e0f" />
   <Project Path="DNDHinwil.Website/DNDHinwil.Website.csproj" />
 </Solution>

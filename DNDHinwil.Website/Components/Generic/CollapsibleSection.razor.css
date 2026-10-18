@@ -10,7 +10,7 @@ h3 {
 	margin: 0;
 	padding-top: 0.5rem;
 	padding-left: 0.5rem;
-	text-transform: uppercase;
+	text-transform: capitalize;
 }
 
 button {

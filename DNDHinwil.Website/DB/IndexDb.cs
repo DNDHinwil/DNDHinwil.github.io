@@ -1,5 +1,4 @@
-﻿using DNDHinwil.Website.Models;
-using IndexedDB.Blazor;
+﻿using IndexedDB.Blazor;
 using Microsoft.JSInterop;
 
 namespace DNDHinwil.Website.DB;

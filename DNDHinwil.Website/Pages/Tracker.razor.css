@@ -62,8 +62,8 @@ header {
 }
 
 .rest-button {
+	height: 32px;
 	grid-row: span 2;
-	margin: 0.25rem 0.5rem 0.25rem 0;
 }
 
 .health, .mana {
@@ -77,14 +77,14 @@ header {
 }
 
 .money {
-	margin-top: 1.5rem;
+	margin-top: 0.5rem;
 	display: grid;
 	grid-template-columns: max-content;
 }
 
 .currency {
 	display: grid;
-	grid-template-columns: auto 40px;
+	grid-template-columns: 40px auto;
 	margin-top: 0.25rem;
 }
 	.currency > div {
@@ -96,18 +96,19 @@ header {
 	}
 
 .quick-actions {
+	margin-top: 2rem;
 	grid-row: span 2;
 	display: grid;
 	grid-template-columns: auto 40px;
 }
 .quick-actions > div {
-	margin-top: 1.5rem;
+	margin-top: 0.25rem;
 	text-align: right;
 }
 
 .action-button {
 	height: 32px;
-	margin-top: 1rem;
+	margin-bottom: 2rem;
 }
 
 .spellbook {
