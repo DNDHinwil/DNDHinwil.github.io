@@ -21,7 +21,7 @@
                     <img src="@_activeCharacter.ImageUrl" />
                 </div>
                 <button @onclick="async x => await EndTurn()" class="turn-button">@Text.EndTurn</button>
-                @if (_timer is not null && !_timer.TimerRunning)
+                @if (_timer is not null && !_timer.IsTimerRunning)
                 {
                     <button class="turn-button" @onclick="async x => await StartTurn()">@Text.StartTurn</button>
                 }

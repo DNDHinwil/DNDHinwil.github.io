@@ -324,8 +324,8 @@
   <data name="Export" xml:space="preserve">
     <value>Exportieren</value>
   </data>
-  <data name="DownloadYourCharacters" xml:space="preserve">
-    <value>Lade deine Charakteren herunter</value>
+  <data name="DownloadCharacters" xml:space="preserve">
+    <value>Lade Charakteren herunter</value>
   </data>
   <data name="UploadCharacters" xml:space="preserve">
     <value>Lade Charakteren hoch</value>
@@ -345,17 +345,14 @@
   <data name="SpellLibrary" xml:space="preserve">
     <value>Bibliothek</value>
   </data>
-  <data name="UploadSpellLibrary" xml:space="preserve">
-    <value>Lade eine Bibliothek hoch</value>
+  <data name="UploadGear" xml:space="preserve">
+    <value>Lade Ausstattung hoch</value>
   </data>
-  <data name="UploadArmory" xml:space="preserve">
-    <value>Lade eine Waffenkammer hoch</value>
+  <data name="DownloadSpells" xml:space="preserve">
+    <value>Lade Zauber herunter</value>
   </data>
-  <data name="DownloadYourSpellLibrary" xml:space="preserve">
-    <value>Lade deine Zauber Bibliothek herunter</value>
-  </data>
-  <data name="DownloadYourArmory" xml:space="preserve">
-    <value>Lade deine Waffenkammer herunter</value>
+  <data name="DownloadGear" xml:space="preserve">
+    <value>Lade Ausstattung herunter</value>
   </data>
   <data name="ActiveCharacter" xml:space="preserve">
     <value>Aktiver Charakter</value>
@@ -779,5 +776,17 @@
   </data>
   <data name="Money" xml:space="preserve">
     <value>Geld</value>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>Importieren</value>
+  </data>
+  <data name="UploadEquipment" xml:space="preserve">
+    <value>Lade Ausrüstung hoch</value>
+  </data>
+  <data name="UploadSpells" xml:space="preserve">
+    <value>Lade Zauber hoch</value>
+  </data>
+  <data name="DownloadEquipment" xml:space="preserve">
+    <value>Lade Ausrüstung herunter</value>
   </data>
 </root>

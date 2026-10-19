@@ -1,0 +1,14 @@
+﻿@typeparam T where T : Codespirals.Base.IIdentifiable, Codespirals.Base.INameable
+
+@if (Selections is not null)
+{
+    @foreach (var item in Selections)
+    {
+        <SelectableItem Model="item" T="T"></SelectableItem>
+    }
+}
+
+@code {
+    [Parameter]
+    public required List<Selectable<T>>? Selections { get; set; }
+}

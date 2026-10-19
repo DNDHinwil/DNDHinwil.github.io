@@ -1,8 +1,9 @@
-﻿using DNDHinwil.Interfaces;
+﻿using Codespirals.Base;
+using DNDHinwil.Interfaces;
 
 namespace DNDHinwil.Models;
 
-public class Spell : IHasEffects<Effect>
+public class Spell : IHasEffects<Effect>, IIdentifiable, INameable
 {
     public string Id { get; set; } = Guid.NewGuid().ToString();
     public string Name { get; set; } = Text.Fireball;

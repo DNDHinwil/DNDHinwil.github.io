@@ -1,9 +1,10 @@
-﻿using DNDHinwil.Enums;
+﻿using Codespirals.Base;
+using DNDHinwil.Enums;
 using DNDHinwil.Interfaces;
 
 namespace DNDHinwil.Models;
 
-public class Equipment : IEquipment<Effect>
+public class Equipment : IEquipment<Effect>, IIdentifiable, INameable
 {
     public string Id { get; set; } = Guid.NewGuid().ToString();
     public string Name { get; set; } = Text.Item;

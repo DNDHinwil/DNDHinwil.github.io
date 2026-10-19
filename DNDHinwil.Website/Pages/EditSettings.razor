@@ -1,5 +1,8 @@
 ﻿@page "/settings"
+@using Codespirals.Blazor.Services
+@using DNDHinwil.Website.Components.Generic
 @inject IDataService ContentService
+@inject IUserInteractionService UserInteractionService
 
 <PageTitle>@Constants.SiteName - @Text.Settings</PageTitle>
 
@@ -41,17 +44,24 @@
     </section>
     <section class="export">
         <h3 style="grid-column:span 2;">@Text.Export</h3>
-        <label>@Text.DownloadYourCharacters</label>
-        <button>@Text.Download</button>
-        <label>@Text.UploadCharacters</label>
+        <div>@Text.DownloadCharacters</div>
+        <button command="show-modal" commandfor="character-selection" @onclick="async x => await StartSelectingCharacters()">@Text.Download</button>
+        <div>@Text.DownloadSpells</div>
+        <button command="show-modal" commandfor="spell-selection" @onclick="async x => await StartSelectingSpells()">@Text.Download</button>
+        <div>@Text.DownloadGear</div>
+        <button command="show-modal" commandfor="gear-selection" @onclick="async x => await StartSelectingGear()">@Text.Download</button>
+        <div>@Text.DownloadEquipment</div>
+        <button command="show-modal" commandfor="equipment-selection" @onclick="async x => await StartSelectingEquipment()">@Text.Download</button>
+    </section>
+    <section class="import">
+        <h3 style="grid-column:span 2;">@Text.Import</h3>
+        <div>@Text.UploadCharacters</div>
         <button>@Text.Upload</button>
-        <label>@Text.DownloadYourArmory</label>
-        <button>@Text.Download</button>
-        <label>@Text.UploadArmory</label>
+        <div>@Text.UploadSpells</div>
         <button>@Text.Upload</button>
-        <label>@Text.DownloadYourSpellLibrary</label>
-        <button>@Text.Download</button>
-        <label>@Text.UploadSpellLibrary</label>
+        <div>@Text.UploadGear</div>
+        <button>@Text.Upload</button>
+        <div>@Text.UploadEquipment</div>
         <button>@Text.Upload</button>
     </section>
     <section class="tables">
@@ -87,10 +97,37 @@
             }
         </div>
     </section>
+
+    <dialog id="character-selection">
+        <h4>@Text.Select</h4>
+        <ListItemSelector Selections="_selectedCharacters"></ListItemSelector>
+        <button command="close" commandfor="character-selection" @onclick="DownloadCharacters">@Text.Confirm</button>
+    </dialog>
+    <dialog id="spell-selection">
+        <h4>@Text.Select</h4>
+        <ListItemSelector Selections="_selectedSpells"></ListItemSelector>
+        <button command="close" commandfor="spell-selection" @onclick="DownloadSpells">@Text.Confirm</button>
+    </dialog>
+    <dialog id="equipment-selection">
+        <h4>@Text.Select</h4>
+        <ListItemSelector Selections="_selectedEquipment"></ListItemSelector>
+        <button command="close" commandfor="equipment-selection" @onclick="DownloadEquipment">@Text.Confirm</button>
+    </dialog>
+    <dialog id="gear-selection">
+        <h4>@Text.Select</h4>
+        <ListItemSelector Selections="_selectedGear"></ListItemSelector>
+        <button command="close" commandfor="gear-selection" @onclick="DownloadGear">@Text.Confirm</button>
+    </dialog>
 </div>
 
 @code {
     private Settings _settings = new Settings();
+
+    private List<Selectable<Character>>? _selectedCharacters;
+    private List<Selectable<Spell>>? _selectedSpells;
+    private List<Selectable<Equipment>>? _selectedEquipment;
+    private List<Selectable<Gear>>? _selectedGear;
+
     private readonly (string Color, string Name)[] _colors = 
     [
         ("#9c1203", "Red"), 
@@ -114,6 +151,49 @@
     {
         if (string.IsNullOrWhiteSpace(fileName) || items is null || !items.Any())
             return;
-        
+    }
+
+    private async Task StartSelectingCharacters()
+        => _selectedCharacters = (await ContentService.LoadCharacters()).Select(i => new Selectable<Character>(){ Item = i}).ToList();
+
+    private async Task DownloadCharacters()
+    {
+        if (_selectedCharacters is null)
+            return;
+        await UserInteractionService.DownloadDataAsJson(_selectedCharacters.Select(c => c.Item), $"dnd_{Text.Characters}");
+        _selectedCharacters = null;
+    }
+
+    private async Task StartSelectingSpells()
+        => _selectedSpells = (await ContentService.LoadSpellLibrary()).Select(i => new Selectable<Spell>() { Item = i }).ToList();
+
+    private async Task DownloadSpells()
+    {
+        if (_selectedSpells is null)
+            return;
+        await UserInteractionService.DownloadDataAsJson(_selectedSpells.Select(c => c.Item), $"dnd_{Text.Spells}");
+        _selectedSpells = null;
+    }
+
+    private async Task StartSelectingEquipment()
+        => _selectedEquipment = (await ContentService.LoadEquipmentChest()).Select(i => new Selectable<Equipment>() { Item = i }).ToList();
+
+    private async Task DownloadEquipment()
+    {
+        if (_selectedEquipment is null)
+            return;
+        await UserInteractionService.DownloadDataAsJson(_selectedEquipment.Select(c => c.Item), $"dnd_{Text.Equipment}");
+        _selectedEquipment = null;
+    }
+
+    private async Task StartSelectingGear()
+        => _selectedGear = (await ContentService.LoadArmory()).Select(i => new Selectable<Gear>() { Item = i }).ToList();
+
+    private async Task DownloadGear()
+    {
+        if (_selectedGear is null)
+            return;
+        await UserInteractionService.DownloadDataAsJson(_selectedGear.Select(c => c.Item), $"dnd_{Text.Gear}");
+        _selectedGear = null;
     }
 }

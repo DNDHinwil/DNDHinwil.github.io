@@ -583,29 +583,38 @@ namespace DNDHinwil.Lib.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Download your Armory.
+        ///   Looks up a localized string similar to Download Characters.
         /// </summary>
-        public static string DownloadYourArmory {
+        public static string DownloadCharacters {
             get {
-                return ResourceManager.GetString("DownloadYourArmory", resourceCulture);
+                return ResourceManager.GetString("DownloadCharacters", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Download your Characters.
+        ///   Looks up a localized string similar to Download Equipment.
         /// </summary>
-        public static string DownloadYourCharacters {
+        public static string DownloadEquipment {
             get {
-                return ResourceManager.GetString("DownloadYourCharacters", resourceCulture);
+                return ResourceManager.GetString("DownloadEquipment", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Download your Spell Library.
+        ///   Looks up a localized string similar to Download Gear.
         /// </summary>
-        public static string DownloadYourSpellLibrary {
+        public static string DownloadGear {
             get {
-                return ResourceManager.GetString("DownloadYourSpellLibrary", resourceCulture);
+                return ResourceManager.GetString("DownloadGear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download Spells.
+        /// </summary>
+        public static string DownloadSpells {
+            get {
+                return ResourceManager.GetString("DownloadSpells", resourceCulture);
             }
         }
         
@@ -984,6 +993,15 @@ namespace DNDHinwil.Lib.Resources {
         public static string HealthShort {
             get {
                 return ResourceManager.GetString("HealthShort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import.
+        /// </summary>
+        public static string Import {
+            get {
+                return ResourceManager.GetString("Import", resourceCulture);
             }
         }
         
@@ -1960,15 +1978,6 @@ namespace DNDHinwil.Lib.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Upload an Armory.
-        /// </summary>
-        public static string UploadArmory {
-            get {
-                return ResourceManager.GetString("UploadArmory", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Upload Characters.
         /// </summary>
         public static string UploadCharacters {
@@ -1978,11 +1987,29 @@ namespace DNDHinwil.Lib.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Upload a Spell Library.
+        ///   Looks up a localized string similar to Upload Equipment.
         /// </summary>
-        public static string UploadSpellLibrary {
+        public static string UploadEquipment {
             get {
-                return ResourceManager.GetString("UploadSpellLibrary", resourceCulture);
+                return ResourceManager.GetString("UploadEquipment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upload Gear.
+        /// </summary>
+        public static string UploadGear {
+            get {
+                return ResourceManager.GetString("UploadGear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upload Spells.
+        /// </summary>
+        public static string UploadSpells {
+            get {
+                return ResourceManager.GetString("UploadSpells", resourceCulture);
             }
         }
         

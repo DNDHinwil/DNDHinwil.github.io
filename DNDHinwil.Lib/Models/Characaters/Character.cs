@@ -1,10 +1,11 @@
-﻿using DNDHinwil.Enums;
+﻿using Codespirals.Base;
+using DNDHinwil.Enums;
 using DNDHinwil.Extensions;
 using System.Collections.ObjectModel;
 using System.Text.Json;
 namespace DNDHinwil.Models;
 
-public class Character
+public class Character : IIdentifiable, INameable
 {
     private int _maxHealth = 2;
     private int _maxMana = 2;

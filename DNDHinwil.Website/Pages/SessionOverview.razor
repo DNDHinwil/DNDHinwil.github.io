@@ -23,10 +23,10 @@
     {
         <section class="turns">
             <h3>@Text.Turns</h3>
-            <LineGraph Max="(_selectedSession.Turns.Where(t => t.Time is not null).Max(t => t.Time!.Value.TotalMinutes) * 1.1d)"
+            <BarGraph Max="(_selectedSession.Turns.Where(t => t.Time is not null).Max(t => t.Time!.Value.TotalMinutes) * 1.1d)"
                        Points="TurnsToLineGraphPoints(_selectedSession.Turns)"
                        Marked="_settings.PreferredTurnLength.TotalMinutes"
-                       Height="200"></LineGraph>
+                       Height="200"></BarGraph>
         </section>
     }
     @if (_sessions.Count > 1)
