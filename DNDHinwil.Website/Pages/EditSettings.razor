@@ -118,7 +118,25 @@
         <ListItemSelector Selections="_selectedGear"></ListItemSelector>
         <button command="close" commandfor="gear-selection" @onclick="DownloadGear">@Text.Confirm</button>
     </dialog>
+    <dialog id="character-import">
+        <h4>@Text.Select</h4>
+        <InputFile OnChange="LoadFiles"></InputFile>
+    </dialog>
 </div>
+
+<script>
+  window.downloadFileFromStream = async (fileName, contentStreamReference) => {
+    const arrayBuffer = await contentStreamReference.arrayBuffer();
+    const blob = new Blob([arrayBuffer]);
+    const url = URL.createObjectURL(blob);
+    const anchorElement = document.createElement('a');
+    anchorElement.href = url;
+    anchorElement.download = fileName ?? '';
+    anchorElement.click();
+    anchorElement.remove();
+    URL.revokeObjectURL(url);
+  }
+</script>
 
 @code {
     private Settings _settings = new Settings();
@@ -127,6 +145,8 @@
     private List<Selectable<Spell>>? _selectedSpells;
     private List<Selectable<Equipment>>? _selectedEquipment;
     private List<Selectable<Gear>>? _selectedGear;
+
+    private bool _isLoading;
 
     private readonly (string Color, string Name)[] _colors = 
     [
@@ -160,7 +180,7 @@
     {
         if (_selectedCharacters is null)
             return;
-        await UserInteractionService.DownloadDataAsJson(_selectedCharacters.Select(c => c.Item), $"dnd_{Text.Characters}");
+        await UserInteractionService.DownloadDataAsJson(_selectedCharacters.Where(i => i.Selected).Select(c => c.Item), $"dnd_{Text.Characters}");
         _selectedCharacters = null;
     }
 
@@ -171,7 +191,7 @@
     {
         if (_selectedSpells is null)
             return;
-        await UserInteractionService.DownloadDataAsJson(_selectedSpells.Select(c => c.Item), $"dnd_{Text.Spells}");
+        await UserInteractionService.DownloadDataAsJson(_selectedSpells.Where(i => i.Selected).Select(c => c.Item), $"dnd_{Text.Spells}");
         _selectedSpells = null;
     }
 
@@ -182,7 +202,7 @@
     {
         if (_selectedEquipment is null)
             return;
-        await UserInteractionService.DownloadDataAsJson(_selectedEquipment.Select(c => c.Item), $"dnd_{Text.Equipment}");
+        await UserInteractionService.DownloadDataAsJson(_selectedEquipment.Where(i => i.Selected).Select(c => c.Item), $"dnd_{Text.Equipment}");
         _selectedEquipment = null;
     }
 
@@ -193,7 +213,38 @@
     {
         if (_selectedGear is null)
             return;
-        await UserInteractionService.DownloadDataAsJson(_selectedGear.Select(c => c.Item), $"dnd_{Text.Gear}");
+        await UserInteractionService.DownloadDataAsJson(_selectedGear.Where(i => i.Selected).Select(c => c.Item), $"dnd_{Text.Gear}");
         _selectedGear = null;
+    }
+
+    private async Task LoadFiles(InputFileChangeEventArgs e)
+    {
+        _isLoading = true;
+        try
+        {
+            if (!e.File.Name.EndsWith(".json"))
+            {
+                await UserInteractionService.MakeAlert("Uploaded file is of the wrong content type.");
+                return;
+            }
+            if (e.File.Size > 1024000)
+            {
+                await UserInteractionService.MakeAlert("Uploaded file is too big.");
+                return;
+            }
+
+            await using var stream = e.File.OpenReadStream(1024000);
+
+
+        }
+        catch (Exception ex)
+        {
+            await UserInteractionService.MakeAlert("Error while uploading file.");
+            Console.WriteLine(ex.Message);
+    }
+        finally
+        {
+            _isLoading = false;
+        }
     }
 }
