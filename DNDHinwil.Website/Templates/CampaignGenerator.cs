@@ -1,6 +1,4 @@
-﻿using DNDHinwil.Website.Enums;
-using DNDHinwil.Website.Models;
-using System.Globalization;
+﻿using System.Globalization;
 
 namespace DNDHinwil.Website.Templates;
 
@@ -17,7 +15,7 @@ public static class CampaignGenerator
         var defaultGear = GenerateHinwilDefaultGear();
         var defaultSpells = GenerateHinwilDefaultSpells();
 
-        var defaultCharacter = new Character()
+        Character defaultCharacter = new()
         {
             Stats = defaultStats,
             Spellbook = defaultSpells,
@@ -25,7 +23,7 @@ public static class CampaignGenerator
             Money = [new() { Name = "Furzis", Quantity = 50 }],
             Gear = defaultGear
         };
-        var defaultSettings = new Settings() { ActiveCharacter = defaultCharacter.Id, Language = "de" };
+        Settings defaultSettings = new() { ActiveCharacter = defaultCharacter.Id, Language = "de" };
 
         return new()
         {
@@ -63,7 +61,7 @@ public static class CampaignGenerator
                 DropWhenEmpty = true,
                 CanBeUsedOnSelf = true
             }
-        ]; 
+        ];
     private static List<Gear> GenerateHinwilDefaultGear()
         => [
             new Gear()
@@ -91,8 +89,8 @@ public static class CampaignGenerator
                     new() { Outcome = EffectOutcome.Reduces, Strength = 5, Target = EffectTarget.Health, }
                 ],
             },
-            new() 
-            { 
+            new()
+            {
                 Name = "Accio",
                 ManaCost = 1,
                 Range = 10,
@@ -101,8 +99,8 @@ public static class CampaignGenerator
                     new() { Outcome = EffectOutcome.Special, SpecialText = "Bring einen Gegenstand zu dir."}
                 ],
             },
-            new() 
-            { 
+            new()
+            {
                 Name = "Lumos",
                 ManaCost = 1,
                 Range = 5,

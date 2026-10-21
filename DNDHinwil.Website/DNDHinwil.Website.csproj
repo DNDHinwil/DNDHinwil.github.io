@@ -24,8 +24,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Codespirals.Base.Shared" Version="1.2.0.26235" />
-    <PackageReference Include="Codespirals.Blazor.Components" Version="1.1.26.26249" />
+    <PackageReference Include="Codespirals.Blazor.Components" Version="1.2.13.26294" />
+    <PackageReference Include="DNDHinwil.Lib" Version="0.0.9.26292" />
     <PackageReference Include="IndexedDB.Blazor" Version="1.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.10" PrivateAssets="all" />
@@ -43,31 +43,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Resources\Text.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Text.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="Resources\Text.de.resx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Text.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Text.Designer.cs</LastGenOutput>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="wwwroot\resources\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Using Include="DNDHinwil.Website.Interfaces" />
-    <Using Include="DNDHinwil.Website.Resources" />
+    <Using Include="DNDHinwil.Enums" />
+    <Using Include="DNDHinwil.Interfaces" />
+    <Using Include="DNDHinwil.Lib.Resources" />
+    <Using Include="DNDHinwil.Models" />
     <Using Include="System.ComponentModel.DataAnnotations" />
   </ItemGroup>
 

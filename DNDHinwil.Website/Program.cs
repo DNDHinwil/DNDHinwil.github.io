@@ -1,3 +1,4 @@
+using Codespirals.Blazor.Services;
 using DNDHinwil.Website;
 using IndexedDB.Blazor;
 using Microsoft.AspNetCore.Components.Web;
@@ -9,6 +10,7 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 builder.Services.AddScoped<IDataService, DataService>();
+builder.Services.AddScoped<IUserInteractionService, UserInteractionService>();
 
 builder.Services.AddScoped<IIndexedDbFactory, IndexedDbFactory>();
 

@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Title>DNDHinwil Library</Title>
+    <Authors>codespirals,Elitarate</Authors>
+    <Company>codespirals</Company>
+    <Description>A library of classes and interfaces to use in my small DND tracker.</Description>
+    <PackageProjectUrl>https://dndhinwil.github.io/</PackageProjectUrl>
+    <PackageOutputPath>$(OneDrive)\NuGet</PackageOutputPath>
+    <RepositoryUrl>https://github.com/DNDHinwil</RepositoryUrl>
+    <PackageLicenseExpression>CC0-1.0</PackageLicenseExpression>
+    <NeutralLanguage>en</NeutralLanguage>
+    <Version>0.0.10.26292</Version>
+  </PropertyGroup>
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="PowerShell -ExecutionPolicy Bypass -NoProfile -File AutoUpdateVersionNumber.ps1" />
+  </Target>
+  <ItemGroup>
+    <PackageReference Include="Codespirals.Base.Shared" Version="1.2.0.26235" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Resources\Text.Designer.cs">
+      <DependentUpon>Text.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\Text.de.resx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Text.resx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Text.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Using Include="DNDHinwil.Lib.Resources" />
+  </ItemGroup>
+</Project>

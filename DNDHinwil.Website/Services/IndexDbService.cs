@@ -1,6 +1,4 @@
-﻿using DNDHinwil.Website.DB;
-using DNDHinwil.Website.Models;
-using IndexedDB.Blazor;
+﻿using IndexedDB.Blazor;
 
 namespace DNDHinwil.Website.Services;
 

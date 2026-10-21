@@ -1,0 +1,792 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ActiveEffects" xml:space="preserve">
+    <value>Aktive Effekte</value>
+  </data>
+  <data name="Character" xml:space="preserve">
+    <value>Charakter</value>
+  </data>
+  <data name="Damage" xml:space="preserve">
+    <value>Schaden</value>
+  </data>
+  <data name="Effect" xml:space="preserve">
+    <value>Effekt</value>
+  </data>
+  <data name="EndTurn" xml:space="preserve">
+    <value>Beende den Zug</value>
+  </data>
+  <data name="Heal" xml:space="preserve">
+    <value>Heile</value>
+  </data>
+  <data name="Heals" xml:space="preserve">
+    <value>Heilt</value>
+  </data>
+  <data name="Health" xml:space="preserve">
+    <value>Lebenspunkte</value>
+  </data>
+  <data name="Mana" xml:space="preserve">
+    <value>Mana</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="NewActiveEffect" xml:space="preserve">
+    <value>Neuer Aktiver Effekt</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Keines</value>
+  </data>
+  <data name="Player" xml:space="preserve">
+    <value>Spieler</value>
+  </data>
+  <data name="StartTurn" xml:space="preserve">
+    <value>Starte den Zug</value>
+  </data>
+  <data name="Strength" xml:space="preserve">
+    <value>Stärke</value>
+  </data>
+  <data name="Target" xml:space="preserve">
+    <value>Ziel</value>
+  </data>
+  <data name="Turn" xml:space="preserve">
+    <value>Zug</value>
+  </data>
+  <data name="Turns" xml:space="preserve">
+    <value>Züge</value>
+  </data>
+  <data name="UntilRemoved" xml:space="preserve">
+    <value>bis Entfernt</value>
+  </data>
+  <data name="UntilHealed" xml:space="preserve">
+    <value>bis Geheilt</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Zurück</value>
+  </data>
+  <data name="MaxHP" xml:space="preserve">
+    <value>Max LP</value>
+  </data>
+  <data name="MaxMP" xml:space="preserve">
+    <value>Max MP</value>
+  </data>
+  <data name="MagicSense" xml:space="preserve">
+    <value>Magisches Gespür</value>
+  </data>
+  <data name="Dexterity" xml:space="preserve">
+    <value>Geschick</value>
+  </data>
+  <data name="Constitution" xml:space="preserve">
+    <value>Vitalität</value>
+  </data>
+  <data name="Intelligence" xml:space="preserve">
+    <value>Intelligenz</value>
+  </data>
+  <data name="Wisdom" xml:space="preserve">
+    <value>Weisheit</value>
+  </data>
+  <data name="Charisma" xml:space="preserve">
+    <value>Charisma</value>
+  </data>
+  <data name="MagicSense_Short" xml:space="preserve">
+    <value>MG</value>
+  </data>
+  <data name="Strength_Short" xml:space="preserve">
+    <value>St</value>
+  </data>
+  <data name="Dexterity_Short" xml:space="preserve">
+    <value>Ges</value>
+  </data>
+  <data name="Constitution_Short" xml:space="preserve">
+    <value>Vit</value>
+  </data>
+  <data name="Wisdom_Short" xml:space="preserve">
+    <value>Wei</value>
+  </data>
+  <data name="Intelligence_Short" xml:space="preserve">
+    <value>Int</value>
+  </data>
+  <data name="Charisma_Short" xml:space="preserve">
+    <value>Ch</value>
+  </data>
+  <data name="Pause" xml:space="preserve">
+    <value>Pausieren</value>
+  </data>
+  <data name="Unpause" xml:space="preserve">
+    <value>Unpausieren</value>
+  </data>
+  <data name="TriggersAtEndOfTurn" xml:space="preserve">
+    <value>am Ende des Zuges</value>
+  </data>
+  <data name="Stats" xml:space="preserve">
+    <value>Eigenschaften</value>
+  </data>
+  <data name="Level" xml:space="preserve">
+    <value>Level</value>
+  </data>
+  <data name="Level_Short" xml:space="preserve">
+    <value>Lv.</value>
+  </data>
+  <data name="Test" xml:space="preserve">
+    <value>Test</value>
+  </data>
+  <data name="TakeHealing" xml:space="preserve">
+    <value>Heile</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>Hinzufügen</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="Color" xml:space="preserve">
+    <value>Farbe</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Sprache</value>
+  </data>
+  <data name="Default" xml:space="preserve">
+    <value>Standard</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Speichern</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Einstellungen</value>
+  </data>
+  <data name="Modifiers" xml:space="preserve">
+    <value>Bonuses</value>
+  </data>
+  <data name="ActiveEffect" xml:space="preserve">
+    <value>Aktiver Effekt</value>
+  </data>
+  <data name="Equipment" xml:space="preserve">
+    <value>Ausrüstung</value>
+  </data>
+  <data name="Spellbook" xml:space="preserve">
+    <value>Zauberbuch</value>
+  </data>
+  <data name="Spell" xml:space="preserve">
+    <value>Zauber</value>
+  </data>
+  <data name="Armor" xml:space="preserve">
+    <value>Rüstung</value>
+  </data>
+  <data name="AffectedByArmor" xml:space="preserve">
+    <value>Reduziert durch Rüstung</value>
+  </data>
+  <data name="Characters" xml:space="preserve">
+    <value>Charakteren</value>
+  </data>
+  <data name="AreYouSure" xml:space="preserve">
+    <value>Bist du sicher?</value>
+  </data>
+  <data name="Select" xml:space="preserve">
+    <value>Auswählen</value>
+  </data>
+  <data name="Activate" xml:space="preserve">
+    <value>Aktivieren</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>Bestätigen</value>
+  </data>
+  <data name="CreateCharacter" xml:space="preserve">
+    <value>Erstelle einen neuen Charakter</value>
+  </data>
+  <data name="Modifier" xml:space="preserve">
+    <value>Bonus</value>
+  </data>
+  <data name="ModifierTable" xml:space="preserve">
+    <value>Bonustabelle</value>
+  </data>
+  <data name="AccentColor" xml:space="preserve">
+    <value>Akzentfarbe</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>Exportieren</value>
+  </data>
+  <data name="DownloadCharacters" xml:space="preserve">
+    <value>Lade Charakteren herunter</value>
+  </data>
+  <data name="UploadCharacters" xml:space="preserve">
+    <value>Lade Charakteren hoch</value>
+  </data>
+  <data name="Upload" xml:space="preserve">
+    <value>Hochladen</value>
+  </data>
+  <data name="Download" xml:space="preserve">
+    <value>Herunterladen</value>
+  </data>
+  <data name="Tracker" xml:space="preserve">
+    <value>Tracker</value>
+  </data>
+  <data name="Armory" xml:space="preserve">
+    <value>Arsenal</value>
+  </data>
+  <data name="SpellLibrary" xml:space="preserve">
+    <value>Bibliothek</value>
+  </data>
+  <data name="UploadGear" xml:space="preserve">
+    <value>Lade Ausstattung hoch</value>
+  </data>
+  <data name="DownloadSpells" xml:space="preserve">
+    <value>Lade Zauber herunter</value>
+  </data>
+  <data name="DownloadGear" xml:space="preserve">
+    <value>Lade Ausstattung herunter</value>
+  </data>
+  <data name="ActiveCharacter" xml:space="preserve">
+    <value>Aktiver Charakter</value>
+  </data>
+  <data name="Fireball" xml:space="preserve">
+    <value>Feuerball</value>
+  </data>
+  <data name="AvailableEquipment" xml:space="preserve">
+    <value>Verfügbare Ausrüstung</value>
+  </data>
+  <data name="AvailableSpells" xml:space="preserve">
+    <value>Verfügbare Zaubersprüche</value>
+  </data>
+  <data name="NewStat" xml:space="preserve">
+    <value>Neue Eigenschaft</value>
+  </data>
+  <data name="Stat" xml:space="preserve">
+    <value>Eigenschaft</value>
+  </data>
+  <data name="Score" xml:space="preserve">
+    <value>Punkte</value>
+  </data>
+  <data name="Short" xml:space="preserve">
+    <value>Abkürzung</value>
+  </data>
+  <data name="Boost" xml:space="preserve">
+    <value>Bonus</value>
+  </data>
+  <data name="DefaultCharacterName" xml:space="preserve">
+    <value>Max Mustermann</value>
+  </data>
+  <data name="Outcome" xml:space="preserve">
+    <value>Resultat</value>
+  </data>
+  <data name="Other" xml:space="preserve">
+    <value>Anderes</value>
+  </data>
+  <data name="Special" xml:space="preserve">
+    <value>Speziell</value>
+  </data>
+  <data name="To" xml:space="preserve">
+    <value>auf</value>
+  </data>
+  <data name="Cast" xml:space="preserve">
+    <value>Wirken</value>
+  </data>
+  <data name="NoActiveEffects" xml:space="preserve">
+    <value>Keine aktiven Effekte</value>
+  </data>
+  <data name="NoSpellsInSpellbook" xml:space="preserve">
+    <value>Keine Zauber im Zauberbuch</value>
+  </data>
+  <data name="General" xml:space="preserve">
+    <value>Allgemein</value>
+  </data>
+  <data name="SpellbookOf" xml:space="preserve">
+    <value>Zauberbuch von</value>
+  </data>
+  <data name="InventoryOf" xml:space="preserve">
+    <value>{{CHARACTER}}s Inventar</value>
+  </data>
+  <data name="Duration" xml:space="preserve">
+    <value>Dauer</value>
+  </data>
+  <data name="Experience" xml:space="preserve">
+    <value>Erfahrung</value>
+  </data>
+  <data name="ExperienceTable" xml:space="preserve">
+    <value>ErfahrungsTabelle</value>
+  </data>
+  <data name="BasicHealingPotion" xml:space="preserve">
+    <value>Einfacher Heiltrank</value>
+  </data>
+  <data name="D4" xml:space="preserve">
+    <value>W4</value>
+  </data>
+  <data name="D6" xml:space="preserve">
+    <value>W6</value>
+  </data>
+  <data name="D8" xml:space="preserve">
+    <value>W8</value>
+  </data>
+  <data name="D10" xml:space="preserve">
+    <value>W10</value>
+  </data>
+  <data name="D12" xml:space="preserve">
+    <value>W12</value>
+  </data>
+  <data name="D20" xml:space="preserve">
+    <value>W20</value>
+  </data>
+  <data name="D100" xml:space="preserve">
+    <value>W100</value>
+  </data>
+  <data name="Coin" xml:space="preserve">
+    <value>Münze</value>
+  </data>
+  <data name="Healing" xml:space="preserve">
+    <value>Heilung</value>
+  </data>
+  <data name="D" xml:space="preserve">
+    <value>W</value>
+  </data>
+  <data name="Session" xml:space="preserve">
+    <value>Session</value>
+  </data>
+  <data name="Sessions" xml:space="preserve">
+    <value>Sessions</value>
+  </data>
+  <data name="PastSessions" xml:space="preserve">
+    <value>Vergangene Sessions</value>
+  </data>
+  <data name="StartSession" xml:space="preserve">
+    <value>Beginne eine neue Session</value>
+  </data>
+  <data name="EndSession" xml:space="preserve">
+    <value>Beende diese Session</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Starten</value>
+  </data>
+  <data name="End" xml:space="preserve">
+    <value>Beenden</value>
+  </data>
+  <data name="TurnShort" xml:space="preserve">
+    <value>Z</value>
+  </data>
+  <data name="ActiveSession" xml:space="preserve">
+    <value>Aktive Session</value>
+  </data>
+  <data name="LevelModifier" xml:space="preserve">
+    <value>Level Bonus</value>
+  </data>
+  <data name="HealthShort" xml:space="preserve">
+    <value>LP</value>
+  </data>
+  <data name="ManaShort" xml:space="preserve">
+    <value>MP</value>
+  </data>
+  <data name="Rest" xml:space="preserve">
+    <value>Raste</value>
+  </data>
+  <data name="NewSpell" xml:space="preserve">
+    <value>Neuer Zauber</value>
+  </data>
+  <data name="Wand" xml:space="preserve">
+    <value>Zauberstab</value>
+  </data>
+  <data name="Item" xml:space="preserve">
+    <value>Gegenstand</value>
+  </data>
+  <data name="For" xml:space="preserve">
+    <value>Für</value>
+  </data>
+  <data name="ReducedDamage" xml:space="preserve">
+    <value>Reduzierter Schaden</value>
+  </data>
+  <data name="Luck" xml:space="preserve">
+    <value>Glück</value>
+  </data>
+  <data name="Luck_Short" xml:space="preserve">
+    <value>Glk</value>
+  </data>
+  <data name="Templates" xml:space="preserve">
+    <value>Vorlagen</value>
+  </data>
+  <data name="Campaign" xml:space="preserve">
+    <value>Kampagne</value>
+  </data>
+  <data name="Campaigns" xml:space="preserve">
+    <value>Kampagnen</value>
+  </data>
+  <data name="ManaCost" xml:space="preserve">
+    <value>Manakosten</value>
+  </data>
+  <data name="StartCampaign" xml:space="preserve">
+    <value>Starte eine neue Kampagne</value>
+  </data>
+  <data name="StartCampaignWarning" xml:space="preserve">
+    <value>Deine Daten werden gelöscht</value>
+  </data>
+  <data name="NoEquipmentInInventory" xml:space="preserve">
+    <value>Keine Ausrüstung im Inventar</value>
+  </data>
+  <data name="Inventory" xml:space="preserve">
+    <value>Inventar</value>
+  </data>
+  <data name="Use" xml:space="preserve">
+    <value>Benutzen</value>
+  </data>
+  <data name="Gear_MainHand" xml:space="preserve">
+    <value>Dominante Hand</value>
+  </data>
+  <data name="Gear_OffHand" xml:space="preserve">
+    <value>Schwache Hand</value>
+  </data>
+  <data name="Gear_Head" xml:space="preserve">
+    <value>Kopf</value>
+  </data>
+  <data name="Gear_Chest" xml:space="preserve">
+    <value>Brust</value>
+  </data>
+  <data name="Gear_Cloak" xml:space="preserve">
+    <value>Umhang</value>
+  </data>
+  <data name="Gear_Gloves" xml:space="preserve">
+    <value>Handschuhe</value>
+  </data>
+  <data name="Gear_Bracers" xml:space="preserve">
+    <value>Arme</value>
+  </data>
+  <data name="Gear_Legs" xml:space="preserve">
+    <value>Beine</value>
+  </data>
+  <data name="Gear_Boots" xml:space="preserve">
+    <value>Schuhe</value>
+  </data>
+  <data name="Gear_Ears" xml:space="preserve">
+    <value>Ohren</value>
+  </data>
+  <data name="Gear_Neck" xml:space="preserve">
+    <value>Hals</value>
+  </data>
+  <data name="Gear_Finger" xml:space="preserve">
+    <value>Finger</value>
+  </data>
+  <data name="Gear_Twohanded" xml:space="preserve">
+    <value>Zweihändig</value>
+  </data>
+  <data name="NotEnoughMana" xml:space="preserve">
+    <value>Nicht genug Mana</value>
+  </data>
+  <data name="EquipmentChest" xml:space="preserve">
+    <value>Austrüstungskoffer</value>
+  </data>
+  <data name="GearOf" xml:space="preserve">
+    <value>{{CHARACTER}}s Ausstattung</value>
+  </data>
+  <data name="NewEquipment" xml:space="preserve">
+    <value>Neuer Ausrüstungsgegenstand</value>
+  </data>
+  <data name="NewGear" xml:space="preserve">
+    <value>Neuer Ausstattungsgegenstand</value>
+  </data>
+  <data name="Gear" xml:space="preserve">
+    <value>Ausstattung</value>
+  </data>
+  <data name="NoGearEquipped" xml:space="preserve">
+    <value>Keine Ausstattung Ausgerüstet</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Beschreibung</value>
+  </data>
+  <data name="Range" xml:space="preserve">
+    <value>Reichweite</value>
+  </data>
+  <data name="Effects" xml:space="preserve">
+    <value>Effekte</value>
+  </data>
+  <data name="NoEffects" xml:space="preserve">
+    <value>Keine Effekte</value>
+  </data>
+  <data name="Dice" xml:space="preserve">
+    <value>Würfel</value>
+  </data>
+  <data name="FlatBonusDamage" xml:space="preserve">
+    <value>Bonus Schaden</value>
+  </data>
+  <data name="DiceType" xml:space="preserve">
+    <value>Würfeltyp</value>
+  </data>
+  <data name="NewSpellEffect" xml:space="preserve">
+    <value>Neuer Zeubereffekt</value>
+  </data>
+  <data name="BonusStat" xml:space="preserve">
+    <value>Eingenschaftsbonus</value>
+  </data>
+  <data name="RemoveSpellFromLibrary" xml:space="preserve">
+    <value>Zauber von Bibliothek entfernen</value>
+  </data>
+  <data name="MeleeRange" xml:space="preserve">
+    <value>Nahkampfdistanz</value>
+  </data>
+  <data name="GameSettings" xml:space="preserve">
+    <value>Spieleinstellungen</value>
+  </data>
+  <data name="Modifier_Short" xml:space="preserve">
+    <value>Bns</value>
+  </data>
+  <data name="NewGearBonus" xml:space="preserve">
+    <value>Neuer Ausstattungsbonus</value>
+  </data>
+  <data name="RemoveGearFromInventory" xml:space="preserve">
+    <value>Austattung vom Inventar entfernen</value>
+  </data>
+  <data name="AvailableGear" xml:space="preserve">
+    <value>Verfügbare Ausstattung</value>
+  </data>
+  <data name="Bonus" xml:space="preserve">
+    <value>Bonus</value>
+  </data>
+  <data name="Bonuses" xml:space="preserve">
+    <value>Boni</value>
+  </data>
+  <data name="NoBonuses" xml:space="preserve">
+    <value>No Boni</value>
+  </data>
+  <data name="CanBeUsedOnSelf" xml:space="preserve">
+    <value>Kann auf sich selbst angewendet werden</value>
+  </data>
+  <data name="Usable" xml:space="preserve">
+    <value>Benutzbar</value>
+  </data>
+  <data name="Weight" xml:space="preserve">
+    <value>Gewicht</value>
+  </data>
+  <data name="Quantity" xml:space="preserve">
+    <value>Anzahl</value>
+  </data>
+  <data name="DecreasesWithUse" xml:space="preserve">
+    <value>Wird aufgebraucht bei benutzung</value>
+  </data>
+  <data name="DropWhenEmpty" xml:space="preserve">
+    <value>Wird gelöscht wenn leer</value>
+  </data>
+  <data name="NewEqupmentEffect" xml:space="preserve">
+    <value>Neuer Ausrüstungseffekt</value>
+  </data>
+  <data name="Reduces" xml:space="preserve">
+    <value>Reduziert</value>
+  </data>
+  <data name="Increases" xml:space="preserve">
+    <value>Erhöt</value>
+  </data>
+  <data name="Slot" xml:space="preserve">
+    <value>Ausrüstung für</value>
+  </data>
+  <data name="TimerMarkedTime" xml:space="preserve">
+    <value>Beforzugte Zuglänge in Minuten</value>
+  </data>
+  <data name="HealFor" xml:space="preserve">
+    <value>Heile für</value>
+  </data>
+  <data name="DamageFor" xml:space="preserve">
+    <value>Nimm Schaden</value>
+  </data>
+  <data name="TakeDamage" xml:space="preserve">
+    <value>Nimm Schaden</value>
+  </data>
+  <data name="PictureUrl" xml:space="preserve">
+    <value>Bild url</value>
+  </data>
+  <data name="Value" xml:space="preserve">
+    <value>Wert</value>
+  </data>
+  <data name="IncomingDamage" xml:space="preserve">
+    <value>Eingehender Schaden</value>
+  </data>
+  <data name="OutgoingDamage" xml:space="preserve">
+    <value>Verursachter Schaden</value>
+  </data>
+  <data name="StatNotSet" xml:space="preserve">
+    <value>Eigenschaft nicht definiert</value>
+  </data>
+  <data name="ForXTurns" xml:space="preserve">
+    <value>für {{TURNS}} Züge</value>
+  </data>
+  <data name="StatToBuff" xml:space="preserve">
+    <value>Verstärkte Eigenschaft</value>
+  </data>
+  <data name="BuffsAndDebuffs" xml:space="preserve">
+    <value>Buffs und Debuffs</value>
+  </data>
+  <data name="BaseMaxHealth" xml:space="preserve">
+    <value>Basis Maximum Lebenspunkte</value>
+  </data>
+  <data name="BaseMaxMana" xml:space="preserve">
+    <value>Basis Maximum Mana</value>
+  </data>
+  <data name="NewPassiveEffect" xml:space="preserve">
+    <value>Neuer Passiver Effekt</value>
+  </data>
+  <data name="Instant" xml:space="preserve">
+    <value>Blitzartig</value>
+  </data>
+  <data name="ModifierFromStats" xml:space="preserve">
+    <value>Bonus von Eigenschaften</value>
+  </data>
+  <data name="ModifierFromActiveEffects" xml:space="preserve">
+    <value>Bonus von Aktiven Effekten</value>
+  </data>
+  <data name="ModifierFromPassiveBuffs" xml:space="preserve">
+    <value>Bonus von Passiven Buffs</value>
+  </data>
+  <data name="Spells" xml:space="preserve">
+    <value>Zauber</value>
+  </data>
+  <data name="Equipped" xml:space="preserve">
+    <value>Ausgerüstet</value>
+  </data>
+  <data name="Equip" xml:space="preserve">
+    <value>Ausrüsten</value>
+  </data>
+  <data name="Curse" xml:space="preserve">
+    <value>Fluch</value>
+  </data>
+  <data name="NewCurse" xml:space="preserve">
+    <value>Neuer Fluch</value>
+  </data>
+  <data name="TriggersAtStartOfTurn" xml:space="preserve">
+    <value>am Anfang des Zuges</value>
+  </data>
+  <data name="OnEquipEffect" xml:space="preserve">
+    <value>Au</value>
+  </data>
+  <data name="Enchantment" xml:space="preserve">
+    <value>Verzauberung</value>
+  </data>
+  <data name="NewEnchantment" xml:space="preserve">
+    <value>Neue Verzauberung</value>
+  </data>
+  <data name="Money" xml:space="preserve">
+    <value>Geld</value>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>Importieren</value>
+  </data>
+  <data name="UploadEquipment" xml:space="preserve">
+    <value>Lade Ausrüstung hoch</value>
+  </data>
+  <data name="UploadSpells" xml:space="preserve">
+    <value>Lade Zauber hoch</value>
+  </data>
+  <data name="DownloadEquipment" xml:space="preserve">
+    <value>Lade Ausrüstung herunter</value>
+  </data>
+</root>

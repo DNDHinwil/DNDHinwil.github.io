@@ -1,6 +1,4 @@
-﻿using DNDHinwil.Website.Models;
-
-namespace DNDHinwil.Website.Templates;
+﻿namespace DNDHinwil.Website.Templates;
 
 public class TemplateService
 {
