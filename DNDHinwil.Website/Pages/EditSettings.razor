@@ -1,6 +1,8 @@
 ﻿@page "/settings"
+@using System.Text.Json
 @using Codespirals.Blazor.Services
 @using DNDHinwil.Website.Components.Generic
+@using DNDHinwil.Website.Extensions
 @inject IDataService ContentService
 @inject IUserInteractionService UserInteractionService
 
@@ -56,13 +58,13 @@
     <section class="import">
         <h3 style="grid-column:span 2;">@Text.Import</h3>
         <div>@Text.UploadCharacters</div>
-        <button>@Text.Upload</button>
+        <button command="show-modal" commandfor="file-import" @onclick="x => _fileType = FileType.Characters">@Text.Upload</button>
         <div>@Text.UploadSpells</div>
-        <button>@Text.Upload</button>
+        <button command="show-modal" commandfor="file-import" @onclick="x => _fileType = FileType.Spells">@Text.Upload</button>
         <div>@Text.UploadGear</div>
-        <button>@Text.Upload</button>
+        <button command="show-modal" commandfor="file-import" @onclick="x => _fileType = FileType.Gear">@Text.Upload</button>
         <div>@Text.UploadEquipment</div>
-        <button>@Text.Upload</button>
+        <button command="show-modal" commandfor="file-import" @onclick="x => _fileType = FileType.Equipment">@Text.Upload</button>
     </section>
     <section class="tables">
         <h3 style="grid-column:span 2;">Tables</h3>
@@ -98,29 +100,30 @@
         </div>
     </section>
 
-    <dialog id="character-selection">
+    <dialog id="character-selection" class="export-dialog">
         <h4>@Text.Select</h4>
         <ListItemSelector Selections="_selectedCharacters"></ListItemSelector>
         <button command="close" commandfor="character-selection" @onclick="DownloadCharacters">@Text.Confirm</button>
     </dialog>
-    <dialog id="spell-selection">
+    <dialog id="spell-selection" class="export-dialog">
         <h4>@Text.Select</h4>
         <ListItemSelector Selections="_selectedSpells"></ListItemSelector>
         <button command="close" commandfor="spell-selection" @onclick="DownloadSpells">@Text.Confirm</button>
     </dialog>
-    <dialog id="equipment-selection">
+    <dialog id="equipment-selection" class="export-dialog">
         <h4>@Text.Select</h4>
         <ListItemSelector Selections="_selectedEquipment"></ListItemSelector>
         <button command="close" commandfor="equipment-selection" @onclick="DownloadEquipment">@Text.Confirm</button>
     </dialog>
-    <dialog id="gear-selection">
+    <dialog id="gear-selection" class="export-dialog">
         <h4>@Text.Select</h4>
         <ListItemSelector Selections="_selectedGear"></ListItemSelector>
         <button command="close" commandfor="gear-selection" @onclick="DownloadGear">@Text.Confirm</button>
     </dialog>
-    <dialog id="character-import">
+    <dialog id="file-import">
         <h4>@Text.Select</h4>
-        <InputFile OnChange="LoadFiles"></InputFile>
+        <InputFile OnChange="SetFile"></InputFile>
+        <button command="close" commandfor="file-import" @onclick="UploadFile">@Text.Confirm</button>
     </dialog>
 </div>
 
@@ -147,6 +150,9 @@
     private List<Selectable<Gear>>? _selectedGear;
 
     private bool _isLoading;
+    private IBrowserFile? _file;
+    private FileType _fileType = FileType.Characters;
+    const int _maxFileSize = 1048576;
 
     private readonly (string Color, string Name)[] _colors = 
     [
@@ -217,34 +223,125 @@
         _selectedGear = null;
     }
 
-    private async Task LoadFiles(InputFileChangeEventArgs e)
+    private async Task SetFile(InputFileChangeEventArgs e)
+        => _file = e.File;
+
+    private async Task UploadFile()
+    {
+        if (_file is null)
+            return;
+        switch(_fileType)
+        {
+            case FileType.Characters:
+                await UploadCharacters();
+                break;
+            case FileType.Spells:
+                await UploadSpells();
+                break;
+            case FileType.Gear:
+                await UploadGear();
+                break;
+            case FileType.Equipment:
+                await UploadEquipment();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private async Task UploadCharacters()
+    {
+        if (_file is null)
+            return;
+        var data = await GetItemsFromFile<Character>(_file);
+        if (data is null || !data.Any())
+            return;
+        var old = await ContentService.LoadCharacters();
+        await ContentService.SaveCharacters(old.Integrate(data));
+        await UserInteractionService.MakeAlert($"Successfully imported {data.Count} character(s).");
+    }
+    private async Task UploadEquipment()
+    {
+        if (_file is null)
+            return;
+        var data = await GetItemsFromFile<Equipment>(_file);
+        if (data is null || !data.Any())
+            return;
+        var old = await ContentService.LoadEquipmentChest();
+        await ContentService.SaveEquipmentChest(old.Integrate(data));
+        await UserInteractionService.MakeAlert($"Successfully imported {data.Count} equipment item(s).");
+    }
+    private async Task UploadGear()
+    {
+        if (_file is null)
+            return;
+        var data = await GetItemsFromFile<Gear>(_file);
+        if (data is null || !data.Any())
+            return;
+        var old = await ContentService.LoadArmory();
+        await ContentService.SaveArmory(old.Integrate(data));
+        await UserInteractionService.MakeAlert($"Successfully imported {data.Count} gear item(s).");
+    }
+    private async Task UploadSpells()
+    {
+        if (_file is null)
+            return;
+        var data = await GetItemsFromFile<Spell>(_file);
+        if (data is null || !data.Any())
+            return;
+        var old = await ContentService.LoadSpellLibrary();
+        await ContentService.SaveSpellLibrary(old.Integrate(data));
+        await UserInteractionService.MakeAlert($"Successfully imported {data.Count} spell(s).");
+    }
+
+    private async Task<List<T>> GetItemsFromFile<T>(IBrowserFile file)
     {
         _isLoading = true;
         try
         {
-            if (!e.File.Name.EndsWith(".json"))
+            if (!file.ContentType.Contains("json") || !file.Name.EndsWith(".json"))
             {
-                await UserInteractionService.MakeAlert("Uploaded file is of the wrong content type.");
-                return;
+                await UserInteractionService.MakeAlert($"File is the wrong format.");
+                return [];
             }
-            if (e.File.Size > 1024000)
+            if (file.Size > _maxFileSize)
             {
-                await UserInteractionService.MakeAlert("Uploaded file is too big.");
-                return;
+                await UserInteractionService.MakeAlert($"File is too big.");
+                return [];
             }
-
-            await using var stream = e.File.OpenReadStream(1024000);
-
-
+            using var memoryStream = new MemoryStream();
+            await file.OpenReadStream(_maxFileSize).CopyToAsync(memoryStream);
+            if (memoryStream is null || !memoryStream.CanRead)
+            {
+                await UserInteractionService.MakeAlert($"Failed to read file.");
+                return [];
+            }
+            var bytes = memoryStream.ToArray();
+            var data = JsonSerializer.Deserialize<List<T>>(bytes);
+            if (data is null)
+            {
+                await UserInteractionService.MakeAlert($"Couldn't convert file to site data.");
+                return [];
+            }
+            return data;
         }
         catch (Exception ex)
         {
-            await UserInteractionService.MakeAlert("Error while uploading file.");
+            await UserInteractionService.MakeAlert($"Unexpected error while reading file.");
             Console.WriteLine(ex.Message);
-    }
+            return [];
+        }
         finally
         {
             _isLoading = false;
         }
+    }
+
+    private enum FileType
+    {
+        Characters,
+        Spells,
+        Equipment,
+        Gear
     }
 }

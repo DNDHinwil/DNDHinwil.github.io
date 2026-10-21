@@ -1,7 +1,7 @@
 ﻿@typeparam T where T : Codespirals.Base.IIdentifiable, Codespirals.Base.INameable
 
 <div class="selectable">
-    <button @onclick="ToggleSelect">@(Model.Selected ? "✔" : "✖")</button>
+    <button class="left-button" @onclick="ToggleSelect">@(Model.Selected ? "✔" : "✖")</button>
     <div>@Model.Item.Name</div>
 </div>
 

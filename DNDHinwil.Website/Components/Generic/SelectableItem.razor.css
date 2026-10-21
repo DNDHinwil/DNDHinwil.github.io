@@ -1,0 +1,9 @@
+/* CSS for SelectableItem component */
+.selectable {
+	display: grid;
+	grid-template-columns: 40px auto;
+	margin-top: 0.25rem;
+}
+	.selectable > div {
+		margin-top: 0.25rem;
+	}

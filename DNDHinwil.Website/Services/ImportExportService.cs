@@ -48,7 +48,7 @@ public class ImportExportService(IDataService dataService, IUserInteractionServi
     }
     public async Task UploadCharacters(IBrowserFile file)
     {
-        var data = await _userInteractionService.UploadJsonFile<List<Character>?>(file);
+        var data = await _userInteractionService.ExtractDataFromJsonFile<List<Character>?>(file);
         if (data is null)
             return;
         var savedData = await _dataService.LoadCharacters();
@@ -56,7 +56,7 @@ public class ImportExportService(IDataService dataService, IUserInteractionServi
     }
     public async Task UploadEquipment(IBrowserFile file)
     {
-        var data = await _userInteractionService.UploadJsonFile<List<Equipment>?>(file);
+        var data = await _userInteractionService.ExtractDataFromJsonFile<List<Equipment>?>(file);
         if (data is null)
             return;
         var savedData = await _dataService.LoadEquipmentChest();
@@ -64,7 +64,7 @@ public class ImportExportService(IDataService dataService, IUserInteractionServi
     }
     public async Task UploadGear(IBrowserFile file)
     {
-        var data = await _userInteractionService.UploadJsonFile<List<Gear>?>(file);
+        var data = await _userInteractionService.ExtractDataFromJsonFile<List<Gear>?>(file);
         if (data is null)
             return;
         var savedData = await _dataService.LoadArmory();
@@ -72,11 +72,10 @@ public class ImportExportService(IDataService dataService, IUserInteractionServi
     }
     public async Task UploadSpells(IBrowserFile file)
     {
-        var data = await _userInteractionService.UploadJsonFile<List<Spell>?>(file);
+        var data = await _userInteractionService.ExtractDataFromJsonFile<List<Spell>?>(file);
         if (data is null)
             return;
         var savedData = await _dataService.LoadSpellLibrary(); 
         await _dataService.SaveSpellLibrary(savedData.Integrate(data));
     }
-
 }
