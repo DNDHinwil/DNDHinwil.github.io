@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Codespirals.Blazor.Components" Version="1.2.13.26294" />
+    <PackageReference Include="Codespirals.Blazor.Components" Version="1.2.14.26294" />
     <PackageReference Include="DNDHinwil.Lib" Version="0.0.9.26292" />
     <PackageReference Include="IndexedDB.Blazor" Version="1.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.10" />

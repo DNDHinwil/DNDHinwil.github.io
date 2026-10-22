@@ -299,30 +299,9 @@
         _isLoading = true;
         try
         {
-            if (!file.ContentType.Contains("json") || !file.Name.EndsWith(".json"))
-            {
-                await UserInteractionService.MakeAlert($"File is the wrong format.");
-                return [];
-            }
-            if (file.Size > _maxFileSize)
-            {
-                await UserInteractionService.MakeAlert($"File is too big.");
-                return [];
-            }
-            using var memoryStream = new MemoryStream();
-            await file.OpenReadStream(_maxFileSize).CopyToAsync(memoryStream);
-            if (memoryStream is null || !memoryStream.CanRead)
-            {
-                await UserInteractionService.MakeAlert($"Failed to read file.");
-                return [];
-            }
-            var bytes = memoryStream.ToArray();
-            var data = JsonSerializer.Deserialize<List<T>>(bytes);
+            var data = await UserInteractionService.ExtractDataFromJsonFile<List<T>>(file, _maxFileSize);
             if (data is null)
-            {
-                await UserInteractionService.MakeAlert($"Couldn't convert file to site data.");
                 return [];
-            }
             return data;
         }
         catch (Exception ex)
