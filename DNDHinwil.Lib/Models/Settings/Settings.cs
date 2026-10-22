@@ -9,6 +9,14 @@ public class Settings
     public TimeSpan PreferredTurnLength => TimeSpan.FromMinutes(PreferredTurnLengthInMinutes);
 
     public int MeleeRange { get; set; } = 2;
+    public List<Stat> Stats { get; set; } = [
+        new(){Name = Text.Strength, Short = Text.Strength_Short, Score = 10 },
+        new(){Name = Text.Dexterity, Short = Text.Dexterity_Short, Score = 10 },
+        new(){Name = Text.Constitution, Short = Text.Constitution_Short, Score = 10 },
+        new(){Name = Text.Intelligence, Short = Text.Intelligence_Short, Score = 10 },
+        new(){Name = Text.Wisdom, Short = Text.Wisdom_Short, Score = 10 },
+        new(){Name = Text.Charisma, Short = Text.Charisma_Short, Score = 10 }
+        ];
     public Die[] Dice { get; set; } =
         [
             new() { Value = 4, Name = Text.D4},
@@ -18,6 +26,11 @@ public class Settings
             new() { Value = 12, Name = Text.D12},
             new() { Value = 20, Name = Text.D20},
             new() { Value = 100, Name = Text.D100}
+        ];
+    public List<Money> Currencies { get; set; } = [
+        new(){Name = Text.Currency_Gold, Symbol = "🟡"},
+        new(){Name = Text.Currency_Silver, Symbol = "⚪"},
+        new(){Name = Text.Currency_Copper, Symbol = "🟤"},
         ];
     public AbilityScore[] ScoreModifiers { get; set; } =
         [

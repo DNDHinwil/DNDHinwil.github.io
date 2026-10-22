@@ -10,10 +10,10 @@
     {
         <div></div>
     }
-    <div style="text-align:right;">@(Model.Weight > 0 ? $"{Model.Weight} ⚖" : "")</div>
+    <div style="text-align:right;">@(Model.Weight > 0 ? $"{Model.Weight} {Constants.Symbol_Weight}" : "")</div>
 
     <div class="gear-label" style="grid-column:span 2;">@Model.Slot.GetName()</div>
-    <div style="text-align:right;">@(Model.Armor > 0 ? $"{Model.Armor} 🛡" : "")</div>
+    <div style="text-align:right;">@(Model.Armor > 0 ? $"{Model.Armor} {Constants.Symbol_Armor}" : "")</div>
 
     <div style="grid-column:span 3;">@(!string.IsNullOrWhiteSpace(Model.Description) ? Model.Description : "")</div>
     @if (Model.Effects.Any())

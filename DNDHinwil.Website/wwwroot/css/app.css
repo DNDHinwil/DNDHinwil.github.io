@@ -67,6 +67,12 @@ button {
 	margin-right: 0.5rem;
 }
 
+.left-symbol {
+	margin-right: 0.5rem;
+	margin-top: 0.125rem;
+	text-align: center;
+}
+
 h1 {
 	font-size: 1.625rem;
 	text-decoration: underline overline;

@@ -19,6 +19,9 @@
     <Exec Command="PowerShell -ExecutionPolicy Bypass -NoProfile -File AutoUpdateVersionNumber.ps1" />
   </Target>
   <ItemGroup>
+    <None Remove="Resources\Images\profile_frame.png" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Codespirals.Base.Shared" Version="1.2.0.26235" />
   </ItemGroup>
   <ItemGroup>
@@ -41,5 +44,8 @@
   </ItemGroup>
   <ItemGroup>
     <Using Include="DNDHinwil.Lib.Resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\Images\" />
   </ItemGroup>
 </Project>

@@ -18,7 +18,10 @@
         <div class="portrait">
             <div class="image-and-turn-buttons" style="grid-column:span 2;">
                 <div class="profile-image">
-                    <img src="@_activeCharacter.ImageUrl" />
+                    <div class="profile-border">
+                        <img src="@_activeCharacter.ImageUrl" />
+                    </div>
+                    <img src="" />
                 </div>
                 <button @onclick="async x => await EndTurn()" class="turn-button">@Text.EndTurn</button>
                 @if (_timer is not null && !_timer.IsTimerRunning)
@@ -135,7 +138,7 @@
             @foreach (var spell in _activeCharacter.Spellbook)
             {
                 <div class="spell">
-                    <div style="margin-right:0.5rem;text-align:center;">📜</div>
+                    <div class="left-symbol">📜</div>
                     <SpellOrAbility Model="spell" Modifiers="@_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></SpellOrAbility>
                     @if (spell.CanBeUsedOnSelf)
                     {
@@ -161,7 +164,7 @@
             @foreach (var item in _activeCharacter.Inventory)
             {
                 <div class="equipment-item">
-                    <div style="margin-right:0.5rem;text-align:center;">👜</div>
+                    <div class="left-symbol">👜</div>
                     <EquipmentItem Model="item" Modifiers="@_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></EquipmentItem>
                     @if (item.Usable)
                     {

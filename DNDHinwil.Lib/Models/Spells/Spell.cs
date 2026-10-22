@@ -12,5 +12,6 @@ public class Spell : IHasEffects<Effect>, IIdentifiable, INameable
     public bool CanBeUsedOnSelf { get; set; }
     public int Cooldown { get; set; }
     public int CooldownLeft { get; set; }
+    public int? SavingDiceType { get; set; }
     public List<Effect> Effects { get; set; } = [];
 }

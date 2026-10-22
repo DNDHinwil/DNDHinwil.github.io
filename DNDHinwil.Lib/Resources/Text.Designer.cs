@@ -403,6 +403,33 @@ namespace DNDHinwil.Lib.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Copper.
+        /// </summary>
+        public static string Currency_Copper {
+            get {
+                return ResourceManager.GetString("Currency_Copper", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gold.
+        /// </summary>
+        public static string Currency_Gold {
+            get {
+                return ResourceManager.GetString("Currency_Gold", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Silver.
+        /// </summary>
+        public static string Currency_Silver {
+            get {
+                return ResourceManager.GetString("Currency_Silver", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Curse.
         /// </summary>
         public static string Curse {

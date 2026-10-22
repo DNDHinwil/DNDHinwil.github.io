@@ -789,4 +789,13 @@
   <data name="DownloadEquipment" xml:space="preserve">
     <value>Download Equipment</value>
   </data>
+  <data name="Currency_Gold" xml:space="preserve">
+    <value>Gold</value>
+  </data>
+  <data name="Currency_Silver" xml:space="preserve">
+    <value>Silver</value>
+  </data>
+  <data name="Currency_Copper" xml:space="preserve">
+    <value>Copper</value>
+  </data>
 </root>
