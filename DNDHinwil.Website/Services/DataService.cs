@@ -21,6 +21,7 @@ public interface IDataService
     public Task SaveSpellLibrary(List<Spell> spells);
     public Task<Settings> LoadSettings();
     public Task SaveSettings(Settings settings);
+
     public Task SaveCampaign(Campaign campaign);
     public Task MakeAlert(string message);
 }
