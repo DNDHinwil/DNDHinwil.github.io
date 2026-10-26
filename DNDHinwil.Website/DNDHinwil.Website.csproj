@@ -16,19 +16,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Remove="wwwroot\images\profile_frame.png" />
     <Content Remove="wwwroot\js\scripts.js" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="wwwroot\images\profile_frame.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Codespirals.Blazor.Components" Version="1.2.14.26294" />
-    <PackageReference Include="DNDHinwil.Lib" Version="0.0.9.26292" />
+    <PackageReference Include="DNDHinwil.Lib" Version="0.0.10.26292" />
     <PackageReference Include="IndexedDB.Blazor" Version="1.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.10" PrivateAssets="all" />

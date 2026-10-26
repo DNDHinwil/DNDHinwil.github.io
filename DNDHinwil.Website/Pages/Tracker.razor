@@ -18,10 +18,10 @@
         <div class="portrait">
             <div class="image-and-turn-buttons" style="grid-column:span 2;">
                 <div class="profile-image">
+                    <img src="@_activeCharacter.ImageUrl" />
                     <div class="profile-border">
-                        <img src="@_activeCharacter.ImageUrl" />
+                        <img src="images/profile_border.png" />
                     </div>
-                    <img src="" />
                 </div>
                 <button @onclick="async x => await EndTurn()" class="turn-button">@Text.EndTurn</button>
                 @if (_timer is not null && !_timer.IsTimerRunning)
