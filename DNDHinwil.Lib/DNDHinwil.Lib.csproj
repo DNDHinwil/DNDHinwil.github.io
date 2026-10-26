@@ -46,6 +46,7 @@
     <Using Include="DNDHinwil.Lib.Resources" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Entities\Connections\" />
     <Folder Include="Resources\Images\" />
   </ItemGroup>
 </Project>
