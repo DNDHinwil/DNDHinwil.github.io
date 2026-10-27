@@ -592,6 +592,15 @@ namespace DNDHinwil.Lib.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dice Result.
+        /// </summary>
+        public static string DiceResult {
+            get {
+                return ResourceManager.GetString("DiceResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Dice type.
         /// </summary>
         public static string DiceType {
@@ -1623,6 +1632,15 @@ namespace DNDHinwil.Lib.Resources {
         public static string Rest {
             get {
                 return ResourceManager.GetString("Rest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Roll.
+        /// </summary>
+        public static string Roll {
+            get {
+                return ResourceManager.GetString("Roll", resourceCulture);
             }
         }
         

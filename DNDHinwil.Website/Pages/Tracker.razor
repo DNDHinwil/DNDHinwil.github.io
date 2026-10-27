@@ -267,6 +267,24 @@
     }
 </div>
 
+@if (_diceRollQueue.Any())
+{
+    <div class="effect-stack">
+        <div class="effect-stack-content">
+            <div style="grid-column:span 2;">
+                <EffectView Model="_diceRollQueue.First()" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></EffectView>
+            </div>
+            <div style="grid-column:span 2;">
+                @Text.Roll @_diceRollQueue.First().NumberOfDice @_diceRollQueue.First().DiceType
+            </div>
+            <div>@Text.DiceResult</div>
+            <InputNumber @bind-Value="_effectDiceResult"></InputNumber>
+            <div></div>
+            <button @onclick="async x => await ExecuteQueuedEffect()">@Text.Confirm</button>
+        </div>
+    </div>
+}
+
 @code {
     private Settings _settings = new Settings();
     private Character _activeCharacter = new Character();
@@ -279,6 +297,9 @@
     private Effect? _editActiveEffect;
     private Effect? _quickEffect;
     private Money? _editMoney;
+
+    private List<Effect> _diceRollQueue => _activeCharacter.GetDiceEffectQueue();
+    private int _effectDiceResult;
 
     protected override void OnInitialized()
     {
@@ -381,6 +402,12 @@
     private async Task ExecuteActiveEffects(bool isEndOfTurn)
     {
         await _activeCharacter.ExecuteActiveEffects(isEndOfTurn, _activeCharacter.CalculateModifiers(_settings.ScoreModifiers));
+        await ContentService.SaveCharacter(_activeCharacter);
+    }
+
+    private async Task ExecuteQueuedEffect()
+    {
+        await _activeCharacter.ExecuteDiceRoll(_diceRollQueue.First(), _effectDiceResult, _activeCharacter.CalculateModifiers(_settings.ScoreModifiers));
         await ContentService.SaveCharacter(_activeCharacter);
     }
 

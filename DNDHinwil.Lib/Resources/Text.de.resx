@@ -798,4 +798,10 @@
   <data name="Currency_Copper" xml:space="preserve">
     <value>Kupfer</value>
   </data>
+  <data name="DiceResult" xml:space="preserve">
+    <value>Würfelresultat</value>
+  </data>
+  <data name="Roll" xml:space="preserve">
+    <value>Würfle</value>
+  </data>
 </root>

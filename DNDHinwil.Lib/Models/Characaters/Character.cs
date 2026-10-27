@@ -1,6 +1,7 @@
 ﻿using Codespirals.Base;
 using DNDHinwil.Enums;
 using DNDHinwil.Extensions;
+using DNDHinwil.Interfaces;
 using System.Collections.ObjectModel;
 using System.Text.Json;
 namespace DNDHinwil.Models;
@@ -12,7 +13,8 @@ public class Character : IIdentifiable, INameable
     private int _currentHealth = 2;
     private int _currentMana = 2;
     private readonly List<Effect> _activeEffects = [];
-    private ReadOnlyCollection<Effect> AllEffects => [.. ActiveEffects, .. GetEquippedGear().SelectMany(g => g.Effects)];
+    private readonly List<Effect> _diceEffectQueue = [];
+    private ReadOnlyCollection<Effect> _allEffects => [.. ActiveEffects, .. GetEquippedGear().SelectMany(g => g.Effects)];
 
     public string Id { get; set; } = Guid.NewGuid().ToString();
     public string Name { get; set; } = Text.DefaultCharacterName;
@@ -44,26 +46,28 @@ public class Character : IIdentifiable, INameable
     public List<Gear> Gear { get; set; } = [];
     public List<Spell> Spellbook { get; set; } = [];
     public List<Stat> Stats { get; set; } = [];
-    public ReadOnlyCollection<Effect> ActiveEffects => _activeEffects.AsReadOnly();
+    public ReadOnlyCollection<Effect> ActiveEffects => _activeEffects.AsReadOnly(); 
 
     public IEnumerable<Gear> GetEquippedGear()
     {
         var equippedGear = Gear.Where(g => g.IsEquipped);
-        foreach (var curse in equippedGear.SelectMany(g => g.Effects).Where(e => e.EffectType is EffectType.Enchantment && !ActiveEffects.Select(ae => ae.Id).Contains(e.Id)))
-            _activeEffects.Add(curse);
+        AddCopiesOfActiveEffects(equippedGear.SelectMany(g => g.Effects).Where(e => e.EffectType is EffectType.Enchantment && !ActiveEffects.Select(ae => ae.Id).Contains(e.Id)));
         return equippedGear;
     }
     public int GetMaxHealth()
-        => Math.Clamp(_maxHealth + GetModifier(AllEffects, EffectTarget.MaxHealth), 1, int.MaxValue);
+        => Math.Clamp(_maxHealth + GetModifier(_allEffects, EffectTarget.MaxHealth), 1, int.MaxValue);
 
     public int GetMaxMana()
-        => Math.Clamp(_maxMana + GetModifier(AllEffects, EffectTarget.MaxMana), 0, int.MaxValue);
+        => Math.Clamp(_maxMana + GetModifier(_allEffects, EffectTarget.MaxMana), 0, int.MaxValue);
 
     public int GetLevel(IEnumerable<LevelThreshold> thresholds)
         => (thresholds.GetLastThreshold(ExperiencePoints)?.Level ?? 0) + LevelModifier;
 
     public List<Effect> GetPassiveEffects()
         => [.. GetEquippedGear().SelectMany(g => g.Effects).Where(e => e.EffectType is EffectType.Passive)];
+
+    public List<Effect> GetDiceEffectQueue()
+        => _diceEffectQueue;
 
     public async Task UseQuickEffect(Effect effect) => await TriggerEffectOnCharacter(effect, null);
 
@@ -75,8 +79,7 @@ public class Character : IIdentifiable, INameable
 
         if (useOnYourself && spell.CanBeUsedOnSelf)
         {
-            AddCopiesOfActiveEffects(spell.Effects);
-            _ = spell.Effects.Where(e => e.Duration is EffectDuration.Instant).Select(e => TriggerEffectOnCharacter(e, modifiers.FirstOrDefault(m => m.Stat.Id == e.BonusStatId)));
+            await UseOnSelf(spell, modifiers);
         }
     }
 
@@ -108,8 +111,7 @@ public class Character : IIdentifiable, INameable
 
         if (useOnYourself && equipment.CanBeUsedOnSelf)
         {
-            AddCopiesOfActiveEffects(equipment.Effects);
-            _ = equipment.Effects.Where(e => e.Duration is EffectDuration.Instant).Select(e => TriggerEffectOnCharacter(e, modifiers.FirstOrDefault(m => m.Stat.Id == e.BonusStatId)));
+            await UseOnSelf(equipment, modifiers);
         }
     }
 
@@ -119,20 +121,13 @@ public class Character : IIdentifiable, INameable
             return;
         gear.IsEquipped = !gear.IsEquipped;
 
-        if (gear.IsEquipped)
+        if (!gear.IsEquipped)
         {
-            foreach (var curse in gear.Effects.Where(e => e.EffectType is EffectType.Enchantment))
+            foreach (var equipEffect in gear.Effects.Where(e => e.EffectType is EffectType.Enchantment))
             {
-                await AddActiveEffect(curse);
-            }
-        }
-        else
-        {
-            foreach (var curse in gear.Effects.Where(e => e.EffectType is EffectType.Enchantment))
-            {
-                var curseExists = _activeEffects.FirstOrDefault(e => e.Id == curse.Id);
-                if (curseExists is not null)
-                    _ = _activeEffects.Remove(curseExists);
+                var equipEffectExists = _activeEffects.FirstOrDefault(e => e.Id == equipEffect.Id);
+                if (equipEffectExists is not null)
+                    _ = _activeEffects.Remove(equipEffectExists);
             }
         }
     }
@@ -144,8 +139,7 @@ public class Character : IIdentifiable, INameable
 
         if (useOnYourself && gear.CanBeUsedOnSelf)
         {
-            AddCopiesOfActiveEffects(gear.Effects);
-            _ = gear.Effects.Where(e => e.Duration is EffectDuration.Instant).Select(e => TriggerEffectOnCharacter(e, modifiers.FirstOrDefault(m => m.Stat.Id == e.BonusStatId)));
+            await UseOnSelf(gear, modifiers);
         }
     }
 
@@ -153,6 +147,8 @@ public class Character : IIdentifiable, INameable
         => AddCopiesOfActiveEffects([effect]);
     public async Task RemoveActiveEffect(Effect effect)
         => _activeEffects.Remove(effect);
+    public async Task AddDiceRollEffect(Effect effect)
+        => _diceEffectQueue.Add(effect);
 
     public async Task Rest()
     {
@@ -168,13 +164,24 @@ public class Character : IIdentifiable, INameable
             && a.TriggersAtEndOfTurn == isEndOfTurn))
             _ = _activeEffects.RemoveAll(x => x.Duration is EffectDuration.UntilHealed);
 
+        _diceEffectQueue.AddRange([.. _activeEffects.Where(e => e.TriggersAtEndOfTurn == isEndOfTurn && e.NumberOfDice > 0)]);
+
         foreach (var effect in ActiveEffects.Where(e => e.TriggersAtEndOfTurn == isEndOfTurn && e.NumberOfDice < 1))
         {
             await TriggerEffectOnCharacter(effect, modifiers.FirstOrDefault(m => m.Stat.Id == effect.BonusStatId));
-            if (effect.Duration is EffectDuration.Turns)
-                effect.Turns--;
         }
         _ = _activeEffects.RemoveAll(e => e.Duration is EffectDuration.Turns && e.Turns < 1);
+    }
+
+    public async Task ExecuteDiceRoll(Effect effect, int diceResult, List<Modifier> modifiers)
+    {
+        effect.Strength += diceResult;
+        var temp = effect.UseStrengthAsBonusPower;
+        effect.UseStrengthAsBonusPower = true;
+        await TriggerEffectOnCharacter(effect, modifiers.FirstOrDefault(m => m.Stat.Id == effect.BonusStatId));
+        effect.Strength -= diceResult;
+        effect.UseStrengthAsBonusPower = temp;
+        _diceEffectQueue.Remove(effect);
     }
 
     public List<Modifier> CalculateModifiers(AbilityScore[] table)
@@ -193,8 +200,9 @@ public class Character : IIdentifiable, INameable
         }
         return res;
     }
+
     private int GetHealthDamageReduction()
-        => GetModifier(AllEffects, EffectTarget.IncomingDamage);
+        => GetModifier(_allEffects, EffectTarget.IncomingDamage);
 
     public int GetArmor() => GetEquippedGear().Any() ? GetEquippedGear().Max(g => g.Armor) : 0;
 
@@ -205,6 +213,14 @@ public class Character : IIdentifiable, INameable
     {
         var serializedEffects = JsonSerializer.Serialize(effects.Where(e => e.EffectType is EffectType.Active or EffectType.Enchantment));
         _activeEffects.AddRange(JsonSerializer.Deserialize<List<Effect>>(serializedEffects) ?? []);
+    }
+
+    private async Task UseOnSelf(IHasEffects<Effect> hasEffects, List<Modifier> modifiers)
+    {
+        AddCopiesOfActiveEffects(hasEffects.Effects);
+        // trigger instant effects
+        _diceEffectQueue.AddRange([.. hasEffects.Effects.Where(e => e.Duration is EffectDuration.Instant && e.NumberOfDice > 0)]);
+        _ = hasEffects.Effects.Where(e => e.Duration is EffectDuration.Instant && e.NumberOfDice < 1).Select(e => TriggerEffectOnCharacter(e, modifiers.FirstOrDefault(m => m.Stat.Id == e.BonusStatId)));
     }
 
     private async Task TriggerEffectOnCharacter(Effect effect, Modifier? modifier)
@@ -228,6 +244,9 @@ public class Character : IIdentifiable, INameable
             default:
                 break;
         }
+
+        if (effect.Duration is EffectDuration.Turns)
+            effect.Turns--;
     }
 }
 

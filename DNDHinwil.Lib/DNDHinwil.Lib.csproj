@@ -13,7 +13,7 @@
     <RepositoryUrl>https://github.com/DNDHinwil</RepositoryUrl>
     <PackageLicenseExpression>CC0-1.0</PackageLicenseExpression>
     <NeutralLanguage>en</NeutralLanguage>
-    <Version>0.0.11.26297</Version>
+    <Version>0.0.16.26301</Version>
   </PropertyGroup>
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
     <Exec Command="PowerShell -ExecutionPolicy Bypass -NoProfile -File AutoUpdateVersionNumber.ps1" />

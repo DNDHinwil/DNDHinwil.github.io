@@ -11,7 +11,7 @@ public class Effect : IEffect
     public string Name { get; set; } = string.Empty;
     public int NumberOfDice { get; set; }
     public int DiceType { get; set; }
-    public int Strength { get; set; } = 3;
+    public int Strength { get; set; } = 0;
     public bool UseStrengthAsBonusPower { get; set; }
     public EffectOutcome Outcome { get; set; } = EffectOutcome.Reduces;
     public string? SpecialText { get; set; }
