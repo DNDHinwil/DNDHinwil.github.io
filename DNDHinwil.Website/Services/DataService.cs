@@ -1,4 +1,5 @@
-﻿using DNDHinwil.Website.Templates;
+﻿using DNDHinwil.Lib.Models;
+using DNDHinwil.Website.Templates;
 using Microsoft.JSInterop;
 using System.Text.Json;
 

@@ -1,4 +1,4 @@
-﻿namespace DNDHinwil.Models;
+﻿namespace DNDHinwil.Lib.Models;
 
 public class Session
 {
@@ -7,7 +7,6 @@ public class Session
     public DateTime? EndTime { get; set; }
     public int ExperienceGained { get; set; }
     public List<Turn> Turns { get; set; } = [];
-    public List<SpellCast> SpellCasts { get; set; } = [];
 
     public int TurnsUnderThreshold(TimeSpan threshold) => Turns.Count(t => t.Time < threshold);
 }

@@ -27,15 +27,15 @@
     <section class="stats">
         <div></div>
         <div>@Text.Name</div>
-        <div >@Text.Score</div>
+        <div>@Text.Score</div>
         <div>@Text.Modifier</div>
         <div></div>
-        @foreach (var modifier in _activeCharacter.CalculateModifiers(_settings.ScoreModifiers))
+        @foreach (var modifier in _activeCharacter.CalculateModifiers(_settings.ScoreModifierTable))
         {
             <div class="stat">
                 <button class="left-button" @onclick="x => SelectStatForEditing(modifier.Stat)" command="show-modal" commandfor="delete-stat">@Constants.Symbol_Delete</button>
                 <div>@modifier.Stat.Name</div>
-                <div>@modifier.Stat.Score</div>
+                <div>@modifier.</div>
                 <div>@modifier.TotalValue</div>
                 <button class="right-button" @onclick="x => SelectStatForEditing(modifier.Stat)" command="show-modal" commandfor="edit-stat">@Constants.Symbol_Edit</button>
             </div>
@@ -47,10 +47,10 @@
         <dialog id="edit-stat">
             <h4>@Text.Stat</h4>
             <InputWithLabel Label="@Text.Name">
-                <InputText @bind-Value="_editStat.Name"></InputText>
+                <InputText @bind-Value="_editStat.Item.Name"></InputText>
             </InputWithLabel>
             <InputWithLabel Label="@Text.Short">
-                <InputText @bind-Value="_editStat.Short"></InputText>
+                <InputText @bind-Value="_editStat.Item.Short"></InputText>
             </InputWithLabel>
             <InputWithLabel Label="@Text.Score">
                 <InputNumber @bind-Value="_editStat.Score"></InputNumber>
@@ -70,7 +70,7 @@
     private Settings _settings = new Settings();
     private Character _activeCharacter = new Character();
 
-    private Stat? _editStat;
+    private CharacterStat? _editStat;
 
     protected override async Task OnInitializedAsync()
     {
@@ -99,9 +99,10 @@
             _editStat = null;
             return;
         }
-        if (!_activeCharacter.Stats.Any(e => e.Id == _editStat.Id))
-            _activeCharacter.Stats.Add(_editStat);
+        if (!_activeCharacter.Stats.Any(e => e.Item.Id == _editStat.Id))
+            _activeCharacter.Stats.Add(new CharacterStat(){ Item = _editStat });
 
+        await ContentService.SaveSettings(_settings);
         await ContentService.SaveCharacter(_activeCharacter);
         _editStat = null;
     }
@@ -110,7 +111,11 @@
     {
         if (stat is null)
             return;
-        _activeCharacter.Stats.Remove(stat);
+        var characterHasStat = _activeCharacter.Stats.FirstOrDefault(s => s.Item.Id == stat.Id);
+        if (characterHasStat is not null)
+            _activeCharacter.Stats.Remove(characterHasStat);
+
+        await ContentService.SaveSettings(_settings);
         await ContentService.SaveCharacter(_activeCharacter);
     }
 

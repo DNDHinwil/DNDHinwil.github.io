@@ -13,7 +13,7 @@
 
     <section class="player">
         <div class="stats">
-            <StatDisplay Modifiers="@_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></StatDisplay>
+            <StatDisplay Modifiers="@_activeCharacter.CalculateModifiers(_settings.ScoreModifierTable)"></StatDisplay>
         </div>
         <div class="portrait">
             <div class="image-and-turn-buttons" style="grid-column:span 2;">
@@ -41,7 +41,7 @@
             <div class="name" style="grid-column:span 2;">
                 <h3>@_activeCharacter.Name</h3>
                 <div class="level" style="text-align:right;">@Text.Level_Short</div>
-                <div class="level" style="text-align:left;">@_activeCharacter.GetLevel(_settings.LevelThresholds)</div>
+                <div class="level" style="text-align:left;">@_activeCharacter.GetLevel(_settings.LevelThresholdTable)</div>
             </div>
 
             <div style="margin-bottom:0.125rem;grid-column:span 2;">
@@ -76,7 +76,7 @@
                 {
                     <div class="currency">
                         <button class="left-button" popovertarget="edit-money" @onclick="x => StartEditingMoney(money)">＄</button>
-                        <div>@($"{money.Quantity} {money.Name}")</div>
+                        <div>@($"{money.Quantity} {money.Item.Name}")</div>
                     </div>
                 }
             </div>
@@ -100,7 +100,7 @@
             {
                 <div class="passive-effect">
                     <div style="margin-right:0.5rem;text-align:center;">⛨</div>
-                    <EffectView Model="effect" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></EffectView>
+                    <EffectView Model="effect" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifierTable)"></EffectView>
                     <div></div>
                 </div>
             }
@@ -111,14 +111,14 @@
                     @if (effect.EffectType is EffectType.Active)
                     {
                         <button class="left-button" @onclick="x => RemoveActiveEffect(effect)">@Constants.Symbol_Delete</button>
-                        <EffectView Model="effect" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></EffectView>
+                        <EffectView Model="effect" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifierTable)"></EffectView>
                         <div></div>
                         <button class="right-button" @onclick="x => StartEditingActiveEffect(effect)" command="show-modal" commandfor="edit-effect">@Constants.Symbol_Edit</button>
                     }
                     else
                     {
                         <div style="margin-right:0.5rem;text-align:center;">⛨</div>
-                        <EffectView Model="effect" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></EffectView>
+                        <EffectView Model="effect" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifierTable)"></EffectView>
                         <div></div>
                         <div></div>
                     }
@@ -139,16 +139,16 @@
             {
                 <div class="spell">
                     <div class="left-symbol">📜</div>
-                    <SpellOrAbility Model="spell" Modifiers="@_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></SpellOrAbility>
-                    @if (spell.CanBeUsedOnSelf)
+                    <SpellOrAbility Model="spell.Item" Modifiers="@_activeCharacter.CalculateModifiers(_settings.ScoreModifierTable)"></SpellOrAbility>
+                    @if (spell.Item.CanBeUsedOnSelf)
                     {
-                        <button class="right-button" @onclick="async x => await UseSpell(spell, true)">@Constants.Symbol_UseOnSelf</button>
+                        <button class="right-button" @onclick="async x => await UseSpell(spell.Item, true)">@Constants.Symbol_UseOnSelf</button>
                     }
                     else
                     {
                         <div></div>
                     }
-                    <button class="right-button" @onclick="async x => await UseSpell(spell, false)">@Constants.Symbol_Use</button>
+                    <button class="right-button" @onclick="async x => await UseSpell(spell.Item, false)">@Constants.Symbol_Use</button>
                 </div>
             }
         }
@@ -165,18 +165,18 @@
             {
                 <div class="equipment-item">
                     <div class="left-symbol">👜</div>
-                    <EquipmentItem Model="item" Modifiers="@_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></EquipmentItem>
-                    @if (item.Usable)
+                    <EquipmentItem Model="item.Item" Modifiers="@_activeCharacter.CalculateModifiers(_settings.ScoreModifierTable)"></EquipmentItem>
+                    @if (item.Item.Usable)
                     {
-                        @if (item.CanBeUsedOnSelf)
+                        @if (item.Item.CanBeUsedOnSelf)
                         {
-                            <button class="right-button" @onclick="async x => await UseEquipment(item, true)">@Constants.Symbol_UseOnSelf</button>
+                            <button class="right-button" @onclick="async x => await UseEquipment(item.Item, true)">@Constants.Symbol_UseOnSelf</button>
                         }
                         else
                         {
                             <div></div>
                         }
-                        <button class="right-button" @onclick="async x => await UseEquipment(item, false)">@Constants.Symbol_Use</button>
+                        <button class="right-button" @onclick="async x => await UseEquipment(item.Item, false)">@Constants.Symbol_Use</button>
                     }
                     else
                     {
@@ -198,19 +198,19 @@
             @foreach (var item in _activeCharacter.Gear)
             {
                 <div class="equipment-item">
-                    <button class="left-button" @onclick="async x => await ToggleEquip(item)">@(item.IsEquipped ? Constants.Symbol_Equipped : Constants.Symbol_Unequipped)</button>
-                    <GearItem Model="item" Modifiers="@_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)" IsEquippable="true"></GearItem>
-                    @if (item.Usable)
+                    <button class="left-button" @onclick="async x => await ToggleEquip(item.Item)">@(item.IsEquipped ? Constants.Symbol_Equipped : Constants.Symbol_Unequipped)</button>
+                    <GearItem Model="item.Item" Modifiers="@_activeCharacter.CalculateModifiers(_settings.ScoreModifierTable)" IsEquippable="true"></GearItem>
+                    @if (item.Item.Usable)
                     {
-                        @if (item.CanBeUsedOnSelf)
+                        @if (item.Item.CanBeUsedOnSelf)
                         {
-                            <button class="right-button" @onclick="async x => await UseGear(item, true)">@Constants.Symbol_UseOnSelf</button>
+                            <button class="right-button" @onclick="async x => await UseGear(item.Item, true)">@Constants.Symbol_UseOnSelf</button>
                         }
                         else
                         {
                             <div></div>
                         }
-                        <button class="right-button" @onclick="async x => await UseGear(item, false)">@Constants.Symbol_Use</button>
+                        <button class="right-button" @onclick="async x => await UseGear(item.Item, false)">@Constants.Symbol_Use</button>
                     }
                     else
                     {
@@ -228,7 +228,7 @@
 
     <EditEffect EffectToEdit="_editActiveEffect" 
         SaveEditCallback="@(async x => await FinishEditingActiveEffect(true))"
-        Stats="_activeCharacter.Stats"
+        Stats="_settings.Stats"
         Dice="_settings.Dice"></EditEffect>
 
     @if (_quickEffect is not null)
@@ -258,7 +258,7 @@
     @if (_editMoney is not null)
     {
         <dialog id="edit-money" popover>
-            <h4>@_editMoney.Name</h4>
+            <h4>@_editMoney.Item.Name</h4>
             <InputWithLabel Label="@Text.Quantity">
                 <InputNumber @bind-Value="_editMoney.Quantity"></InputNumber>
             </InputWithLabel>
@@ -272,7 +272,7 @@
     <div class="effect-stack">
         <div class="effect-stack-content">
             <div style="grid-column:span 2;">
-                <EffectView Model="_diceRollQueue.First()" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></EffectView>
+                <EffectView Model="_diceRollQueue.First()" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifierTable)"></EffectView>
             </div>
             <div style="grid-column:span 2;">
                 @Text.Roll @_diceRollQueue.First().NumberOfDice @_diceRollQueue.First().DiceType
@@ -296,7 +296,7 @@
 
     private Effect? _editActiveEffect;
     private Effect? _quickEffect;
-    private Money? _editMoney;
+    private CharacterMoney? _editMoney;
 
     private List<Effect> _diceRollQueue => _activeCharacter.GetDiceEffectQueue();
     private int _effectDiceResult;
@@ -315,7 +315,7 @@
             _settings.ActiveCharacter = _activeCharacter.Id;
             await ContentService.SaveSettings(_settings);
         }
-        _experienceToNextLevel = _settings.LevelThresholds.ExperienceToNextLevel(_activeCharacter.ExperiencePoints);
+        _experienceToNextLevel = _settings.LevelThresholdTable.ExperienceToNextLevel(_activeCharacter.ExperiencePoints);
 
         _timer = new UpCountingTimer(UpdateUi);
         var sessions = await ContentService.LoadSessions();
@@ -373,41 +373,37 @@
             await ContentService.MakeAlert(Text.NotEnoughMana);
             return;
         }
-        await _activeCharacter.UseSpell(spell, useOnYourself, _activeCharacter.CalculateModifiers(_settings.ScoreModifiers));
+        await _activeCharacter.UseSpell(spell.Id, useOnYourself, _activeCharacter.CalculateModifiers(_settings.ScoreModifierTable));
         await ContentService.SaveCharacter(_activeCharacter);
-
-        _activeSession ??= new Session();
-        _activeSession.SpellCasts.Add(new() { CharacterId = _activeCharacter.Id, SpellId = spell.Id });
-        await ContentService.SaveSession(_activeSession);
     }
 
     private async Task UseEquipment(Equipment equipment, bool useOnYourself)
     {
-        await _activeCharacter.UseEquipmentItem(equipment, useOnYourself, _activeCharacter.CalculateModifiers(_settings.ScoreModifiers));
+        await _activeCharacter.UseEquipmentItem(equipment.Id, useOnYourself, _activeCharacter.CalculateModifiers(_settings.ScoreModifierTable));
         await ContentService.SaveCharacter(_activeCharacter);
     }
 
     private async Task ToggleEquip(Gear gear)
     {
-        await _activeCharacter.EquipGear(gear);
+        await _activeCharacter.EquipGear(gear.Id);
         await ContentService.SaveCharacter(_activeCharacter);
     }
 
     private async Task UseGear(Gear equipment, bool useOnYourself)
     {
-        await _activeCharacter.UseGear(equipment, useOnYourself, _activeCharacter.CalculateModifiers(_settings.ScoreModifiers));
+        await _activeCharacter.UseGear(equipment.Id, useOnYourself, _activeCharacter.CalculateModifiers(_settings.ScoreModifierTable));
         await ContentService.SaveCharacter(_activeCharacter);
     }
 
     private async Task ExecuteActiveEffects(bool isEndOfTurn)
     {
-        await _activeCharacter.ExecuteActiveEffects(isEndOfTurn, _activeCharacter.CalculateModifiers(_settings.ScoreModifiers));
+        await _activeCharacter.ExecuteActiveEffects(isEndOfTurn, _activeCharacter.CalculateModifiers(_settings.ScoreModifierTable));
         await ContentService.SaveCharacter(_activeCharacter);
     }
 
     private async Task ExecuteQueuedEffect()
     {
-        await _activeCharacter.ExecuteDiceRoll(_diceRollQueue.First(), _effectDiceResult, _activeCharacter.CalculateModifiers(_settings.ScoreModifiers));
+        await _activeCharacter.ExecuteDiceRoll(_diceRollQueue.First(), _effectDiceResult, _activeCharacter.CalculateModifiers(_settings.ScoreModifierTable));
         await ContentService.SaveCharacter(_activeCharacter);
     }
 
@@ -417,7 +413,7 @@
         await ContentService.SaveCharacter(_activeCharacter);
     }
 
-    private async Task StartEditingMoney(Money money)
+    private async Task StartEditingMoney(CharacterMoney money)
         => _editMoney = money;
 
     private async Task FinishEditingMoney()
@@ -430,6 +426,8 @@
     private void StartQuickEffect(bool isDamaging)
         => _quickEffect = new Effect()
             {
+                EffectType = EffectType.Active,
+                Duration = EffectDuration.Instant,
                 Outcome = isDamaging ? EffectOutcome.Reduces : EffectOutcome.Increases
             };
 

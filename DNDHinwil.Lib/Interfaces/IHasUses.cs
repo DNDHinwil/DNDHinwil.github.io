@@ -1,4 +1,4 @@
-﻿namespace DNDHinwil.Interfaces;
+﻿namespace DNDHinwil.Lib.Interfaces;
 
 public interface IHasUses
 {

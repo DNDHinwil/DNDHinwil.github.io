@@ -11,10 +11,10 @@
         @foreach (var equipment in _activeCharacter.Inventory)
         {
             <div class="equipment-chest-item">
-                <button class="left-button" @onclick="x => RemoveEquipmentFromInventory(equipment, true)">@Constants.Symbol_Delete</button>
-                <EquipmentItem Model="equipment" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></EquipmentItem>
+                <button class="left-button" @onclick="x => RemoveEquipmentFromInventory(equipment.Item, true)">@Constants.Symbol_Delete</button>
+                <EquipmentItem Model="equipment.Item" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></EquipmentItem>
                 <div></div>
-                <button class="right-button" @onclick="x => RemoveEquipmentFromInventory(equipment, false)">@Constants.Symbol_RemoveFromInventory</button>
+                <button class="right-button" @onclick="x => RemoveEquipmentFromInventory(equipment.Item, false)">@Constants.Symbol_RemoveFromInventory</button>
             </div> 
         }
     </CollapsibleSection>
@@ -154,23 +154,17 @@
     #region Inventory
     private async Task AddEquipmentToInventory(Equipment equipment)
     {
-        await _activeCharacter.AddCopyOfEquipmentItem(equipment);
+        await _activeCharacter.AddEquipmentItemToInventory(equipment, 1);
         await ContentService.SaveCharacter(_activeCharacter);
     }
 
     private async Task RemoveEquipmentFromInventory(Equipment equipment, bool removeAll)
     {
-        var equipmentAlreadyInInventory = _activeCharacter.Inventory.FirstOrDefault(s => s.Id == equipment.Id);
+        var equipmentAlreadyInInventory = _activeCharacter.Inventory.FirstOrDefault(s => s.Item.Id == equipment.Id);
         if (equipmentAlreadyInInventory is null)
             return;
-        if (removeAll)
-            equipmentAlreadyInInventory.Quantity = 0;
-        else
-            equipmentAlreadyInInventory.Quantity -= 1;
 
-        if (equipmentAlreadyInInventory.Quantity < 1)
-            _activeCharacter.Inventory.Remove(equipmentAlreadyInInventory);
-        
+        await _activeCharacter.RemoveEquipmentFromInventory(equipment.Id, removeAll ? equipmentAlreadyInInventory.Quantity : 1);
         await ContentService.SaveCharacter(_activeCharacter);
     }
     #endregion

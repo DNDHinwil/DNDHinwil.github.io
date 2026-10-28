@@ -1,4 +1,4 @@
-﻿namespace DNDHinwil.Enums;
+﻿namespace DNDHinwil.Lib.Enums;
 
 public enum EffectOutcome
 {

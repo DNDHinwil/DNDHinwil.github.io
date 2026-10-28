@@ -1,7 +1,7 @@
 ﻿using Codespirals.Base;
-using DNDHinwil.Interfaces;
+using DNDHinwil.Lib.Interfaces;
 
-namespace DNDHinwil.Models;
+namespace DNDHinwil.Lib.Models;
 
 public class Spell : IHasEffects<Effect>, IIdentifiable, INameable
 {
@@ -9,9 +9,8 @@ public class Spell : IHasEffects<Effect>, IIdentifiable, INameable
     public string Name { get; set; } = Text.Fireball;
     public int ManaCost { get; set; }
     public int Range { get; set; }
+    public int Area { get; set; }
     public bool CanBeUsedOnSelf { get; set; }
     public int Cooldown { get; set; }
-    public int CooldownLeft { get; set; }
-    public int? SavingDiceType { get; set; }
     public List<Effect> Effects { get; set; } = [];
 }

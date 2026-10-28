@@ -1,7 +1,7 @@
 ﻿
-using DNDHinwil.Enums;
+using DNDHinwil.Lib.Enums;
 
-namespace DNDHinwil.Interfaces;
+namespace DNDHinwil.Lib.Interfaces;
 
 public interface IEffect
 {

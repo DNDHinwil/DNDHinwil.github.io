@@ -1,6 +1,6 @@
-﻿using DNDHinwil.Enums;
+﻿using DNDHinwil.Lib.Enums;
 
-namespace DNDHinwil.Models;
+namespace DNDHinwil.Lib.Models;
 
 public class Campaign
 {
@@ -10,7 +10,7 @@ public class Campaign
 
     public List<Character> Characters { get; set; } = [];
     public List<Spell> SpellLibrary { get; set; } = [
-        new(){Name = Text.Fireball, Range = 150, ManaCost = 1, Effects = [
+        new(){Name = Text.Fireball, Range = 150, Area = 20, ManaCost = 1, Effects = [
                 new(){EffectType = EffectType.Active, NumberOfDice = 8, DiceType = 6, }
             ]}
         ];

@@ -804,4 +804,7 @@
   <data name="Roll" xml:space="preserve">
     <value>Würfle</value>
   </data>
+  <data name="Gear_Shoulder" xml:space="preserve">
+    <value>Schulter</value>
+  </data>
 </root>

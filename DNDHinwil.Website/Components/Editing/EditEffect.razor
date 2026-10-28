@@ -22,7 +22,7 @@
         }
         else
         {
-            @if (EffectToEdit.EffectType is EffectType.Active or EffectType.Enchantment)
+            @if (EffectToEdit.EffectType is EffectType.Active)
             {
                 <InputWithLabel Label="@Text.Dice">
                     <InputNumber @bind-Value="EffectToEdit.NumberOfDice"></InputNumber>
@@ -111,7 +111,7 @@
                 </InputSelect>
             </InputWithLabel>
         }
-        @if (EffectToEdit.EffectType is EffectType.Enchantment || EffectToEdit.Duration is not EffectDuration.Instant)
+        @if (EffectToEdit.Duration is not EffectDuration.Instant)
         {
             <InputWithLabel Label="@Text.TriggersAtEndOfTurn">
                 <InputCheckbox @bind-Value="EffectToEdit.TriggersAtEndOfTurn"></InputCheckbox>
@@ -134,8 +134,8 @@
     [Parameter]
     public required EventCallback<MouseEventArgs> SaveEditCallback { get; set; }
     [Parameter]
-    public List<Stat> Stats { get; set; } = [];
+    public IEnumerable<Stat> Stats { get; set; } = [];
     [Parameter]
-    public Die[] Dice { get; set; } = [];
+    public IEnumerable<Die> Dice { get; set; } = [];
 
 }

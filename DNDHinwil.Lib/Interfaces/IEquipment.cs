@@ -1,4 +1,4 @@
-﻿namespace DNDHinwil.Interfaces;
+﻿namespace DNDHinwil.Lib.Interfaces;
 
 public interface IEquipment<TEffect> : IHasEffects<TEffect>
     where TEffect : IEffect

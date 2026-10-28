@@ -1,5 +1,6 @@
 ﻿using Codespirals.Base;
 using Codespirals.Blazor.Services;
+using DNDHinwil.Lib.Models;
 using DNDHinwil.Website.Extensions;
 using Microsoft.AspNetCore.Components.Forms;
 

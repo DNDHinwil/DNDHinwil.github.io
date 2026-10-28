@@ -1,11 +1,10 @@
 ﻿using Codespirals.Base;
-using DNDHinwil.Enums;
-using DNDHinwil.Extensions;
-using DNDHinwil.Interfaces;
+using DNDHinwil.Lib.Enums;
+using DNDHinwil.Lib.Extensions;
+using DNDHinwil.Lib.Interfaces;
 using System.Collections.ObjectModel;
 using System.Text.Json;
-namespace DNDHinwil.Models;
-
+namespace DNDHinwil.Lib.Models;
 public class Character : IIdentifiable, INameable
 {
     private int _maxHealth = 2;
@@ -41,17 +40,17 @@ public class Character : IIdentifiable, INameable
         set => _currentMana = Math.Clamp(value, 0, GetMaxMana());
     }
     public int LevelModifier { get; set; }
-    public List<Equipment> Inventory { get; set; } = [];
-    public List<Money> Money { get; set; } = [];
-    public List<Gear> Gear { get; set; } = [];
-    public List<Spell> Spellbook { get; set; } = [];
-    public List<Stat> Stats { get; set; } = [];
+    public List<CharacterStat> Stats { get; set; } = [];
+    public List<CharacterEquipment> Inventory { get; set; } = [];
+    public List<CharacterMoney> Money { get; set; } = [];
+    public List<CharacterSpell> Spellbook { get; set; } = [];
+    public List<CharacterGear> Gear { get; set; } = [];
     public ReadOnlyCollection<Effect> ActiveEffects => _activeEffects.AsReadOnly(); 
 
     public IEnumerable<Gear> GetEquippedGear()
     {
-        var equippedGear = Gear.Where(g => g.IsEquipped);
-        AddCopiesOfActiveEffects(equippedGear.SelectMany(g => g.Effects).Where(e => e.EffectType is EffectType.Enchantment && !ActiveEffects.Select(ae => ae.Id).Contains(e.Id)));
+        var equippedGear = Gear.Where(g => g.IsEquipped).Select(g => g.Item);
+        AddCopiesOfActiveEffects(equippedGear.SelectMany(g => g.Effects).Where(e => e.EffectType is EffectType.Active && !ActiveEffects.Select(ae => ae.Id).Contains(e.Id)));
         return equippedGear;
     }
     public int GetMaxHealth()
@@ -69,79 +68,148 @@ public class Character : IIdentifiable, INameable
     public List<Effect> GetDiceEffectQueue()
         => _diceEffectQueue;
 
-    public async Task UseQuickEffect(Effect effect) => await TriggerEffectOnCharacter(effect, null);
-
-    public async Task UseSpell(Spell spell, bool useOnYourself, List<Modifier> modifiers)
+    public async Task AddSpellToSpellbook(Spell spell)
     {
-        if (spell.ManaCost > Mana)
-            return;
-        Mana -= spell.ManaCost;
-
-        if (useOnYourself && spell.CanBeUsedOnSelf)
+        var spellExists = Spellbook.FirstOrDefault(e => e.Item.Id == spell.Id);
+        if (spellExists is not null)
         {
-            await UseOnSelf(spell, modifiers);
+            spellExists.Item = spell;
+            return;
         }
+        Spellbook.Add(new() { Item = spell });
     }
 
-    public async Task AddCopyOfEquipmentItem(Equipment equipment)
+    public async Task AddEquipmentItemToInventory(Equipment equipment, int quantity)
     {
-        var serializedEquipment = JsonSerializer.Serialize(equipment);
-        var itemCopy = JsonSerializer.Deserialize<Equipment>(serializedEquipment);
-        if (itemCopy is null)
-            return;
-        var equipmentExists = Inventory.FirstOrDefault(e => e.Id == itemCopy.Id);
+        var equipmentExists = Inventory.FirstOrDefault(e => e.Item.Id == equipment.Id);
         if (equipmentExists is not null)
         {
-            itemCopy.Quantity += equipmentExists.Quantity;
-            _ = Inventory.Remove(equipmentExists);
+            equipmentExists.Item = equipment;
+            equipmentExists.Quantity += quantity;
+            return;
         }
-        Inventory.Add(itemCopy);
+        Inventory.Add(new() { Item = equipment, Quantity = quantity });
     }
 
-    public async Task UseEquipmentItem(Equipment equipment, bool useOnYourself, List<Modifier> modifiers)
+    public async Task AddGearItemToGear(Gear gear)
     {
-        if (equipment.Cooldown > 0 || equipment.Quantity < 1)
+        var gearExists = Gear.FirstOrDefault(e => e.Item.Id == gear.Id);
+        if (gearExists is not null)
+        {
+            gearExists.Item = gear;
             return;
-        if (equipment.DecreasesWithUse)
-        {
-            equipment.Quantity--;
-            if (equipment.Quantity < 1 && equipment.DropWhenEmpty)
-                _ = Inventory.Remove(equipment);
         }
-
-        if (useOnYourself && equipment.CanBeUsedOnSelf)
-        {
-            await UseOnSelf(equipment, modifiers);
-        }
+        Gear.Add(new() { Item = gear });
     }
 
-    public async Task EquipGear(Gear gear)
+    public async Task EquipGear(string gearId)
     {
-        if (!Gear.Any(g => g.Id == gear.Id))
+        var gearExists = Gear.FirstOrDefault(e => e.Item.Id == gearId);
+        if (gearExists is null)
             return;
-        gear.IsEquipped = !gear.IsEquipped;
 
-        if (!gear.IsEquipped)
+        gearExists.IsEquipped = !gearExists.IsEquipped;
+
+        // if was unequipped: remove associated effects (except turn based effects, which stick for their duration)
+        if (!gearExists.IsEquipped)
         {
-            foreach (var equipEffect in gear.Effects.Where(e => e.EffectType is EffectType.Enchantment))
+            foreach (var equipEffect in gearExists.Item.Effects)
             {
-                var equipEffectExists = _activeEffects.FirstOrDefault(e => e.Id == equipEffect.Id);
+                var equipEffectExists = _activeEffects.FirstOrDefault(e => e.Id == equipEffect.Id && e.Duration is not EffectDuration.Turns);
                 if (equipEffectExists is not null)
                     _ = _activeEffects.Remove(equipEffectExists);
             }
         }
     }
 
-    public async Task UseGear(Gear gear, bool useOnYourself, List<Modifier> modifiers)
+    public async Task RemoveSpell(string spellId)
     {
-        if (gear.Cooldown > 0 || !gear.IsEquipped)
+        var spellExists = Spellbook.FirstOrDefault(e => e.Item.Id == spellId);
+        if (spellExists is null)
             return;
 
-        if (useOnYourself && gear.CanBeUsedOnSelf)
+        Spellbook.Remove(spellExists);
+    }
+
+    public async Task RemoveEquipmentFromInventory(string equipmentId, int quantity)
+    {
+        var equipmentExists = Inventory.FirstOrDefault(e => e.Item.Id == equipmentId);
+        if (equipmentExists is null)
+            return;
+
+        equipmentExists.Quantity -= quantity;
+
+        if (equipmentExists.Quantity < 1)
+            Inventory.Remove(equipmentExists);
+    }
+
+    public async Task RemoveGear(string gearId)
+    {
+        var gearExists = Gear.FirstOrDefault(e => e.Item.Id == gearId);
+        if (gearExists is null)
+            return;
+
+        Gear.Remove(gearExists);
+    }
+
+    public async Task UseSpell(string spellId, bool useOnYourself, List<Modifier> modifiers)
+    {
+        var spellExists = Spellbook.FirstOrDefault(e => e.Item.Id == spellId);
+        if (spellExists is null)
+            return;
+        if (spellExists.Item.ManaCost > Mana || spellExists.CooldownLeft > 0)
+            return;
+
+        Mana -= spellExists.Item.ManaCost;
+        spellExists.CooldownLeft = spellExists.Item.Cooldown;
+
+        if (useOnYourself && spellExists.Item.CanBeUsedOnSelf)
         {
-            await UseOnSelf(gear, modifiers);
+            await UseOnSelf(spellExists.Item, modifiers);
         }
     }
+
+    public async Task UseEquipmentItem(string equipmentId, bool useOnYourself, List<Modifier> modifiers)
+    {
+        var equipmentExists = Inventory.FirstOrDefault(e => e.Item.Id == equipmentId);
+        if (equipmentExists is null)
+            return;
+
+        if (equipmentExists.Quantity < 1 || equipmentExists.CooldownLeft > 0)
+            return;
+
+        equipmentExists.CooldownLeft = equipmentExists.Item.Cooldown;
+
+        if (equipmentExists.Item.DecreasesWithUse)
+        {
+            equipmentExists.Quantity--;
+            if (equipmentExists.Quantity < 1 && equipmentExists.Item.DropWhenEmpty)
+                _ = Inventory.Remove(equipmentExists);
+        }
+
+        if (useOnYourself && equipmentExists.Item.CanBeUsedOnSelf)
+        {
+            await UseOnSelf(equipmentExists.Item, modifiers);
+        }
+    }
+
+    public async Task UseGear(string gearId, bool useOnYourself, List<Modifier> modifiers)
+    {
+        var gearExists = Gear.FirstOrDefault(e => e.Item.Id == gearId);
+        if (gearExists is null)
+            return;
+        if (!gearExists.IsEquipped || gearExists.CooldownLeft > 0)
+            return;
+
+        gearExists.CooldownLeft = gearExists.Item.Cooldown;
+
+        if (useOnYourself && gearExists.Item.CanBeUsedOnSelf)
+        {
+            await UseOnSelf(gearExists.Item, modifiers);
+        }
+    }
+
+    public async Task UseQuickEffect(Effect effect) => await TriggerEffectOnCharacter(effect, null);
 
     public async Task AddActiveEffect(Effect effect)
         => AddCopiesOfActiveEffects([effect]);
@@ -184,22 +252,15 @@ public class Character : IIdentifiable, INameable
         _diceEffectQueue.Remove(effect);
     }
 
-    public List<Modifier> CalculateModifiers(AbilityScore[] table)
-    {
-        List<Modifier> res = [];
-        foreach (var stat in Stats)
-        {
-            Modifier modifier = new()
+    public List<Modifier> CalculateModifiers(IEnumerable<AbilityScore> table)
+        => [.. Stats.Select(stat 
+            => new Modifier()
             {
-                Stat = stat,
+                Stat = stat.Item,
                 StatValue = table.LastOrDefault(s => s.Score <= stat.Score)?.Modifier ?? 0,
-                ActiveEffectValue = GetModifier(ActiveEffects.Where(b => b.TargetStatId == stat.Id), EffectTarget.Stat),
-                PassiveBuffValue = GetModifier(GetEquippedGear().SelectMany(g => g.Effects).Where(b => b.TargetStatId == stat.Id), EffectTarget.Stat)
-            };
-            res.Add(modifier);
-        }
-        return res;
-    }
+                ActiveEffectValue = GetModifier(ActiveEffects.Where(b => b.TargetStatId == stat.Item.Id), EffectTarget.Stat),
+                PassiveBuffValue = GetModifier(GetEquippedGear().SelectMany(g => g.Effects).Where(b => b.TargetStatId == stat.Item.Id), EffectTarget.Stat)
+            })];
 
     private int GetHealthDamageReduction()
         => GetModifier(_allEffects, EffectTarget.IncomingDamage);
@@ -211,7 +272,7 @@ public class Character : IIdentifiable, INameable
 
     private void AddCopiesOfActiveEffects(IEnumerable<Effect> effects)
     {
-        var serializedEffects = JsonSerializer.Serialize(effects.Where(e => e.EffectType is EffectType.Active or EffectType.Enchantment));
+        var serializedEffects = JsonSerializer.Serialize(effects.Where(e => e.EffectType is EffectType.Active && e.Duration is not EffectDuration.Instant));
         _activeEffects.AddRange(JsonSerializer.Deserialize<List<Effect>>(serializedEffects) ?? []);
     }
 

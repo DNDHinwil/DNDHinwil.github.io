@@ -1,4 +1,4 @@
-﻿namespace DNDHinwil.Models;
+﻿namespace DNDHinwil.Lib.Models;
 
 public class Die
 {

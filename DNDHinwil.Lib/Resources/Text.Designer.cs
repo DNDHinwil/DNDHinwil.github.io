@@ -952,6 +952,15 @@ namespace DNDHinwil.Lib.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Shoulder.
+        /// </summary>
+        public static string Gear_Shoulder {
+            get {
+                return ResourceManager.GetString("Gear_Shoulder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Twohanded.
         /// </summary>
         public static string Gear_Twohanded {
