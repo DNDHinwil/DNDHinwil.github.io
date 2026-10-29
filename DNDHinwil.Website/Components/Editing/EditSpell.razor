@@ -24,7 +24,7 @@
                 {
                     <div class="spell-effect">
                         <button class="left-button" @onclick="RemoveEffectCallback">@Constants.Symbol_Delete</button>
-                        <EffectView Model="effect" Modifiers="Modifiers"></EffectView>
+                        <EffectView Model="effect" Modifiers="Modifiers" Stats="Stats"></EffectView>
                         <button class="right-button" @onclick="StartEditingEffectCallback" command="show-modal" commandfor="edit-effect">@Constants.Symbol_Edit</button>
                     </div>
                 }
@@ -52,7 +52,9 @@
     [Parameter]
     public required EventCallback<MouseEventArgs> FinishEditingSpellCallback { get; set; }
     [Parameter]
-    public List<Modifier> Modifiers { get; set; } = [];
+    public List<Modifier>? Modifiers { get; set; }
+    [Parameter]
+    public List<Stat>? Stats { get; set; }
     [Parameter]
     public Die[] Dice { get; set; } = [];
 }

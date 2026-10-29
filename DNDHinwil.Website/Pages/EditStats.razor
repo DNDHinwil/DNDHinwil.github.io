@@ -25,33 +25,25 @@
         <button @onclick="async x => await SavePlayer()" style="width:100%;">@Text.Save</button>
     </section>
     <section class="stats">
-        <div></div>
         <div>@Text.Name</div>
         <div>@Text.Score</div>
         <div>@Text.Modifier</div>
         <div></div>
-        @foreach (var modifier in _activeCharacter.CalculateModifiers(_settings.ScoreModifierTable))
+        @foreach (var stat in _activeCharacter.Stats)
         {
             <div class="stat">
-                <button class="left-button" @onclick="x => SelectStatForEditing(modifier.Stat)" command="show-modal" commandfor="delete-stat">@Constants.Symbol_Delete</button>
-                <div>@modifier.Stat.Name</div>
-                <div>@modifier.</div>
-                <div>@modifier.TotalValue</div>
-                <button class="right-button" @onclick="x => SelectStatForEditing(modifier.Stat)" command="show-modal" commandfor="edit-stat">@Constants.Symbol_Edit</button>
+                <div>@stat.Item.Name</div>
+                <div>@stat.</div>
+                <div>@_activeCharacter.GetModifier(stat, _settings.ScoreModifierTable).TotalValue</div>
+                <button class="right-button" @onclick="x => SelectStatForEditing(stat)" command="show-modal" commandfor="edit-stat">@Constants.Symbol_Edit</button>
             </div>
         }
-        <button @onclick="x => AddNewStat()" command="show-modal" commandfor="edit-stat" style="grid-column:span 5;">@Text.NewStat</button>
     </section>
     @if (_editStat is not null)
     {
         <dialog id="edit-stat">
             <h4>@Text.Stat</h4>
-            <InputWithLabel Label="@Text.Name">
-                <InputText @bind-Value="_editStat.Item.Name"></InputText>
-            </InputWithLabel>
-            <InputWithLabel Label="@Text.Short">
-                <InputText @bind-Value="_editStat.Item.Short"></InputText>
-            </InputWithLabel>
+            <div>@_editStat.Item.Name</div>
             <InputWithLabel Label="@Text.Score">
                 <InputNumber @bind-Value="_editStat.Score"></InputNumber>
             </InputWithLabel>
@@ -62,7 +54,6 @@
     <dialog id="delete-stat">
         <label>@Text.AreYouSure</label>
         <button @onclick="x => FinishEditingStat(false)" command="close" commandfor="delete-stat">@Text.Cancel</button>
-        <button @onclick="async x => await DeleteStat(_editStat)" command="close" commandfor="delete-stat">@Text.Confirm</button>
     </dialog>
 </div>
 
@@ -81,13 +72,7 @@
         Text.Culture = newCulture;
     }
 
-    public void AddNewStat()
-    {
-        var stat = new Stat();
-        stat.Name = $"{Text.Stat} {_activeCharacter.ActiveEffects.Count}";
-        SelectStatForEditing(stat);
-    }
-    public void SelectStatForEditing(Stat stat)
+    public void SelectStatForEditing(CharacterStat stat)
         => _editStat = stat;
 
     public async Task FinishEditingStat(bool save)
@@ -99,26 +84,14 @@
             _editStat = null;
             return;
         }
-        if (!_activeCharacter.Stats.Any(e => e.Item.Id == _editStat.Id))
-            _activeCharacter.Stats.Add(new CharacterStat(){ Item = _editStat });
+        if (!_activeCharacter.Stats.Any(e => e.Item.Id == _editStat.Item.Id))
+            _activeCharacter.Stats.Add(new CharacterStat(){ Item = _editStat.Item });
 
         await ContentService.SaveSettings(_settings);
         await ContentService.SaveCharacter(_activeCharacter);
         _editStat = null;
     }
 
-    public async Task DeleteStat(Stat? stat)
-    {
-        if (stat is null)
-            return;
-        var characterHasStat = _activeCharacter.Stats.FirstOrDefault(s => s.Item.Id == stat.Id);
-        if (characterHasStat is not null)
-            _activeCharacter.Stats.Remove(characterHasStat);
-
-        await ContentService.SaveSettings(_settings);
-        await ContentService.SaveCharacter(_activeCharacter);
-    }
-
-    private async Task SavePlayer()
+    private async Task SavePlayer() 
         => await ContentService.SaveCharacter(_activeCharacter);
 }

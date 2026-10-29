@@ -9,7 +9,7 @@
     </header>
 
     <CollapsibleSection Title="@($"{@Text.SpellbookOf} {_activeCharacter.Name}")">
-        @{var modifiers = _activeCharacter.CalculateModifiers(_settings.ScoreModifiers);}
+        @{var modifiers = _activeCharacter.GetModifiers(_settings.ScoreModifierTable);}
         @foreach (var spell in _activeCharacter.Spellbook)
         {
             <div class="library-spell">
@@ -58,7 +58,7 @@
                     {
                         <div class="spell-effect">
                             <button class="left-button" @onclick="x => RemoveEffect(effect)">@Constants.Symbol_Delete</button>
-                            <EffectView Model="effect" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></EffectView>
+                            <EffectView Model="effect" Modifiers="_activeCharacter.GetModifiers(_settings.ScoreModifierTable)"></EffectView>
                             <button class="right-button" @onclick="x => StartEditingEffect(effect)" command="show-modal" commandfor="edit-effect">@Constants.Symbol_Edit</button>
                         </div>
                     }
@@ -83,7 +83,7 @@
 
     <EditEffect EffectToEdit="_editEffect"
                 SaveEditCallback="@(async x => await FinishEditingEffect(true))"
-                Stats="_activeCharacter.Stats"
+                Stats="_settings.Stats"
                 Dice="_settings.Dice"></EditEffect>
 </div>
 

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace DNDHinwil.Lib.Models;
+﻿namespace DNDHinwil.Lib.Models;
 
 public class CharacterGear
 {

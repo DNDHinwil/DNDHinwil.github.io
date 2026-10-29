@@ -20,10 +20,10 @@ public static class HinwilCampaign
 
         Character defaultCharacter = new()
         {
-            Stats = [.. defaultSettings.Stats.Select(s => new CharacterStat() { Item = s, Score = 10})],
-            Spellbook = [.. defaultSpells.Select(s => new CharacterSpell() { Item = s})],
+            Stats = [.. defaultSettings.Stats.Select(s => new CharacterStat() { Item = s, Score = 10 })],
+            Spellbook = [.. defaultSpells.Select(s => new CharacterSpell() { Item = s })],
             Inventory = [.. defaultEquipment.Select(e => new CharacterEquipment() { Item = e })],
-            Money = [.. defaultSettings.Currencies.Select(c => new CharacterMoney() { Item = c, Quantity = 50})],
+            Money = [.. defaultSettings.Currencies.Select(c => new CharacterMoney() { Item = c, Quantity = 50 })],
             Gear = [.. defaultGear.Select(g => new CharacterGear() { Item = g, IsEquipped = true })]
         };
 

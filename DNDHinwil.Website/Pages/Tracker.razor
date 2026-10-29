@@ -1,6 +1,5 @@
 ﻿@page "/"
 @using System.Globalization
-@using DNDHinwil.Website.Extensions
 @inject IDataService ContentService
 
 <PageTitle>@Constants.SiteName - Tracker</PageTitle>
@@ -13,7 +12,7 @@
 
     <section class="player">
         <div class="stats">
-            <StatDisplay Modifiers="@_activeCharacter.CalculateModifiers(_settings.ScoreModifierTable)"></StatDisplay>
+            <StatDisplay Modifiers="@_activeCharacter.GetModifiers(_settings.ScoreModifierTable)"></StatDisplay>
         </div>
         <div class="portrait">
             <div class="image-and-turn-buttons" style="grid-column:span 2;">
@@ -100,7 +99,7 @@
             {
                 <div class="passive-effect">
                     <div style="margin-right:0.5rem;text-align:center;">⛨</div>
-                    <EffectView Model="effect" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifierTable)"></EffectView>
+                    <EffectView Model="effect" Modifiers="_activeCharacter.GetModifiers(_settings.ScoreModifierTable)"></EffectView>
                     <div></div>
                 </div>
             }
@@ -111,14 +110,14 @@
                     @if (effect.EffectType is EffectType.Active)
                     {
                         <button class="left-button" @onclick="x => RemoveActiveEffect(effect)">@Constants.Symbol_Delete</button>
-                        <EffectView Model="effect" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifierTable)"></EffectView>
+                        <EffectView Model="effect" Modifiers="_activeCharacter.GetModifiers(_settings.ScoreModifierTable)"></EffectView>
                         <div></div>
                         <button class="right-button" @onclick="x => StartEditingActiveEffect(effect)" command="show-modal" commandfor="edit-effect">@Constants.Symbol_Edit</button>
                     }
                     else
                     {
                         <div style="margin-right:0.5rem;text-align:center;">⛨</div>
-                        <EffectView Model="effect" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifierTable)"></EffectView>
+                        <EffectView Model="effect" Modifiers="_activeCharacter.GetModifiers(_settings.ScoreModifierTable)"></EffectView>
                         <div></div>
                         <div></div>
                     }
@@ -139,7 +138,7 @@
             {
                 <div class="spell">
                     <div class="left-symbol">📜</div>
-                    <SpellOrAbility Model="spell.Item" Modifiers="@_activeCharacter.CalculateModifiers(_settings.ScoreModifierTable)"></SpellOrAbility>
+                    <SpellOrAbility Model="spell.Item" Modifiers="@_activeCharacter.GetModifiers(_settings.ScoreModifierTable)"></SpellOrAbility>
                     @if (spell.Item.CanBeUsedOnSelf)
                     {
                         <button class="right-button" @onclick="async x => await UseSpell(spell.Item, true)">@Constants.Symbol_UseOnSelf</button>
@@ -161,22 +160,22 @@
     <CollapsibleSection Title="@Text.Inventory">
         @if (_activeCharacter.Inventory.Any())
         {
-            @foreach (var item in _activeCharacter.Inventory)
+            @foreach (var equipment in _activeCharacter.Inventory)
             {
                 <div class="equipment-item">
                     <div class="left-symbol">👜</div>
-                    <EquipmentItem Model="item.Item" Modifiers="@_activeCharacter.CalculateModifiers(_settings.ScoreModifierTable)"></EquipmentItem>
-                    @if (item.Item.Usable)
+                    <EquipmentItem Model="equipment.Item" Quantity="equipment.Quantity" Modifiers="@_activeCharacter.GetModifiers(_settings.ScoreModifierTable)"></EquipmentItem>
+                    @if (equipment.Item.Usable)
                     {
-                        @if (item.Item.CanBeUsedOnSelf)
+                        @if (equipment.Item.CanBeUsedOnSelf)
                         {
-                            <button class="right-button" @onclick="async x => await UseEquipment(item.Item, true)">@Constants.Symbol_UseOnSelf</button>
+                            <button class="right-button" @onclick="async x => await UseEquipment(equipment.Item, true)">@Constants.Symbol_UseOnSelf</button>
                         }
                         else
                         {
                             <div></div>
                         }
-                        <button class="right-button" @onclick="async x => await UseEquipment(item.Item, false)">@Constants.Symbol_Use</button>
+                        <button class="right-button" @onclick="async x => await UseEquipment(equipment.Item, false)">@Constants.Symbol_Use</button>
                     }
                     else
                     {
@@ -195,22 +194,22 @@
     <CollapsibleSection Title="@Text.Gear">
         @if (_activeCharacter.Gear.Any())
         {
-            @foreach (var item in _activeCharacter.Gear)
+            @foreach (var gear in _activeCharacter.Gear)
             {
                 <div class="equipment-item">
-                    <button class="left-button" @onclick="async x => await ToggleEquip(item.Item)">@(item.IsEquipped ? Constants.Symbol_Equipped : Constants.Symbol_Unequipped)</button>
-                    <GearItem Model="item.Item" Modifiers="@_activeCharacter.CalculateModifiers(_settings.ScoreModifierTable)" IsEquippable="true"></GearItem>
-                    @if (item.Item.Usable)
+                    <button class="left-button" @onclick="async x => await ToggleEquip(gear.Item)">@(gear.IsEquipped ? Constants.Symbol_Equipped : Constants.Symbol_Unequipped)</button>
+                    <GearItem Model="gear.Item" Modifiers="@_activeCharacter.GetModifiers(_settings.ScoreModifierTable)" IsEquipped="gear.IsEquipped"></GearItem>
+                    @if (gear.Item.Usable)
                     {
-                        @if (item.Item.CanBeUsedOnSelf)
+                        @if (gear.Item.CanBeUsedOnSelf)
                         {
-                            <button class="right-button" @onclick="async x => await UseGear(item.Item, true)">@Constants.Symbol_UseOnSelf</button>
+                            <button class="right-button" @onclick="async x => await UseGear(gear.Item, true)">@Constants.Symbol_UseOnSelf</button>
                         }
                         else
                         {
                             <div></div>
                         }
-                        <button class="right-button" @onclick="async x => await UseGear(item.Item, false)">@Constants.Symbol_Use</button>
+                        <button class="right-button" @onclick="async x => await UseGear(gear.Item, false)">@Constants.Symbol_Use</button>
                     }
                     else
                     {
@@ -272,7 +271,7 @@
     <div class="effect-stack">
         <div class="effect-stack-content">
             <div style="grid-column:span 2;">
-                <EffectView Model="_diceRollQueue.First()" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifierTable)"></EffectView>
+                <EffectView Model="_diceRollQueue.First()" Modifiers="_activeCharacter.GetModifiers(_settings.ScoreModifierTable)"></EffectView>
             </div>
             <div style="grid-column:span 2;">
                 @Text.Roll @_diceRollQueue.First().NumberOfDice @_diceRollQueue.First().DiceType
@@ -373,13 +372,13 @@
             await ContentService.MakeAlert(Text.NotEnoughMana);
             return;
         }
-        await _activeCharacter.UseSpell(spell.Id, useOnYourself, _activeCharacter.CalculateModifiers(_settings.ScoreModifierTable));
+        await _activeCharacter.UseSpell(spell.Id, useOnYourself, _activeCharacter.GetModifiers(_settings.ScoreModifierTable));
         await ContentService.SaveCharacter(_activeCharacter);
     }
 
     private async Task UseEquipment(Equipment equipment, bool useOnYourself)
     {
-        await _activeCharacter.UseEquipmentItem(equipment.Id, useOnYourself, _activeCharacter.CalculateModifiers(_settings.ScoreModifierTable));
+        await _activeCharacter.UseEquipmentItem(equipment.Id, useOnYourself, _activeCharacter.GetModifiers(_settings.ScoreModifierTable));
         await ContentService.SaveCharacter(_activeCharacter);
     }
 
@@ -391,19 +390,19 @@
 
     private async Task UseGear(Gear equipment, bool useOnYourself)
     {
-        await _activeCharacter.UseGear(equipment.Id, useOnYourself, _activeCharacter.CalculateModifiers(_settings.ScoreModifierTable));
+        await _activeCharacter.UseGear(equipment.Id, useOnYourself, _activeCharacter.GetModifiers(_settings.ScoreModifierTable));
         await ContentService.SaveCharacter(_activeCharacter);
     }
 
     private async Task ExecuteActiveEffects(bool isEndOfTurn)
     {
-        await _activeCharacter.ExecuteActiveEffects(isEndOfTurn, _activeCharacter.CalculateModifiers(_settings.ScoreModifierTable));
+        await _activeCharacter.ExecuteActiveEffects(isEndOfTurn, _activeCharacter.GetModifiers(_settings.ScoreModifierTable));
         await ContentService.SaveCharacter(_activeCharacter);
     }
 
     private async Task ExecuteQueuedEffect()
     {
-        await _activeCharacter.ExecuteDiceRoll(_diceRollQueue.First(), _effectDiceResult, _activeCharacter.CalculateModifiers(_settings.ScoreModifierTable));
+        await _activeCharacter.ExecuteDiceRoll(_diceRollQueue.First(), _effectDiceResult, _activeCharacter.GetModifiers(_settings.ScoreModifierTable));
         await ContentService.SaveCharacter(_activeCharacter);
     }
 

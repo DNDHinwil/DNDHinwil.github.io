@@ -12,7 +12,7 @@
         {
             <div class="armory-gear">
                 <div></div>
-                <GearItem Model="item.Item" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)" IsEquippable="true"></GearItem>
+                <GearItem Model="item.Item" Modifiers="_activeCharacter.GetModifiers(_settings.ScoreModifierTable)" IsEquipped="@item.IsEquipped"></GearItem>
                 <button class="right-button" @onclick="async x => await ToggleEquip(item.Item)">@(item.IsEquipped ? Constants.Symbol_Equipped : Constants.Symbol_Unequipped)</button>
                 <button class="right-button" @onclick="async x => await RemoveGearFromCharacter(item.Item)">@Constants.Symbol_RemoveFromInventory</button>
             </div>
@@ -23,7 +23,7 @@
         {
             <div class="armory-gear">
                 <button class="left-button" command="show-modal" commandfor="delete-gear" @onclick="x => StartEditingGear(item)">@Constants.Symbol_Delete</button>
-                <GearItem Model="item" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></GearItem>
+                <GearItem Model="item" Modifiers="_activeCharacter.GetModifiers(_settings.ScoreModifierTable)"></GearItem>
                 <button class="right-button" command="show-modal" commandfor="edit-gear" @onclick="x => StartEditingGear(item)">@Constants.Symbol_Edit</button>
                 <button class="right-button" @onclick="async x => await AddGearToCharacter(item)">@Constants.Symbol_AddToInventory</button>
             </div>
@@ -63,7 +63,7 @@
                     {
                         <div class="gear-effect">
                             <button class="left-button" @onclick="async x => await RemoveEffect(effect)" command="show-modal" commandfor="edit-effect">@Constants.Symbol_Delete</button>
-                            <EffectView Model="effect" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></EffectView>
+                            <EffectView Model="effect" Modifiers="_activeCharacter.GetModifiers(_settings.ScoreModifierTable)"></EffectView>
                             <button class="right-button" @onclick="x => StartEditingEffect(effect)" command="show-modal" commandfor="edit-effect">@Constants.Symbol_Edit</button>
                         </div>
                     }
@@ -88,7 +88,7 @@
 
     <EditEffect EffectToEdit="_editEffect"
                 SaveEditCallback="@(async x => await FinishEditingEffect(true))"
-                Stats="_activeCharacter.Stats"
+                Stats="_settings.Stats" 
                 Dice="_settings.Dice"></EditEffect>
 </div>
  

@@ -1,7 +1,7 @@
 ﻿<div class="equipment-item">
     <h4>@Model.Name</h4>
-    <div class="quantity">@(Model.Quantity > 1 ? $"x{Model.Quantity}" : "")</div>
-    <div class="weight">@(Model.Weight > 0 ? $"{Model.Weight * Model.Quantity} ⚖" : "")</div>
+    <div class="quantity">@(Quantity > 1 ? $"x{Quantity}" : "")</div>
+    <div class="weight">@(Model.Weight > 0 ? $"{Model.Weight * Quantity} ⚖" : "")</div>
     @if (!string.IsNullOrWhiteSpace(Model.Description))
     {
         <div class="equipment-effect" style="grid-column:span 3;">@Model.Description</div>
@@ -11,7 +11,7 @@
         <div class="effects" style="grid-column:span 3;">
             @foreach (var effect in Model.Effects)
             {
-                <EffectView Model="effect" Modifiers="Modifiers"></EffectView>
+                <EffectView Model="effect" Modifiers="Modifiers" Stats="Stats"></EffectView>
             }
         </div>
     }
@@ -22,4 +22,8 @@
     public required Equipment Model { get; set; }
     [Parameter]
     public List<Modifier>? Modifiers { get; set; }
+    [Parameter]
+    public List<Stat>? Stats { get; set; }
+    [Parameter]
+    public int Quantity { get; set; }
 }

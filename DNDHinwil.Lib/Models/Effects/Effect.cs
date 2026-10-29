@@ -1,5 +1,5 @@
-﻿using DNDHinwil.Lib.Interfaces;
-using DNDHinwil.Lib.Enums;
+﻿using DNDHinwil.Lib.Enums;
+using DNDHinwil.Lib.Interfaces;
 using System.Text;
 
 namespace DNDHinwil.Lib.Models;

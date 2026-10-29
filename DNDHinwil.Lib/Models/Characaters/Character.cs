@@ -5,6 +5,7 @@ using DNDHinwil.Lib.Interfaces;
 using System.Collections.ObjectModel;
 using System.Text.Json;
 namespace DNDHinwil.Lib.Models;
+
 public class Character : IIdentifiable, INameable
 {
     private int _maxHealth = 2;
@@ -45,7 +46,7 @@ public class Character : IIdentifiable, INameable
     public List<CharacterMoney> Money { get; set; } = [];
     public List<CharacterSpell> Spellbook { get; set; } = [];
     public List<CharacterGear> Gear { get; set; } = [];
-    public ReadOnlyCollection<Effect> ActiveEffects => _activeEffects.AsReadOnly(); 
+    public ReadOnlyCollection<Effect> ActiveEffects => _activeEffects.AsReadOnly();
 
     public IEnumerable<Gear> GetEquippedGear()
     {
@@ -161,6 +162,7 @@ public class Character : IIdentifiable, INameable
             return;
 
         Mana -= spellExists.Item.ManaCost;
+        spellExists.CastCounter++;
         spellExists.CooldownLeft = spellExists.Item.Cooldown;
 
         if (useOnYourself && spellExists.Item.CanBeUsedOnSelf)
@@ -252,15 +254,19 @@ public class Character : IIdentifiable, INameable
         _diceEffectQueue.Remove(effect);
     }
 
-    public List<Modifier> CalculateModifiers(IEnumerable<AbilityScore> table)
-        => [.. Stats.Select(stat 
-            => new Modifier()
-            {
-                Stat = stat.Item,
-                StatValue = table.LastOrDefault(s => s.Score <= stat.Score)?.Modifier ?? 0,
-                ActiveEffectValue = GetModifier(ActiveEffects.Where(b => b.TargetStatId == stat.Item.Id), EffectTarget.Stat),
-                PassiveBuffValue = GetModifier(GetEquippedGear().SelectMany(g => g.Effects).Where(b => b.TargetStatId == stat.Item.Id), EffectTarget.Stat)
-            })];
+    public List<Modifier> GetModifiers(IEnumerable<AbilityScore> table)
+        => [.. Stats.Select(stat
+            => GetModifier(stat, table))];
+
+    public Modifier GetModifier(CharacterStat stat, IEnumerable<AbilityScore> table)
+        => new()
+        {
+            Score = stat.Score,
+            Stat = stat.Item,
+            StatValue = table.LastOrDefault(s => s.Score <= stat.Score)?.Modifier ?? 0,
+            ActiveEffectValue = GetModifier(ActiveEffects.Where(b => b.TargetStatId == stat.Item.Id), EffectTarget.Stat),
+            PassiveBuffValue = GetModifier(GetEquippedGear().SelectMany(g => g.Effects).Where(b => b.TargetStatId == stat.Item.Id), EffectTarget.Stat)
+        };
 
     private int GetHealthDamageReduction()
         => GetModifier(_allEffects, EffectTarget.IncomingDamage);

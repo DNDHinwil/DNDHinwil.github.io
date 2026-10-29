@@ -9,7 +9,7 @@
         <div class="effects" style="grid-column:span 5;">
             @foreach (var effect in Model.Effects)
             {
-                <EffectView Model="effect" Modifiers="Modifiers"></EffectView>
+                <EffectView Model="effect" Modifiers="Modifiers" Stats="Stats"></EffectView>
             }
         </div>
     }
@@ -20,6 +20,8 @@
     public required Spell Model { get; set; }
     [Parameter]
     public List<Modifier>? Modifiers { get; set; }
+    [Parameter]
+    public List<Stat>? Stats { get; set; }
     [Parameter]
     public int MeleeRange { get; set; } = 2;
 }

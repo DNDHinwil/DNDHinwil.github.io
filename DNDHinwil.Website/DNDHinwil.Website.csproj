@@ -21,7 +21,7 @@
 
   <ItemGroup>
     <PackageReference Include="Codespirals.Blazor.Components" Version="1.2.14.26294" />
-    <PackageReference Include="DNDHinwil.Lib" Version="0.0.29.26302" />
+    <PackageReference Include="DNDHinwil.Lib" Version="0.0.32.26302" />
     <PackageReference Include="IndexedDB.Blazor" Version="1.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.10" PrivateAssets="all" />
@@ -43,10 +43,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Using Include="DNDHinwil.Enums" />
-    <Using Include="DNDHinwil.Interfaces" />
+    <Using Include="DNDHinwil.Lib.Interfaces" />
+    <Using Include="DNDHinwil.Lib.Enums" />
+    <Using Include="DNDHinwil.Lib.Interfaces" />
     <Using Include="DNDHinwil.Lib.Resources" />
-    <Using Include="DNDHinwil.Models" />
     <Using Include="System.ComponentModel.DataAnnotations" />
   </ItemGroup>
 

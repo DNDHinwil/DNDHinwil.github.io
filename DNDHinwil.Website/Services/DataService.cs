@@ -1,5 +1,4 @@
 ﻿using DNDHinwil.Lib.Models;
-using DNDHinwil.Website.Templates;
 using Microsoft.JSInterop;
 using System.Text.Json;
 
@@ -65,7 +64,7 @@ public class DataService(HttpClient client, IJSRuntime js) : IDataService
         var characters = await LoadData<List<Character>>(Constants.PlayerKey);
         if (characters is not null)
             return characters;
-        var campaign = CampaignGenerator.StartHinwilCampaign();
+        var campaign = DNDHinwil.Lib.Templates.HinwilCampaign.BuildCampaign();
         await SaveCampaign(campaign);
         return campaign.Characters;
     }

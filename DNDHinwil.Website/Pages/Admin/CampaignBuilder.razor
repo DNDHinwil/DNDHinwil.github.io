@@ -13,7 +13,7 @@
         {
             <div class="campaign-item">
                 <button class="left-button" command="show-modal" commandfor="delete-spell" @onclick="x => StartEditingSpell(spell)">@Constants.Symbol_Delete</button>
-                <SpellOrAbility Model="spell" MeleeRange="_campaign.Settings.MeleeRange"></SpellOrAbility>
+                <SpellOrAbility Model="spell" Stats="_campaign.Settings.Stats" MeleeRange="_campaign.Settings.MeleeRange"></SpellOrAbility>
                 <button class="right-button" command="show-modal" commandfor="edit-spell" @onclick="x => StartEditingSpell(spell)">@Constants.Symbol_Edit</button>
             </div>
         }
@@ -25,7 +25,7 @@
         {
             <div class="campaign-item">
                 <button class="left-button" command="show-modal" commandfor="delete-gear" @onclick="x => StartEditingGear(item)">@Constants.Symbol_Delete</button>
-                <GearItem Model="item"></GearItem>
+                <GearItem Model="item" Stats="_campaign.Settings.Stats" Slots="_campaign.Settings.GearSlots"></GearItem>
                 <button class="right-button" command="show-modal" commandfor="edit-gear" @onclick="x => StartEditingGear(item)">@Constants.Symbol_Edit</button>
             </div>
         }
@@ -37,7 +37,7 @@
         {
             <div class="campaign-item">
                 <button class="left-button" command="show-modal" commandfor="delete-equipment" @onclick="x => StartEditingEquipment(equipment)">@Constants.Symbol_Delete</button>
-                <EquipmentItem Model="equipment"></EquipmentItem>
+                <EquipmentItem Model="equipment" Stats="_campaign.Settings.Stats"></EquipmentItem>
                 <button class="right-button" command="show-modal" commandfor="edit-equipment" @onclick="x => StartEditingEquipment(equipment)">@Constants.Symbol_Edit</button>
             </div>
         }
@@ -92,10 +92,10 @@
                 <InputText @bind-Value="_editGear.Name"></InputText>
             </InputWithLabel>
             <InputWithLabel Label="@Text.Slot">
-                <InputSelect @bind-value="_editGear.Slot">
-                    @foreach (var gearSlot in Enum.GetValues<GearSlot>())
+                <InputSelect @bind-value="_editGear.SlotId">
+                    @foreach (var gearSlot in _campaign.Settings.GearSlots)
                     {
-                        <option value="@gearSlot">@gearSlot.GetName()</option>
+                        <option value="@gearSlot.Id">@gearSlot.Name</option>
                     }
                 </InputSelect>
             </InputWithLabel>

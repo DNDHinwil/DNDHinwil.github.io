@@ -1,5 +1,4 @@
 ﻿@page "/characters"
-@using DNDHinwil.Website.Templates
 
 @inject IDataService ContentService
 
@@ -16,7 +15,7 @@
                 <button class="left-button" @onclick="async x => await SelectCharacterForEditing(character)" command="show-modal" commandfor="delete-character">@Constants.Symbol_Delete</button>
                 <div style="font-size:1.25rem;">@character.Name</div>
                 <div style="text-align:right;">@Text.Level_Short</div>
-                <div style="text-align:left;">@character.GetLevel(_settings.LevelThresholds)</div>
+                <div style="text-align:left;">@character.GetLevel(_settings.LevelThresholdTable)</div>
                 <button class="right-button" @onclick="async x => await SelectCharacterForEditing(character)" command="show-modal" commandfor="edit-character">@Constants.Symbol_Edit</button>
                 <button class="right-button" @onclick="async x => await ChangeActiveCharacter(character)">✔</button>
             </div>
@@ -100,7 +99,7 @@
 
     private async Task CreateCharacterFromTemplate()
     {
-        var campaign = CampaignGenerator.StartHinwilCampaign();
+        var campaign = DNDHinwil.Lib.Templates.HinwilCampaign.BuildCampaign();
         _activeCharacter = campaign.Characters.First();
         _characters.Add(_activeCharacter);
         await ContentService.SaveCharacters(_characters);
