@@ -20,6 +20,12 @@ public static class HinwilCampaign
 
         Character defaultCharacter = new()
         {
+            Name = "Mein Charakter",
+            BaseMaxHealth = 20,
+            Health = 20,
+            BaseMaxMana = 20,
+            Mana = 20,
+            ImageUrl = "https://i.imgur.com/k6W1HJn.png",
             Stats = [.. defaultSettings.Stats.Select(s => new CharacterStat() { Item = s, Score = 10 })],
             Spellbook = [.. defaultSpells.Select(s => new CharacterSpell() { Item = s })],
             Inventory = [.. defaultEquipment.Select(e => new CharacterEquipment() { Item = e })],
@@ -52,8 +58,7 @@ public static class HinwilCampaign
             Dice = GenerateDefaultDice(),
             ScoreModifierTable = GenerateDefaultAbilityScores(),
             LevelThresholdTable = GenerateDefaultLevelThresholds(),
-            Currencies = [new() { Name = "Furzies", Symbol = "₣" }],
-
+            Currencies = [new() { Name = "Furzies", Symbol = "₣" }]
         };
     private static List<Stat> GenerateDefaultStats()
         => [

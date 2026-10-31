@@ -7,6 +7,7 @@ public class Spell : IHasEffects<Effect>, IIdentifiable, INameable
 {
     public string Id { get; set; } = Guid.NewGuid().ToString();
     public string Name { get; set; } = Text.Fireball;
+    public string Description { get; set; } = "";
     public int ManaCost { get; set; }
     public int Range { get; set; }
     public int Area { get; set; }

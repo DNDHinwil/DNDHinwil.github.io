@@ -807,4 +807,10 @@
   <data name="Gear_Shoulder" xml:space="preserve">
     <value>Shoulder</value>
   </data>
+  <data name="Area" xml:space="preserve">
+    <value>Area</value>
+  </data>
+  <data name="Cooldown" xml:space="preserve">
+    <value>Cooldown</value>
+  </data>
 </root>

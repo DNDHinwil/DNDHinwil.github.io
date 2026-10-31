@@ -202,3 +202,8 @@ dialog > h4 {
 	.effect-stack-content > button {
 		margin-top: 0.5rem;
 	}
+
+.spell-counter {
+	display: grid;
+	grid-template-columns: max-content auto;
+}

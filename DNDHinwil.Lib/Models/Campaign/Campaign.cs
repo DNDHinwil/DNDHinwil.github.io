@@ -10,7 +10,13 @@ public class Campaign
 
     public List<Character> Characters { get; set; } = [];
     public List<Spell> SpellLibrary { get; set; } = [
-        new(){Name = Text.Fireball, Range = 150, Area = 20, ManaCost = 1, Effects = [
+        new(){
+            Name = Text.Fireball,
+            Description = "A bright streak flashes from your pointing finger to a point you choose.",
+            Range = 150, 
+            Area = 20, 
+            ManaCost = 1, 
+            Effects = [
                 new(){EffectType = EffectType.Active, NumberOfDice = 8, DiceType = 6, }
             ]}
         ];

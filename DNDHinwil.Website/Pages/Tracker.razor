@@ -225,6 +225,29 @@
         }
     </CollapsibleSection>
 
+    @if (_activeCharacter.Spellbook.Sum(s => s.CastCounter) > 0)
+    {
+        <CollapsibleSection Title="@Text.Spells">
+            <div class="spell-counter">
+                @foreach (var item in _activeCharacter.Spellbook.Where(s => s.CastCounter > 0))
+                {
+                    <div>@item.Item.Name</div>
+                    <div style="text-align:right;">@item.CastCounter</div>
+                }
+            </div>
+        </CollapsibleSection>
+    }
+
+    @if (_activeSession is not null && _activeSession.Turns.Count > 2)
+    {
+        <CollapsibleSection Title="@Text.Turns" IsCollapsed="true">
+            <BarGraph Max="(_activeSession.Turns.Where(t => t.Time is not null).Max(t => t.Time!.Value.TotalMinutes) * 1.1d)"
+                      Points="TurnsToLineGraphPoints(_activeSession.Turns)"
+                      Marked="_settings.PreferredTurnLength.TotalMinutes"
+                      Height="200"></BarGraph>
+        </CollapsibleSection>
+    }
+
     <EditEffect EffectToEdit="_editActiveEffect" 
         SaveEditCallback="@(async x => await FinishEditingActiveEffect(true))"
         Stats="_settings.Stats"
@@ -469,4 +492,10 @@
         await ContentService.SaveCharacter(_activeCharacter);
     }
     #endregion
+
+    private static IEnumerable<LineGraphPoint<double>> TurnsToLineGraphPoints(List<Turn> turns)
+    {
+        var turnText = turns.Count < 5 ? Text.Turn : turns.Count < 9 ? Text.TurnShort : null;
+        return turns.Where(t => t.Time.HasValue).Select(t => new LineGraphPoint<double>() { Label = turnText is not null ? $"{turnText} {turns.IndexOf(t) + 1}" : null, Value = t.Time!.Value.TotalMinutes });
+    }
 }

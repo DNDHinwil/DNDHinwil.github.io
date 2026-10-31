@@ -41,11 +41,14 @@
             <InputWithLabel Label="@Text.Name">
                 <InputText @bind-Value="_editSpell.Name"></InputText>
             </InputWithLabel>
+            <InputWithLabel Label="@Text.ManaCost">
+                <InputNumber @bind-Value="_editSpell.ManaCost"></InputNumber>
+            </InputWithLabel>
             <InputWithLabel Label="@Text.Range">
                 <InputNumber @bind-Value="_editSpell.Range"></InputNumber>
             </InputWithLabel>
-            <InputWithLabel Label="@Text.ManaCost">
-                <InputNumber @bind-Value="_editSpell.ManaCost"></InputNumber>
+            <InputWithLabel Label="@Text.Area">
+                <InputNumber @bind-Value="_editSpell.Area"></InputNumber>
             </InputWithLabel>
             <InputWithLabel Label="@Text.CanBeUsedOnSelf">
                 <InputCheckbox @bind-Value="_editSpell.CanBeUsedOnSelf"></InputCheckbox>
@@ -54,6 +57,9 @@
                 <h4 style="width:100%;grid-column:span 2;">@Text.Effects</h4>
                 @if (_editSpell.Effects.Any())
                 {
+                    <InputWithLabel Label="@Text.Cooldown">
+                        <InputNumber @bind-Value="_editSpell.Cooldown"></InputNumber>
+                    </InputWithLabel>
                     @foreach (var effect in _editSpell.Effects)
                     {
                         <div class="spell-effect">

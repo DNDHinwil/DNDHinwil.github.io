@@ -1,17 +1,25 @@
 ﻿<div class="spell">
     <h4>@Model.Name</h4>
     <div class="spell-label" style="text-align:right;">@(Model.Range > MeleeRange ? Model.Range : "")</div>
-    <div style="text-align:left;">@(Model.Range > MeleeRange ? "🏹" : "⚔")</div>
+    <div style="text-align:left;">@(Model.Range > MeleeRange ? Constants.Symbol_Range : Constants.Symbol_Melee)</div>
     <div class="spell-label" style="text-align:right;">@Model.ManaCost</div>
-    <div style="text-align:left;">💧</div>
-    @if (Model.Effects.Any())
+    <div style="text-align:left;">@Constants.Symbol_Mana</div>
+    @if (!string.IsNullOrWhiteSpace(Model.Description) || Model.Area > 0 || Model.Cooldown > 0)
     {
-        <div class="effects" style="grid-column:span 5;">
-            @foreach (var effect in Model.Effects)
-            {
-                <EffectView Model="effect" Modifiers="Modifiers" Stats="Stats"></EffectView>
-            }
-        </div>
+        <div></div>
+        <div class="spell-label" style="text-align:right;">@(Model.Area > 0 ? Model.Area : "")</div>
+        <div style="text-align:left;">@(Model.Area > 0 ? Constants.Symbol_Area : "")</div>
+        <div class="spell-label" style="text-align:right;">@(Model.Cooldown > 0 ? Model.Cooldown : "")</div>
+        <div style="text-align:left;">@(Model.Cooldown > 0 ? Constants.Symbol_Cooldown : "")</div>
+        @if (Model.Effects.Any())
+        {
+            <div class="effects" style="grid-column:span 5;">
+                @foreach (var effect in Model.Effects)
+                {
+                    <EffectView Model="effect" Modifiers="Modifiers" Stats="Stats"></EffectView>
+                }
+            </div>
+        }
     }
 </div>
 

@@ -36,6 +36,7 @@
 }
 
 .stat-tooltip {
+	font-size: 20px;
 	visibility: hidden;
 	display: grid;
 	grid-template-columns: max-content 40px;

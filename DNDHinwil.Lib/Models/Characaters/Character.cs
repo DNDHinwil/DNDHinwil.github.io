@@ -223,6 +223,9 @@ public class Character : IIdentifiable, INameable
     public async Task Rest()
     {
         _ = _activeEffects.RemoveAll(x => x.Duration is EffectDuration.Turns or EffectDuration.UntilHealed);
+        _ = Gear.Select(g => g.CooldownLeft = 0);
+        _ = Inventory.Select(e => e.CooldownLeft = 0);
+        _ = Spellbook.Select(e => e.CooldownLeft = 0);
         Health = GetMaxHealth();
         Mana = GetMaxMana();
     }

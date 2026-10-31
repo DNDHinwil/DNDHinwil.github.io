@@ -47,6 +47,9 @@
             </InputWithLabel>
             @if (_editEquipment.Usable)
             {
+                <InputWithLabel Label="@Text.Cooldown">
+                    <InputNumber @bind-Value="_editEquipment.Cooldown"></InputNumber>
+                </InputWithLabel>
                 <InputWithLabel Label="@Text.DecreasesWithUse">
                     <InputCheckbox @bind-Value="_editEquipment.DecreasesWithUse"></InputCheckbox>
                 </InputWithLabel>

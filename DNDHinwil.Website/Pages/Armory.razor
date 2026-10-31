@@ -59,6 +59,9 @@
                 <h4>@Text.Bonuses</h4>
                 @if (_editGear.Effects.Any())
                 {
+                    <InputWithLabel Label="@Text.Cooldown">
+                        <InputNumber @bind-Value="_editGear.Cooldown"></InputNumber>
+                    </InputWithLabel>
                     @foreach (var effect in _editGear.Effects)
                     {
                         <div class="gear-effect">

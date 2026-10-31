@@ -133,6 +133,15 @@ namespace DNDHinwil.Lib.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Area.
+        /// </summary>
+        public static string Area {
+            get {
+                return ResourceManager.GetString("Area", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Are you sure?.
         /// </summary>
         public static string AreYouSure {
@@ -390,6 +399,15 @@ namespace DNDHinwil.Lib.Resources {
         public static string Constitution_Short {
             get {
                 return ResourceManager.GetString("Constitution_Short", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cooldown.
+        /// </summary>
+        public static string Cooldown {
+            get {
+                return ResourceManager.GetString("Cooldown", resourceCulture);
             }
         }
         
