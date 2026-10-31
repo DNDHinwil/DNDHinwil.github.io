@@ -789,4 +789,28 @@
   <data name="DownloadEquipment" xml:space="preserve">
     <value>Lade Ausrüstung herunter</value>
   </data>
+  <data name="Currency_Gold" xml:space="preserve">
+    <value>Gold</value>
+  </data>
+  <data name="Currency_Silver" xml:space="preserve">
+    <value>Silber</value>
+  </data>
+  <data name="Currency_Copper" xml:space="preserve">
+    <value>Kupfer</value>
+  </data>
+  <data name="DiceResult" xml:space="preserve">
+    <value>Würfelresultat</value>
+  </data>
+  <data name="Roll" xml:space="preserve">
+    <value>Würfle</value>
+  </data>
+  <data name="Gear_Shoulder" xml:space="preserve">
+    <value>Schulter</value>
+  </data>
+  <data name="Area" xml:space="preserve">
+    <value>Fläche</value>
+  </data>
+  <data name="Cooldown" xml:space="preserve">
+    <value>Abklingzeit</value>
+  </data>
 </root>

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
@@ -10,13 +10,9 @@
 
   <ItemGroup>
     <Compile Remove="Components\TrackerSections\**" />
-    <Compile Remove="wwwroot\images\**" />
     <Content Remove="Components\TrackerSections\**" />
-    <Content Remove="wwwroot\images\**" />
     <EmbeddedResource Remove="Components\TrackerSections\**" />
-    <EmbeddedResource Remove="wwwroot\images\**" />
     <None Remove="Components\TrackerSections\**" />
-    <None Remove="wwwroot\images\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,8 +20,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Codespirals.Blazor.Components" Version="1.2.14.26294" />
-    <PackageReference Include="DNDHinwil.Lib" Version="0.0.9.26292" />
+    <PackageReference Include="Codespirals.Blazor.Components" Version="1.2.18.26303" />
+    <PackageReference Include="DNDHinwil.Lib" Version="0.0.37.26304" />
     <PackageReference Include="IndexedDB.Blazor" Version="1.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.10" PrivateAssets="all" />
@@ -47,10 +43,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Using Include="DNDHinwil.Enums" />
-    <Using Include="DNDHinwil.Interfaces" />
+    <Using Include="DNDHinwil.Lib.Interfaces" />
+    <Using Include="DNDHinwil.Lib.Enums" />
+    <Using Include="DNDHinwil.Lib.Interfaces" />
     <Using Include="DNDHinwil.Lib.Resources" />
-    <Using Include="DNDHinwil.Models" />
     <Using Include="System.ComponentModel.DataAnnotations" />
   </ItemGroup>
 

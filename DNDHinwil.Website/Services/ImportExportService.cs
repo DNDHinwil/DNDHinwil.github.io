@@ -1,5 +1,6 @@
 ﻿using Codespirals.Base;
 using Codespirals.Blazor.Services;
+using DNDHinwil.Lib.Models;
 using DNDHinwil.Website.Extensions;
 using Microsoft.AspNetCore.Components.Forms;
 
@@ -15,6 +16,8 @@ public interface IImportExportService
     public Task UploadSpells(IBrowserFile file);
     public Task DownloadEquipment(IEnumerable<Equipment> equipmentItems, string fileName);
     public Task UploadEquipment(IBrowserFile file);
+    public Task DownloadCampaignTemplate(Campaign campaign);
+    public Task<Campaign?> UploadCampaignTemplate(IBrowserFile file);
 }
 
 public class ImportExportService(IDataService dataService, IUserInteractionService userInteractionService) : IImportExportService
@@ -77,5 +80,14 @@ public class ImportExportService(IDataService dataService, IUserInteractionServi
             return;
         var savedData = await _dataService.LoadSpellLibrary(); 
         await _dataService.SaveSpellLibrary(savedData.Integrate(data));
+    }
+
+    public async Task DownloadCampaignTemplate(Campaign campaign)
+    {
+
+    }
+    public async Task<Campaign?> UploadCampaignTemplate(IBrowserFile file)
+    {
+        return null;
     }
 }

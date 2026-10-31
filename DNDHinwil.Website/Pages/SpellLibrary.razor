@@ -9,14 +9,14 @@
     </header>
 
     <CollapsibleSection Title="@($"{@Text.SpellbookOf} {_activeCharacter.Name}")">
-        @{var modifiers = _activeCharacter.CalculateModifiers(_settings.ScoreModifiers);}
+        @{var modifiers = _activeCharacter.GetModifiers(_settings.ScoreModifierTable);}
         @foreach (var spell in _activeCharacter.Spellbook)
         {
             <div class="library-spell">
                 <div></div>
-                <SpellOrAbility Model="spell" Modifiers="modifiers" MeleeRange="_settings.MeleeRange"></SpellOrAbility>
+                <SpellOrAbility Model="spell.Item" Modifiers="modifiers" MeleeRange="_settings.MeleeRange"></SpellOrAbility>
                 <div></div>
-                <button class="right-button" @onclick="async x => await RemoveSpellFromSpellbook(spell)">@Constants.Symbol_RemoveFromInventory</button>
+                <button class="right-button" @onclick="async x => await RemoveSpellFromSpellbook(spell.Item)">@Constants.Symbol_RemoveFromInventory</button>
             </div>
         }
     </CollapsibleSection>
@@ -41,11 +41,14 @@
             <InputWithLabel Label="@Text.Name">
                 <InputText @bind-Value="_editSpell.Name"></InputText>
             </InputWithLabel>
+            <InputWithLabel Label="@Text.ManaCost">
+                <InputNumber @bind-Value="_editSpell.ManaCost"></InputNumber>
+            </InputWithLabel>
             <InputWithLabel Label="@Text.Range">
                 <InputNumber @bind-Value="_editSpell.Range"></InputNumber>
             </InputWithLabel>
-            <InputWithLabel Label="@Text.ManaCost">
-                <InputNumber @bind-Value="_editSpell.ManaCost"></InputNumber>
+            <InputWithLabel Label="@Text.Area">
+                <InputNumber @bind-Value="_editSpell.Area"></InputNumber>
             </InputWithLabel>
             <InputWithLabel Label="@Text.CanBeUsedOnSelf">
                 <InputCheckbox @bind-Value="_editSpell.CanBeUsedOnSelf"></InputCheckbox>
@@ -54,11 +57,14 @@
                 <h4 style="width:100%;grid-column:span 2;">@Text.Effects</h4>
                 @if (_editSpell.Effects.Any())
                 {
+                    <InputWithLabel Label="@Text.Cooldown">
+                        <InputNumber @bind-Value="_editSpell.Cooldown"></InputNumber>
+                    </InputWithLabel>
                     @foreach (var effect in _editSpell.Effects)
                     {
                         <div class="spell-effect">
                             <button class="left-button" @onclick="x => RemoveEffect(effect)">@Constants.Symbol_Delete</button>
-                            <EffectView Model="effect" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></EffectView>
+                            <EffectView Model="effect" Modifiers="_activeCharacter.GetModifiers(_settings.ScoreModifierTable)"></EffectView>
                             <button class="right-button" @onclick="x => StartEditingEffect(effect)" command="show-modal" commandfor="edit-effect">@Constants.Symbol_Edit</button>
                         </div>
                     }
@@ -83,7 +89,7 @@
 
     <EditEffect EffectToEdit="_editEffect"
                 SaveEditCallback="@(async x => await FinishEditingEffect(true))"
-                Stats="_activeCharacter.Stats"
+                Stats="_settings.Stats"
                 Dice="_settings.Dice"></EditEffect>
 </div>
 
@@ -148,17 +154,13 @@
     #region Spellbook
     private async Task AddSpellToSpellbook(Spell spell)
     {
-        var spellAlreadyInBook = _activeCharacter.Spellbook.FirstOrDefault(s => s.Id == spell.Id);
-        if (spellAlreadyInBook is not null)
-            _activeCharacter.Spellbook.Remove(spellAlreadyInBook);
-        _activeCharacter.Spellbook.Add(spell);
-
+        await _activeCharacter.AddSpellToSpellbook(spell);
         await ContentService.SaveCharacter(_activeCharacter);
     }
 
     private async Task RemoveSpellFromSpellbook(Spell spell)
     {
-        _activeCharacter.Spellbook.RemoveAt(_activeCharacter.Spellbook.FindIndex(sc => sc.Id == spell.Id));
+        await _activeCharacter.RemoveSpell(spell.Id);
         await ContentService.SaveCharacter(_activeCharacter);
     }
     #endregion

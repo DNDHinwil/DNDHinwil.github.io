@@ -133,6 +133,15 @@ namespace DNDHinwil.Lib.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Area.
+        /// </summary>
+        public static string Area {
+            get {
+                return ResourceManager.GetString("Area", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Are you sure?.
         /// </summary>
         public static string AreYouSure {
@@ -394,11 +403,47 @@ namespace DNDHinwil.Lib.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cooldown.
+        /// </summary>
+        public static string Cooldown {
+            get {
+                return ResourceManager.GetString("Cooldown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create a new Character.
         /// </summary>
         public static string CreateCharacter {
             get {
                 return ResourceManager.GetString("CreateCharacter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copper.
+        /// </summary>
+        public static string Currency_Copper {
+            get {
+                return ResourceManager.GetString("Currency_Copper", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gold.
+        /// </summary>
+        public static string Currency_Gold {
+            get {
+                return ResourceManager.GetString("Currency_Gold", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Silver.
+        /// </summary>
+        public static string Currency_Silver {
+            get {
+                return ResourceManager.GetString("Currency_Silver", resourceCulture);
             }
         }
         
@@ -561,6 +606,15 @@ namespace DNDHinwil.Lib.Resources {
         public static string Dice {
             get {
                 return ResourceManager.GetString("Dice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dice Result.
+        /// </summary>
+        public static string DiceResult {
+            get {
+                return ResourceManager.GetString("DiceResult", resourceCulture);
             }
         }
         
@@ -912,6 +966,15 @@ namespace DNDHinwil.Lib.Resources {
         public static string Gear_OffHand {
             get {
                 return ResourceManager.GetString("Gear_OffHand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shoulder.
+        /// </summary>
+        public static string Gear_Shoulder {
+            get {
+                return ResourceManager.GetString("Gear_Shoulder", resourceCulture);
             }
         }
         
@@ -1596,6 +1659,15 @@ namespace DNDHinwil.Lib.Resources {
         public static string Rest {
             get {
                 return ResourceManager.GetString("Rest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Roll.
+        /// </summary>
+        public static string Roll {
+            get {
+                return ResourceManager.GetString("Roll", resourceCulture);
             }
         }
         

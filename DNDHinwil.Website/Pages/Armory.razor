@@ -12,9 +12,9 @@
         {
             <div class="armory-gear">
                 <div></div>
-                <GearItem Model="item" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)" IsEquippable="true"></GearItem>
-                <button class="right-button" @onclick="async x => await ToggleEquip(item)">@(item.IsEquipped ? Constants.Symbol_Equipped : Constants.Symbol_Unequipped)</button>
-                <button class="right-button" @onclick="async x => await RemoveGearFromCharacter(item)">@Constants.Symbol_RemoveFromInventory</button>
+                <GearItem Model="item.Item" Modifiers="_activeCharacter.GetModifiers(_settings.ScoreModifierTable)" IsEquipped="@item.IsEquipped"></GearItem>
+                <button class="right-button" @onclick="async x => await ToggleEquip(item.Item)">@(item.IsEquipped ? Constants.Symbol_Equipped : Constants.Symbol_Unequipped)</button>
+                <button class="right-button" @onclick="async x => await RemoveGearFromCharacter(item.Item)">@Constants.Symbol_RemoveFromInventory</button>
             </div>
         }
     </CollapsibleSection>
@@ -23,7 +23,7 @@
         {
             <div class="armory-gear">
                 <button class="left-button" command="show-modal" commandfor="delete-gear" @onclick="x => StartEditingGear(item)">@Constants.Symbol_Delete</button>
-                <GearItem Model="item" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></GearItem>
+                <GearItem Model="item" Modifiers="_activeCharacter.GetModifiers(_settings.ScoreModifierTable)"></GearItem>
                 <button class="right-button" command="show-modal" commandfor="edit-gear" @onclick="x => StartEditingGear(item)">@Constants.Symbol_Edit</button>
                 <button class="right-button" @onclick="async x => await AddGearToCharacter(item)">@Constants.Symbol_AddToInventory</button>
             </div>
@@ -39,10 +39,10 @@
                 <InputText @bind-Value="_editGear.Name"></InputText>
             </InputWithLabel>
             <InputWithLabel Label="@Text.Slot">
-                <InputSelect @bind-value="_editGear.Slot">
-                    @foreach (var gearSlot in Enum.GetValues<GearSlot>())
+                <InputSelect @bind-value="_editGear.SlotId">
+                    @foreach (var gearSlot in _settings.GearSlots)
                     {
-                        <option value="@gearSlot">@gearSlot.GetName()</option>
+                        <option value="@gearSlot.Id">@gearSlot.Name</option>
                     }
                 </InputSelect>
             </InputWithLabel>
@@ -59,11 +59,14 @@
                 <h4>@Text.Bonuses</h4>
                 @if (_editGear.Effects.Any())
                 {
+                    <InputWithLabel Label="@Text.Cooldown">
+                        <InputNumber @bind-Value="_editGear.Cooldown"></InputNumber>
+                    </InputWithLabel>
                     @foreach (var effect in _editGear.Effects)
                     {
                         <div class="gear-effect">
                             <button class="left-button" @onclick="async x => await RemoveEffect(effect)" command="show-modal" commandfor="edit-effect">@Constants.Symbol_Delete</button>
-                            <EffectView Model="effect" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></EffectView>
+                            <EffectView Model="effect" Modifiers="_activeCharacter.GetModifiers(_settings.ScoreModifierTable)"></EffectView>
                             <button class="right-button" @onclick="x => StartEditingEffect(effect)" command="show-modal" commandfor="edit-effect">@Constants.Symbol_Edit</button>
                         </div>
                     }
@@ -74,7 +77,6 @@
                 }
                 <button @onclick="x => AddNewEffect(EffectType.Active)" command="show-modal" commandfor="edit-effect" style="margin-top:0.5rem;">@Text.NewActiveEffect</button>
                 <button @onclick="x => AddNewEffect(EffectType.Passive)" command="show-modal" commandfor="edit-effect" style="margin-top:0.5rem;">@Text.NewPassiveEffect</button>
-                <button @onclick="x => AddNewEffect(EffectType.Enchantment)" command="show-modal" commandfor="edit-effect" style="margin-top:0.5rem;">@Text.NewEnchantment</button>
             </div>
             <button @onclick="x => FinishEditingGear(false)" command="close" commandfor="edit-gear">@Text.Cancel</button>
             <button @onclick="x => FinishEditingGear(true)" command="close" commandfor="edit-gear" style="float:right;">@Text.Save</button>
@@ -89,7 +91,7 @@
 
     <EditEffect EffectToEdit="_editEffect"
                 SaveEditCallback="@(async x => await FinishEditingEffect(true))"
-                Stats="_activeCharacter.Stats"
+                Stats="_settings.Stats" 
                 Dice="_settings.Dice"></EditEffect>
 </div>
  
@@ -154,23 +156,19 @@
     #region Gear inventory
     private async Task AddGearToCharacter(Gear gear)
     {
-        var gearAlreadyInInventory = _activeCharacter.Gear.FirstOrDefault(s => s.Id == gear.Id);
-        if (gearAlreadyInInventory is not null)
-            _activeCharacter.Gear.Remove(gearAlreadyInInventory);
-        _activeCharacter.Gear.Add(gear);
-
+        await _activeCharacter.AddGearItemToGear(gear);
         await ContentService.SaveCharacter(_activeCharacter);
     }
 
     private async Task ToggleEquip(Gear gear)
     {
-        await _activeCharacter.EquipGear(gear);
+        await _activeCharacter.EquipGear(gear.Id);
         await ContentService.SaveCharacter(_activeCharacter);
     }
 
     private async Task RemoveGearFromCharacter(Gear gear)
     {
-        _activeCharacter.Gear.RemoveAt(_activeCharacter.Gear.FindIndex(g => g.Id == gear.Id));
+        await _activeCharacter.RemoveGear(gear.Id);
         await ContentService.SaveCharacter(_activeCharacter);
     }
     #endregion

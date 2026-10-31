@@ -16,12 +16,19 @@ public static class Constants
     public const string Symbol_AddToInventory = "+";
     public const string Symbol_RemoveFromInventory = "-";
     public const string Symbol_Equipped = "✔";
-    public const string Symbol_Unequipped = "☐";
+    public const string Symbol_Unequipped = " ";
     public const string Symbol_Edit = "⛭";
     public const string Symbol_Delete = "✖";
     public const string Symbol_Damage = "⚔";
     public const string Symbol_Heal = "♡";
+    public const string Symbol_Mana = "💧";
+    public const string Symbol_Armor = "🛡";
+    public const string Symbol_Weight = "⚖";
+    public const string Symbol_Range = "🏹";
     public const string Symbol_Rest = "⛺";
+    public const string Symbol_Melee = "🗡";
+    public const string Symbol_Cooldown = "⌛";
+    public const string Symbol_Area = "◎";
     public const string Symbol_UntilHealed = "🩸";
     public const string Symbol_UntilRemoved = "∞";
 }

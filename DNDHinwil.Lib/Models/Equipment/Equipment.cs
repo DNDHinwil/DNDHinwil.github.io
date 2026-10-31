@@ -1,8 +1,8 @@
 ﻿using Codespirals.Base;
-using DNDHinwil.Enums;
-using DNDHinwil.Interfaces;
+using DNDHinwil.Lib.Enums;
+using DNDHinwil.Lib.Interfaces;
 
-namespace DNDHinwil.Models;
+namespace DNDHinwil.Lib.Models;
 
 public class Equipment : IEquipment<Effect>, IIdentifiable, INameable
 {
@@ -14,9 +14,7 @@ public class Equipment : IEquipment<Effect>, IIdentifiable, INameable
     public bool Usable => Effects.Any(e => e.EffectType is EffectType.Active);
     public bool CanBeUsedOnSelf { get; set; }
     public int Cooldown { get; set; }
-    public int CooldownLeft { get; set; }
     public int Range { get; set; }
-    public int Quantity { get; set; } = 1;
     public bool DecreasesWithUse { get; set; }
     public bool DropWhenEmpty { get; set; }
 }

@@ -13,11 +13,16 @@
     <RepositoryUrl>https://github.com/DNDHinwil</RepositoryUrl>
     <PackageLicenseExpression>CC0-1.0</PackageLicenseExpression>
     <NeutralLanguage>en</NeutralLanguage>
-    <Version>0.0.10.26292</Version>
+    <Version>0.0.38.26304</Version>
   </PropertyGroup>
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
     <Exec Command="PowerShell -ExecutionPolicy Bypass -NoProfile -File AutoUpdateVersionNumber.ps1" />
   </Target>
+  <ItemGroup>
+    <Compile Remove="Resources\Images\**" />
+    <EmbeddedResource Remove="Resources\Images\**" />
+    <None Remove="Resources\Images\**" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Codespirals.Base.Shared" Version="1.2.0.26235" />
   </ItemGroup>
@@ -41,5 +46,9 @@
   </ItemGroup>
   <ItemGroup>
     <Using Include="DNDHinwil.Lib.Resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Entities\Connections\" />
+    <Folder Include="Resources\Images\" />
   </ItemGroup>
 </Project>

@@ -1,8 +1,8 @@
-﻿using DNDHinwil.Enums;
-using DNDHinwil.Interfaces;
+﻿using DNDHinwil.Lib.Enums;
+using DNDHinwil.Lib.Interfaces;
 using System.Text;
 
-namespace DNDHinwil.Models;
+namespace DNDHinwil.Lib.Models;
 
 public class Effect : IEffect
 {
@@ -11,7 +11,7 @@ public class Effect : IEffect
     public string Name { get; set; } = string.Empty;
     public int NumberOfDice { get; set; }
     public int DiceType { get; set; }
-    public int Strength { get; set; } = 3;
+    public int Strength { get; set; } = 0;
     public bool UseStrengthAsBonusPower { get; set; }
     public EffectOutcome Outcome { get; set; } = EffectOutcome.Reduces;
     public string? SpecialText { get; set; }
@@ -19,16 +19,35 @@ public class Effect : IEffect
     public string? BonusStatId { get; set; }
     public string? TargetStatId { get; set; }
     public EffectDuration Duration { get; set; } = EffectDuration.Instant;
-    public int Turns { get; set; } = 3;
+    public int Turns { get; set; } = 0;
     public bool TriggersAtEndOfTurn { get; set; }
 
     public int GetTotalStrength(Modifier? bonusModifier)
         => bonusModifier is not null && BonusStatId == BonusStatId ? bonusModifier.TotalValue + Strength : Strength;
 
+    public string ToString(Stat? bonusStat, Stat? targetStat)
+    {
+        if (Outcome is EffectOutcome.Special)
+            return $"{SpecialText ?? ""}{DurationToString()}";
+
+        var core = Target switch
+        {
+            EffectTarget.Health => $"{StrengthToString(bonusStat)} {(Outcome is EffectOutcome.Increases ? Text.Healing : Text.Damage)} {Text.To} {Text.HealthShort}",
+            EffectTarget.Mana => $"{StrengthToString(bonusStat)} {(Outcome is EffectOutcome.Increases ? Text.Healing : Text.Damage)} {Text.To} {Text.ManaShort}",
+            EffectTarget.MaxHealth => $"{(Outcome is EffectOutcome.Increases ? "+" : "-")}{StrengthToString(bonusStat)} {Text.MaxHP}",
+            EffectTarget.MaxMana => $"{(Outcome is EffectOutcome.Increases ? "+" : "-")}{StrengthToString(bonusStat)} {Text.MaxMP}",
+            EffectTarget.IncomingDamage => $"{(Outcome is EffectOutcome.Increases ? "+" : "-")}{StrengthToString(bonusStat)} {Text.IncomingDamage}",
+            EffectTarget.OutgoingDamage => $"{(Outcome is EffectOutcome.Increases ? "+" : "-")}{StrengthToString(bonusStat)} {Text.OutgoingDamage}",
+            EffectTarget.Stat => $"{(Outcome is EffectOutcome.Increases ? "+" : "-")}{Strength} {targetStat!.Short}",
+            _ => ""
+        };
+
+        return BuildToString(core);
+    }
     public string ToString(Modifier? bonusModifier, Modifier? targetModifier)
     {
         if (Outcome is EffectOutcome.Special)
-            return $"{GetName()}{SpecialText ?? ""}{DurationToString()}";
+            return $"{SpecialText ?? ""}{DurationToString()}";
 
         var core = Target switch
         {
@@ -38,20 +57,19 @@ public class Effect : IEffect
             EffectTarget.MaxMana => $"{(Outcome is EffectOutcome.Increases ? "+" : "-")}{StrengthToString(bonusModifier)} {Text.MaxMP}",
             EffectTarget.IncomingDamage => $"{(Outcome is EffectOutcome.Increases ? "+" : "-")}{StrengthToString(bonusModifier)} {Text.IncomingDamage}",
             EffectTarget.OutgoingDamage => $"{(Outcome is EffectOutcome.Increases ? "+" : "-")}{StrengthToString(bonusModifier)} {Text.OutgoingDamage}",
-            EffectTarget.Stat => $"{(Outcome is EffectOutcome.Increases ? "+" : "-")}{StrengthToString(null)} {targetModifier!.Stat.Short}",
+            EffectTarget.Stat => $"{(Outcome is EffectOutcome.Increases ? "+" : "-")}{Strength} {targetModifier!.Stat.Short}",
             _ => ""
         };
 
-        StringBuilder sb = new();
-        sb.Append(GetName());
-        sb.Append(core);
-        sb.Append(TimingToString());
-        sb.Append(DurationToString());
-
-        return sb.ToString();
+        return BuildToString(core);
     }
-    private string GetName()
-        => string.IsNullOrWhiteSpace(Name) ? "" : $"{Name}: ";
+
+    private string BuildToString(string core)
+    => new StringBuilder()
+            .Append(core)
+            .Append(TimingToString())
+            .Append(DurationToString())
+            .ToString();
 
     private string DurationToString()
         => Duration switch
@@ -63,7 +81,7 @@ public class Effect : IEffect
         };
 
     private string TimingToString()
-        => (EffectType is EffectType.Active && Duration is not EffectDuration.Instant) || EffectType is EffectType.Enchantment
+        => EffectType is EffectType.Active && Duration is not EffectDuration.Instant
             ? TriggersAtEndOfTurn
                 ? $" {Text.TriggersAtEndOfTurn}"
                 : $" {Text.TriggersAtStartOfTurn}"
@@ -74,6 +92,15 @@ public class Effect : IEffect
             : UseStrengthAsBonusPower ? $"{NumberOfDice} {Text.D}{DiceType} +{Strength}"
             : $"{NumberOfDice} {Text.D}{DiceType}";
 
+    private string StrengthToString(Stat? bonusStat)
+    {
+        if (bonusStat is null || BonusStatId is null || bonusStat.Id != BonusStatId)
+            return StrengthToString();
+
+        return NumberOfDice < 1 ? $"{Strength} +{bonusStat.Short}"
+            : UseStrengthAsBonusPower ? $"{NumberOfDice} {Text.D}{DiceType} +{Strength} +{bonusStat.Short}"
+            : $"{NumberOfDice} {Text.D}{DiceType} +{bonusStat.Short}";
+    }
     private string StrengthToString(Modifier? bonusModifier)
     {
         if (bonusModifier is null || BonusStatId is null || bonusModifier.Stat.Id != BonusStatId)
@@ -83,5 +110,4 @@ public class Effect : IEffect
             : UseStrengthAsBonusPower ? $"{NumberOfDice} {Text.D}{DiceType} +{Strength} +{bonusModifier.TotalValue} ({bonusModifier.Stat.Short})"
             : $"{NumberOfDice} {Text.D}{DiceType} +{bonusModifier.TotalValue} ({bonusModifier.Stat.Short})";
     }
-
 }

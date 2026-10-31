@@ -11,11 +11,11 @@
         @foreach (var equipment in _activeCharacter.Inventory)
         {
             <div class="equipment-chest-item">
-                <button class="left-button" @onclick="x => RemoveEquipmentFromInventory(equipment, true)">@Constants.Symbol_Delete</button>
-                <EquipmentItem Model="equipment" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></EquipmentItem>
+                <button class="left-button" @onclick="x => RemoveEquipmentFromInventory(equipment.Item, true)">@Constants.Symbol_Delete</button>
+                <EquipmentItem Model="equipment.Item" Quantity="equipment.Quantity" Modifiers="_activeCharacter.GetModifiers(_settings.ScoreModifierTable)"></EquipmentItem>
                 <div></div>
-                <button class="right-button" @onclick="x => RemoveEquipmentFromInventory(equipment, false)">@Constants.Symbol_RemoveFromInventory</button>
-            </div> 
+                <button class="right-button" @onclick="x => RemoveEquipmentFromInventory(equipment.Item, false)">@Constants.Symbol_RemoveFromInventory</button>
+            </div>  
         }
     </CollapsibleSection>
 
@@ -24,7 +24,7 @@
         {
             <div class="equipment-chest-item">
                 <button class="left-button" command="show-modal" commandfor="delete-equipment" @onclick="x => StartEditingEquipment(equipment)">@Constants.Symbol_Delete</button>
-                <EquipmentItem Model="equipment" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></EquipmentItem>
+                <EquipmentItem Model="equipment" Modifiers="_activeCharacter.GetModifiers(_settings.ScoreModifierTable)"></EquipmentItem>
                 <button class="right-button" command="show-modal" commandfor="edit-equipment" @onclick="x => StartEditingEquipment(equipment)">@Constants.Symbol_Edit</button>
                 <button class="right-button" @onclick="async x => await AddEquipmentToInventory(equipment)">@Constants.Symbol_AddToInventory</button>
             </div>
@@ -47,6 +47,9 @@
             </InputWithLabel>
             @if (_editEquipment.Usable)
             {
+                <InputWithLabel Label="@Text.Cooldown">
+                    <InputNumber @bind-Value="_editEquipment.Cooldown"></InputNumber>
+                </InputWithLabel>
                 <InputWithLabel Label="@Text.DecreasesWithUse">
                     <InputCheckbox @bind-Value="_editEquipment.DecreasesWithUse"></InputCheckbox>
                 </InputWithLabel>
@@ -65,7 +68,7 @@
                     {
                         <div class="equipment-effect">
                             <button class="left-button" @onclick="x => RemoveEffect(effect)">@Constants.Symbol_Delete</button>
-                            <EffectView Model="effect" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></EffectView>
+                            <EffectView Model="effect" Modifiers="_activeCharacter.GetModifiers(_settings.ScoreModifierTable)"></EffectView>
                             <button class="right-button" @onclick="x => StartEditingEffect(effect)" command="show-modal" commandfor="edit-effect">@Constants.Symbol_Edit</button>
                         </div>
                     }
@@ -89,7 +92,7 @@
 
     <EditEffect EffectToEdit="_editEffect"
                 SaveEditCallback="@(async x => await FinishEditingEffect(true))"
-                Stats="_activeCharacter.Stats"
+                Stats="_settings.Stats"
                 Dice="_settings.Dice"></EditEffect>
 </div>
 
@@ -154,23 +157,17 @@
     #region Inventory
     private async Task AddEquipmentToInventory(Equipment equipment)
     {
-        await _activeCharacter.AddCopyOfEquipmentItem(equipment);
+        await _activeCharacter.AddEquipmentItemToInventory(equipment, 1);
         await ContentService.SaveCharacter(_activeCharacter);
     }
 
     private async Task RemoveEquipmentFromInventory(Equipment equipment, bool removeAll)
     {
-        var equipmentAlreadyInInventory = _activeCharacter.Inventory.FirstOrDefault(s => s.Id == equipment.Id);
+        var equipmentAlreadyInInventory = _activeCharacter.Inventory.FirstOrDefault(s => s.Item.Id == equipment.Id);
         if (equipmentAlreadyInInventory is null)
             return;
-        if (removeAll)
-            equipmentAlreadyInInventory.Quantity = 0;
-        else
-            equipmentAlreadyInInventory.Quantity -= 1;
 
-        if (equipmentAlreadyInInventory.Quantity < 1)
-            _activeCharacter.Inventory.Remove(equipmentAlreadyInInventory);
-        
+        await _activeCharacter.RemoveEquipmentFromInventory(equipment.Id, removeAll ? equipmentAlreadyInInventory.Quantity : 1);
         await ContentService.SaveCharacter(_activeCharacter);
     }
     #endregion

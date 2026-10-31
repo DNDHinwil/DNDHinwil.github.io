@@ -1,8 +1,7 @@
-﻿namespace DNDHinwil.Enums;
+﻿namespace DNDHinwil.Lib.Enums;
 
 public enum EffectType
 {
     Active,
-    Passive,
-    Enchantment
+    Passive
 }

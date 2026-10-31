@@ -1,9 +1,19 @@
-﻿
-<div class="effect @(Model.EffectType is EffectType.Enchantment ? "curse" : "")">@Model.ToString(Modifiers?.FirstOrDefault(m => Model.BonusStatId == m.Stat.Id), Modifiers?.FirstOrDefault(m => Model.TargetStatId == m.Stat.Id))</div>
+﻿@namespace DNDHinwil.Website.Components
+
+@if (Modifiers is not null)
+{
+    <div class="effect">@Model.ToString(Modifiers?.FirstOrDefault(m => Model.BonusStatId == m.Stat.Id), Modifiers?.FirstOrDefault(m => Model.TargetStatId == m.Stat.Id))</div>
+}
+else
+{
+    <div class="effect">@Model.ToString(Stats?.FirstOrDefault(s => Model.BonusStatId == s.Id), Stats?.FirstOrDefault(s => Model.TargetStatId == s.Id))</div>
+}
 
 @code {
     [Parameter]
     public required Effect Model { get; set; }
     [Parameter]
     public List<Modifier>? Modifiers { get; set; }
+    [Parameter]
+    public List<Stat>? Stats { get; set; }
 }

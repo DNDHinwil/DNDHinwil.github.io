@@ -1,4 +1,4 @@
-﻿using DNDHinwil.Website.Templates;
+﻿using DNDHinwil.Lib.Models;
 using Microsoft.JSInterop;
 using System.Text.Json;
 
@@ -21,6 +21,7 @@ public interface IDataService
     public Task SaveSpellLibrary(List<Spell> spells);
     public Task<Settings> LoadSettings();
     public Task SaveSettings(Settings settings);
+
     public Task SaveCampaign(Campaign campaign);
     public Task MakeAlert(string message);
 }
@@ -63,7 +64,7 @@ public class DataService(HttpClient client, IJSRuntime js) : IDataService
         var characters = await LoadData<List<Character>>(Constants.PlayerKey);
         if (characters is not null)
             return characters;
-        var campaign = CampaignGenerator.StartHinwilCampaign();
+        var campaign = DNDHinwil.Lib.Templates.HinwilCampaign.BuildCampaign();
         await SaveCampaign(campaign);
         return campaign.Characters;
     }
@@ -74,9 +75,9 @@ public class DataService(HttpClient client, IJSRuntime js) : IDataService
     {
         var characters = await LoadCharacters();
         var savedCharacter = characters?.FirstOrDefault(c => c.Id == id) ?? characters?.FirstOrDefault();
-        if (savedCharacter is null)
-            return new Character();
-        return savedCharacter;
+        if (savedCharacter is not null)
+            return savedCharacter;
+        return new Character();
     }
 
     public async Task SaveCharacter(Character characterToSave)
@@ -128,9 +129,11 @@ public class DataService(HttpClient client, IJSRuntime js) : IDataService
     public async Task<Settings> LoadSettings()
     {
         var settings = await LoadData<Settings>(Constants.SettingsKey);
-        if (settings is null)
-            return new Settings();
-        return settings;
+        if (settings is not null)
+            return settings;
+        var campaign = DNDHinwil.Lib.Templates.HinwilCampaign.BuildCampaign();
+        await SaveCampaign(campaign);
+        return campaign.Settings;
     }
     public async Task SaveSettings(Settings settings)
         => await StoreData(Constants.SettingsKey, settings);
@@ -140,8 +143,8 @@ public class DataService(HttpClient client, IJSRuntime js) : IDataService
 
     public async Task SaveCampaign(Campaign campaign)
     {
-        await SaveCharacters(campaign.Characters);
         await SaveSettings(campaign.Settings);
+        await SaveCharacters(campaign.Characters);
         await SaveArmory(campaign.Armory);
         await SaveEquipmentChest(campaign.EquipmentChest);
         await SaveSpellLibrary(campaign.SpellLibrary);

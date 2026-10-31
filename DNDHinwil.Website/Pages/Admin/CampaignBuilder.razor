@@ -3,17 +3,17 @@
 
 <PageTitle>@Constants.SiteName - @Text.Campaigns</PageTitle>
 
-<div class="content" style="@($"--color-primary:{_settings.AccentColor};")">
+<div class="content">
     <header>
         <h2>@Text.Campaign</h2>
     </header>
 
     <CollapsibleSection Title="@Text.AvailableSpells">
-        @foreach (var spell in _spellLibrary.Reverse<Spell>())
+        @foreach (var spell in _campaign.SpellLibrary.Reverse<Spell>())
         {
             <div class="campaign-item">
                 <button class="left-button" command="show-modal" commandfor="delete-spell" @onclick="x => StartEditingSpell(spell)">@Constants.Symbol_Delete</button>
-                <SpellOrAbility Model="spell" MeleeRange="_settings.MeleeRange"></SpellOrAbility>
+                <SpellOrAbility Model="spell" Stats="_campaign.Settings.Stats" MeleeRange="_campaign.Settings.MeleeRange"></SpellOrAbility>
                 <button class="right-button" command="show-modal" commandfor="edit-spell" @onclick="x => StartEditingSpell(spell)">@Constants.Symbol_Edit</button>
             </div>
         }
@@ -21,11 +21,11 @@
     </CollapsibleSection>
 
     <CollapsibleSection Title="@Text.AvailableGear">
-        @foreach (var item in _armory.Reverse<Gear>())
+        @foreach (var item in _campaign.Armory.Reverse<Gear>())
         {
             <div class="campaign-item">
                 <button class="left-button" command="show-modal" commandfor="delete-gear" @onclick="x => StartEditingGear(item)">@Constants.Symbol_Delete</button>
-                <GearItem Model="item" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></GearItem>
+                <GearItem Model="item" Stats="_campaign.Settings.Stats" Slots="_campaign.Settings.GearSlots"></GearItem>
                 <button class="right-button" command="show-modal" commandfor="edit-gear" @onclick="x => StartEditingGear(item)">@Constants.Symbol_Edit</button>
             </div>
         }
@@ -33,11 +33,11 @@
     </CollapsibleSection>
 
     <CollapsibleSection Title="@Text.EquipmentChest">
-        @foreach (var equipment in _equipmentChest)
+        @foreach (var equipment in _campaign.EquipmentChest)
         {
             <div class="campaign-item">
                 <button class="left-button" command="show-modal" commandfor="delete-equipment" @onclick="x => StartEditingEquipment(equipment)">@Constants.Symbol_Delete</button>
-                <EquipmentItem Model="equipment" HideQuantity="true" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></EquipmentItem>
+                <EquipmentItem Model="equipment" Stats="_campaign.Settings.Stats"></EquipmentItem>
                 <button class="right-button" command="show-modal" commandfor="edit-equipment" @onclick="x => StartEditingEquipment(equipment)">@Constants.Symbol_Edit</button>
             </div>
         }
@@ -68,7 +68,7 @@
                     {
                         <div class="spell-effect">
                             <button class="left-button" @onclick="async x => await RemoveEffect(_editItem, effect)">@Constants.Symbol_Delete</button>
-                            <EffectView Model="effect" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></EffectView>
+                            <EffectView Model="effect"></EffectView>
                             <button class="right-button" @onclick="x => StartEditingEffect(effect)" command="show-modal" commandfor="edit-effect">@Constants.Symbol_Edit</button>
                         </div>
                     }
@@ -92,10 +92,10 @@
                 <InputText @bind-Value="_editGear.Name"></InputText>
             </InputWithLabel>
             <InputWithLabel Label="@Text.Slot">
-                <InputSelect @bind-value="_editGear.Slot">
-                    @foreach (var gearSlot in Enum.GetValues<GearSlot>())
+                <InputSelect @bind-value="_editGear.SlotId">
+                    @foreach (var gearSlot in _campaign.Settings.GearSlots)
                     {
-                        <option value="@gearSlot">@gearSlot.GetName()</option>
+                        <option value="@gearSlot.Id">@gearSlot.Name</option>
                     }
                 </InputSelect>
             </InputWithLabel>
@@ -116,7 +116,7 @@
                     {
                         <div class="gear-effect">
                             <button class="left-button" @onclick="async x => await RemoveEffect(_editGear, effect)" command="show-modal" commandfor="edit-effect">@Constants.Symbol_Delete</button>
-                            <EffectView Model="effect" Modifiers="_activeCharacter.CalculateModifiers(_settings.ScoreModifiers)"></EffectView>
+                            <EffectView Model="effect"></EffectView>
                             <button class="right-button" @onclick="x => StartEditingEffect(effect)" command="show-modal" commandfor="edit-effect">@Constants.Symbol_Edit</button>
                         </div>
                     }
@@ -156,16 +156,12 @@
 
     <EditEffect EffectToEdit="_editEffect"
                 SaveEditCallback="@(async x => await FinishEditingEffect(_editItem, true))"
-                Stats="_activeCharacter.Stats"
-                Dice="_settings.Dice"></EditEffect>
+                Stats="_campaign.Settings.Stats"
+                Dice="_campaign.Settings.Dice"></EditEffect>
 </div>
 
 @code {
-    private Settings _settings = new Settings();
-    private Character _activeCharacter = new Character();
-    private List<Spell> _spellLibrary = [];
-    private List<Gear> _armory = [];
-    private List<Equipment> _equipmentChest = [];
+    private Campaign _campaign = new();
 
     private Equipment? _editEquipment;
     private Gear? _editGear;
@@ -176,15 +172,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _settings = await ContentService.LoadSettings();
-        _activeCharacter = await ContentService.LoadCharacter(_settings.ActiveCharacter);
-        _spellLibrary = await ContentService.LoadSpellLibrary();
-        _armory = await ContentService.LoadArmory();
-        _equipmentChest = await ContentService.LoadEquipmentChest();
-
-        var newCulture = new CultureInfo(_settings.Language);
-        Thread.CurrentThread.CurrentUICulture = newCulture;
-        Text.Culture = newCulture;
+        
     }
 
     #region Library
@@ -192,7 +180,7 @@
     private void AddNewSpell()
     {
         var spell = new Spell();
-        spell.Name = $"{Text.Spell} {_spellLibrary.Count + 1}";
+        spell.Name = $"{Text.Spell} {_campaign.SpellLibrary.Count + 1}";
         StartEditingSpell(spell);
     }
     // R
@@ -208,12 +196,12 @@
             _editSpell = null;
             return;
         }
-        var spellExists = _spellLibrary.FirstOrDefault(s => s.Id == _editSpell.Id);
+        var spellExists = _campaign.SpellLibrary.FirstOrDefault(s => s.Id == _editSpell.Id);
         if (spellExists is not null)
-            _spellLibrary.Remove(spellExists);
+            _campaign.SpellLibrary.Remove(spellExists);
 
-        _spellLibrary.Add(_editSpell);
-        await ContentService.SaveSpellLibrary(_spellLibrary);
+        _campaign.SpellLibrary.Add(_editSpell);
+        await ContentService.SaveSpellLibrary(_campaign.SpellLibrary);
         _editSpell = null;
     }
     // D
@@ -221,8 +209,8 @@
     {
         if (spell is null)
             return;
-        _spellLibrary.Remove(spell);
-        await ContentService.SaveSpellLibrary(_spellLibrary);
+        _campaign.SpellLibrary.Remove(spell);
+        await ContentService.SaveSpellLibrary(_campaign.SpellLibrary);
     }
     #endregion
 
@@ -231,7 +219,7 @@
     private void AddNewGear()
     {
         var gear = new Gear();
-        gear.Name = $"{Text.Gear} {_armory.Count + 1}";
+        gear.Name = $"{Text.Gear} {_campaign.Armory.Count + 1}";
         StartEditingGear(gear);
     }
     // R
@@ -247,12 +235,12 @@
             _editGear = null;
             return;
         }
-        var gearExists = _armory.FirstOrDefault(s => s.Id == _editGear.Id);
+        var gearExists = _campaign.Armory.FirstOrDefault(s => s.Id == _editGear.Id);
         if (gearExists is not null)
-            _armory.Remove(gearExists);
+            _campaign.Armory.Remove(gearExists);
 
-        _armory.Add(_editGear);
-        await ContentService.SaveArmory(_armory);
+        _campaign.Armory.Add(_editGear);
+        await ContentService.SaveArmory(_campaign.Armory);
         _editGear = null;
     }
     // D
@@ -260,8 +248,8 @@
     {
         if (gear is null)
             return;
-        _armory.Remove(gear);
-        await ContentService.SaveArmory(_armory);
+        _campaign.Armory.Remove(gear);
+        await ContentService.SaveArmory(_campaign.Armory);
     }
     #endregion
 
@@ -270,7 +258,7 @@
     private void AddNewEquipment()
     {
         var equipment = new Equipment();
-        equipment.Name = $"{Text.Equipment} {_equipmentChest.Count + 1}";
+        equipment.Name = $"{Text.Equipment} {_campaign.EquipmentChest.Count + 1}";
         StartEditingEquipment(equipment);
     }
     // R
@@ -286,12 +274,12 @@
             _editEquipment = null;
             return;
         }
-        var equipmentExists = _equipmentChest.FirstOrDefault(s => s.Id == _editEquipment.Id);
+        var equipmentExists = _campaign.EquipmentChest.FirstOrDefault(s => s.Id == _editEquipment.Id);
         if (equipmentExists is not null)
-            _equipmentChest.Remove(equipmentExists);
+            _campaign.EquipmentChest.Remove(equipmentExists);
 
-        _equipmentChest.Add(_editEquipment);
-        await ContentService.SaveEquipmentChest(_equipmentChest);
+        _campaign.EquipmentChest.Add(_editEquipment);
+        await ContentService.SaveEquipmentChest(_campaign.EquipmentChest);
         _editEquipment = null;
     }
     // D
@@ -299,8 +287,8 @@
     {
         if (equipment is null)
             return;
-        _equipmentChest.Remove(equipment);
-        await ContentService.SaveEquipmentChest(_equipmentChest);
+        _campaign.EquipmentChest.Remove(equipment);
+        await ContentService.SaveEquipmentChest(_campaign.EquipmentChest);
     }
     #endregion
 
@@ -335,9 +323,9 @@
 
         item.Effects.Add(_editEffect);
 
-        await ContentService.SaveArmory(_armory);
-        await ContentService.SaveEquipmentChest(_equipmentChest);
-        await ContentService.SaveSpellLibrary(_spellLibrary);
+        await ContentService.SaveArmory(_campaign.Armory);
+        await ContentService.SaveEquipmentChest(_campaign.EquipmentChest);
+        await ContentService.SaveSpellLibrary(_campaign.SpellLibrary);
         _editEffect = null;
     }
 
@@ -348,9 +336,9 @@
         if (item is null)
             return;
         item.Effects.Remove(effect);
-        await ContentService.SaveArmory(_armory);
-        await ContentService.SaveEquipmentChest(_equipmentChest);
-        await ContentService.SaveSpellLibrary(_spellLibrary);
+        await ContentService.SaveArmory(_campaign.Armory);
+        await ContentService.SaveEquipmentChest(_campaign.EquipmentChest);
+        await ContentService.SaveSpellLibrary(_campaign.SpellLibrary);
     }
     #endregion
 }

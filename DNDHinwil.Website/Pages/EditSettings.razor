@@ -1,6 +1,6 @@
 ﻿@page "/settings"
-@using System.Text.Json
 @using Codespirals.Blazor.Services
+@using DNDHinwil.Models
 @using DNDHinwil.Website.Components.Generic
 @using DNDHinwil.Website.Extensions
 @inject IDataService ContentService
@@ -72,20 +72,20 @@
             <h4 style="grid-column:span 2;">@Text.ExperienceTable</h4>
             <div>@Text.Experience</div>
             <div>@Text.Level</div>
-            @foreach (var item in _settings.LevelThresholds)
+            @foreach (var row in _settings.LevelThresholdTable)
             {
-                <div>@item.TotalExperience</div>
-                <div>@item.Level</div>
+                <div>@row.TotalExperience</div>
+                <div>@row.Level</div>
             }
         </div>
         <div class="modifiers">
             <h4 style="grid-column:span 2;">@Text.ModifierTable</h4>
             <div>@Text.Score</div>
             <div>@Text.Modifier</div>
-            @foreach (var item in _settings.ScoreModifiers)
+            @foreach (var row in _settings.ScoreModifierTable)
             {
-                <div>@item.Score</div>
-                <div>@item.Modifier</div>
+                <div>@row.Score</div>
+                <div>@row.Modifier</div>
             }
         </div>
         <div class="dice">

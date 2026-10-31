@@ -1,8 +1,9 @@
-﻿namespace DNDHinwil.Models;
+﻿namespace DNDHinwil.Lib.Models;
 
 public class Modifier
 {
     public required Stat Stat { get; set; }
+    public int Score { get; set; }
     public int StatValue { get; set; }
     public int ActiveEffectValue { get; set; }
     public int PassiveBuffValue { get; set; }

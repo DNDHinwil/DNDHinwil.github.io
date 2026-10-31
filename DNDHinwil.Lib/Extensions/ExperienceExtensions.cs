@@ -1,11 +1,11 @@
 ﻿
-using DNDHinwil.Models;
+using DNDHinwil.Lib.Models;
 
-namespace DNDHinwil.Extensions;
+namespace DNDHinwil.Lib.Extensions;
 
 public static class ExperienceExtensions
 {
-    public static (int Current, int Required) ExperienceToNextLevel(this LevelThreshold[] thresholds, int currentTotalExp)
+    public static (int Current, int Required) ExperienceToNextLevel(this IEnumerable<LevelThreshold> thresholds, int currentTotalExp)
     {
         var nextThreshold = GetNextThreshold(thresholds, currentTotalExp);
         var lastThreshold = GetLastThreshold(thresholds, currentTotalExp);
