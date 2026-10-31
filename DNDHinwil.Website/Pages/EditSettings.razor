@@ -66,6 +66,12 @@
         <div>@Text.UploadEquipment</div>
         <button command="show-modal" commandfor="file-import" @onclick="x => _fileType = FileType.Equipment">@Text.Upload</button>
     </section>
+    <section class="backup-save"> 
+        <div>@Text.Save</div>
+        <button command="show-modal" commandfor="backup">@Text.Download</button>
+        <div>Load</div>
+        <button command="show-modal" commandfor="file-import" @onclick="x => _fileType = FileType.Backup">@Text.Upload</button>
+    </section>
     <section class="tables">
         <h3 style="grid-column:span 2;">Tables</h3>
         <div class="levels">
@@ -120,6 +126,11 @@
         <ListItemSelector Selections="_selectedGear"></ListItemSelector>
         <button command="close" commandfor="gear-selection" @onclick="DownloadGear">@Text.Confirm</button>
     </dialog>
+    <dialog id="backup" class="export-dialog">
+        <h4>@Text.Name</h4>
+        <InputText @bind-Value="_backupName"></InputText>
+        <button command="close" commandfor="backup" @onclick="DownloadGear">@Text.Confirm</button>
+    </dialog>
     <dialog id="file-import">
         <h4>@Text.Select</h4>
         <InputFile OnChange="SetFile"></InputFile>
@@ -152,7 +163,8 @@
     private bool _isLoading;
     private IBrowserFile? _file;
     private FileType _fileType = FileType.Characters;
-    const int _maxFileSize = 1048576;
+
+    private string _backupName = "Campaign";
 
     private readonly (string Color, string Name)[] _colors = 
     [
@@ -182,6 +194,19 @@
     private async Task StartSelectingCharacters()
         => _selectedCharacters = (await ContentService.LoadCharacters()).Select(i => new Selectable<Character>(){ Item = i}).ToList();
 
+    private async Task DownloadBackup(string name)
+    {
+        var campaign = new Campaign()
+            {
+                Name = name,
+                Characters = await ContentService.LoadCharacters(),
+                Armory = await ContentService.LoadArmory(),
+                EquipmentChest = await ContentService.LoadEquipmentChest(),
+                SpellLibrary = await ContentService.LoadSpellLibrary(),
+                Settings = await ContentService.LoadSettings()
+            };
+        await UserInteractionService.DownloadDataAsJson(campaign, $"dnd_{Text.Characters}");
+    }
     private async Task DownloadCharacters()
     {
         if (_selectedCharacters is null)
@@ -244,6 +269,9 @@
             case FileType.Equipment:
                 await UploadEquipment();
                 break;
+            case FileType.Backup:
+                await UploadBackup();
+                break;
             default:
                 break;
         }
@@ -253,7 +281,7 @@
     {
         if (_file is null)
             return;
-        var data = await GetItemsFromFile<Character>(_file);
+        var data = await GetItemsFromFile<List<Character>>(_file);
         if (data is null || !data.Any())
             return;
         var old = await ContentService.LoadCharacters();
@@ -264,7 +292,7 @@
     {
         if (_file is null)
             return;
-        var data = await GetItemsFromFile<Equipment>(_file);
+        var data = await GetItemsFromFile<List<Equipment>>(_file);
         if (data is null || !data.Any())
             return;
         var old = await ContentService.LoadEquipmentChest();
@@ -275,7 +303,7 @@
     {
         if (_file is null)
             return;
-        var data = await GetItemsFromFile<Gear>(_file);
+        var data = await GetItemsFromFile<List<Gear>>(_file);
         if (data is null || !data.Any())
             return;
         var old = await ContentService.LoadArmory();
@@ -286,29 +314,39 @@
     {
         if (_file is null)
             return;
-        var data = await GetItemsFromFile<Spell>(_file);
+        var data = await GetItemsFromFile<List<Spell>>(_file);
         if (data is null || !data.Any())
             return;
         var old = await ContentService.LoadSpellLibrary();
         await ContentService.SaveSpellLibrary(old.Integrate(data));
         await UserInteractionService.MakeAlert($"Successfully imported {data.Count} spell(s).");
     }
+    private async Task UploadBackup()
+    {
+        if (_file is null)
+            return;
+        var data = await GetItemsFromFile<Campaign>(_file, int.MaxValue);
+        if (data is null)
+            return;
+        await ContentService.SaveCampaign(data);
+        await UserInteractionService.MakeAlert($"Successfully imported backup.");
+    }
 
-    private async Task<List<T>> GetItemsFromFile<T>(IBrowserFile file)
+    private async Task<T?> GetItemsFromFile<T>(IBrowserFile file, int maxFileSize = 1048576)
     {
         _isLoading = true;
         try
         {
-            var data = await UserInteractionService.ExtractDataFromJsonFile<List<T>>(file, _maxFileSize);
+            var data = await UserInteractionService.ExtractDataFromJsonFile<T>(file, maxFileSize);
             if (data is null)
-                return [];
+                return default;
             return data;
         }
         catch (Exception ex)
         {
             await UserInteractionService.MakeAlert($"Unexpected error while reading file.");
             Console.WriteLine(ex.Message);
-            return [];
+            return default;
         }
         finally
         {
@@ -321,6 +359,7 @@
         Characters,
         Spells,
         Equipment,
-        Gear
+        Gear,
+        Backup
     }
 }
