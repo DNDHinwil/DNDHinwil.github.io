@@ -31,7 +31,7 @@
 /* /Components/GearItem.razor.rz.scp.css */
 .gear-item[b-fjuljd0fq1] {
 	display: grid;
-	grid-template-columns: 150px auto 50px;
+	grid-template-columns: auto 50px;
 }
 
 .gear-label[b-fjuljd0fq1] {
