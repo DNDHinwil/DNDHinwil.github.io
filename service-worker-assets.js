@@ -1,8 +1,8 @@
 self.assetsManifest = {
-  "version": "WmQIIXDK",
+  "version": "M+1sqcdl",
   "assets": [
     {
-      "hash": "sha256-HCIwMXn5yUxIIkXCOjczpOmLEp3B/olFjUTFUJb4zCA=",
+      "hash": "sha256-bzX6sPn+qAyWECIkJsuSsmwaIfRHWNSMmsNGB/Tphzw=",
       "url": "404.html"
     },
     {
@@ -34,8 +34,8 @@ self.assetsManifest = {
       "url": "_framework/DNDHinwil.Lib.k8l83xil6e.wasm"
     },
     {
-      "hash": "sha256-hXw76m54vOWYqxCjchnuQ5JcfbTO4BjYlGhSenfJ5go=",
-      "url": "_framework/DNDHinwil.Website.bs0mavj6br.wasm"
+      "hash": "sha256-lSjMCpR7L044qo4CSXLSXNi5oMFDsvQ8VUqVKHqg95M=",
+      "url": "_framework/DNDHinwil.Website.9fn8g0vgtq.wasm"
     },
     {
       "hash": "sha256-KPfBDdTsdA1UJa39MMwHDmeTAj43EMBfmy0J8wNBcuo=",
@@ -286,16 +286,16 @@ self.assetsManifest = {
       "url": "_framework/de/DNDHinwil.Lib.resources.wi0t5rz6d3.wasm"
     },
     {
+      "hash": "sha256-gYqfAAjpVoYFqUbwnAOAiYAvEPMJbU6zAURZIolnLDk=",
+      "url": "_framework/dotnet.1o2kkr2t2l.js"
+    },
+    {
       "hash": "sha256-YlIWUrqwAiQuAJNBOX+Zm9wpWL+sF3J449iFq7JHouQ=",
       "url": "_framework/dotnet.native.a6k1euv12n.wasm"
     },
     {
       "hash": "sha256-CZ0IVZkLTIvee7n1yVvOitlJWNdj/YjaFgpMgliIM64=",
       "url": "_framework/dotnet.native.bjoj0wmylw.js"
-    },
-    {
-      "hash": "sha256-tuExZ31GiZbRRFtpTRj3XvXzfhldRrOmHokg4tsI+Ec=",
-      "url": "_framework/dotnet.qki51090pg.js"
     },
     {
       "hash": "sha256-/3dBg9sj1yLD3h0PDMHnNUXWs/2zWwIMEzom1Xz3Q40=",
@@ -326,7 +326,7 @@ self.assetsManifest = {
       "url": "images/profile_border.png"
     },
     {
-      "hash": "sha256-25dfKHsuV//uxxHsXX0JfkPxrXeyHHDIMzhdivnpN44=",
+      "hash": "sha256-thZRMzNkHD9Q5RyntOnZLDwbkijkB2feRknZO6v/QwM=",
       "url": "index.html"
     },
     {
