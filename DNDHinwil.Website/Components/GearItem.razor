@@ -1,24 +1,14 @@
 ﻿<div class="gear-item">
     <h4>@Model.Name</h4>
-    @if (IsEquipped)
-    {
-        <div class="gear-label">
-            @Text.Equipped
-        </div>
-    }
-    else
-    {
-        <div></div>
-    }
     <div style="text-align:right;">@(Model.Weight > 0 ? $"{Model.Weight} {Constants.Symbol_Weight}" : "")</div>
 
-    <div class="gear-label" style="grid-column:span 2;">@(Slots?.FirstOrDefault(s => s.Id == Model.SlotId)?.Name ?? "")</div>
+    <div class="gear-label">@(Slots?.FirstOrDefault(s => s.Id == Model.SlotId)?.Name ?? "")</div>
     <div style="text-align:right;">@(Model.Armor > 0 ? $"{Model.Armor} {Constants.Symbol_Armor}" : "")</div>
 
-    <div style="grid-column:span 3;">@(!string.IsNullOrWhiteSpace(Model.Description) ? Model.Description : "")</div>
+    <div style="grid-column:span 2;">@(!string.IsNullOrWhiteSpace(Model.Description) ? Model.Description : "")</div>
     @if (Model.Effects.Any())
     {
-        <div class="effects" style="grid-column:span 3;">
+        <div class="effects" style="grid-column:span 2;">
             @foreach (var effect in Model.Effects)
             {
                 <EffectView Model="effect" Modifiers="Modifiers" Stats="Stats"></EffectView>

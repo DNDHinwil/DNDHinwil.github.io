@@ -1,6 +1,6 @@
 ﻿.gear-item {
 	display: grid;
-	grid-template-columns: 150px auto 50px;
+	grid-template-columns: auto 50px;
 }
 
 .gear-label {
