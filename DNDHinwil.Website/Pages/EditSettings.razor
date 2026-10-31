@@ -66,7 +66,7 @@
         <div>@Text.UploadEquipment</div>
         <button command="show-modal" commandfor="file-import" @onclick="x => _fileType = FileType.Equipment">@Text.Upload</button>
     </section>
-    <section class="backup-save"> 
+    <section class="export import"> 
         <div>@Text.Save</div>
         <button command="show-modal" commandfor="backup">@Text.Download</button>
         <div>Load</div>
@@ -129,9 +129,9 @@
     <dialog id="backup" class="export-dialog">
         <h4>@Text.Name</h4>
         <InputText @bind-Value="_backupName"></InputText>
-        <button command="close" commandfor="backup" @onclick="DownloadGear">@Text.Confirm</button>
+        <button command="close" commandfor="backup" @onclick="DownloadBackup">@Text.Confirm</button>
     </dialog>
-    <dialog id="file-import">
+    <dialog id="file-import" class="export-dialog">
         <h4>@Text.Select</h4>
         <InputFile OnChange="SetFile"></InputFile>
         <button command="close" commandfor="file-import" @onclick="UploadFile">@Text.Confirm</button>
@@ -194,18 +194,18 @@
     private async Task StartSelectingCharacters()
         => _selectedCharacters = (await ContentService.LoadCharacters()).Select(i => new Selectable<Character>(){ Item = i}).ToList();
 
-    private async Task DownloadBackup(string name)
+    private async Task DownloadBackup()
     {
         var campaign = new Campaign()
             {
-                Name = name,
+                Name = _backupName,
                 Characters = await ContentService.LoadCharacters(),
                 Armory = await ContentService.LoadArmory(),
                 EquipmentChest = await ContentService.LoadEquipmentChest(),
                 SpellLibrary = await ContentService.LoadSpellLibrary(),
                 Settings = await ContentService.LoadSettings()
             };
-        await UserInteractionService.DownloadDataAsJson(campaign, $"dnd_{Text.Characters}");
+        await UserInteractionService.DownloadDataAsJson(campaign, $"dnd_{_backupName}");
     }
     private async Task DownloadCharacters()
     {
